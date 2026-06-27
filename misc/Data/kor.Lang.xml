@@ -97,6 +97,7 @@
 		<Undo>실행취소 (Ctrl+Z)</Undo>
 		<Redo>다시실행 (Ctrl+Y)</Redo>
 		<NT>롱노트 입력모드 - NoteTool/BMSE</NT>
+		<WavIncrease>WAV 번호를 자동으로 다음으로 이동</WavIncrease>
 		<TimeSelectionTool>시간편집모드 (F1)</TimeSelectionTool>
 		<SelectTool>편집모드 (F2)</SelectTool>
 		<WriteTool>쓰기모드 (F3)</WriteTool>

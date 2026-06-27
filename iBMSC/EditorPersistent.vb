@@ -799,6 +799,7 @@ EndOfSub:
                 XMLLoadLocale(eToolBar.Item("Undo"), TBUndo.Text)
                 XMLLoadLocale(eToolBar.Item("Redo"), TBRedo.Text)
                 XMLLoadLocale(eToolBar.Item("NT"), TBNTInput.Text)
+                XMLLoadLocale(eToolBar.Item("WavIncrease"), TBWavIncrease.Text)
                 XMLLoadLocale(eToolBar.Item("TimeSelectionTool"), TBTimeSelect.Text)
                 XMLLoadLocale(eToolBar.Item("SelectTool"), TBSelect.Text)
                 XMLLoadLocale(eToolBar.Item("WriteTool"), TBWrite.Text)

@@ -97,6 +97,7 @@
 		<Undo>Undo (Ctrl+Z)</Undo>
 		<Redo>Redo (Ctrl+Y)</Redo>
 		<NT>LongNote Input Style - NoteTool/BMSE</NT>
+		<WavIncrease>Auto advance WAV number</WavIncrease>
 		<TimeSelectionTool>Time Selection Tool (F1)</TimeSelectionTool>
 		<SelectTool>Select Tool (F2)</SelectTool>
 		<WriteTool>Write Tool (F3)</WriteTool>

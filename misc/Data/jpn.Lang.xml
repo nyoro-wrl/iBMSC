@@ -97,6 +97,7 @@
 		<Undo>元に戻す (Ctrl+Z)</Undo>
 		<Redo>やり直し (Ctrl+Y)</Redo>
 		<NT>LN 入力モード - NoteTool/BMSE</NT>
+		<WavIncrease>WAV番号を自動で進める</WavIncrease>
 		<TimeSelectionTool>時間編集モード (F1)</TimeSelectionTool>
 		<SelectTool>編集モード (F2)</SelectTool>
 		<WriteTool>書込モード (F3)</WriteTool>

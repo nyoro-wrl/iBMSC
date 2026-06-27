@@ -93,6 +93,7 @@
 		<Undo>撤销 (Ctrl+Z)</Undo>
 		<Redo>重做 (Ctrl+Y)</Redo>
 		<NT>面条输入模式 - NoteTool/BMSE</NT>
+		<WavIncrease>自动切换到下一个 WAV 编号</WavIncrease>
 		<TimeSelectionTool>时间选择工具 (F1)</TimeSelectionTool>
 		<SelectTool>选择工具 (F2)</SelectTool>
 		<WriteTool>写入工具 (F3)</WriteTool>
