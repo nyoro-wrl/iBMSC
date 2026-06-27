@@ -379,6 +379,7 @@
 		<AutoSave>自动保存</AutoSave>
 		<minutes>分钟</minutes>
 		<StopPreviewOnClick>鼠标单击编辑区域时停止播放预览</StopPreviewOnClick>
+		<LaneHighlight>轨道高亮显示</LaneHighlight>
 	</GeneralOptions>
 	<Find>
 		<NoteRange>Note 范围</NoteRange>

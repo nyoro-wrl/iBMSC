@@ -183,6 +183,7 @@ Public Class Strings
         Public Shared AutoSave As String = "AutoSave"
         Public Shared minutes As String = "minutes"
         Public Shared StopPreviewOnClick As String = "Stop preview if clicked on the editing panel"
+        Public Shared LaneHighlight As String = "Lane Highlight"
     End Class
 
     Public Class fFind

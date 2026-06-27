@@ -175,13 +175,42 @@ Partial Public Class MainWindow
         End If
     End Sub
 
-    Function GetColumnHighlightColor(col As Color, Optional factor As Double = 2.0)
-        Dim clamp = Function(x) IIf(x > 255, 255, x)
+    Private Function GetColumnHighlightColor(col As Color) As Color
+        If LaneHighlight <= 0 OrElse col.A = 0 Then
+            Return col
+        End If
+
+        Dim highlight = Math.Min(100, Math.Max(0, LaneHighlight)) / 100.0R
+        Dim bg = vo.Bg.Color
+        Dim alpha = col.A / 255.0R
+        Dim visible = Color.FromArgb(
+                255,
+                CInt(col.R * alpha + bg.R * (1.0R - alpha)),
+                CInt(col.G * alpha + bg.G * (1.0R - alpha)),
+                CInt(col.B * alpha + bg.B * (1.0R - alpha)))
+        Dim maxChannel = Math.Max(visible.R, Math.Max(visible.G, visible.B))
+
+        If maxChannel = 0 Then
+            Dim level = CInt(70 * highlight)
+            Return Color.FromArgb(255, level, level, level)
+        End If
+
+        Dim floor = 10 * highlight
+        Dim targetMax As Double
+        If maxChannel < 190 Then
+            targetMax = maxChannel + 70 * highlight
+        Else
+            targetMax = maxChannel - 45 * highlight
+        End If
+
+        targetMax = Math.Max(floor, Math.Min(255, targetMax))
+        Dim scale = (targetMax - floor) / maxChannel
+
         Return Color.FromArgb(
-                clamp(col.A * factor),
-                clamp(col.R * factor),
-                clamp(col.G * factor),
-                clamp(col.B * factor))
+                255,
+                CInt(floor + visible.R * scale),
+                CInt(floor + visible.G * scale),
+                CInt(floor + visible.B * scale))
     End Function
 
     Private Sub DrawBackgroundColor(e1 As BufferedGraphics, xTHeight As Integer, xTWidth As Integer, xHS As Integer, xI1 As Integer)
@@ -192,7 +221,6 @@ Partial Public Class MainWindow
                 If Not GetColumn(xI1).cBG.GetBrightness = 0 And GetColumnWidth(xI1) > 0 Then
                     Dim col = GetColumn(xI1).cBG
                     If xI1 = GetColumnAtX(MouseMoveStatus.X, xHS) Then
-                        Dim bf = 1.2
                         col = GetColumnHighlightColor(col)
                     End If
                     Dim brush = New SolidBrush(col)

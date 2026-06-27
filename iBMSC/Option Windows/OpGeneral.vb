@@ -8,6 +8,7 @@ Public Class OpGeneral
     'Public zSort As Integer
     Public zAutoSave As Integer
     Public zGridPartition As Integer
+    Public zLaneHighlight As Integer
 
     'Dim lpfa() As String
 
@@ -47,6 +48,7 @@ Public Class OpGeneral
         zMiddle = IIf(rMiddleDrag.Checked, 1, 0)
         zAutoSave = IIf(cAutoSave.Checked, 1, 0) * NAutoSave.Value * 60000
         zGridPartition = nGridPartition.Value
+        zLaneHighlight = CInt(nLaneHighlight.Value)
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
@@ -58,7 +60,7 @@ Public Class OpGeneral
 
     Public Sub New(ByVal xMsWheel As Integer, ByVal xPgUpDn As Integer, ByVal xMiddleButton As Integer, ByVal xTextEncoding As Integer, ByVal xGridPartition As Integer, _
                    ByVal xAutoSave As Integer, ByVal xBeep As Boolean, ByVal xNewBase62 As Boolean, ByVal xBPMMode As Integer, ByVal xSTOPMode As Integer, _
-                   ByVal xMFEnter As Boolean, ByVal xMFClick As Boolean, ByVal xMStopPreview As Boolean)
+                   ByVal xMFEnter As Boolean, ByVal xMFClick As Boolean, ByVal xMStopPreview As Boolean, ByVal xLaneHighlight As Integer)
         InitializeComponent()
 
         On Error Resume Next
@@ -99,6 +101,7 @@ Public Class OpGeneral
         cMEnterFocus.Checked = xMFEnter
         cMClickFocus.Checked = xMFClick
         cMStopPreview.Checked = xMStopPreview
+        nLaneHighlight.Value = Math.Min(nLaneHighlight.Maximum, Math.Max(nLaneHighlight.Minimum, xLaneHighlight))
     End Sub
 
     Private Sub OpGeneral_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -137,6 +140,7 @@ Public Class OpGeneral
         cAutoSave.Text = Strings.fopGeneral.AutoSave
         Label7.Text = Strings.fopGeneral.minutes
         cMStopPreview.Text = Strings.fopGeneral.StopPreviewOnClick
+        LabelLaneHighlight.Text = Strings.fopGeneral.LaneHighlight
 
         Dim enc = System.Text.Encoding.Default
         CTextEncoding.Items(0) = "System ANSI (" & enc.EncodingName & ")"

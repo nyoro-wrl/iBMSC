@@ -406,6 +406,7 @@
 		<AutoSave>AutoSave</AutoSave>
 		<minutes>minutes</minutes>
 		<StopPreviewOnClick>Stop preview if clicked on the editing panel</StopPreviewOnClick>
+		<LaneHighlight>Lane highlight</LaneHighlight>
 	</GeneralOptions>
 	<Find>
 		<NoteRange>Note Range</NoteRange>

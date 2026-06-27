@@ -86,6 +86,7 @@ Partial Public Class MainWindow
             .WriteAttributeString("PreviewOnClick", PreviewOnClick)
             '.WriteAttributeString("PreviewErrorCheck", PreviewErrorCheck)
             .WriteAttributeString("ClickStopPreview", ClickStopPreview)
+            .WriteAttributeString("LaneHighlight", LaneHighlight)
             .WriteEndElement()
 
             .WriteStartElement("Save")
@@ -360,6 +361,8 @@ Partial Public Class MainWindow
                 TBChangePlaySide_Click(TBChangePlaySide, New System.EventArgs)
 
                 XMLLoadAttribute(.GetAttribute("ClickStopPreview"), ClickStopPreview)
+                XMLLoadAttribute(.GetAttribute("LaneHighlight"), LaneHighlight)
+                LaneHighlight = Math.Min(100, Math.Max(0, LaneHighlight))
             End With
         End If
 
@@ -1141,6 +1144,7 @@ EndOfSub:
                 XMLLoadLocale(eGeneralOptions.Item("AutoSave"), Strings.fopGeneral.AutoSave)
                 XMLLoadLocale(eGeneralOptions.Item("minutes"), Strings.fopGeneral.minutes)
                 XMLLoadLocale(eGeneralOptions.Item("StopPreviewOnClick"), Strings.fopGeneral.StopPreviewOnClick)
+                XMLLoadLocale(eGeneralOptions.Item("LaneHighlight"), Strings.fopGeneral.LaneHighlight)
             End If
 
             Dim eFind As XmlElement = Root.Item("Find")

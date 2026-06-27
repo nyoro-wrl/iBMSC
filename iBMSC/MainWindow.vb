@@ -228,6 +228,7 @@ Public Class MainWindow
     Dim PreviewErrorCheck As Boolean = False
     Dim Rscratch As Boolean = False
     Dim ClickStopPreview As Boolean = True
+    Dim LaneHighlight As Integer = 0
     Dim pTempFileNames() As String = {}
 
     '----Split Panel Options
@@ -3492,7 +3493,7 @@ StartCount:     If Not NTInput Then
 
         Dim xDiag As New OpGeneral(gWheel, gPgUpDn, MiddleButtonMoveMethod, xTE, 192.0R / BMSGridLimit,
             AutoSaveInterval, BeepWhileSaved, NewBMSUseBase62Definitions, BPMDefinitionMode, STOPDefinitionMode,
-            AutoFocusMouseEnter, FirstClickDisabled, ClickStopPreview)
+            AutoFocusMouseEnter, FirstClickDisabled, ClickStopPreview, LaneHighlight)
 
         If xDiag.ShowDialog() = Windows.Forms.DialogResult.OK Then
             With xDiag
@@ -3510,9 +3511,11 @@ StartCount:     If Not NTInput Then
                 AutoFocusMouseEnter = .cMEnterFocus.Checked
                 FirstClickDisabled = .cMClickFocus.Checked
                 ClickStopPreview = .cMStopPreview.Checked
+                LaneHighlight = .zLaneHighlight
             End With
             If AutoSaveInterval Then AutoSaveTimer.Interval = AutoSaveInterval
             AutoSaveTimer.Enabled = AutoSaveInterval
+            RefreshPanelAll()
         End If
     End Sub
 

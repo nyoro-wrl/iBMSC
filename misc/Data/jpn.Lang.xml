@@ -406,6 +406,7 @@
 		<AutoSave>自動保存</AutoSave>
 		<minutes>分</minutes>
 		<StopPreviewOnClick>エディットパネル上をクリックするとプレビュー再生をストップ</StopPreviewOnClick>
+		<LaneHighlight>レーンのハイライト表示</LaneHighlight>
 	</GeneralOptions>
 	<Find>
 		<NoteRange>対象オブジェ</NoteRange>
