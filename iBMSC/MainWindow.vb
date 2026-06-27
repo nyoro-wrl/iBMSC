@@ -886,7 +886,7 @@ Public Class MainWindow
         THGenre.Text = ""
         THBPM.Value = 120
         If CHPlayer.SelectedIndex = -1 Then CHPlayer.SelectedIndex = 0
-        CHRank.SelectedIndex = 2
+        CHRank.SelectedIndex = 3
         THPlayLevel.Text = ""
         THSubTitle.Text = ""
         THSubArtist.Text = ""
