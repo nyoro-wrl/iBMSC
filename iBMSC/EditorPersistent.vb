@@ -888,6 +888,8 @@ EndOfSub:
                     XMLLoadLocale(eHeader.Item("LnObj"), Label24.Text)
                     XMLLoadLocale(eHeader.Item("LandMine"), Label26.Text)
                     XMLLoadLocale(eHeader.Item("MissBMP"), Label27.Text)
+                    XMLLoadLocale(eHeader.Item("Preview"), Label28.Text)
+                    XMLLoadLocale(eHeader.Item("LnMode"), Label29.Text)
 
                     RemoveHandler CHPlayer.SelectedIndexChanged, AddressOf CHPlayer_SelectedIndexChanged
                     XMLLoadLocale(eHeader.Item("Player1"), CHPlayer.Items.Item(0))

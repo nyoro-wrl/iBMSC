@@ -205,6 +205,8 @@
 			<LnObj>#LNOBJ</LnObj>
 			<LandMine>#WAV00</LandMine>
 			<MissBMP>#BMP00</MissBMP>
+			<Preview>#PREVIEW</Preview>
+			<LnMode>#LNMODE</LnMode>
 			<Player1>1 - Single</Player1>
 			<Player2>2 - Couple</Player2>
 			<Player3>3 - Double / PMS</Player3>

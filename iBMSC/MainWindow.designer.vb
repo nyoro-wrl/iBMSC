@@ -2510,7 +2510,7 @@ Partial Class MainWindow
         Me.Label29.Name = "Label29"
         Me.Label29.Size = New System.Drawing.Size(39, 15)
         Me.Label29.TabIndex = 38
-        Me.Label29.Text = "LNmode"
+        Me.Label29.Text = "LN Mode"
         Me.Label29.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'THLandMine

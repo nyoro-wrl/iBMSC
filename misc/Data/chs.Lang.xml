@@ -196,6 +196,8 @@
 			<Total>Total</Total>
 			<Comment>Comment</Comment>
 			<LnObj>LnObj</LnObj>
+			<Preview>Preview</Preview>
+			<LnMode>LN Mode</LnMode>
 			<Player1>1 - Single Play</Player1>
 			<Player2>2 - Couple Play</Player2>
 			<Player3>3 - Double Play</Player3>
