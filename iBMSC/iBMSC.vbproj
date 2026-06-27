@@ -337,6 +337,13 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <ItemGroup>
+    <DataFiles Include="..\misc\Data\**\*.*" />
+  </ItemGroup>
+  <Target Name="CopyDataFiles" AfterTargets="Build">
+    <MakeDir Directories="$(TargetDir)Data" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFiles="@(DataFiles->'$(TargetDir)Data\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
