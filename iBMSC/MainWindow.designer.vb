@@ -2122,7 +2122,7 @@ Partial Class MainWindow
         Me.POHeader.Dock = System.Windows.Forms.DockStyle.Top
         Me.POHeader.Location = New System.Drawing.Point(0, 0)
         Me.POHeader.Name = "POHeader"
-        Me.POHeader.Size = New System.Drawing.Size(183, 439)
+        Me.POHeader.Size = New System.Drawing.Size(183, 528)
         Me.POHeader.TabIndex = 1
         '
         'POHeaderInner
@@ -2135,7 +2135,7 @@ Partial Class MainWindow
         Me.POHeaderInner.Dock = System.Windows.Forms.DockStyle.Top
         Me.POHeaderInner.Location = New System.Drawing.Point(0, 20)
         Me.POHeaderInner.Name = "POHeaderInner"
-        Me.POHeaderInner.Size = New System.Drawing.Size(183, 419)
+        Me.POHeaderInner.Size = New System.Drawing.Size(183, 508)
         Me.POHeaderInner.TabIndex = 2
         '
         'POHeaderPart2
@@ -2146,61 +2146,59 @@ Partial Class MainWindow
         Me.POHeaderPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.POHeaderPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POHeaderPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.POHeaderPart2.Controls.Add(Me.CHDifficulty, 1, 5)
-        Me.POHeaderPart2.Controls.Add(Me.Label13, 2, 6)
-        Me.POHeaderPart2.Controls.Add(Me.THExRank, 1, 6)
-        Me.POHeaderPart2.Controls.Add(Me.CHLnObj, 1, 8)
-        Me.POHeaderPart2.Controls.Add(Me.Label23, 0, 6)
-        Me.POHeaderPart2.Controls.Add(Me.Label21, 0, 5)
-        Me.POHeaderPart2.Controls.Add(Me.THComment, 1, 7)
-        Me.POHeaderPart2.Controls.Add(Me.Label24, 0, 8)
+        Me.POHeaderPart2.Controls.Add(Me.Label13, 2, 11)
+        Me.POHeaderPart2.Controls.Add(Me.THExRank, 1, 11)
+        Me.POHeaderPart2.Controls.Add(Me.CHLnObj, 1, 10)
+        Me.POHeaderPart2.Controls.Add(Me.Label23, 0, 11)
+        Me.POHeaderPart2.Controls.Add(Me.THComment, 1, 2)
+        Me.POHeaderPart2.Controls.Add(Me.Label24, 0, 10)
         Me.POHeaderPart2.Controls.Add(Me.Label15, 0, 0)
-        Me.POHeaderPart2.Controls.Add(Me.BHStageFile, 2, 2)
-        Me.POHeaderPart2.Controls.Add(Me.BHBanner, 2, 3)
-        Me.POHeaderPart2.Controls.Add(Me.Label19, 0, 7)
-        Me.POHeaderPart2.Controls.Add(Me.BHBackBMP, 2, 4)
+        Me.POHeaderPart2.Controls.Add(Me.BHStageFile, 2, 3)
+        Me.POHeaderPart2.Controls.Add(Me.BHBanner, 2, 4)
+        Me.POHeaderPart2.Controls.Add(Me.Label19, 0, 2)
+        Me.POHeaderPart2.Controls.Add(Me.BHBackBMP, 2, 5)
         Me.POHeaderPart2.Controls.Add(Me.Label17, 0, 1)
-        Me.POHeaderPart2.Controls.Add(Me.Label16, 0, 2)
-        Me.POHeaderPart2.Controls.Add(Me.Label12, 0, 3)
-        Me.POHeaderPart2.Controls.Add(Me.THBackBMP, 1, 4)
-        Me.POHeaderPart2.Controls.Add(Me.Label11, 0, 4)
-        Me.POHeaderPart2.Controls.Add(Me.THBanner, 1, 3)
-        Me.POHeaderPart2.Controls.Add(Me.THStageFile, 1, 2)
+        Me.POHeaderPart2.Controls.Add(Me.Label16, 0, 3)
+        Me.POHeaderPart2.Controls.Add(Me.Label12, 0, 4)
+        Me.POHeaderPart2.Controls.Add(Me.THBackBMP, 1, 5)
+        Me.POHeaderPart2.Controls.Add(Me.Label11, 0, 5)
+        Me.POHeaderPart2.Controls.Add(Me.THBanner, 1, 4)
+        Me.POHeaderPart2.Controls.Add(Me.THStageFile, 1, 3)
         Me.POHeaderPart2.Controls.Add(Me.THSubTitle, 1, 0)
         Me.POHeaderPart2.Controls.Add(Me.THSubArtist, 1, 1)
-        Me.POHeaderPart2.Controls.Add(Me.Label26, 0, 9)
-        Me.POHeaderPart2.Controls.Add(Me.Label27, 0, 10)
-        Me.POHeaderPart2.Controls.Add(Me.THLandMine, 1, 9)
-        Me.POHeaderPart2.Controls.Add(Me.BHLandMine, 2, 9)
-        Me.POHeaderPart2.Controls.Add(Me.THMissBMP, 1, 10)
-        Me.POHeaderPart2.Controls.Add(Me.BHMissBMP, 2, 10)
-        Me.POHeaderPart2.Controls.Add(Me.Label28, 0, 11)
-        Me.POHeaderPart2.Controls.Add(Me.Label29, 0, 12)
-        Me.POHeaderPart2.Controls.Add(Me.THPreview, 1, 11)
-        Me.POHeaderPart2.Controls.Add(Me.BHPreview, 2, 11)
-        Me.POHeaderPart2.Controls.Add(Me.CHLnmode, 1, 12)
+        Me.POHeaderPart2.Controls.Add(Me.Label26, 0, 8)
+        Me.POHeaderPart2.Controls.Add(Me.Label27, 0, 6)
+        Me.POHeaderPart2.Controls.Add(Me.THLandMine, 1, 8)
+        Me.POHeaderPart2.Controls.Add(Me.BHLandMine, 2, 8)
+        Me.POHeaderPart2.Controls.Add(Me.THMissBMP, 1, 6)
+        Me.POHeaderPart2.Controls.Add(Me.BHMissBMP, 2, 6)
+        Me.POHeaderPart2.Controls.Add(Me.Label28, 0, 7)
+        Me.POHeaderPart2.Controls.Add(Me.Label29, 0, 9)
+        Me.POHeaderPart2.Controls.Add(Me.THPreview, 1, 7)
+        Me.POHeaderPart2.Controls.Add(Me.BHPreview, 2, 7)
+        Me.POHeaderPart2.Controls.Add(Me.CHLnmode, 1, 9)
         Me.POHeaderPart2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POHeaderPart2.Location = New System.Drawing.Point(0, 186)
+        Me.POHeaderPart2.Location = New System.Drawing.Point(0, 232)
         Me.POHeaderPart2.Name = "POHeaderPart2"
-        Me.POHeaderPart2.RowCount = 13
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart2.Size = New System.Drawing.Size(183, 233)
+        Me.POHeaderPart2.RowCount = 12
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart2.Size = New System.Drawing.Size(183, 276)
         Me.POHeaderPart2.TabIndex = 27
         '
         'CHDifficulty
         '
-        Me.POHeaderPart2.SetColumnSpan(Me.CHDifficulty, 2)
+        Me.POHeaderPart1.SetColumnSpan(Me.CHDifficulty, 2)
         Me.CHDifficulty.Dock = System.Windows.Forms.DockStyle.Top
         Me.CHDifficulty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CHDifficulty.FlatStyle = System.Windows.Forms.FlatStyle.System
@@ -2338,7 +2336,7 @@ Partial Class MainWindow
         Me.BHStageFile.Location = New System.Drawing.Point(158, 46)
         Me.BHStageFile.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.BHStageFile.Name = "BHStageFile"
-        Me.BHStageFile.Size = New System.Drawing.Size(25, 24)
+        Me.BHStageFile.Size = New System.Drawing.Size(25, 23)
         Me.BHStageFile.TabIndex = 20
         Me.BHStageFile.Text = "..."
         Me.BHStageFile.UseVisualStyleBackColor = True
@@ -2350,7 +2348,7 @@ Partial Class MainWindow
         Me.BHBanner.Location = New System.Drawing.Point(158, 70)
         Me.BHBanner.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.BHBanner.Name = "BHBanner"
-        Me.BHBanner.Size = New System.Drawing.Size(25, 24)
+        Me.BHBanner.Size = New System.Drawing.Size(25, 23)
         Me.BHBanner.TabIndex = 21
         Me.BHBanner.Text = "..."
         Me.BHBanner.UseVisualStyleBackColor = True
@@ -2373,7 +2371,7 @@ Partial Class MainWindow
         Me.BHBackBMP.Location = New System.Drawing.Point(158, 94)
         Me.BHBackBMP.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.BHBackBMP.Name = "BHBackBMP"
-        Me.BHBackBMP.Size = New System.Drawing.Size(25, 24)
+        Me.BHBackBMP.Size = New System.Drawing.Size(25, 23)
         Me.BHBackBMP.TabIndex = 22
         Me.BHBackBMP.Text = "..."
         Me.BHBackBMP.UseVisualStyleBackColor = True
@@ -2529,7 +2527,7 @@ Partial Class MainWindow
         Me.BHLandMine.Location = New System.Drawing.Point(158, 94)
         Me.BHLandMine.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.BHLandMine.Name = "BHLandMine"
-        Me.BHLandMine.Size = New System.Drawing.Size(25, 24)
+        Me.BHLandMine.Size = New System.Drawing.Size(25, 23)
         Me.BHLandMine.TabIndex = 31
         Me.BHLandMine.Text = "..."
         Me.BHLandMine.UseVisualStyleBackColor = True
@@ -2550,7 +2548,7 @@ Partial Class MainWindow
         Me.BHMissBMP.Location = New System.Drawing.Point(158, 94)
         Me.BHMissBMP.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.BHMissBMP.Name = "BMissBMP"
-        Me.BHMissBMP.Size = New System.Drawing.Size(25, 24)
+        Me.BHMissBMP.Size = New System.Drawing.Size(25, 23)
         Me.BHMissBMP.TabIndex = 34
         Me.BHMissBMP.Text = "..."
         Me.BHMissBMP.UseVisualStyleBackColor = True
@@ -2571,7 +2569,7 @@ Partial Class MainWindow
         Me.BHPreview.Location = New System.Drawing.Point(158, 94)
         Me.BHPreview.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.BHPreview.Name = "BHPreview"
-        Me.BHPreview.Size = New System.Drawing.Size(25, 24)
+        Me.BHPreview.Size = New System.Drawing.Size(25, 23)
         Me.BHPreview.TabIndex = 37
         Me.BHPreview.Text = "..."
         Me.BHPreview.UseVisualStyleBackColor = True
@@ -2597,7 +2595,7 @@ Partial Class MainWindow
         Me.POHeaderExpander.Dock = System.Windows.Forms.DockStyle.Top
         Me.POHeaderExpander.FlatAppearance.BorderSize = 0
         Me.POHeaderExpander.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.POHeaderExpander.Location = New System.Drawing.Point(0, 161)
+        Me.POHeaderExpander.Location = New System.Drawing.Point(0, 207)
         Me.POHeaderExpander.Margin = New System.Windows.Forms.Padding(0)
         Me.POHeaderExpander.Name = "POHeaderExpander"
         Me.POHeaderExpander.Size = New System.Drawing.Size(183, 25)
@@ -2616,9 +2614,11 @@ Partial Class MainWindow
         Me.POHeaderPart1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POHeaderPart1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.POHeaderPart1.Controls.Add(Me.Label3, 0, 0)
-        Me.POHeaderPart1.Controls.Add(Me.THPlayLevel, 1, 6)
+        Me.POHeaderPart1.Controls.Add(Me.THPlayLevel, 1, 7)
         Me.POHeaderPart1.Controls.Add(Me.CHRank, 1, 5)
         Me.POHeaderPart1.Controls.Add(Me.Label10, 0, 5)
+        Me.POHeaderPart1.Controls.Add(Me.CHDifficulty, 1, 6)
+        Me.POHeaderPart1.Controls.Add(Me.Label21, 0, 6)
         Me.POHeaderPart1.Controls.Add(Me.CHPlayer, 1, 4)
         Me.POHeaderPart1.Controls.Add(Me.Label4, 0, 1)
         Me.POHeaderPart1.Controls.Add(Me.THGenre, 1, 2)
@@ -2628,22 +2628,24 @@ Partial Class MainWindow
         Me.POHeaderPart1.Controls.Add(Me.THTitle, 1, 0)
         Me.POHeaderPart1.Controls.Add(Me.Label9, 0, 3)
         Me.POHeaderPart1.Controls.Add(Me.Label8, 0, 4)
-        Me.POHeaderPart1.Controls.Add(Me.Label6, 0, 6)
-        Me.POHeaderPart1.Controls.Add(Me.THTotal, 1, 7)
-        Me.POHeaderPart1.Controls.Add(Me.Label20, 0, 7)
-        Me.POHeaderPart1.Controls.Add(Me.Label25, 2, 7)
+        Me.POHeaderPart1.Controls.Add(Me.Label6, 0, 7)
+        Me.POHeaderPart1.Controls.Add(Me.THTotal, 1, 8)
+        Me.POHeaderPart1.Controls.Add(Me.Label20, 0, 8)
+        Me.POHeaderPart1.Controls.Add(Me.Label25, 2, 8)
         Me.POHeaderPart1.Dock = System.Windows.Forms.DockStyle.Top
         Me.POHeaderPart1.Location = New System.Drawing.Point(0, 0)
         Me.POHeaderPart1.Name = "POHeaderPart1"
-        Me.POHeaderPart1.RowCount = 8
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POHeaderPart1.Size = New System.Drawing.Size(183, 161)
+        Me.POHeaderPart1.RowCount = 9
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
+        Me.POHeaderPart1.Size = New System.Drawing.Size(183, 207)
         Me.POHeaderPart1.TabIndex = 25
         '
         'Label3
