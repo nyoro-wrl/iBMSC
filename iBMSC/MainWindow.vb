@@ -216,14 +216,26 @@ Public Class MainWindow
         End Sub
     End Structure
 
-    Public pArgs() As PlayerArguments = {New PlayerArguments("<apppath>\uBMplay.exe",
-                                                             "-P -N0 ""<filename>""",
-                                                             "-P -N<measure> ""<filename>""",
-                                                             "-S"),
-                                         New PlayerArguments("<apppath>\o2play.exe",
-                                                             "-P -N0 ""<filename>""",
-                                                             "-P -N<measure> ""<filename>""",
-                                                             "-S")}
+    Public Shared Function DefaultPlayerArguments() As PlayerArguments()
+        Return New PlayerArguments() {New PlayerArguments("<apppath>\mBMplay.exe",
+                                                          """<filename>""",
+                                                          "-s <measure> ""<filename>""",
+                                                          "-t"),
+                                      New PlayerArguments("<apppath>\jbmplay.exe",
+                                                          """<filename>""",
+                                                          "-m <measure> ""<filename>""",
+                                                          ""),
+                                      New PlayerArguments("<apppath>\uBMplay.exe",
+                                                          "-P -N0 ""<filename>""",
+                                                          "-P -N<measure> ""<filename>""",
+                                                          "-S"),
+                                      New PlayerArguments("<apppath>\o2play.exe",
+                                                          "-P -N0 ""<filename>""",
+                                                          "-P -N<measure> ""<filename>""",
+                                                          "-S")}
+    End Function
+
+    Public pArgs() As PlayerArguments = DefaultPlayerArguments()
     Public CurrentPlayer As Integer = 0
     Dim PreviewOnClick As Boolean = True
     Dim PreviewErrorCheck As Boolean = False
