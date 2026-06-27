@@ -553,7 +553,7 @@ Partial Public Class MainWindow
             End If
 
             If Not hWAV(xI2) = "" Then ' AndAlso Path.GetExtension(hWAV(xI2)).ToLower = ".wav" Then
-                Dim xFileLocation As String = IIf(ExcludeFileName(FileName) = "", InitPath, ExcludeFileName(FileName)) & "\" & hWAV(xI2)
+                Dim xFileLocation As String = GetBMSFilePath(hWAV(xI2))
                 If Not ClickStopPreview Then PreviewNote("", True)
                 PreviewNote(xFileLocation, False)
             End If

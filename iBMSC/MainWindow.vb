@@ -1947,7 +1947,7 @@ EndSearch:
         If Not PreviewOnClick Then Exit Sub
         If hWAV(LWAV.SelectedIndex + 1) = "" Then Exit Sub
 
-        Dim xFileLocation As String = IIf(ExcludeFileName(FileName) = "", InitPath, ExcludeFileName(FileName)) & "\" & hWAV(LWAV.SelectedIndex + 1)
+        Dim xFileLocation As String = GetBMSFilePath(hWAV(LWAV.SelectedIndex + 1))
         PreviewNote(xFileLocation, False)
     End Sub
 
@@ -1964,8 +1964,8 @@ EndSearch:
 
         If xDWAV.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
         InitPath = ExcludeFileName(xDWAV.FileName)
-        hWAV(LWAV.SelectedIndex + 1) = GetFileName(xDWAV.FileName)
-        LWAV.Items.Item(LWAV.SelectedIndex) = C10to36(LWAV.SelectedIndex + 1) & ": " & GetFileName(xDWAV.FileName)
+        hWAV(LWAV.SelectedIndex + 1) = GetBMSRefPath(xDWAV.FileName)
+        LWAV.Items.Item(LWAV.SelectedIndex) = C10to36(LWAV.SelectedIndex + 1) & ": " & hWAV(LWAV.SelectedIndex + 1)
         If IsSaved Then SetIsSaved(False)
     End Sub
 
@@ -1997,8 +1997,8 @@ EndSearch:
 
         If xDBMP.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
         InitPath = ExcludeFileName(xDBMP.FileName)
-        hBMP(LBMP.SelectedIndex + 1) = GetFileName(xDBMP.FileName)
-        LBMP.Items.Item(LBMP.SelectedIndex) = C10to36(LBMP.SelectedIndex + 1) & ": " & GetFileName(xDBMP.FileName)
+        hBMP(LBMP.SelectedIndex + 1) = GetBMSRefPath(xDBMP.FileName)
+        LBMP.Items.Item(LBMP.SelectedIndex) = C10to36(LBMP.SelectedIndex + 1) & ": " & hBMP(LBMP.SelectedIndex + 1)
         If IsSaved Then SetIsSaved(False)
     End Sub
 
@@ -2120,6 +2120,91 @@ EndSearch:
         Dim bslash As Integer = InStrRev(s, "\")
         If (bslash Or fslash) = 0 Then Return ""
         Return Mid(s, 1, IIf(fslash > bslash, fslash, bslash) - 1)
+    End Function
+
+    Private Function GetBMSDirectory() As String
+        Dim xDir As String = ExcludeFileName(FileName)
+        If xDir <> "" Then
+            Return xDir
+        End If
+
+        Return InitPath
+    End Function
+
+    Private Function GetBMSFilePath(ByVal xPath As String) As String
+        If xPath = "" Then
+            Return ""
+        End If
+
+        If Path.IsPathRooted(xPath) Then
+            Return xPath
+        End If
+
+        Dim xDir As String = GetBMSDirectory()
+        If xDir = "" Then
+            Return xPath
+        End If
+
+        Try
+            Return Path.GetFullPath(Path.Combine(xDir, xPath))
+        Catch
+            Return xPath
+        End Try
+    End Function
+
+    Private Function GetBMSRefPath(ByVal xPath As String) As String
+        If xPath = "" Then
+            Return ""
+        End If
+
+        If Not Path.IsPathRooted(xPath) Then
+            Return xPath
+        End If
+
+        Dim xDir As String = GetBMSDirectory()
+        If xDir = "" Then
+            Return GetFileName(xPath)
+        End If
+
+        Try
+            Dim xBase As String = Path.GetFullPath(xDir)
+            Dim xFull As String = Path.GetFullPath(xPath)
+
+            If Not String.Equals(Path.GetPathRoot(xBase), Path.GetPathRoot(xFull), StringComparison.OrdinalIgnoreCase) Then
+                Return xFull
+            End If
+
+            Return MakeRelativePath(xBase, xFull)
+        Catch
+            Return GetFileName(xPath)
+        End Try
+    End Function
+
+    Private Function MakeRelativePath(ByVal xBase As String, ByVal xFull As String) As String
+        Dim xSeparators As Char() = {Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar}
+        Dim xBaseParts As String() = Path.GetFullPath(xBase).TrimEnd(xSeparators).Split(xSeparators, StringSplitOptions.RemoveEmptyEntries)
+        Dim xFullParts As String() = Path.GetFullPath(xFull).Split(xSeparators, StringSplitOptions.RemoveEmptyEntries)
+        Dim xSame As Integer = 0
+
+        Do While xSame < xBaseParts.Length AndAlso
+                 xSame < xFullParts.Length AndAlso
+                 String.Equals(xBaseParts(xSame), xFullParts(xSame), StringComparison.OrdinalIgnoreCase)
+            xSame += 1
+        Loop
+
+        Dim xRel As New List(Of String)
+        For xI As Integer = xSame To xBaseParts.Length - 1
+            xRel.Add("..")
+        Next
+        For xI As Integer = xSame To xFullParts.Length - 1
+            xRel.Add(xFullParts(xI))
+        Next
+
+        If xRel.Count = 0 Then
+            Return GetFileName(xFull)
+        End If
+
+        Return String.Join("\", xRel.ToArray())
     End Function
 
     Private Sub PlayerMissingPrompt()
@@ -2780,8 +2865,8 @@ StartCount:     If Not NTInput Then
             'If xI2 > UBound(xIndices) Then Exit For
             'hWAV(xIndices(xI2) + 1) = GetFileName(xPath(xI1))
             'LWAV.Items.Item(xIndices(xI2)) = C10to36(xIndices(xI2) + 1) & ": " & GetFileName(xPath(xI1))
-            hWAV(xIndices(xI1) + 1) = GetFileName(xPath(xI1))
-            LWAV.Items.Item(xIndices(xI1)) = C10to36(xIndices(xI1) + 1) & ": " & GetFileName(xPath(xI1))
+            hWAV(xIndices(xI1) + 1) = GetBMSRefPath(xPath(xI1))
+            LWAV.Items.Item(xIndices(xI1)) = C10to36(xIndices(xI1) + 1) & ": " & hWAV(xIndices(xI1) + 1)
             'xI2 += 1
         Next
 
@@ -2882,8 +2967,8 @@ StartCount:     If Not NTInput Then
             'If xI2 > UBound(xIndices) Then Exit For
             'hBMP(xIndices(xI2) + 1) = GetFileName(xPath(xI1))
             'LBMP.Items.Item(xIndices(xI2)) = C10to36(xIndices(xI2) + 1) & ": " & GetFileName(xPath(xI1))
-            hBMP(xIndices(xI1) + 1) = GetFileName(xPath(xI1))
-            LBMP.Items.Item(xIndices(xI1)) = C10to36(xIndices(xI1) + 1) & ": " & GetFileName(xPath(xI1))
+            hBMP(xIndices(xI1) + 1) = GetBMSRefPath(xPath(xI1))
+            LBMP.Items.Item(xIndices(xI1)) = C10to36(xIndices(xI1) + 1) & ": " & hBMP(xIndices(xI1) + 1)
             'xI2 += 1
         Next
 
@@ -4747,13 +4832,13 @@ case2:              Dim xI0 As Integer
         InitPath = ExcludeFileName(xDiag.FileName)
 
         If [Object].ReferenceEquals(sender, BHStageFile) Then
-            THStageFile.Text = GetFileName(xDiag.FileName)
+            THStageFile.Text = GetBMSRefPath(xDiag.FileName)
         ElseIf [Object].ReferenceEquals(sender, BHBanner) Then
-            THBanner.Text = GetFileName(xDiag.FileName)
+            THBanner.Text = GetBMSRefPath(xDiag.FileName)
         ElseIf [Object].ReferenceEquals(sender, BHBackBMP) Then
-            THBackBMP.Text = GetFileName(xDiag.FileName)
+            THBackBMP.Text = GetBMSRefPath(xDiag.FileName)
         ElseIf [Object].ReferenceEquals(sender, BHMissBMP) Then
-            THMissBMP.Text = GetFileName(xDiag.FileName)
+            THMissBMP.Text = GetBMSRefPath(xDiag.FileName)
             hBMP(0) = THMissBMP.Text
         End If
     End Sub
@@ -4773,11 +4858,11 @@ case2:              Dim xI0 As Integer
 
         If [Object].ReferenceEquals(sender, BHLandMine) Then
             InitPath = ExcludeFileName(xDiag.FileName)
-            THLandMine.Text = GetFileName(xDiag.FileName)
+            THLandMine.Text = GetBMSRefPath(xDiag.FileName)
             hWAV(0) = THLandMine.Text
         ElseIf [Object].ReferenceEquals(sender, BHPreview) Then
             InitPath = ExcludeFileName(xDiag.FileName)
-            THPreview.Text = GetFileName(xDiag.FileName)
+            THPreview.Text = GetBMSRefPath(xDiag.FileName)
         End If
     End Sub
 
