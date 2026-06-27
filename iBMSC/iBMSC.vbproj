@@ -44,12 +44,13 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>μBMSC.xml</DocumentationFile>
+    <AllowedReferenceRelatedFileExtensions>.none</AllowedReferenceRelatedFileExtensions>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -343,6 +344,13 @@
   <Target Name="CopyDataFiles" AfterTargets="Build">
     <MakeDir Directories="$(TargetDir)Data" />
     <Copy SourceFiles="@(DataFiles)" DestinationFiles="@(DataFiles->'$(TargetDir)Data\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="CleanReleaseFiles" AfterTargets="CopyDataFiles" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <ItemGroup>
+      <ReleaseExtraFiles Include="$(TargetDir)*.xml;$(TargetDir)*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(ReleaseExtraFiles)" />
+    <RemoveDir Directories="$(TargetDir)af" Condition="Exists('$(TargetDir)af')" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
