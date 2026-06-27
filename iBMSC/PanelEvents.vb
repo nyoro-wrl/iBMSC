@@ -1643,6 +1643,14 @@ Partial Public Class MainWindow
     ' az: Handle zoom in/out. Should work with any of the three splitters.
     Private Sub PMain_Scroll(sender As Object, e As MouseEventArgs) Handles PMainIn.MouseWheel, PMainInL.MouseWheel, PMainInR.MouseWheel
         If Not My.Computer.Keyboard.CtrlKeyDown Then Exit Sub
+
+        If My.Computer.Keyboard.ShiftKeyDown Then
+            Dim dh = Math.Round(CGWidth2.Value + e.Delta / 120)
+            CGWidth2.Value = Math.Min(CGWidth2.Maximum, Math.Max(CGWidth2.Minimum, dh))
+            CGWidth.Value = CGWidth2.Value / 4
+            Exit Sub
+        End If
+
         Dim dv = Math.Round(CGHeight2.Value + e.Delta / 120)
         CGHeight2.Value = Math.Min(CGHeight2.Maximum, Math.Max(CGHeight2.Minimum, dv))
         CGHeight.Value = CGHeight2.Value / 4
@@ -1755,6 +1763,12 @@ Partial Public Class MainWindow
 
     Private Sub PMainInMouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles PMainIn.MouseWheel, PMainInL.MouseWheel, PMainInR.MouseWheel
         If MiddleButtonClicked Then MiddleButtonClicked = False
+        If My.Computer.Keyboard.CtrlKeyDown Then Exit Sub
+
+        If My.Computer.Keyboard.ShiftKeyDown Then
+            HandleHorizontalMouseWheel(e.Delta)
+            Exit Sub
+        End If
 
         Dim xI1 As Integer
 
@@ -1778,6 +1792,28 @@ Partial Public Class MainWindow
                 If xI1 < RightPanelScroll.Minimum Then xI1 = RightPanelScroll.Minimum
                 RightPanelScroll.Value = xI1
         End Select
+    End Sub
+
+    Private Sub HandleHorizontalMouseWheel(ByVal delta As Integer)
+        Dim xScroll As HScrollBar = Nothing
+
+        Select Case spMouseOver
+            Case 0 : xScroll = HSL
+            Case 1 : xScroll = HS
+            Case 2 : xScroll = HSR
+        End Select
+
+        If xScroll Is Nothing Then
+            Return
+        End If
+
+        Dim xMax As Integer = xScroll.Maximum - xScroll.LargeChange + 1
+        If xMax < xScroll.Minimum Then xMax = xScroll.Minimum
+
+        Dim xI1 As Integer = PanelhBMSCROLL(spMouseOver) - Math.Sign(delta) * gWheel
+        If xI1 > xMax Then xI1 = xMax
+        If xI1 < xScroll.Minimum Then xI1 = xScroll.Minimum
+        xScroll.Value = xI1
     End Sub
 
     Private Sub PMainInPaint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles PMainIn.Paint, PMainInL.Paint, PMainInR.Paint
