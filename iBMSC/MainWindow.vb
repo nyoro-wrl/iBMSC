@@ -134,6 +134,9 @@ Public Class MainWindow
     Dim uAdded As Boolean       'temp variables for undo, if undo command is added
     'Dim uNote As Note           'temp variables for undo, original note
     Dim SelectedNotes(-1) As Note        'temp notes for undo
+    Dim KeyMoveNotes(-1) As Note
+    Dim KeyMoveKey As Keys = Keys.None
+    Dim KeyMoveUndoAdded As Boolean = False
     Dim ctrlPressed As Boolean = False          'Indicates if the CTRL key is pressed while mousedown
     Dim DuplicatedSelectedNotes As Boolean = False     'Indicates if duplicate notes of select/unselect note
 
@@ -1036,6 +1039,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub Form1_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyUp
+        If e.KeyCode = KeyMoveKey Then EndKeyMove()
         RefreshPanelAll()
         POStatusRefresh()
     End Sub
@@ -2973,6 +2977,7 @@ StartCount:     If Not NTInput Then
 
 
     Private Sub TBUndo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBUndo.Click, mnUndo.Click
+        EndKeyMove()
         KMouseOver = -1
         'KMouseDown = -1
         ReDim SelectedNotes(-1)
@@ -2984,6 +2989,7 @@ StartCount:     If Not NTInput Then
     End Sub
 
     Private Sub TBRedo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBRedo.Click, mnRedo.Click
+        EndKeyMove()
         KMouseOver = -1
         'KMouseDown = -1
         ReDim SelectedNotes(-1)

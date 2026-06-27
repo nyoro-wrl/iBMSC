@@ -11,6 +11,12 @@ Partial Public Class MainWindow
 
         If e.KeyCode = 18 Then Exit Sub
 
+        If IsMoveKey(e.KeyCode) Then
+            BeginKeyMove(e.KeyCode)
+        Else
+            EndKeyMove()
+        End If
+
         Dim iI As Integer = sender.Tag
         Dim xI1 As Integer
         Dim xTargetColumn As Integer = -1
@@ -42,12 +48,12 @@ Partial Public Class MainWindow
                     If Not Notes(xI1).Selected Then Continue For
 
                     xVPos = Notes(xI1).VPosition + xVPosition - muVPosition
-                    Me.RedoMoveNote(Notes(xI1), Notes(xI1).ColumnIndex, xVPos, xUndo, xRedo)
+                    Me.RedoMoveNote(KeyMoveStartNote(Notes(xI1)), Notes(xI1).ColumnIndex, xVPos, xUndo, xRedo)
                     Notes(xI1).VPosition = xVPos
                 Next
                 'xUndo = sCmdKMs(0, -xVPosition + muVPosition, True)
 
-                If xVPosition - muVPosition <> 0 Then AddUndo(xUndo, xBaseRedo.Next)
+                If xVPosition - muVPosition <> 0 Then AddKeyMoveUndo(xUndo, xBaseRedo.Next)
                 SortByVPositionInsertion()
                 UpdatePairing()
                 CalculateTotalPlayableNotes()
@@ -76,12 +82,12 @@ Partial Public Class MainWindow
                     If Not Notes(xI1).Selected Then Continue For
 
                     xVPos = Notes(xI1).VPosition + xVPosition - mVPosition
-                    Me.RedoMoveNote(Notes(xI1), Notes(xI1).ColumnIndex, xVPos, xUndo, xRedo)
+                    Me.RedoMoveNote(KeyMoveStartNote(Notes(xI1)), Notes(xI1).ColumnIndex, xVPos, xUndo, xRedo)
                     Notes(xI1).VPosition = xVPos
                 Next
                 'xUndo = sCmdKMs(0, -xVPosition + mVPosition, True)
 
-                If xVPosition - mVPosition <> 0 Then AddUndo(xUndo, xBaseRedo.Next)
+                If xVPosition - mVPosition <> 0 Then AddKeyMoveUndo(xUndo, xBaseRedo.Next)
                 SortByVPositionInsertion()
                 UpdatePairing()
                 CalculateTotalPlayableNotes()
@@ -107,12 +113,12 @@ Partial Public Class MainWindow
                     If Not Notes(xI1).Selected Then Continue For
 
                     xCol = EnabledColumnIndexToColumnArrayIndex(ColumnArrayIndexToEnabledColumnIndex(Notes(xI1).ColumnIndex) - 1 - mLeft)
-                    Me.RedoMoveNote(Notes(xI1), xCol, Notes(xI1).VPosition, xUndo, xRedo)
+                    Me.RedoMoveNote(KeyMoveStartNote(Notes(xI1)), xCol, Notes(xI1).VPosition, xUndo, xRedo)
                     Notes(xI1).ColumnIndex = xCol
                 Next
                 'xUndo = sCmdKMs(1 + mLeft, 0, True)
 
-                If -1 - mLeft <> 0 Then AddUndo(xUndo, xBaseRedo.Next)
+                If -1 - mLeft <> 0 Then AddKeyMoveUndo(xUndo, xBaseRedo.Next)
                 UpdatePairing()
                 CalculateTotalPlayableNotes()
                 FollowSelectedNotes(iI, e.KeyCode)
@@ -125,12 +131,12 @@ Partial Public Class MainWindow
                     If Not Notes(xI1).Selected Then Continue For
 
                     xCol = EnabledColumnIndexToColumnArrayIndex(ColumnArrayIndexToEnabledColumnIndex(Notes(xI1).ColumnIndex) + 1)
-                    Me.RedoMoveNote(Notes(xI1), xCol, Notes(xI1).VPosition, xUndo, xRedo)
+                    Me.RedoMoveNote(KeyMoveStartNote(Notes(xI1)), xCol, Notes(xI1).VPosition, xUndo, xRedo)
                     Notes(xI1).ColumnIndex = xCol
                 Next
                 'xUndo = sCmdKMs(-1, 0, True)
 
-                AddUndo(xUndo, xBaseRedo.Next)
+                AddKeyMoveUndo(xUndo, xBaseRedo.Next)
                 UpdatePairing()
                 CalculateTotalPlayableNotes()
                 FollowSelectedNotes(iI, e.KeyCode)
@@ -237,6 +243,65 @@ Partial Public Class MainWindow
 
         PMainInMouseMove(sender)
         POStatusRefresh()
+    End Sub
+
+    Private Sub PMainInKeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles PMainIn.KeyUp, PMainInL.KeyUp, PMainInR.KeyUp
+        If e.KeyCode = KeyMoveKey Then EndKeyMove()
+    End Sub
+
+    Private Function IsMoveKey(ByVal keyCode As Keys) As Boolean
+        Select Case keyCode
+            Case Keys.Up, Keys.Down, Keys.Left, Keys.Right
+                Return True
+        End Select
+
+        Return False
+    End Function
+
+    Private Sub BeginKeyMove(ByVal keyCode As Keys)
+        If KeyMoveKey = keyCode AndAlso KeyMoveNotes.Length <> 0 Then Return
+
+        EndKeyMove()
+        KeyMoveKey = keyCode
+
+        Dim xCount As Integer = 0
+        For xI1 As Integer = 1 To UBound(Notes)
+            If Notes(xI1).Selected Then xCount += 1
+        Next
+
+        If xCount = 0 Then
+            KeyMoveKey = Keys.None
+            Return
+        End If
+
+        ReDim KeyMoveNotes(xCount - 1)
+        Dim xIndex As Integer = 0
+        For xI1 As Integer = 1 To UBound(Notes)
+            If Not Notes(xI1).Selected Then Continue For
+
+            Notes(xI1).TempIndex = xIndex
+            KeyMoveNotes(xIndex) = Notes(xI1)
+            xIndex += 1
+        Next
+    End Sub
+
+    Private Sub EndKeyMove()
+        KeyMoveKey = Keys.None
+        KeyMoveUndoAdded = False
+        ReDim KeyMoveNotes(-1)
+    End Sub
+
+    Private Function KeyMoveStartNote(ByVal note As Note) As Note
+        If note.TempIndex >= 0 AndAlso note.TempIndex < KeyMoveNotes.Length Then Return KeyMoveNotes(note.TempIndex)
+
+        Return note
+    End Function
+
+    Private Sub AddKeyMoveUndo(ByVal undoCmd As UndoRedo.LinkedURCmd, ByVal redoCmd As UndoRedo.LinkedURCmd)
+        If undoCmd Is Nothing And redoCmd Is Nothing Then Return
+
+        AddUndo(undoCmd, redoCmd, KeyMoveUndoAdded)
+        If Not KeyMoveUndoAdded Then KeyMoveUndoAdded = True
     End Sub
 
     Private Sub FollowSelectedNotes(ByVal panelIndex As Integer, ByVal keyCode As Keys)
