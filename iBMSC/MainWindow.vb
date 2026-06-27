@@ -355,7 +355,9 @@ Public Class MainWindow
     End Sub
 
     Private Sub CalculateGreatestColumn()
+        UpdateColumnLefts()
         Dim xColumns As Integer = Math.Min(MaxBGMColumns, Math.Max(1, CInt(CGB.Value)))
+        xColumns = Math.Max(xColumns, CalculateVisibleBGMColumns())
 
         For xI1 As Integer = 1 To UBound(Notes)
             If Notes(xI1).ColumnIndex >= niB Then
@@ -367,6 +369,21 @@ Public Class MainWindow
         gColumns = niB + xColumns - 1
         UpdateColumnsX()
     End Sub
+
+    Private Function CalculateVisibleBGMColumns() As Integer
+        If PMainIn Is Nothing OrElse PMainInL Is Nothing OrElse PMainInR Is Nothing OrElse column(niB).Width <= 0 OrElse gxWidth <= 0 Then
+            Return 1
+        End If
+
+        Dim xWidth As Integer = Math.Max(PMainIn.Width, Math.Max(PMainInL.Width, PMainInR.Width))
+        If xWidth <= 0 Then
+            Return 1
+        End If
+
+        Dim xRight As Integer = CInt(Math.Ceiling(xWidth / CDbl(gxWidth)))
+        Dim xColumns As Integer = CInt(Math.Ceiling((xRight - column(niB).Left) / CDbl(column(niB).Width)))
+        Return Math.Min(MaxBGMColumns, Math.Max(1, xColumns))
+    End Function
 
 
     Private Sub SortByVPositionInsertion() 'Insertion Sort
@@ -1961,6 +1978,7 @@ EndSearch:
         HSR.LargeChange = PMainInR.Width / gxWidth
         If HSR.Value > HSR.Maximum - HSR.LargeChange + 1 Then HSR.Value = HSR.Maximum - HSR.LargeChange + 1
 
+        CalculateGreatestColumn()
         RefreshPanelAll()
     End Sub
 
@@ -3045,7 +3063,7 @@ StartCount:     If Not NTInput Then
 
         Dim xDiag As New OpVisual(vo, column, LWAV.Font)
         xDiag.ShowDialog(Me)
-        UpdateColumnsX()
+        CalculateGreatestColumn()
         RefreshPanelAll()
     End Sub
 
@@ -3512,7 +3530,7 @@ StartCount:     If Not NTInput Then
     End Sub
 
 
-    Private Sub UpdateColumnsX()
+    Private Sub UpdateColumnLefts()
         column(0).Left = 0
         'If col(0).Width = 0 Then col(0).Visible = False
 
@@ -3520,6 +3538,10 @@ StartCount:     If Not NTInput Then
             column(xI1).Left = column(xI1 - 1).Left + IIf(column(xI1 - 1).isVisible, column(xI1 - 1).Width, 0)
             'If col(xI1).Width = 0 Then col(xI1).Visible = False
         Next
+    End Sub
+
+    Private Sub UpdateColumnsX()
+        UpdateColumnLefts()
         Dim xMaximum As Integer = nLeft(gColumns) + column(niB).Width
         SetHorizontalScrollMaximum(HSL, xMaximum)
         SetHorizontalScrollMaximum(HS, xMaximum)
@@ -3586,7 +3608,7 @@ StartCount:     If Not NTInput Then
             Notes(xI1).Selected = Notes(xI1).Selected And nEnabled(Notes(xI1).ColumnIndex)
         Next
         'AddUndo(xUndo, xRedo)
-        UpdateColumnsX()
+        CalculateGreatestColumn()
 
         If IsInitializing Then Exit Sub
         RefreshPanelAll()
@@ -4825,7 +4847,7 @@ Jump2:
             Notes(xI1).Selected = Notes(xI1).Selected And nEnabled(Notes(xI1).ColumnIndex)
         Next
         'AddUndo(xUndo, xRedo)
-        UpdateColumnsX()
+        CalculateGreatestColumn()
         RefreshPanelAll()
     End Sub
     Private Sub CGSCROLL_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CGSCROLL.CheckedChanged
@@ -4838,7 +4860,7 @@ Jump2:
             Notes(xI1).Selected = Notes(xI1).Selected And nEnabled(Notes(xI1).ColumnIndex)
         Next
         'AddUndo(xUndo, xRedo)
-        UpdateColumnsX()
+        CalculateGreatestColumn()
         RefreshPanelAll()
     End Sub
     Private Sub CGSTOP_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CGSTOP.CheckedChanged
@@ -4851,7 +4873,7 @@ Jump2:
             Notes(xI1).Selected = Notes(xI1).Selected And nEnabled(Notes(xI1).ColumnIndex)
         Next
         'AddUndo(xUndo, xRedo)
-        UpdateColumnsX()
+        CalculateGreatestColumn()
         RefreshPanelAll()
     End Sub
     Private Sub CGBPM_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CGBPM.CheckedChanged
@@ -4867,7 +4889,7 @@ Jump2:
             Notes(xI1).Selected = Notes(xI1).Selected And nEnabled(Notes(xI1).ColumnIndex)
         Next
         'AddUndo(xUndo, xRedo)
-        UpdateColumnsX()
+        CalculateGreatestColumn()
         RefreshPanelAll()
     End Sub
 

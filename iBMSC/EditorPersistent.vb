@@ -574,7 +574,7 @@ Partial Public Class MainWindow
         End If
 
 EndOfSub:
-        UpdateColumnsX()
+        CalculateGreatestColumn()
         FileStream.Close()
         'File.Delete(xTempFileName)
     End Sub
@@ -1322,7 +1322,7 @@ EndOfSub:
             MsgBox(ex.Message, MsgBoxStyle.Exclamation, Strings.Messages.Err)
 
         Finally
-            UpdateColumnsX()
+            CalculateGreatestColumn()
 
         End Try
     End Sub

@@ -620,7 +620,14 @@ Partial Public Class MainWindow
                 HSR.LargeChange = sender.Width / gxWidth
                 If HSR.Value > HSR.Maximum - HSR.LargeChange + 1 Then HSR.Value = HSR.Maximum - HSR.LargeChange + 1
         End Select
-        RefreshPanel(iI, sender.DisplayRectangle)
+
+        Dim xPreviousColumns As Integer = gColumns
+        CalculateGreatestColumn()
+        If xPreviousColumns <> gColumns Then
+            RefreshPanelAll()
+        Else
+            RefreshPanel(iI, sender.DisplayRectangle)
+        End If
     End Sub
 
     Private Sub PMainInLostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles PMainIn.LostFocus, PMainInL.LostFocus, PMainInR.LostFocus
