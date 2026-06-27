@@ -186,27 +186,27 @@
 	<OptionsPanel>
 		<Header>
 			<Header>HEADER</Header>
-			<Title>#TITLE</Title>
-			<Artist>#ARTIST</Artist>
-			<Genre>#GENRE</Genre>
-			<BPM>#BPM</BPM>
-			<Player>#PLAYER</Player>
-			<Rank>#RANK</Rank>
-			<PlayLevel>#LEVEL</PlayLevel>
-			<SubTitle>#SUBTITLE</SubTitle>
-			<SubArtist>#SUBARTIST</SubArtist>
-			<StageFile>#STAGEFILE</StageFile>
-			<Banner>#BANNER</Banner>
-			<BackBMP>#BACKBMP</BackBMP>
-			<Difficulty>#DIFFICULTY</Difficulty>
-			<ExRank>#DEFEXRANK</ExRank>
-			<Total>#TOTAL</Total>
-			<Comment>#COMMENT</Comment>
-			<LnObj>#LNOBJ</LnObj>
+			<Title>TITLE</Title>
+			<Artist>ARTIST</Artist>
+			<Genre>GENRE</Genre>
+			<BPM>BPM</BPM>
+			<Player>PLAYER</Player>
+			<Rank>RANK</Rank>
+			<PlayLevel>LEVEL</PlayLevel>
+			<SubTitle>SUBTITLE</SubTitle>
+			<SubArtist>SUBARTIST</SubArtist>
+			<StageFile>STAGEFILE</StageFile>
+			<Banner>BANNER</Banner>
+			<BackBMP>BACKBMP</BackBMP>
+			<Difficulty>DIFFICULTY</Difficulty>
+			<ExRank>DEFEXRANK</ExRank>
+			<Total>TOTAL</Total>
+			<Comment>COMMENT</Comment>
+			<LnObj>LNOBJ</LnObj>
 			<LandMine>#WAV00</LandMine>
 			<MissBMP>#BMP00</MissBMP>
-			<Preview>#PREVIEW</Preview>
-			<LnMode>#LNMODE</LnMode>
+			<Preview>PREVIEW</Preview>
+			<LnMode>LNMODE</LnMode>
 			<Player1>1 - Single</Player1>
 			<Player2>2 - Couple</Player2>
 			<Player3>3 - Double / PMS</Player3>
