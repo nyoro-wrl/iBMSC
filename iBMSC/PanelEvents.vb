@@ -168,12 +168,12 @@ Partial Public Class MainWindow
                 CGDivide.Value = gSlash
 
             Case Keys.Oemplus
-                With CGHeight
+                With IIf(My.Computer.Keyboard.ShiftKeyDown, CGWidth, CGHeight)
                     .Value += IIf(.Value > .Maximum - .Increment, .Maximum - .Value, .Increment)
                 End With
 
             Case Keys.OemMinus
-                With CGHeight
+                With IIf(My.Computer.Keyboard.ShiftKeyDown, CGWidth, CGHeight)
                     .Value -= IIf(.Value < .Minimum + .Increment, .Value - .Minimum, .Increment)
                 End With
 
@@ -191,6 +191,9 @@ Partial Public Class MainWindow
 
             Case Keys.S
                 If Not My.Computer.Keyboard.CtrlKeyDown Then POBNormal_Click(Nothing, Nothing)
+
+            Case Keys.R
+                If Not My.Computer.Keyboard.CtrlKeyDown Then POBMirror_Click(Nothing, Nothing)
 
             Case Keys.D
                 CGDisableVertical.Checked = Not CGDisableVertical.Checked
