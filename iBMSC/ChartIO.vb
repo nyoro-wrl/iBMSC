@@ -21,6 +21,7 @@ Partial Public Class MainWindow
         ReDim hBMSCROLL(MaxDefinition)
         Me.InitializeNewBMS()
         Me.InitializeOpenBMS()
+        SetUseBase62Definitions(ContainsBase62Definitions(xStrLine))
 
         With Notes(0)
             .ColumnIndex = niBPM
@@ -52,21 +53,21 @@ Partial Public Class MainWindow
                 LBeat.Items(xIndex) = Add3Zeros(xIndex) & ": " & xRatio & IIf(xxD > 10000, "", " ( " & CLng(xRatio * xxD) & " / " & xxD & " ) ")
 
             ElseIf sLineTrim.StartsWith("#WAV", StringComparison.CurrentCultureIgnoreCase) Then
-                hWAV(C36to10(Mid(sLineTrim, Len("#WAV") + 1, 2))) = Mid(sLineTrim, Len("#WAV") + 4)
+                hWAV(DefinitionIndex(Mid(sLineTrim, Len("#WAV") + 1, 2))) = Mid(sLineTrim, Len("#WAV") + 4)
 
             ElseIf sLineTrim.StartsWith("#BMP", StringComparison.CurrentCultureIgnoreCase) Then
-                hBMP(C36to10(Mid(sLineTrim, Len("#BMP") + 1, 2))) = Mid(sLineTrim, Len("#BMP") + 4)
+                hBMP(DefinitionIndex(Mid(sLineTrim, Len("#BMP") + 1, 2))) = Mid(sLineTrim, Len("#BMP") + 4)
 
             ElseIf sLineTrim.StartsWith("#BPM", StringComparison.CurrentCultureIgnoreCase) And Not Mid(sLineTrim, Len("#BPM") + 1, 1).Trim = "" Then  'If BPM##
                 ' zdr: No limits on BPM editing.. they don't make much sense.
-                hBPM(C36to10(Mid(sLineTrim, Len("#BPM") + 1, 2))) = Val(Mid(sLineTrim, Len("#BPM") + 4)) * 10000
+                hBPM(DefinitionModeIndex(Mid(sLineTrim, Len("#BPM") + 1, 2), BPMDefinitionMode)) = Val(Mid(sLineTrim, Len("#BPM") + 4)) * 10000
 
                 'No limits on STOPs either.
             ElseIf sLineTrim.StartsWith("#STOP", StringComparison.CurrentCultureIgnoreCase) Then
-                hSTOP(C36to10(Mid(sLineTrim, Len("#STOP") + 1, 2))) = Val(Mid(sLineTrim, Len("#STOP") + 4)) * 10000
+                hSTOP(DefinitionModeIndex(Mid(sLineTrim, Len("#STOP") + 1, 2), STOPDefinitionMode)) = Val(Mid(sLineTrim, Len("#STOP") + 4)) * 10000
 
             ElseIf sLineTrim.StartsWith("#SCROLL", StringComparison.CurrentCultureIgnoreCase) Then
-                hBMSCROLL(C36to10(Mid(sLineTrim, Len("#SCROLL") + 1, 2))) = Val(Mid(sLineTrim, Len("#SCROLL") + 4)) * 10000
+                hBMSCROLL(DefinitionIndex(Mid(sLineTrim, Len("#SCROLL") + 1, 2))) = Val(Mid(sLineTrim, Len("#SCROLL") + 4)) * 10000
 
 
             ElseIf sLineTrim.StartsWith("#TITLE", StringComparison.CurrentCultureIgnoreCase) Then
@@ -136,7 +137,7 @@ Partial Public Class MainWindow
                 If Val(Mid(sLineTrim, Len("#LNTYPE") + 1).Trim) = 1 Then CHLnObj.SelectedIndex = 0
 
             ElseIf sLineTrim.StartsWith("#LNOBJ", StringComparison.CurrentCultureIgnoreCase) Then
-                Dim xValue As Integer = C36to10(Mid(sLineTrim, Len("#LNOBJ") + 1).Trim)
+                Dim xValue As Integer = DefinitionIndex(Mid(sLineTrim, Len("#LNOBJ") + 1).Trim)
                 CHLnObj.SelectedIndex = xValue
 
                 'TODO: LNOBJ value validation
@@ -207,12 +208,12 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                     .Landmine = IsChannelLandmine(Channel)
                     .Selected = False
                     .VPosition = MeasureBottom(xMeasure) + MeasureLength(xMeasure) * (xI1 / 2 - 4) / ((Len(sLineTrim) - 7) / 2)
-                    .Value = C36to10(Mid(sLineTrim, xI1, 2)) * 10000
+                    .Value = DefinitionIndex(Mid(sLineTrim, xI1, 2)) * 10000
 
                     If Channel = "03" Then .Value = Convert.ToInt32(Mid(sLineTrim, xI1, 2), 16) * 10000
-                    If Channel = "08" Then .Value = hBPM(C36to10(Mid(sLineTrim, xI1, 2)))
-                    If Channel = "09" Then .Value = hSTOP(C36to10(Mid(sLineTrim, xI1, 2)))
-                    If Channel = "SC" Then .Value = hBMSCROLL(C36to10(Mid(sLineTrim, xI1, 2)))
+                    If Channel = "08" Then .Value = hBPM(DefinitionModeIndex(Mid(sLineTrim, xI1, 2), BPMDefinitionMode))
+                    If Channel = "09" Then .Value = hSTOP(DefinitionModeIndex(Mid(sLineTrim, xI1, 2), STOPDefinitionMode))
+                    If Channel = "SC" Then .Value = hBMSCROLL(DefinitionIndex(Mid(sLineTrim, xI1, 2)))
                 End With
 
             Next
@@ -220,18 +221,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
 
         If NTInput Then ConvertBMSE2NT()
 
-        LWAV.Visible = False
-        LWAV.Items.Clear()
-        LBMP.Visible = False
-        LBMP.Items.Clear()
-        For xI1 = 1 To MaxDefinition
-            LWAV.Items.Add(C10to36(xI1) & ": " & hWAV(xI1))
-            LBMP.Items.Add(C10to36(xI1) & ": " & hBMP(xI1))
-        Next
-        LWAV.SelectedIndex = 0
-        LWAV.Visible = True
-        LBMP.SelectedIndex = 0
-        LBMP.Visible = True
+        RefreshDefinitionLists()
         THLandMine.Text = hWAV(0)
         THMissBMP.Text = hBMP(0)
 
@@ -331,11 +321,11 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         If hasOverlapping Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
                                                           Strings.Messages.NoteOverlapError & vbCrLf &
                                                 Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
-        If UBound(hBPM) > IIf(BPMx1296, MaxDefinition, MaxLegacyDefinition) Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
-                                                          Strings.Messages.BPMOverflowError & UBound(hBPM) & " > " & IIf(BPMx1296, MaxDefinition, MaxLegacyDefinition) & vbCrLf &
+        If UBound(hBPM) > DefinitionModeMax(BPMDefinitionMode) Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
+                                                          Strings.Messages.BPMOverflowError & UBound(hBPM) & " > " & DefinitionModeMax(BPMDefinitionMode) & vbCrLf &
                                                 Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
-        If UBound(hSTOP) > IIf(STOPx1296, MaxDefinition, MaxLegacyDefinition) Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
-                                                           Strings.Messages.STOPOverflowError & UBound(hSTOP) & " > " & IIf(STOPx1296, MaxDefinition, MaxLegacyDefinition) & vbCrLf &
+        If UBound(hSTOP) > DefinitionModeMax(STOPDefinitionMode) Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
+                                                           Strings.Messages.STOPOverflowError & UBound(hSTOP) & " > " & DefinitionModeMax(STOPDefinitionMode) & vbCrLf &
                                                   Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
         If UBound(hBMSCROLL) > MaxDefinition Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
                                            Strings.Messages.SCROLLOverflowError & UBound(hBMSCROLL) & " > " & MaxDefinition & vbCrLf &
@@ -382,7 +372,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         If THTotal.Text <> "" Then xStrHeader &= "#TOTAL " & THTotal.Text & vbCrLf
         If THComment.Text <> "" Then xStrHeader &= "#COMMENT """ & THComment.Text & """" & vbCrLf
         'If THLnType.Text <> "" Then xStrHeader &= "#LNTYPE " & THLnType.Text & vbCrLf
-        If CHLnObj.SelectedIndex > 0 Then xStrHeader &= "#LNOBJ " & C10to36(CHLnObj.SelectedIndex) & vbCrLf _
+        If CHLnObj.SelectedIndex > 0 Then xStrHeader &= "#LNOBJ " & DefinitionLabel(CHLnObj.SelectedIndex) & vbCrLf _
                                      Else xStrHeader &= "#LNTYPE 1" & vbCrLf
         If THPreview.Text <> "" Then xStrHeader &= "#PREVIEW " & THPreview.Text & vbCrLf
         If CHLnmode.SelectedIndex > 0 Then xStrHeader &= "#LNMODE " & CHLnmode.SelectedIndex & vbCrLf
@@ -394,26 +384,26 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         Dim xStrHeader As String = ""
 
         For i = 0 To UBound(hWAV)
-            If Not hWAV(i) = "" Then xStrHeader &= "#WAV" & C10to36(i) &
+            If Not hWAV(i) = "" Then xStrHeader &= "#WAV" & DefinitionLabel(i) &
                                                     " " & hWAV(i) & vbCrLf
         Next
         For i = 0 To UBound(hBMP)
-            If Not hBMP(i) = "" Then xStrHeader &= "#BMP" & C10to36(i) &
+            If Not hBMP(i) = "" Then xStrHeader &= "#BMP" & DefinitionLabel(i) &
                                                     " " & hBMP(i) & vbCrLf
         Next
         For i = 1 To UBound(hBPM)
             xStrHeader &= "#BPM" &
-            IIf(BPMx1296, C10to36(i), Mid("0" & Hex(i), Len(Hex(i)))) &
+            DefinitionModeLabel(i, BPMDefinitionMode) &
             " " & WriteDecimalWithDot(hBPM(i) / 10000) & vbCrLf
         Next
         For i = 1 To UBound(hSTOP)
             xStrHeader &= "#STOP" &
-                IIf(STOPx1296, C10to36(i), Mid("0" & Hex(i), Len(Hex(i)))) &
+                DefinitionModeLabel(i, STOPDefinitionMode) &
                 " " & WriteDecimalWithDot(hSTOP(i) / 10000) & vbCrLf
         Next
         For i = 1 To UBound(hBMSCROLL)
             xStrHeader &= "#SCROLL" &
-                C10to36(i) & " " & WriteDecimalWithDot(hBMSCROLL(i) / 10000) & vbCrLf
+                DefinitionLabel(i) & " " & WriteDecimalWithDot(hBMSCROLL(i) / 10000) & vbCrLf
         Next
 
         Return xStrHeader
@@ -475,7 +465,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                             ReDim Preserve hBPM(UBound(hBPM) + 1)
                             hBPM(UBound(hBPM)) = currentNote.Value
                         End If
-                        NoteStrings(UBound(NoteStrings)) = IIf(BPMx1296, C10to36(BpmIndex), Mid("0" & Hex(BpmIndex), Len(Hex(BpmIndex))))
+                        NoteStrings(UBound(NoteStrings)) = DefinitionModeLabel(BpmIndex, BPMDefinitionMode)
                     ElseIf CurrentBMSChannel = "09" Then 'If STOP
                         Dim StopIndex
                         For StopIndex = 1 To UBound(hSTOP) ' find STOP value in existing array
@@ -486,7 +476,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                             ReDim Preserve hSTOP(UBound(hSTOP) + 1)
                             hSTOP(UBound(hSTOP)) = currentNote.Value
                         End If
-                        NoteStrings(UBound(NoteStrings)) = IIf(STOPx1296, C10to36(StopIndex), Mid("0" & Hex(StopIndex), Len(Hex(StopIndex))))
+                        NoteStrings(UBound(NoteStrings)) = DefinitionModeLabel(StopIndex, STOPDefinitionMode)
                     ElseIf CurrentBMSChannel = "SC" Then 'If SCROLL
                         Dim ScrollIndex
                         For ScrollIndex = 1 To UBound(hBMSCROLL) ' find SCROLL value in existing array
@@ -497,9 +487,9 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                             ReDim Preserve hBMSCROLL(UBound(hBMSCROLL) + 1)
                             hBMSCROLL(UBound(hBMSCROLL)) = currentNote.Value
                         End If
-                        NoteStrings(UBound(NoteStrings)) = C10to36(ScrollIndex)
+                        NoteStrings(UBound(NoteStrings)) = DefinitionLabel(ScrollIndex)
                     Else
-                        NoteStrings(UBound(NoteStrings)) = C10to36(currentNote.Value \ 10000)
+                        NoteStrings(UBound(NoteStrings)) = DefinitionLabel(currentNote.Value \ 10000)
                     End If
                 End If
             Next
@@ -525,14 +515,14 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                         .LongNote = IsChannelLongNote(BMSChannelList(CurrentBMSChannel))
                         .Hidden = IsChannelHidden(BMSChannelList(CurrentBMSChannel))
                         .VPosition = MeasureBottom(MeasureIndex)
-                        .Value = C36to10(NoteStrings(i))
+                        .Value = DefinitionIndex(NoteStrings(i))
                     End With
                     If BMSChannelList(CurrentBMSChannel) = "08" Then _
-                        xprevNotes(UBound(xprevNotes)).Value = IIf(BPMx1296, hBPM(C36to10(NoteStrings(i))), hBPM(Convert.ToInt32(NoteStrings(i), 16)))
+                        xprevNotes(UBound(xprevNotes)).Value = hBPM(DefinitionModeIndex(NoteStrings(i), BPMDefinitionMode))
                     If BMSChannelList(CurrentBMSChannel) = "09" Then _
-                        xprevNotes(UBound(xprevNotes)).Value = IIf(STOPx1296, hSTOP(C36to10(NoteStrings(i))), hSTOP(Convert.ToInt32(NoteStrings(i), 16)))
+                        xprevNotes(UBound(xprevNotes)).Value = hSTOP(DefinitionModeIndex(NoteStrings(i), STOPDefinitionMode))
                     If BMSChannelList(CurrentBMSChannel) = "SC" Then _
-                        xprevNotes(UBound(xprevNotes)).Value = hBMSCROLL(C36to10(NoteStrings(i)))
+                        xprevNotes(UBound(xprevNotes)).Value = hBMSCROLL(DefinitionIndex(NoteStrings(i)))
                     Continue For
                 End If
                 If xStrKey(CInt(relativeMeasurePos(i) / xGCD)) <> "00" Then
@@ -566,7 +556,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                     relativeNotePositions(UBound(relativeNotePositions)) = NotesInMeasure(I).VPosition - MeasureBottom(MeasureAtDisplacement(NotesInMeasure(I).VPosition))
                     If relativeNotePositions(UBound(relativeNotePositions)) < 0 Then relativeNotePositions(UBound(relativeNotePositions)) = 0
 
-                    noteStrings(UBound(noteStrings)) = C10to36(NotesInMeasure(I).Value \ 10000)
+                    noteStrings(UBound(noteStrings)) = DefinitionLabel(NotesInMeasure(I).Value \ 10000)
                 End If
             Next
 
@@ -588,7 +578,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                     With xprevNotes(UBound(xprevNotes))
                         .ColumnIndex = ColIndex
                         .VPosition = MeasureBottom(MeasureIndex)
-                        .Value = C36to10(noteStrings(i))
+                        .Value = DefinitionIndex(noteStrings(i))
                     End With
 
                     Continue For
@@ -764,18 +754,7 @@ Jump1:
 
         If NTInput Then ConvertBMSE2NT()
 
-        LWAV.Visible = False
-        LWAV.Items.Clear()
-        LBMP.Visible = False
-        LBMP.Items.Clear()
-        For xI1 As Integer = 1 To MaxDefinition
-            LWAV.Items.Add(C10to36(xI1) & ": " & hWAV(xI1))
-            LBMP.Items.Add(C10to36(xI1) & ": " & hBMP(xI1))
-        Next
-        LWAV.SelectedIndex = 0
-        LWAV.Visible = True
-        LBMP.SelectedIndex = 0
-        LBMP.Visible = True
+        RefreshDefinitionLists()
 
         THBPM.Value = Notes(0).Value / 10000
         SortByVPositionQuick(0, UBound(Notes))
@@ -921,10 +900,12 @@ Jump1:
                     WAVEmptyfill = xWAVOptions And &H4
                     CWAVEmptyfill.Checked = WAVEmptyfill
                     CWAVEmptyfill_CheckedChanged(CWAVEmptyfill, New EventArgs)
+                    SetUseBase62Definitions(xWAVOptions And &H8)
 
                     Dim xWAVCount As Integer = br.ReadInt32
                     For xxi As Integer = 1 To xWAVCount
                         Dim xI As Integer = br.ReadInt16
+                        If xI > MaxBase36Definition Then SetUseBase62Definitions(True)
                         hWAV(xI) = br.ReadString
                     Next
 
@@ -933,6 +914,7 @@ Jump1:
                     Dim xBMPCount As Integer = br.ReadInt32
                     For xxi As Integer = 1 To xBMPCount
                         Dim xI As Integer = br.ReadInt16
+                        If xI > MaxBase36Definition Then SetUseBase62Definitions(True)
                         hBMP(xI) = br.ReadString
                     Next
 
@@ -1007,18 +989,7 @@ EndOfSub:
         mnUndo.Enabled = sUndo(sI).ofType <> UndoRedo.opNoOperation
         mnRedo.Enabled = sRedo(sIA).ofType <> UndoRedo.opNoOperation
 
-        LBMP.Visible = False
-        LBMP.Items.Clear()
-        LWAV.Visible = False
-        LWAV.Items.Clear()
-        For xI1 As Integer = 1 To MaxDefinition
-            LWAV.Items.Add(C10to36(xI1) & ": " & hWAV(xI1))
-            LBMP.Items.Add(C10to36(xI1) & ": " & hBMP(xI1))
-        Next
-        LWAV.SelectedIndex = 0
-        LWAV.Visible = True
-        LBMP.SelectedIndex = 0
-        LBMP.Visible = True
+        RefreshDefinitionLists()
 
         THLandMine.Text = hWAV(0)
         THMissBMP.Text = hBMP(0)
@@ -1125,6 +1096,7 @@ EndOfSub:
             If WAVMultiSelect Then xWAVOptions = xWAVOptions Or &H1
             If WAVChangeLabel Then xWAVOptions = xWAVOptions Or &H2
             If WAVEmptyfill Then xWAVOptions = xWAVOptions Or &H4
+            If UseBase62Definitions Then xWAVOptions = xWAVOptions Or &H8
             bw.Write(CByte(xWAVOptions))
 
             Dim xWAVCount As Integer = 0

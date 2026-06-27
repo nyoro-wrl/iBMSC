@@ -32,9 +32,12 @@ Partial Class OpGeneral
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TBAssociate = New System.Windows.Forms.Button()
         Me.cBeep = New System.Windows.Forms.CheckBox()
+        Me.cNewBMSUseBase62 = New System.Windows.Forms.CheckBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.cBpm1296 = New System.Windows.Forms.CheckBox()
-        Me.cStop1296 = New System.Windows.Forms.CheckBox()
+        Me.LabelBPMDefinitionMode = New System.Windows.Forms.Label()
+        Me.cBpm1296 = New System.Windows.Forms.ComboBox()
+        Me.LabelSTOPDefinitionMode = New System.Windows.Forms.Label()
+        Me.cStop1296 = New System.Windows.Forms.ComboBox()
         Me.cMEnterFocus = New System.Windows.Forms.CheckBox()
         Me.cMClickFocus = New System.Windows.Forms.CheckBox()
         Me.TBAssociatePMS = New System.Windows.Forms.Button()
@@ -68,7 +71,7 @@ Partial Class OpGeneral
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(229, 463)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(229, 499)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -99,7 +102,7 @@ Partial Class OpGeneral
         Me.CWheel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CWheel.FormattingEnabled = True
         Me.CWheel.Items.AddRange(New Object() {"1", "1 / 2", "1 / 3", "1 / 4"})
-        Me.CWheel.Location = New System.Drawing.Point(154, 269)
+        Me.CWheel.Location = New System.Drawing.Point(154, 305)
         Me.CWheel.Name = "CWheel"
         Me.CWheel.Size = New System.Drawing.Size(237, 23)
         Me.CWheel.TabIndex = 11
@@ -116,7 +119,7 @@ Partial Class OpGeneral
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(12, 271)
+        Me.Label1.Location = New System.Drawing.Point(12, 307)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(136, 17)
         Me.Label1.TabIndex = 40
@@ -162,39 +165,67 @@ Partial Class OpGeneral
         Me.cBeep.Text = "Beep while saved"
         Me.cBeep.UseVisualStyleBackColor = True
         '
+        'cNewBMSUseBase62
+        '
+        Me.cNewBMSUseBase62.AutoSize = True
+        Me.cNewBMSUseBase62.Location = New System.Drawing.Point(32, 194)
+        Me.cNewBMSUseBase62.Name = "cNewBMSUseBase62"
+        Me.cNewBMSUseBase62.Size = New System.Drawing.Size(170, 19)
+        Me.cNewBMSUseBase62.TabIndex = 9
+        Me.cNewBMSUseBase62.Text = "Use base62 for new BMS"
+        Me.cNewBMSUseBase62.UseVisualStyleBackColor = True
+        '
         'PictureBox1
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.PictureBox1.Location = New System.Drawing.Point(20, 253)
+        Me.PictureBox1.Location = New System.Drawing.Point(20, 289)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(375, 1)
         Me.PictureBox1.TabIndex = 47
         Me.PictureBox1.TabStop = False
         '
+        'LabelBPMDefinitionMode
+        '
+        Me.LabelBPMDefinitionMode.Location = New System.Drawing.Point(12, 227)
+        Me.LabelBPMDefinitionMode.Name = "LabelBPMDefinitionMode"
+        Me.LabelBPMDefinitionMode.Size = New System.Drawing.Size(136, 17)
+        Me.LabelBPMDefinitionMode.TabIndex = 67
+        Me.LabelBPMDefinitionMode.Text = "BPM definitions"
+        Me.LabelBPMDefinitionMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
         'cBpm1296
         '
-        Me.cBpm1296.AutoSize = True
-        Me.cBpm1296.Location = New System.Drawing.Point(32, 194)
+        Me.cBpm1296.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cBpm1296.FormattingEnabled = True
+        Me.cBpm1296.Items.AddRange(New Object() {"Default (01-FF)", "36 base (01-ZZ)", "62 base (01-zz)"})
+        Me.cBpm1296.Location = New System.Drawing.Point(154, 224)
         Me.cBpm1296.Name = "cBpm1296"
-        Me.cBpm1296.Size = New System.Drawing.Size(253, 19)
-        Me.cBpm1296.TabIndex = 9
-        Me.cBpm1296.Text = "Extend number of multi-byte BPMs to 3843 (01-zz)"
-        Me.cBpm1296.UseVisualStyleBackColor = True
+        Me.cBpm1296.Size = New System.Drawing.Size(237, 23)
+        Me.cBpm1296.TabIndex = 10
+        '
+        'LabelSTOPDefinitionMode
+        '
+        Me.LabelSTOPDefinitionMode.Location = New System.Drawing.Point(12, 255)
+        Me.LabelSTOPDefinitionMode.Name = "LabelSTOPDefinitionMode"
+        Me.LabelSTOPDefinitionMode.Size = New System.Drawing.Size(136, 17)
+        Me.LabelSTOPDefinitionMode.TabIndex = 68
+        Me.LabelSTOPDefinitionMode.Text = "STOP definitions"
+        Me.LabelSTOPDefinitionMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cStop1296
         '
-        Me.cStop1296.AutoSize = True
-        Me.cStop1296.Location = New System.Drawing.Point(32, 219)
+        Me.cStop1296.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cStop1296.FormattingEnabled = True
+        Me.cStop1296.Items.AddRange(New Object() {"Default (01-FF)", "36 base (01-ZZ)", "62 base (01-zz)"})
+        Me.cStop1296.Location = New System.Drawing.Point(154, 252)
         Me.cStop1296.Name = "cStop1296"
-        Me.cStop1296.Size = New System.Drawing.Size(198, 19)
-        Me.cStop1296.TabIndex = 10
-        Me.cStop1296.Text = "Extend number of STOPs to 3843 (01-zz)"
-        Me.cStop1296.UseVisualStyleBackColor = True
+        Me.cStop1296.Size = New System.Drawing.Size(237, 23)
+        Me.cStop1296.TabIndex = 11
         '
         'cMEnterFocus
         '
         Me.cMEnterFocus.AutoSize = True
-        Me.cMEnterFocus.Location = New System.Drawing.Point(34, 379)
+        Me.cMEnterFocus.Location = New System.Drawing.Point(34, 415)
         Me.cMEnterFocus.Name = "cMEnterFocus"
         Me.cMEnterFocus.Size = New System.Drawing.Size(322, 19)
         Me.cMEnterFocus.TabIndex = 14
@@ -204,7 +235,7 @@ Partial Class OpGeneral
         'cMClickFocus
         '
         Me.cMClickFocus.AutoSize = True
-        Me.cMClickFocus.Location = New System.Drawing.Point(34, 404)
+        Me.cMClickFocus.Location = New System.Drawing.Point(34, 440)
         Me.cMClickFocus.Name = "cMClickFocus"
         Me.cMClickFocus.Size = New System.Drawing.Size(293, 19)
         Me.cMClickFocus.TabIndex = 15
@@ -231,7 +262,7 @@ Partial Class OpGeneral
         '
         'Label5
         '
-        Me.Label5.Location = New System.Drawing.Point(12, 300)
+        Me.Label5.Location = New System.Drawing.Point(12, 336)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(136, 17)
         Me.Label5.TabIndex = 56
@@ -243,7 +274,7 @@ Partial Class OpGeneral
         Me.CPgUpDn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CPgUpDn.FormattingEnabled = True
         Me.CPgUpDn.Items.AddRange(New Object() {"8", "6", "4", "3", "2", "1", "1 / 2"})
-        Me.CPgUpDn.Location = New System.Drawing.Point(154, 298)
+        Me.CPgUpDn.Location = New System.Drawing.Point(154, 334)
         Me.CPgUpDn.Name = "CPgUpDn"
         Me.CPgUpDn.Size = New System.Drawing.Size(237, 23)
         Me.CPgUpDn.TabIndex = 12
@@ -285,7 +316,7 @@ Partial Class OpGeneral
         Me.cMStopPreview.AutoSize = True
         Me.cMStopPreview.Checked = True
         Me.cMStopPreview.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.cMStopPreview.Location = New System.Drawing.Point(34, 429)
+        Me.cMStopPreview.Location = New System.Drawing.Point(34, 465)
         Me.cMStopPreview.Name = "cMStopPreview"
         Me.cMStopPreview.Size = New System.Drawing.Size(253, 19)
         Me.cMStopPreview.TabIndex = 60
@@ -331,7 +362,7 @@ Partial Class OpGeneral
         '
         'Label3
         '
-        Me.Label3.Location = New System.Drawing.Point(12, 328)
+        Me.Label3.Location = New System.Drawing.Point(12, 364)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(136, 17)
         Me.Label3.TabIndex = 65
@@ -345,7 +376,7 @@ Partial Class OpGeneral
         Me.FlowLayoutPanel1.Controls.Add(Me.rMiddleAuto)
         Me.FlowLayoutPanel1.Controls.Add(Me.rMiddleDrag)
         Me.FlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(154, 327)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(154, 363)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(141, 38)
         Me.FlowLayoutPanel1.TabIndex = 66
@@ -380,7 +411,7 @@ Partial Class OpGeneral
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(413, 510)
+        Me.ClientSize = New System.Drawing.Size(413, 546)
         Me.Controls.Add(Me.FlowLayoutPanel1)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.TBAssociateBML)
@@ -398,8 +429,11 @@ Partial Class OpGeneral
         Me.Controls.Add(Me.cMClickFocus)
         Me.Controls.Add(Me.cMEnterFocus)
         Me.Controls.Add(Me.cStop1296)
+        Me.Controls.Add(Me.LabelSTOPDefinitionMode)
         Me.Controls.Add(Me.cBpm1296)
+        Me.Controls.Add(Me.LabelBPMDefinitionMode)
         Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.cNewBMSUseBase62)
         Me.Controls.Add(Me.cBeep)
         Me.Controls.Add(Me.TBAssociate)
         Me.Controls.Add(Me.Label4)
@@ -436,9 +470,12 @@ Partial Class OpGeneral
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents TBAssociate As System.Windows.Forms.Button
     Friend WithEvents cBeep As System.Windows.Forms.CheckBox
+    Friend WithEvents cNewBMSUseBase62 As System.Windows.Forms.CheckBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents cBpm1296 As System.Windows.Forms.CheckBox
-    Friend WithEvents cStop1296 As System.Windows.Forms.CheckBox
+    Friend WithEvents LabelBPMDefinitionMode As System.Windows.Forms.Label
+    Friend WithEvents cBpm1296 As System.Windows.Forms.ComboBox
+    Friend WithEvents LabelSTOPDefinitionMode As System.Windows.Forms.Label
+    Friend WithEvents cStop1296 As System.Windows.Forms.ComboBox
     Friend WithEvents cMEnterFocus As System.Windows.Forms.CheckBox
     Friend WithEvents cMClickFocus As System.Windows.Forms.CheckBox
     Friend WithEvents TBAssociatePMS As System.Windows.Forms.Button

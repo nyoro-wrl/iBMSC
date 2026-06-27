@@ -490,12 +490,18 @@ Partial Public Class MainWindow
                         If Not IsColumnNumeric(Notes(xI1).ColumnIndex) Then
                             If IsColumnSound(Notes(xI1).ColumnIndex) Then
                                 LWAV.SelectedIndices.Clear()
-                                LWAV.SelectedIndex = C36to10(C10to36(Notes(xI1).Value \ 10000)) - 1
-                                ValidateWavListView()
+                                Dim xIndex As Integer = Notes(xI1).Value \ 10000 - 1
+                                If xIndex >= 0 AndAlso xIndex < LWAV.Items.Count Then
+                                    LWAV.SelectedIndex = xIndex
+                                    ValidateWavListView()
+                                End If
                             Else
                                 LBMP.SelectedIndices.Clear()
-                                LBMP.SelectedIndex = C36to10(C10to36(Notes(xI1).Value \ 10000)) - 1
-                                ValidateBmpListView()
+                                Dim xIndex As Integer = Notes(xI1).Value \ 10000 - 1
+                                If xIndex >= 0 AndAlso xIndex < LBMP.Items.Count Then
+                                    LBMP.SelectedIndex = xIndex
+                                    ValidateBmpListView()
+                                End If
                             End If
                         End If
                     Else
@@ -897,15 +903,17 @@ Partial Public Class MainWindow
             End If
         Else
             'Label prompt
-            Dim xStr As String = UCase(Trim(InputBox(Strings.Messages.PromptEnter, Me.Text)))
+            Dim xStr As String = Trim(InputBox(Strings.Messages.PromptEnter, Me.Text))
+            If Not UseBase62Definitions Then xStr = UCase(xStr)
 
             If Len(xStr) = 0 Then Return
 
-            If IsBase36(xStr) And Not (xStr = "00" Or xStr = "0") Then
+            If IsDefinitionLabel(xStr) And Not (xStr = "00" Or xStr = "0") Then
                 Dim xUndo As UndoRedo.LinkedURCmd = Nothing
                 Dim xRedo As UndoRedo.LinkedURCmd = Nothing
-                RedoRelabelNote(Note, C36to10(xStr) * 10000, xUndo, xRedo)
-                Notes(NoteIndex).Value = C36to10(xStr) * 10000
+                Dim xValue As Integer = DefinitionIndex(xStr) * 10000
+                RedoRelabelNote(Note, xValue, xUndo, xRedo)
+                Notes(NoteIndex).Value = xValue
                 AddUndo(xUndo, xRedo)
                 Return
             Else

@@ -92,8 +92,9 @@ Partial Public Class MainWindow
             .WriteAttributeString("TextEncoding", EncodingToString(TextEncoding))
             .WriteAttributeString("BMSGridLimit", BMSGridLimit)
             .WriteAttributeString("BeepWhileSaved", BeepWhileSaved)
-            .WriteAttributeString("BPMx1296", BPMx1296)
-            .WriteAttributeString("STOPx1296", STOPx1296)
+            .WriteAttributeString("NewBMSUseBase62Definitions", NewBMSUseBase62Definitions)
+            .WriteAttributeString("BPMDefinitionMode", BPMDefinitionMode)
+            .WriteAttributeString("STOPDefinitionMode", STOPDefinitionMode)
             .WriteEndElement()
 
             .WriteStartElement("WAV")
@@ -382,8 +383,23 @@ Partial Public Class MainWindow
 
                 XMLLoadAttribute(.GetAttribute("BMSGridLimit"), BMSGridLimit)
                 XMLLoadAttribute(.GetAttribute("BeepWhileSaved"), BeepWhileSaved)
-                XMLLoadAttribute(.GetAttribute("BPMx1296"), BPMx1296)
-                XMLLoadAttribute(.GetAttribute("STOPx1296"), STOPx1296)
+                XMLLoadAttribute(.GetAttribute("NewBMSUseBase62Definitions"), NewBMSUseBase62Definitions)
+
+                If .GetAttribute("BPMDefinitionMode").Length > 0 Then
+                    XMLLoadAttribute(.GetAttribute("BPMDefinitionMode"), BPMDefinitionMode)
+                Else
+                    Dim xBPMx As Boolean = False
+                    XMLLoadAttribute(.GetAttribute("BPMx1296"), xBPMx)
+                    If xBPMx Then BPMDefinitionMode = DefinitionModeBase36
+                End If
+
+                If .GetAttribute("STOPDefinitionMode").Length > 0 Then
+                    XMLLoadAttribute(.GetAttribute("STOPDefinitionMode"), STOPDefinitionMode)
+                Else
+                    Dim xSTOPx As Boolean = False
+                    XMLLoadAttribute(.GetAttribute("STOPx1296"), xSTOPx)
+                    If xSTOPx Then STOPDefinitionMode = DefinitionModeBase36
+                End If
             End With
         End If
 
@@ -845,6 +861,8 @@ EndOfSub:
 
                 Dim eWAV As XmlElement = eSubMenu.Item("WAV")
                 If eWAV IsNot Nothing Then
+                    XMLLoadLocaleMenu(eWAV.Item("Base62"), CWAVBase62.Text)
+                    XMLLoadLocaleMenu(eWAV.Item("Base62"), CBMPBase62.Text)
                     XMLLoadLocaleMenu(eWAV.Item("MultiSelection"), CWAVMultiSelect.Text)
                     XMLLoadLocaleMenu(eWAV.Item("Synchronize"), CWAVChangeLabel.Text)
                     XMLLoadLocaleMenu(eWAV.Item("Emptyfill"), CWAVEmptyfill.Text)
@@ -1112,8 +1130,12 @@ EndOfSub:
                 XMLLoadLocale(eGeneralOptions.Item("AssociateFileType"), Strings.fopGeneral.AssociateFileType)
                 XMLLoadLocale(eGeneralOptions.Item("MaxGridPartition"), Strings.fopGeneral.MaxGridPartition)
                 XMLLoadLocale(eGeneralOptions.Item("BeepWhileSaved"), Strings.fopGeneral.BeepWhileSaved)
-                XMLLoadLocale(eGeneralOptions.Item("ExtendBPM"), Strings.fopGeneral.ExtendBPM)
-                XMLLoadLocale(eGeneralOptions.Item("ExtendSTOP"), Strings.fopGeneral.ExtendSTOP)
+                XMLLoadLocale(eGeneralOptions.Item("NewBMSUseBase62"), Strings.fopGeneral.NewBMSUseBase62)
+                XMLLoadLocale(eGeneralOptions.Item("BPMDefinitionMode"), Strings.fopGeneral.BPMDefinitionMode)
+                XMLLoadLocale(eGeneralOptions.Item("STOPDefinitionMode"), Strings.fopGeneral.STOPDefinitionMode)
+                XMLLoadLocale(eGeneralOptions.Item("DefinitionModeDefault"), Strings.fopGeneral.DefinitionModeDefault)
+                XMLLoadLocale(eGeneralOptions.Item("DefinitionModeBase36"), Strings.fopGeneral.DefinitionModeBase36)
+                XMLLoadLocale(eGeneralOptions.Item("DefinitionModeBase62"), Strings.fopGeneral.DefinitionModeBase62)
                 XMLLoadLocale(eGeneralOptions.Item("AutoFocusOnMouseEnter"), Strings.fopGeneral.AutoFocusOnMouseEnter)
                 XMLLoadLocale(eGeneralOptions.Item("DisableFirstClick"), Strings.fopGeneral.DisableFirstClick)
                 XMLLoadLocale(eGeneralOptions.Item("AutoSave"), Strings.fopGeneral.AutoSave)

@@ -63,6 +63,9 @@ Partial Class MainWindow
         Me.POBMP = New System.Windows.Forms.Panel()
         Me.POBMPInner = New System.Windows.Forms.TableLayoutPanel()
         Me.LBMP = New System.Windows.Forms.ListBox()
+        Me.POBMPExpander = New System.Windows.Forms.CheckBox()
+        Me.POBMPPart2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.CBMPBase62 = New System.Windows.Forms.CheckBox()
         Me.FlowLayoutPanel4 = New System.Windows.Forms.FlowLayoutPanel()
         Me.BBMPUp = New System.Windows.Forms.Button()
         Me.BBMPDown = New System.Windows.Forms.Button()
@@ -81,6 +84,7 @@ Partial Class MainWindow
         Me.BWAVRemove = New System.Windows.Forms.Button()
         Me.POWAVResizer = New System.Windows.Forms.Button()
         Me.POWAVPart2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.CWAVBase62 = New System.Windows.Forms.CheckBox()
         Me.CWAVMultiSelect = New System.Windows.Forms.CheckBox()
         Me.CWAVChangeLabel = New System.Windows.Forms.CheckBox()
         Me.CWAVEmptyfill = New System.Windows.Forms.CheckBox()
@@ -401,6 +405,7 @@ Partial Class MainWindow
         Me.POWAVPart2.SuspendLayout()
         Me.POBMP.SuspendLayout()
         Me.POBMPInner.SuspendLayout()
+        Me.POBMPPart2.SuspendLayout()
         Me.FlowLayoutPanel4.SuspendLayout()
         Me.POWaveForm.SuspendLayout()
         Me.POWaveFormInner.SuspendLayout()
@@ -939,13 +944,17 @@ Partial Class MainWindow
         '
         Me.POBMPInner.ColumnCount = 1
         Me.POBMPInner.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.POBMPInner.Controls.Add(Me.LBMP, 0, 1)
+        Me.POBMPInner.Controls.Add(Me.POBMPExpander, 0, 1)
+        Me.POBMPInner.Controls.Add(Me.POBMPPart2, 0, 2)
+        Me.POBMPInner.Controls.Add(Me.LBMP, 0, 3)
         Me.POBMPInner.Controls.Add(Me.FlowLayoutPanel4, 0, 0)
-        Me.POBMPInner.Controls.Add(Me.POBMPResizer, 0, 2)
+        Me.POBMPInner.Controls.Add(Me.POBMPResizer, 0, 4)
         Me.POBMPInner.Dock = System.Windows.Forms.DockStyle.Top
         Me.POBMPInner.Location = New System.Drawing.Point(0, 20)
         Me.POBMPInner.Name = "POBMPInner"
-        Me.POBMPInner.RowCount = 3
+        Me.POBMPInner.RowCount = 5
+        Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -965,6 +974,52 @@ Partial Class MainWindow
         Me.LBMP.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.LBMP.Size = New System.Drawing.Size(177, 152)
         Me.LBMP.TabIndex = 25
+        '
+        'POBMPExpander
+        '
+        Me.POBMPExpander.Appearance = System.Windows.Forms.Appearance.Button
+        Me.POBMPExpander.AutoSize = True
+        Me.POBMPExpander.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.POBMPExpander.Dock = System.Windows.Forms.DockStyle.Top
+        Me.POBMPExpander.FlatAppearance.BorderSize = 0
+        Me.POBMPExpander.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.POBMPExpander.Location = New System.Drawing.Point(0, 30)
+        Me.POBMPExpander.Margin = New System.Windows.Forms.Padding(0)
+        Me.POBMPExpander.Name = "POBMPExpander"
+        Me.POBMPExpander.Size = New System.Drawing.Size(183, 25)
+        Me.POBMPExpander.TabIndex = 34
+        Me.POBMPExpander.TabStop = False
+        Me.POBMPExpander.Text = "Expand..."
+        Me.POBMPExpander.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.POBMPExpander.UseVisualStyleBackColor = False
+        '
+        'POBMPPart2
+        '
+        Me.POBMPPart2.AutoSize = True
+        Me.POBMPPart2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.POBMPPart2.ColumnCount = 1
+        Me.POBMPPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.POBMPPart2.Controls.Add(Me.CBMPBase62, 0, 0)
+        Me.POBMPPart2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POBMPPart2.Location = New System.Drawing.Point(0, 55)
+        Me.POBMPPart2.Margin = New System.Windows.Forms.Padding(0)
+        Me.POBMPPart2.Name = "POBMPPart2"
+        Me.POBMPPart2.RowCount = 1
+        Me.POBMPPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.POBMPPart2.Size = New System.Drawing.Size(183, 19)
+        Me.POBMPPart2.TabIndex = 35
+        Me.POBMPPart2.Visible = False
+        '
+        'CBMPBase62
+        '
+        Me.CBMPBase62.AutoSize = True
+        Me.CBMPBase62.Location = New System.Drawing.Point(3, 0)
+        Me.CBMPBase62.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        Me.CBMPBase62.Name = "CBMPBase62"
+        Me.CBMPBase62.Size = New System.Drawing.Size(123, 19)
+        Me.CBMPBase62.TabIndex = 0
+        Me.CBMPBase62.Text = "Extend to base62"
+        Me.CBMPBase62.UseVisualStyleBackColor = True
         '
         'FlowLayoutPanel4
         '
@@ -1199,30 +1254,44 @@ Partial Class MainWindow
         Me.POWAVPart2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.POWAVPart2.ColumnCount = 1
         Me.POWAVPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.POWAVPart2.Controls.Add(Me.CWAVMultiSelect, 0, 0)
-        Me.POWAVPart2.Controls.Add(Me.CWAVChangeLabel, 0, 1)
-        Me.POWAVPart2.Controls.Add(Me.CWAVEmptyfill, 0, 2)
+        Me.POWAVPart2.Controls.Add(Me.CWAVBase62, 0, 0)
+        Me.POWAVPart2.Controls.Add(Me.CWAVMultiSelect, 0, 1)
+        Me.POWAVPart2.Controls.Add(Me.CWAVChangeLabel, 0, 2)
+        Me.POWAVPart2.Controls.Add(Me.CWAVEmptyfill, 0, 3)
         Me.POWAVPart2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.POWAVPart2.Location = New System.Drawing.Point(0, 55)
         Me.POWAVPart2.Margin = New System.Windows.Forms.Padding(0)
         Me.POWAVPart2.Name = "POWAVPart2"
-        Me.POWAVPart2.RowCount = 2
+        Me.POWAVPart2.RowCount = 4
         Me.POWAVPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POWAVPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POWAVPart2.Size = New System.Drawing.Size(183, 38)
+        Me.POWAVPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.POWAVPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.POWAVPart2.Size = New System.Drawing.Size(183, 76)
         Me.POWAVPart2.TabIndex = 35
         Me.POWAVPart2.Visible = False
+        '
+        'CWAVBase62
+        '
+        Me.CWAVBase62.AutoSize = True
+        Me.CWAVBase62.Location = New System.Drawing.Point(3, 0)
+        Me.CWAVBase62.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        Me.CWAVBase62.Name = "CWAVBase62"
+        Me.CWAVBase62.Size = New System.Drawing.Size(123, 19)
+        Me.CWAVBase62.TabIndex = 0
+        Me.CWAVBase62.Text = "Extend to base62"
+        Me.CWAVBase62.UseVisualStyleBackColor = True
         '
         'CWAVMultiSelect
         '
         Me.CWAVMultiSelect.AutoSize = True
         Me.CWAVMultiSelect.Checked = True
         Me.CWAVMultiSelect.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CWAVMultiSelect.Location = New System.Drawing.Point(3, 0)
+        Me.CWAVMultiSelect.Location = New System.Drawing.Point(3, 19)
         Me.CWAVMultiSelect.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.CWAVMultiSelect.Name = "CWAVMultiSelect"
         Me.CWAVMultiSelect.Size = New System.Drawing.Size(154, 19)
-        Me.CWAVMultiSelect.TabIndex = 0
+        Me.CWAVMultiSelect.TabIndex = 1
         Me.CWAVMultiSelect.Text = "Allow Multiple Selection"
         Me.CWAVMultiSelect.UseVisualStyleBackColor = True
         '
@@ -1231,11 +1300,11 @@ Partial Class MainWindow
         Me.CWAVChangeLabel.AutoSize = True
         Me.CWAVChangeLabel.Checked = True
         Me.CWAVChangeLabel.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CWAVChangeLabel.Location = New System.Drawing.Point(3, 19)
+        Me.CWAVChangeLabel.Location = New System.Drawing.Point(3, 38)
         Me.CWAVChangeLabel.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.CWAVChangeLabel.Name = "CWAVChangeLabel"
         Me.CWAVChangeLabel.Size = New System.Drawing.Size(154, 19)
-        Me.CWAVChangeLabel.TabIndex = 1
+        Me.CWAVChangeLabel.TabIndex = 2
         Me.CWAVChangeLabel.Text = "Synchronize Note Labels"
         Me.CWAVChangeLabel.UseVisualStyleBackColor = True
         '
@@ -1244,11 +1313,11 @@ Partial Class MainWindow
         Me.CWAVEmptyfill.AutoSize = True
         Me.CWAVEmptyfill.Checked = True
         Me.CWAVEmptyfill.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CWAVEmptyfill.Location = New System.Drawing.Point(3, 0)
+        Me.CWAVEmptyfill.Location = New System.Drawing.Point(3, 57)
         Me.CWAVEmptyfill.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.CWAVEmptyfill.Name = "CWAVEmptyfill"
         Me.CWAVEmptyfill.Size = New System.Drawing.Size(154, 19)
-        Me.CWAVEmptyfill.TabIndex = 0
+        Me.CWAVEmptyfill.TabIndex = 3
         Me.CWAVEmptyfill.Text = "Fill Empty Definition First"
         Me.CWAVEmptyfill.UseVisualStyleBackColor = True
         '
@@ -4413,6 +4482,8 @@ Partial Class MainWindow
         Me.POBMP.ResumeLayout(False)
         Me.POBMPInner.ResumeLayout(False)
         Me.POBMPInner.PerformLayout()
+        Me.POBMPPart2.ResumeLayout(False)
+        Me.POBMPPart2.PerformLayout()
         Me.FlowLayoutPanel4.ResumeLayout(False)
         Me.POWAVPart2.ResumeLayout(False)
         Me.POWAVPart2.PerformLayout()
@@ -4819,6 +4890,9 @@ Partial Class MainWindow
     Friend WithEvents POBMP As System.Windows.Forms.Panel
     Friend WithEvents POBMPInner As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents POBMPSwitch As System.Windows.Forms.CheckBox
+    Friend WithEvents POBMPExpander As System.Windows.Forms.CheckBox
+    Friend WithEvents POBMPPart2 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents CBMPBase62 As System.Windows.Forms.CheckBox
     Friend WithEvents POBeat As System.Windows.Forms.Panel
     Friend WithEvents POBeatInner As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents POBeatSwitch As System.Windows.Forms.CheckBox
@@ -4846,6 +4920,7 @@ Partial Class MainWindow
     Friend WithEvents TBThemeLoadComptability As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents POWAVExpander As System.Windows.Forms.CheckBox
     Friend WithEvents POWAVPart2 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents CWAVBase62 As System.Windows.Forms.CheckBox
     Friend WithEvents CWAVMultiSelect As System.Windows.Forms.CheckBox
     Friend WithEvents CWAVChangeLabel As System.Windows.Forms.CheckBox
     Friend WithEvents CWAVEmptyfill As System.Windows.Forms.CheckBox

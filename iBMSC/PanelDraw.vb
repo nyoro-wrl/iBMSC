@@ -102,9 +102,9 @@ Partial Public Class MainWindow
         If IsColumnNumeric(SelectedColumn) Then
             xText = GetColumn(SelectedColumn).Title
         ElseIf IsColumnSound(SelectedColumn) Then
-            xText = C10to36(LWAV.SelectedIndex + 1)
+            xText = DefinitionLabel(LWAV.SelectedIndex + 1)
         Else
-            xText = C10to36(LBMP.SelectedIndex + 1)
+            xText = DefinitionLabel(LBMP.SelectedIndex + 1)
         End If
 
         Dim xPen As Pen
@@ -525,12 +525,13 @@ Partial Public Class MainWindow
         Dim xAlpha As Single = 1.0F
         If sNote.Hidden Then xAlpha = vo.kOpacity
 
-        Dim xLabel As String = C10to36(sNote.Value \ 10000)
+        Dim xIndex As Integer = sNote.Value \ 10000
+        Dim xLabel As String = DefinitionLabel(xIndex)
         If ShowFileName Then
             If IsColumnSound(sNote.ColumnIndex) Then
-                If hWAV(C36to10(xLabel)) <> "" Then xLabel = Path.GetFileNameWithoutExtension(hWAV(C36to10(xLabel)))
+                If hWAV(xIndex) <> "" Then xLabel = Path.GetFileNameWithoutExtension(hWAV(xIndex))
             Else
-                If hBMP(C36to10(xLabel)) <> "" Then xLabel = Path.GetFileNameWithoutExtension(hBMP(C36to10(xLabel)))
+                If hBMP(xIndex) <> "" Then xLabel = Path.GetFileNameWithoutExtension(hBMP(xIndex))
             End If
         End If
 
@@ -634,12 +635,13 @@ Partial Public Class MainWindow
         Dim xAlpha As Single = 1.0F
         If sNote.Hidden Then xAlpha = vo.kOpacity
 
-        Dim xLabel As String = C10to36(sNote.Value \ 10000)
+        Dim xIndex As Integer = sNote.Value \ 10000
+        Dim xLabel As String = DefinitionLabel(xIndex)
         If ShowFileName Then
             If IsColumnSound(sNote.ColumnIndex) Then
-                If hWAV(C36to10(xLabel)) <> "" Then xLabel = Path.GetFileNameWithoutExtension(hWAV(C36to10(xLabel)))
+                If hWAV(xIndex) <> "" Then xLabel = Path.GetFileNameWithoutExtension(hWAV(xIndex))
             Else
-                If hBMP(C36to10(xLabel)) <> "" Then xLabel = Path.GetFileNameWithoutExtension(hBMP(C36to10(xLabel)))
+                If hBMP(xIndex) <> "" Then xLabel = Path.GetFileNameWithoutExtension(hBMP(xIndex))
             End If
         End If
 

@@ -62,8 +62,13 @@ Public Class MainWindow
     Dim ShowFileName As Boolean = False
 
     Dim BeepWhileSaved As Boolean = True
-    Dim BPMx1296 As Boolean = False
-    Dim STOPx1296 As Boolean = False
+    Const DefinitionModeLegacy As Integer = 0
+    Const DefinitionModeBase36 As Integer = 1
+    Const DefinitionModeBase62 As Integer = 2
+    Dim BPMDefinitionMode As Integer = DefinitionModeLegacy
+    Dim STOPDefinitionMode As Integer = DefinitionModeLegacy
+    Dim UseBase62Definitions As Boolean = False
+    Dim NewBMSUseBase62Definitions As Boolean = False
 
     Dim IsInitializing As Boolean = True
     Dim FirstMouseEnter As Boolean = True
@@ -1106,22 +1111,13 @@ Public Class MainWindow
 
         spMain = New Panel() {PMainInL, PMainIn, PMainInR}
 
-        Dim xI1 As Integer
-
         sUndo(0) = New UndoRedo.NoOperation
         sUndo(1) = New UndoRedo.NoOperation
         sRedo(0) = New UndoRedo.NoOperation
         sRedo(1) = New UndoRedo.NoOperation
         sI = 0
 
-        LWAV.Items.Clear()
-        LBMP.Items.Clear()
-        For xI1 = 1 To MaxDefinition
-            LWAV.Items.Add(C10to36(xI1) & ":")
-            LBMP.Items.Add(C10to36(xI1) & ":")
-        Next
-        LWAV.SelectedIndex = 0
-        LBMP.SelectedIndex = 0
+        RefreshDefinitionLists()
         CHPlayer.SelectedIndex = 0
 
         CalculateGreatestVPosition()
@@ -1137,6 +1133,8 @@ Public Class MainWindow
         Else
             LoadInitialPreferences()
         End If
+        SetUseBase62Definitions(NewBMSUseBase62Definitions)
+        RefreshDefinitionLists()
         'On Error GoTo 0
         SetIsSaved(True)
 
@@ -1350,6 +1348,142 @@ EndSearch:
         SaveiBMSC(Path)
     End Sub
 
+    Private Function DefinitionDisplayMax() As Integer
+        If UseBase62Definitions Then Return MaxDefinition
+
+        Return MaxBase36Definition
+    End Function
+
+    Private Function DefinitionLastListIndex() As Integer
+        Return DefinitionDisplayMax() - 1
+    End Function
+
+    Private Function DefinitionLabel(ByVal xValue As Long) As String
+        If UseBase62Definitions Then Return C10to36(xValue)
+
+        Return C10toBase36(xValue)
+    End Function
+
+    Private Function DefinitionIndex(ByVal xLabel As String) As Integer
+        If UseBase62Definitions Then Return C36to10(xLabel)
+
+        Return CBase36to10(xLabel)
+    End Function
+
+    Private Function IsDefinitionLabel(ByVal xLabel As String) As Boolean
+        If UseBase62Definitions Then Return IsBase62(xLabel)
+
+        Return IsBase36(xLabel)
+    End Function
+
+    Private Function DefinitionModeMax(ByVal xMode As Integer) As Integer
+        Select Case xMode
+            Case DefinitionModeBase62
+                Return MaxDefinition
+            Case DefinitionModeBase36
+                Return MaxBase36Definition
+        End Select
+
+        Return MaxLegacyDefinition
+    End Function
+
+    Private Function DefinitionModeLabel(ByVal xValue As Long, ByVal xMode As Integer) As String
+        Select Case xMode
+            Case DefinitionModeBase62
+                Return C10to36(xValue)
+            Case DefinitionModeBase36
+                Return C10toBase36(xValue)
+        End Select
+
+        Return Mid("0" & Hex(xValue), Len(Hex(xValue)))
+    End Function
+
+    Private Function DefinitionModeIndex(ByVal xLabel As String, ByVal xMode As Integer) As Integer
+        Select Case xMode
+            Case DefinitionModeBase62
+                Return C36to10(xLabel)
+            Case DefinitionModeBase36
+                Return CBase36to10(xLabel)
+        End Select
+
+        Return Convert.ToInt32(xLabel, 16)
+    End Function
+
+    Private Function ContainsBase62Definition(ByVal xLabel As String) As Boolean
+        For Each xChar As Char In xLabel
+            If xChar >= "a"c AndAlso xChar <= "z"c Then Return True
+        Next
+
+        Return False
+    End Function
+
+    Private Function ContainsBase62Definitions(ByVal xLines() As String) As Boolean
+        For Each xLine As String In xLines
+            Dim xLineTrim As String = xLine.Trim
+
+            If xLineTrim.StartsWith("#WAV", StringComparison.CurrentCultureIgnoreCase) OrElse _
+               xLineTrim.StartsWith("#BMP", StringComparison.CurrentCultureIgnoreCase) OrElse _
+               xLineTrim.StartsWith("#BPM", StringComparison.CurrentCultureIgnoreCase) OrElse _
+               xLineTrim.StartsWith("#STOP", StringComparison.CurrentCultureIgnoreCase) OrElse _
+               xLineTrim.StartsWith("#SCROLL", StringComparison.CurrentCultureIgnoreCase) Then
+                If ContainsBase62Definition(Mid(xLineTrim, 5, 2)) Then Return True
+
+            ElseIf xLineTrim.StartsWith("#LNOBJ", StringComparison.CurrentCultureIgnoreCase) Then
+                If ContainsBase62Definition(Mid(xLineTrim, Len("#LNOBJ") + 1).Trim) Then Return True
+
+            ElseIf xLineTrim.StartsWith("#") AndAlso Mid(xLineTrim, 7, 1) = ":" Then
+                If Mid(xLineTrim, 5, 2) = "03" Then Continue For
+
+                For xI As Integer = 8 To Len(xLineTrim) - 1 Step 2
+                    Dim xLabel As String = Mid(xLineTrim, xI, 2)
+                    If xLabel <> "00" AndAlso ContainsBase62Definition(xLabel) Then Return True
+                Next
+            End If
+        Next
+
+        Return False
+    End Function
+
+    Private Sub SetUseBase62Definitions(ByVal xValue As Boolean)
+        UseBase62Definitions = xValue
+
+        If CWAVBase62.Checked <> xValue Then CWAVBase62.Checked = xValue
+        If CBMPBase62.Checked <> xValue Then CBMPBase62.Checked = xValue
+    End Sub
+
+    Private Sub RefreshDefinitionLists()
+        Dim xWAVIndex As Integer = LWAV.SelectedIndex
+        Dim xBMPIndex As Integer = LBMP.SelectedIndex
+
+        LWAV.Visible = False
+        LWAV.Items.Clear()
+        LBMP.Visible = False
+        LBMP.Items.Clear()
+
+        For xI As Integer = 1 To DefinitionDisplayMax()
+            LWAV.Items.Add(DefinitionLabel(xI) & ": " & hWAV(xI))
+            LBMP.Items.Add(DefinitionLabel(xI) & ": " & hBMP(xI))
+        Next
+
+        If LWAV.Items.Count > 0 Then LWAV.SelectedIndex = Math.Max(0, Math.Min(xWAVIndex, LWAV.Items.Count - 1))
+        If LBMP.Items.Count > 0 Then LBMP.SelectedIndex = Math.Max(0, Math.Min(xBMPIndex, LBMP.Items.Count - 1))
+
+        LWAV.Visible = True
+        LBMP.Visible = True
+    End Sub
+
+    Private Sub RefreshWAVItem(ByVal xIndex As Integer)
+        If xIndex < 1 OrElse xIndex > LWAV.Items.Count Then Return
+
+        LWAV.Items.Item(xIndex - 1) = DefinitionLabel(xIndex) & ": " & hWAV(xIndex)
+    End Sub
+
+    Private Sub RefreshBMPItem(ByVal xIndex As Integer)
+        If xIndex < 1 OrElse xIndex > LBMP.Items.Count Then Return
+
+        LBMP.Items.Item(xIndex - 1) = DefinitionLabel(xIndex) & ": " & hBMP(xIndex)
+    End Sub
+
     ''' <summary>
     ''' True if pressed cancel. False elsewise.
     ''' </summary>
@@ -1403,6 +1537,7 @@ EndSearch:
         ReDim hBPM(MaxDefinition)    'x10000
         ReDim hSTOP(MaxDefinition)
         ReDim hBMSCROLL(MaxDefinition)
+        SetUseBase62Definitions(NewBMSUseBase62Definitions)
         THGenre.Text = ""
         THTitle.Text = ""
         THArtist.Text = ""
@@ -1417,15 +1552,7 @@ EndSearch:
         End With
         THBPM.Value = 120
 
-        LWAV.Items.Clear()
-        LBMP.Items.Clear()
-        Dim xI1 As Integer
-        For xI1 = 1 To MaxDefinition
-            LWAV.Items.Add(C10to36(xI1) & ": " & hWAV(xI1))
-            LBMP.Items.Add(C10to36(xI1) & ": " & hBMP(xI1))
-        Next
-        LWAV.SelectedIndex = 0
-        LBMP.SelectedIndex = 0
+        RefreshDefinitionLists()
 
         SetFileName("Untitled.bms")
         SetIsSaved(True)
@@ -1941,7 +2068,7 @@ EndSearch:
     End Sub
 
     Private Sub LWAV_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles LWAV.Click
-        If TBWrite.Checked Then FSW.Text = C10to36(LWAV.SelectedIndex + 1)
+        If TBWrite.Checked Then FSW.Text = DefinitionLabel(LWAV.SelectedIndex + 1)
 
         PreviewNote("", True)
         If Not PreviewOnClick Then Exit Sub
@@ -1965,7 +2092,7 @@ EndSearch:
         If xDWAV.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
         InitPath = ExcludeFileName(xDWAV.FileName)
         hWAV(LWAV.SelectedIndex + 1) = GetBMSRefPath(xDWAV.FileName)
-        LWAV.Items.Item(LWAV.SelectedIndex) = C10to36(LWAV.SelectedIndex + 1) & ": " & hWAV(LWAV.SelectedIndex + 1)
+        RefreshWAVItem(LWAV.SelectedIndex + 1)
         If IsSaved Then SetIsSaved(False)
     End Sub
 
@@ -1973,7 +2100,7 @@ EndSearch:
         Select Case e.KeyCode
             Case Keys.Delete
                 hWAV(LWAV.SelectedIndex + 1) = ""
-                LWAV.Items.Item(LWAV.SelectedIndex) = C10to36(LWAV.SelectedIndex + 1) & ": "
+                RefreshWAVItem(LWAV.SelectedIndex + 1)
                 If IsSaved Then SetIsSaved(False)
         End Select
     End Sub
@@ -1998,7 +2125,7 @@ EndSearch:
         If xDBMP.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
         InitPath = ExcludeFileName(xDBMP.FileName)
         hBMP(LBMP.SelectedIndex + 1) = GetBMSRefPath(xDBMP.FileName)
-        LBMP.Items.Item(LBMP.SelectedIndex) = C10to36(LBMP.SelectedIndex + 1) & ": " & hBMP(LBMP.SelectedIndex + 1)
+        RefreshBMPItem(LBMP.SelectedIndex + 1)
         If IsSaved Then SetIsSaved(False)
     End Sub
 
@@ -2006,7 +2133,7 @@ EndSearch:
         Select Case e.KeyCode
             Case Keys.Delete
                 hBMP(LBMP.SelectedIndex + 1) = ""
-                LBMP.Items.Item(LBMP.SelectedIndex) = C10to36(LBMP.SelectedIndex + 1) & ": "
+                RefreshBMPItem(LBMP.SelectedIndex + 1)
                 If IsSaved Then SetIsSaved(False)
         End Select
     End Sub
@@ -2463,7 +2590,7 @@ StartCount:     If Not NTInput Then
                 FSC.Text = nTitle(Notes(xI1).ColumnIndex)
                 FSW.Text = IIf(IsColumnNumeric(Notes(xI1).ColumnIndex),
                                Notes(xI1).Value / 10000,
-                               C10to36(Notes(xI1).Value \ 10000))
+                               DefinitionLabel(Notes(xI1).Value \ 10000))
                 FSM.Text = Add3Zeros(xMeasure)
                 FST.Text = IIf(NTInput, Strings.StatusBar.Length & " = " & Notes(xI1).Length, IIf(Notes(xI1).LongNote, Strings.StatusBar.LongNote, ""))
                 FSH.Text = IIf(Notes(xI1).Hidden, Strings.StatusBar.Hidden, "")
@@ -2487,9 +2614,9 @@ StartCount:     If Not NTInput Then
             TimeStatusLabel.Text = GetTimeFromVPosition(TempVPosition).ToString("F4")
             FSC.Text = nTitle(SelectedColumn)
             If IsColumnSound(SelectedColumn) Then
-                FSW.Text = C10to36(LWAV.SelectedIndex + 1)
+                FSW.Text = DefinitionLabel(LWAV.SelectedIndex + 1)
             ElseIf IsColumnImage(SelectedColumn) Then
-                FSW.Text = C10to36(LBMP.SelectedIndex + 1)
+                FSW.Text = DefinitionLabel(LBMP.SelectedIndex + 1)
             Else
                 FSW.Text = ""
             End If
@@ -2821,18 +2948,18 @@ StartCount:     If Not NTInput Then
             Dim currWavIndex As Integer = xIndices(0)
             ReDim Preserve xIndices(UBound(xPath))
 
-            Do While i < xIndices.Length And currWavIndex <= LastDefinitionListIndex
-                Do While currWavIndex <= LastDefinitionListIndex AndAlso hWAV(currWavIndex + 1) <> ""
+            Do While i < xIndices.Length And currWavIndex <= DefinitionLastListIndex()
+                Do While currWavIndex <= DefinitionLastListIndex() AndAlso hWAV(currWavIndex + 1) <> ""
                     currWavIndex += 1
                 Loop
-                If currWavIndex > LastDefinitionListIndex Then Exit Do
+                If currWavIndex > DefinitionLastListIndex() Then Exit Do
 
                 xIndices(i) = currWavIndex
                 currWavIndex += 1
                 i += 1
             Loop
 
-            If currWavIndex > LastDefinitionListIndex Then
+            If currWavIndex > DefinitionLastListIndex() Then
                 ReDim Preserve xPath(i - 1)
                 ReDim Preserve xIndices(i - 1)
             End If
@@ -2842,18 +2969,18 @@ StartCount:     If Not NTInput Then
                 Dim currWavIndex As Integer = xIndices(UBound(xIndices)) + 1
                 ReDim Preserve xIndices(UBound(xPath))
 
-                Do While i < xIndices.Length And currWavIndex <= LastDefinitionListIndex
-                    Do While currWavIndex <= LastDefinitionListIndex AndAlso hWAV(currWavIndex + 1) <> ""
+                Do While i < xIndices.Length And currWavIndex <= DefinitionLastListIndex()
+                    Do While currWavIndex <= DefinitionLastListIndex() AndAlso hWAV(currWavIndex + 1) <> ""
                         currWavIndex += 1
                     Loop
-                    If currWavIndex > LastDefinitionListIndex Then Exit Do
+                    If currWavIndex > DefinitionLastListIndex() Then Exit Do
 
                     xIndices(i) = currWavIndex
                     currWavIndex += 1
                     i += 1
                 Loop
 
-                If currWavIndex > LastDefinitionListIndex Then
+                If currWavIndex > DefinitionLastListIndex() Then
                     ReDim Preserve xPath(i - 1)
                     ReDim Preserve xIndices(i - 1)
                 End If
@@ -2866,7 +2993,7 @@ StartCount:     If Not NTInput Then
             'hWAV(xIndices(xI2) + 1) = GetFileName(xPath(xI1))
             'LWAV.Items.Item(xIndices(xI2)) = C10to36(xIndices(xI2) + 1) & ": " & GetFileName(xPath(xI1))
             hWAV(xIndices(xI1) + 1) = GetBMSRefPath(xPath(xI1))
-            LWAV.Items.Item(xIndices(xI1)) = C10to36(xIndices(xI1) + 1) & ": " & hWAV(xIndices(xI1) + 1)
+            RefreshWAVItem(xIndices(xI1) + 1)
             'xI2 += 1
         Next
 
@@ -2923,18 +3050,18 @@ StartCount:     If Not NTInput Then
             Dim currBmpIndex As Integer = xIndices(0)
             ReDim Preserve xIndices(UBound(xPath))
 
-            Do While i < xIndices.Length And currBmpIndex <= LastDefinitionListIndex
-                Do While currBmpIndex <= LastDefinitionListIndex AndAlso hBMP(currBmpIndex + 1) <> ""
+            Do While i < xIndices.Length And currBmpIndex <= DefinitionLastListIndex()
+                Do While currBmpIndex <= DefinitionLastListIndex() AndAlso hBMP(currBmpIndex + 1) <> ""
                     currBmpIndex += 1
                 Loop
-                If currBmpIndex > LastDefinitionListIndex Then Exit Do
+                If currBmpIndex > DefinitionLastListIndex() Then Exit Do
 
                 xIndices(i) = currBmpIndex
                 currBmpIndex += 1
                 i += 1
             Loop
 
-            If currBmpIndex > LastDefinitionListIndex Then
+            If currBmpIndex > DefinitionLastListIndex() Then
                 ReDim Preserve xPath(i - 1)
                 ReDim Preserve xIndices(i - 1)
             End If
@@ -2944,18 +3071,18 @@ StartCount:     If Not NTInput Then
                 Dim currBmpIndex As Integer = xIndices(UBound(xIndices)) + 1
                 ReDim Preserve xIndices(UBound(xPath))
 
-                Do While i < xIndices.Length And currBmpIndex <= LastDefinitionListIndex
-                    Do While currBmpIndex <= LastDefinitionListIndex AndAlso hBMP(currBmpIndex + 1) <> ""
+                Do While i < xIndices.Length And currBmpIndex <= DefinitionLastListIndex()
+                    Do While currBmpIndex <= DefinitionLastListIndex() AndAlso hBMP(currBmpIndex + 1) <> ""
                         currBmpIndex += 1
                     Loop
-                    If currBmpIndex > LastDefinitionListIndex Then Exit Do
+                    If currBmpIndex > DefinitionLastListIndex() Then Exit Do
 
                     xIndices(i) = currBmpIndex
                     currBmpIndex += 1
                     i += 1
                 Loop
 
-                If currBmpIndex > LastDefinitionListIndex Then
+                If currBmpIndex > DefinitionLastListIndex() Then
                     ReDim Preserve xPath(i - 1)
                     ReDim Preserve xIndices(i - 1)
                 End If
@@ -2968,7 +3095,7 @@ StartCount:     If Not NTInput Then
             'hBMP(xIndices(xI2) + 1) = GetFileName(xPath(xI1))
             'LBMP.Items.Item(xIndices(xI2)) = C10to36(xIndices(xI2) + 1) & ": " & GetFileName(xPath(xI1))
             hBMP(xIndices(xI1) + 1) = GetBMSRefPath(xPath(xI1))
-            LBMP.Items.Item(xIndices(xI1)) = C10to36(xIndices(xI1) + 1) & ": " & hBMP(xIndices(xI1) + 1)
+            RefreshBMPItem(xIndices(xI1) + 1)
             'xI2 += 1
         Next
 
@@ -3364,7 +3491,7 @@ StartCount:     If Not NTInput Then
         End Select
 
         Dim xDiag As New OpGeneral(gWheel, gPgUpDn, MiddleButtonMoveMethod, xTE, 192.0R / BMSGridLimit,
-            AutoSaveInterval, BeepWhileSaved, BPMx1296, STOPx1296,
+            AutoSaveInterval, BeepWhileSaved, NewBMSUseBase62Definitions, BPMDefinitionMode, STOPDefinitionMode,
             AutoFocusMouseEnter, FirstClickDisabled, ClickStopPreview)
 
         If xDiag.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -3377,8 +3504,9 @@ StartCount:     If Not NTInput Then
                 AutoSaveInterval = .zAutoSave
                 BMSGridLimit = 192.0R / .zGridPartition
                 BeepWhileSaved = .cBeep.Checked
-                BPMx1296 = .cBpm1296.Checked
-                STOPx1296 = .cStop1296.Checked
+                NewBMSUseBase62Definitions = .cNewBMSUseBase62.Checked
+                BPMDefinitionMode = .cBpm1296.SelectedIndex
+                STOPDefinitionMode = .cStop1296.SelectedIndex
                 AutoFocusMouseEnter = .cMEnterFocus.Checked
                 FirstClickDisabled = .cMClickFocus.Checked
                 ClickStopPreview = .cMStopPreview.Checked
@@ -3540,19 +3668,17 @@ StartCount:     If Not NTInput Then
         End If
 
         If xLbl Then
-            Dim xStr As String = UCase(Trim(InputBox(Strings.Messages.PromptEnter, Me.Text)))
+            Dim xStr As String = Trim(InputBox(Strings.Messages.PromptEnter, Me.Text))
+            If Not UseBase62Definitions Then xStr = UCase(xStr)
 
             If Len(xStr) = 0 Then GoTo Jump2
             If xStr = "00" Or xStr = "0" Then GoTo Jump1
             If Not Len(xStr) = 1 And Not Len(xStr) = 2 Then GoTo Jump1
+            If Not IsDefinitionLabel(xStr) Then GoTo Jump1
 
-            Dim xI3 As Integer = Asc(Mid(xStr, 1, 1))
-            If Not ((xI3 >= 48 And xI3 <= 57) Or (xI3 >= 65 And xI3 <= 90)) Then GoTo Jump1
-            If Len(xStr) = 2 Then
-                Dim xI4 As Integer = Asc(Mid(xStr, 2, 1))
-                If Not ((xI4 >= 48 And xI4 <= 57) Or (xI4 >= 65 And xI4 <= 90)) Then GoTo Jump1
-            End If
-            Dim xVal As Integer = C36to10(xStr) * 10000
+            Dim xDefinitionIndex As Integer = DefinitionIndex(xStr)
+            If xDefinitionIndex > DefinitionDisplayMax() Then GoTo Jump1
+            Dim xVal As Integer = xDefinitionIndex * 10000
 
             Dim xUndo As UndoRedo.LinkedURCmd = Nothing
             Dim xRedo As UndoRedo.LinkedURCmd = New UndoRedo.Void
@@ -3606,8 +3732,8 @@ Jump2:
 
         fdriMesL = xMesL
         fdriMesU = xMesU
-        fdriLblL = C36to10(xLblL) * 10000
-        fdriLblU = C36to10(xLblU) * 10000
+        fdriLblL = DefinitionIndex(xLblL) * 10000
+        fdriLblU = DefinitionIndex(xLblU) * 10000
         fdriValL = xValL
         fdriValU = xValU
         fdriCol = iCol
@@ -3651,8 +3777,8 @@ Jump2:
 
         fdriMesL = xMesL
         fdriMesU = xMesU
-        fdriLblL = C36to10(xLblL) * 10000
-        fdriLblU = C36to10(xLblU) * 10000
+        fdriLblL = DefinitionIndex(xLblL) * 10000
+        fdriLblU = DefinitionIndex(xLblU) * 10000
         fdriValL = xValL
         fdriValU = xValU
         fdriCol = iCol
@@ -3689,8 +3815,8 @@ Jump2:
 
         fdriMesL = xMesL
         fdriMesU = xMesU
-        fdriLblL = C36to10(xLblL) * 10000
-        fdriLblU = C36to10(xLblU) * 10000
+        fdriLblL = DefinitionIndex(xLblL) * 10000
+        fdriLblU = DefinitionIndex(xLblU) * 10000
         fdriValL = xValL
         fdriValU = xValU
         fdriCol = iCol
@@ -3734,8 +3860,8 @@ Jump2:
 
         fdriMesL = xMesL
         fdriMesU = xMesU
-        fdriLblL = C36to10(xLblL) * 10000
-        fdriLblU = C36to10(xLblU) * 10000
+        fdriLblL = DefinitionIndex(xLblL) * 10000
+        fdriLblU = DefinitionIndex(xLblU) * 10000
         fdriValL = xValL
         fdriValU = xValU
         fdriCol = iCol
@@ -3747,7 +3873,7 @@ Jump2:
         Dim xbHidden As Boolean = iRange Mod 11 = 0
         Dim xbVisible As Boolean = iRange Mod 13 = 0
 
-        Dim xxLbl As Integer = C36to10(xReplaceLbl) * 10000
+        Dim xxLbl As Integer = DefinitionIndex(xReplaceLbl) * 10000
 
         Dim xUndo As UndoRedo.LinkedURCmd = Nothing
         Dim xRedo As UndoRedo.LinkedURCmd = New UndoRedo.Void
@@ -3777,8 +3903,8 @@ Jump2:
 
         fdriMesL = xMesL
         fdriMesU = xMesU
-        fdriLblL = C36to10(xLblL) * 10000
-        fdriLblU = C36to10(xLblU) * 10000
+        fdriLblL = DefinitionIndex(xLblL) * 10000
+        fdriLblU = DefinitionIndex(xLblU) * 10000
         fdriValL = xValL
         fdriValU = xValU
         fdriCol = iCol
@@ -4089,6 +4215,15 @@ Jump2:
         WAVEmptyfill = CWAVEmptyfill.Checked
     End Sub
 
+    Private Sub CBase62_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CWAVBase62.CheckedChanged, CBMPBase62.CheckedChanged
+        Dim xValue As Boolean = CType(sender, CheckBox).Checked
+        If UseBase62Definitions = xValue AndAlso CWAVBase62.Checked = xValue AndAlso CBMPBase62.Checked = xValue Then Return
+
+        SetUseBase62Definitions(xValue)
+        RefreshDefinitionLists()
+        If Not IsInitializing AndAlso IsSaved Then SetIsSaved(False)
+    End Sub
+
     Private Sub BWAVUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BWAVUp.Click
         If LWAV.SelectedIndex = -1 Then Return
 
@@ -4100,34 +4235,34 @@ Jump2:
         LWAV.SelectedIndices.CopyTo(xIndices, 0)
 
         Dim xS As Integer
-        For xS = 0 To LastDefinitionListIndex
+        For xS = 0 To DefinitionLastListIndex()
             If Array.IndexOf(xIndices, xS) = -1 Then Exit For
         Next
 
         Dim xStr As String = ""
         Dim xIndex As Integer = -1
-        For xI1 As Integer = xS To LastDefinitionListIndex
+        For xI1 As Integer = xS To DefinitionLastListIndex()
             xIndex = Array.IndexOf(xIndices, xI1)
             If xIndex <> -1 Then
                 xStr = hWAV(xI1 + 1)
                 hWAV(xI1 + 1) = hWAV(xI1)
                 hWAV(xI1) = xStr
 
-                LWAV.Items.Item(xI1) = C10to36(xI1 + 1) & ": " & hWAV(xI1 + 1)
-                LWAV.Items.Item(xI1 - 1) = C10to36(xI1) & ": " & hWAV(xI1)
+                RefreshWAVItem(xI1 + 1)
+                RefreshWAVItem(xI1)
 
                 If Not WAVChangeLabel Then GoTo 1100
 
-                Dim xL1 As String = C10to36(xI1)
-                Dim xL2 As String = C10to36(xI1 + 1)
+                Dim xL1 As String = DefinitionLabel(xI1)
+                Dim xL2 As String = DefinitionLabel(xI1 + 1)
                 For xI2 As Integer = 1 To UBound(Notes)
                     If Not IsColumnSound(Notes(xI2).ColumnIndex) Then Continue For
 
-                    If C10to36(Notes(xI2).Value \ 10000) = xL1 Then
+                    If DefinitionLabel(Notes(xI2).Value \ 10000) = xL1 Then
                         Me.RedoRelabelNote(Notes(xI2), xI1 * 10000 + 10000, xUndo, xRedo)
                         Notes(xI2).Value = xI1 * 10000 + 10000
 
-                    ElseIf C10to36(Notes(xI2).Value \ 10000) = xL2 Then
+                    ElseIf DefinitionLabel(Notes(xI2).Value \ 10000) = xL2 Then
                         Me.RedoRelabelNote(Notes(xI2), xI1 * 10000, xUndo, xRedo)
                         Notes(xI2).Value = xI1 * 10000
 
@@ -4159,7 +4294,7 @@ Jump2:
         LWAV.SelectedIndices.CopyTo(xIndices, 0)
 
         Dim xS As Integer
-        For xS = LastDefinitionListIndex To 0 Step -1
+        For xS = DefinitionLastListIndex() To 0 Step -1
             If Array.IndexOf(xIndices, xS) = -1 Then Exit For
         Next
 
@@ -4172,21 +4307,21 @@ Jump2:
                 hWAV(xI1 + 1) = hWAV(xI1 + 2)
                 hWAV(xI1 + 2) = xStr
 
-                LWAV.Items.Item(xI1) = C10to36(xI1 + 1) & ": " & hWAV(xI1 + 1)
-                LWAV.Items.Item(xI1 + 1) = C10to36(xI1 + 2) & ": " & hWAV(xI1 + 2)
+                RefreshWAVItem(xI1 + 1)
+                RefreshWAVItem(xI1 + 2)
 
                 If Not WAVChangeLabel Then GoTo 1100
 
-                Dim xL1 As String = C10to36(xI1 + 2)
-                Dim xL2 As String = C10to36(xI1 + 1)
+                Dim xL1 As String = DefinitionLabel(xI1 + 2)
+                Dim xL2 As String = DefinitionLabel(xI1 + 1)
                 For xI2 As Integer = 1 To UBound(Notes)
                     If Not IsColumnSound(Notes(xI2).ColumnIndex) Then Continue For
 
-                    If C10to36(Notes(xI2).Value \ 10000) = xL1 Then
+                    If DefinitionLabel(Notes(xI2).Value \ 10000) = xL1 Then
                         Me.RedoRelabelNote(Notes(xI2), xI1 * 10000 + 10000, xUndo, xRedo)
                         Notes(xI2).Value = xI1 * 10000 + 10000
 
-                    ElseIf C10to36(Notes(xI2).Value \ 10000) = xL2 Then
+                    ElseIf DefinitionLabel(Notes(xI2).Value \ 10000) = xL2 Then
                         Me.RedoRelabelNote(Notes(xI2), xI1 * 10000 + 20000, xUndo, xRedo)
                         Notes(xI2).Value = xI1 * 10000 + 20000
 
@@ -4230,7 +4365,7 @@ Jump2:
         LWAV.SelectedIndices.CopyTo(xIndices, 0)
         For xI1 As Integer = 0 To UBound(xIndices)
             hWAV(xIndices(xI1) + 1) = ""
-            LWAV.Items.Item(xIndices(xI1)) = C10to36(xIndices(xI1) + 1) & ": "
+            RefreshWAVItem(xIndices(xI1) + 1)
         Next
 
         LWAV.SelectedIndices.Clear()
@@ -4254,34 +4389,34 @@ Jump2:
         LBMP.SelectedIndices.CopyTo(xIndices, 0)
 
         Dim xS As Integer
-        For xS = 0 To LastDefinitionListIndex
+        For xS = 0 To DefinitionLastListIndex()
             If Array.IndexOf(xIndices, xS) = -1 Then Exit For
         Next
 
         Dim xStr As String = ""
         Dim xIndex As Integer = -1
-        For xI1 As Integer = xS To LastDefinitionListIndex
+        For xI1 As Integer = xS To DefinitionLastListIndex()
             xIndex = Array.IndexOf(xIndices, xI1)
             If xIndex <> -1 Then
                 xStr = hBMP(xI1 + 1)
                 hBMP(xI1 + 1) = hBMP(xI1)
                 hBMP(xI1) = xStr
 
-                LBMP.Items.Item(xI1) = C10to36(xI1 + 1) & ": " & hBMP(xI1 + 1)
-                LBMP.Items.Item(xI1 - 1) = C10to36(xI1) & ": " & hBMP(xI1)
+                RefreshBMPItem(xI1 + 1)
+                RefreshBMPItem(xI1)
 
                 If Not WAVChangeLabel Then GoTo 1101
 
-                Dim xL1 As String = C10to36(xI1)
-                Dim xL2 As String = C10to36(xI1 + 1)
+                Dim xL1 As String = DefinitionLabel(xI1)
+                Dim xL2 As String = DefinitionLabel(xI1 + 1)
                 For xI2 As Integer = 1 To UBound(Notes)
                     If Not IsColumnImage(Notes(xI2).ColumnIndex) Then Continue For
 
-                    If C10to36(Notes(xI2).Value \ 10000) = xL1 Then
+                    If DefinitionLabel(Notes(xI2).Value \ 10000) = xL1 Then
                         Me.RedoRelabelNote(Notes(xI2), xI1 * 10000 + 10000, xUndo, xRedo)
                         Notes(xI2).Value = xI1 * 10000 + 10000
 
-                    ElseIf C10to36(Notes(xI2).Value \ 10000) = xL2 Then
+                    ElseIf DefinitionLabel(Notes(xI2).Value \ 10000) = xL2 Then
                         Me.RedoRelabelNote(Notes(xI2), xI1 * 10000, xUndo, xRedo)
                         Notes(xI2).Value = xI1 * 10000
 
@@ -4313,7 +4448,7 @@ Jump2:
         LBMP.SelectedIndices.CopyTo(xIndices, 0)
 
         Dim xS As Integer
-        For xS = LastDefinitionListIndex To 0 Step -1
+        For xS = DefinitionLastListIndex() To 0 Step -1
             If Array.IndexOf(xIndices, xS) = -1 Then Exit For
         Next
 
@@ -4326,21 +4461,21 @@ Jump2:
                 hBMP(xI1 + 1) = hBMP(xI1 + 2)
                 hBMP(xI1 + 2) = xStr
 
-                LBMP.Items.Item(xI1) = C10to36(xI1 + 1) & ": " & hBMP(xI1 + 1)
-                LBMP.Items.Item(xI1 + 1) = C10to36(xI1 + 2) & ": " & hBMP(xI1 + 2)
+                RefreshBMPItem(xI1 + 1)
+                RefreshBMPItem(xI1 + 2)
 
                 If Not WAVChangeLabel Then GoTo 1100
 
-                Dim xL1 As String = C10to36(xI1 + 2)
-                Dim xL2 As String = C10to36(xI1 + 1)
+                Dim xL1 As String = DefinitionLabel(xI1 + 2)
+                Dim xL2 As String = DefinitionLabel(xI1 + 1)
                 For xI2 As Integer = 1 To UBound(Notes)
                     If Not IsColumnImage(Notes(xI2).ColumnIndex) Then Continue For
 
-                    If C10to36(Notes(xI2).Value \ 10000) = xL1 Then
+                    If DefinitionLabel(Notes(xI2).Value \ 10000) = xL1 Then
                         Me.RedoRelabelNote(Notes(xI2), xI1 * 10000 + 10000, xUndo, xRedo)
                         Notes(xI2).Value = xI1 * 10000 + 10000
 
-                    ElseIf C10to36(Notes(xI2).Value \ 10000) = xL2 Then
+                    ElseIf DefinitionLabel(Notes(xI2).Value \ 10000) = xL2 Then
                         Me.RedoRelabelNote(Notes(xI2), xI1 * 10000 + 20000, xUndo, xRedo)
                         Notes(xI2).Value = xI1 * 10000 + 20000
 
@@ -4390,7 +4525,7 @@ Jump2:
         LBMP.SelectedIndices.CopyTo(xIndices, 0)
         For xI1 As Integer = 0 To UBound(xIndices)
             hBMP(xIndices(xI1) + 1) = ""
-            LBMP.Items.Item(xIndices(xI1)) = C10to36(xIndices(xI1) + 1) & ": "
+            RefreshBMPItem(xIndices(xI1) + 1)
         Next
 
         LBMP.SelectedIndices.Clear()
@@ -4905,6 +5040,7 @@ case2:              Dim xI0 As Integer
     POGridExpander.CheckedChanged,
     POWaveFormExpander.CheckedChanged,
     POWAVExpander.CheckedChanged,
+    POBMPExpander.CheckedChanged,
     POBeatExpander.CheckedChanged
 
         Try
@@ -4917,6 +5053,7 @@ case2:              Dim xI0 As Integer
             ElseIf Object.ReferenceEquals(sender, POGridExpander) Then : Target = POGridPart2 ' : TargetParent = POGridInner
             ElseIf Object.ReferenceEquals(sender, POWaveFormExpander) Then : Target = POWaveFormPart2 ' : TargetParent = POWaveFormInner
             ElseIf Object.ReferenceEquals(sender, POWAVExpander) Then : Target = POWAVPart2 ' : TargetParent = POWaveFormInner
+            ElseIf Object.ReferenceEquals(sender, POBMPExpander) Then : Target = POBMPPart2 ' : TargetParent = POWaveFormInner
             ElseIf Object.ReferenceEquals(sender, POBeatExpander) Then : Target = POBeatPart2 ' : TargetParent = POWaveFormInner
             End If
 

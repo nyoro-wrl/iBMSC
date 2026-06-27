@@ -4,11 +4,13 @@ Namespace Editor
     Public Module Functions
         Public Const MaxDefinition As Integer = 3843
         Public Const LastDefinitionListIndex As Integer = MaxDefinition - 1
+        Public Const MaxBase36Definition As Integer = 1295
+        Public Const LastBase36DefinitionListIndex As Integer = MaxBase36Definition - 1
         Public Const MaxLegacyDefinition As Integer = 255
 
         Private Const DefinitionRadix As Integer = 62
         Private Const ChannelRadix As Integer = 36
-        Private Const MaxChannel As Integer = 1295
+        Private Const MaxChannel As Integer = MaxBase36Definition
 
         Public Function WriteDecimalWithDot(v As Double) As String
             Static nfi As New System.Globalization.NumberFormatInfo()
@@ -64,6 +66,14 @@ Namespace Editor
         Public Function C36ChannelTo10(ByVal xStart As String) As Integer
             xStart = Mid("00" & xStart, Len(xStart) + 1)
             Return C36ChannelTo10S(xStart.Chars(0)) * ChannelRadix + C36ChannelTo10S(xStart.Chars(1))
+        End Function
+
+        Public Function C10toBase36(ByVal xStart As Long) As String
+            Return C10to36Channel(xStart)
+        End Function
+
+        Public Function CBase36to10(ByVal xStart As String) As Integer
+            Return C36ChannelTo10(xStart)
         End Function
 
         Private Function C10to36ChannelS(ByVal xStart As Integer) As Char
@@ -258,6 +268,11 @@ Namespace Editor
 
 
         Public Function IsBase36(str As String) As Boolean
+            Static re As New Regex("^[A-Z0-9]+$")
+            Return re.IsMatch(str)
+        End Function
+
+        Public Function IsBase62(str As String) As Boolean
             Static re As New Regex("^[A-Za-z0-9]+$")
             Return re.IsMatch(str)
         End Function

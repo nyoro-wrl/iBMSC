@@ -172,6 +172,7 @@
 			<Mirror amp="2">Mirror</Mirror>
 		</Convert>
 		<WAV>
+			<Base62>Extend to base62</Base62>
 			<MultiSelection>Allow Multiple Selection</MultiSelection>
 			<Synchronize>Synchronize Note Labels</Synchronize>
 			<Emptyfill>Fill Empty Definition First</Emptyfill>
@@ -394,8 +395,12 @@
 		<AssociateFileType>Associate Filetype</AssociateFileType>
 		<MaxGridPartition>Max Grid Partition in BMS</MaxGridPartition>
 		<BeepWhileSaved>Beep while saved</BeepWhileSaved>
-		<ExtendBPM>Extend number of multi-byte BPMs to 3843 (01-zz)</ExtendBPM>
-		<ExtendSTOP>Extend number of STOPs to 3843 (01-zz)</ExtendSTOP>
+		<NewBMSUseBase62>Use base62 for new BMS</NewBMSUseBase62>
+		<BPMDefinitionMode>BPM definitions</BPMDefinitionMode>
+		<STOPDefinitionMode>STOP definitions</STOPDefinitionMode>
+		<DefinitionModeDefault>Default (01-FF)</DefinitionModeDefault>
+		<DefinitionModeBase36>36 base (01-ZZ)</DefinitionModeBase36>
+		<DefinitionModeBase62>62 base (01-zz)</DefinitionModeBase62>
 		<AutoFocusOnMouseEnter>Automatically set focus to editing panel on mouse enter</AutoFocusOnMouseEnter>
 		<DisableFirstClick>Disable first click if the editing panel is not focused</DisableFirstClick>
 		<AutoSave>AutoSave</AutoSave>
