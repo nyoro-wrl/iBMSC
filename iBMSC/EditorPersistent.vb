@@ -88,6 +88,7 @@ Partial Public Class MainWindow
             '.WriteAttributeString("PreviewErrorCheck", PreviewErrorCheck)
             .WriteAttributeString("ClickStopPreview", ClickStopPreview)
             .WriteAttributeString("LaneHighlight", LaneHighlight)
+            .WriteAttributeString("UndoRedoMemoryLimitMB", UndoRedoMemoryLimitMB)
             .WriteEndElement()
 
             .WriteStartElement("Save")
@@ -371,6 +372,9 @@ Partial Public Class MainWindow
                 XMLLoadAttribute(.GetAttribute("ClickStopPreview"), ClickStopPreview)
                 XMLLoadAttribute(.GetAttribute("LaneHighlight"), LaneHighlight)
                 LaneHighlight = Math.Min(100, Math.Max(0, LaneHighlight))
+                XMLLoadAttribute(.GetAttribute("UndoRedoMemoryLimitMB"), UndoRedoMemoryLimitMB)
+                NormalizeUndoRedoMemoryLimit()
+                EnforceUndoRedoHistoryLimit()
             End With
         End If
 
@@ -1154,6 +1158,7 @@ EndOfSub:
                 XMLLoadLocale(eGeneralOptions.Item("minutes"), Strings.fopGeneral.minutes)
                 XMLLoadLocale(eGeneralOptions.Item("StopPreviewOnClick"), Strings.fopGeneral.StopPreviewOnClick)
                 XMLLoadLocale(eGeneralOptions.Item("LaneHighlight"), Strings.fopGeneral.LaneHighlight)
+                XMLLoadLocale(eGeneralOptions.Item("UndoRedoMemoryLimit"), Strings.fopGeneral.UndoRedoMemoryLimit)
             End If
 
             Dim eFind As XmlElement = Root.Item("Find")

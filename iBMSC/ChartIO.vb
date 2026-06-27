@@ -950,34 +950,23 @@ Jump1:
                     Next
 
                 Case &H6F646E55     'Undo / Redo Commands
-                    Dim URCount As Integer = br.ReadInt32   'Should be 100
-                    sI = br.ReadInt32
+                    Dim URCount As Integer = br.ReadInt32
+                    Dim xPointer As Integer = br.ReadInt32
 
-                    For xI As Integer = 0 To 99
-                        Dim xUndoCount As Integer = br.ReadInt32
-                        Dim xBaseUndo As New UndoRedo.Void
-                        Dim xIteratorUndo As UndoRedo.LinkedURCmd = xBaseUndo
+                    If URCount <= 0 OrElse URCount > MaxUndoRedoSteps + 2 Then
+                        ClearUndo()
+                        GoTo EndOfSub
+                    End If
 
-                        For xxj As Integer = 1 To xUndoCount
-                            Dim xByteLen As Integer = br.ReadInt32
-                            Dim xByte() As Byte = br.ReadBytes(xByteLen)
-                            xIteratorUndo.Next = UndoRedo.fromBytes(xByte)
-                            xIteratorUndo = xIteratorUndo.Next
-                        Next
+                    Dim xUndoList(URCount - 1) As UndoRedo.LinkedURCmd
+                    Dim xRedoList(URCount - 1) As UndoRedo.LinkedURCmd
 
-                        sUndo(xI) = xBaseUndo.Next
-
-                        Dim xRedoCount As Integer = br.ReadInt32
-                        Dim xBaseRedo As New UndoRedo.Void
-                        Dim xIteratorRedo As UndoRedo.LinkedURCmd = xBaseRedo
-                        For xxj As Integer = 1 To xRedoCount
-                            Dim xByteLen As Integer = br.ReadInt32
-                            Dim xByte() As Byte = br.ReadBytes(xByteLen)
-                            xIteratorRedo.Next = UndoRedo.fromBytes(xByte)
-                            xIteratorRedo = xIteratorRedo.Next
-                        Next
-                        sRedo(xI) = xBaseRedo.Next
+                    For xI As Integer = 0 To URCount - 1
+                        xUndoList(xI) = ReadUndoRedoCommandList(br)
+                        xRedoList(xI) = ReadUndoRedoCommandList(br)
                     Next
+
+                    ImportUndoRedoHistory(xUndoList, xRedoList, xPointer)
 
             End Select
         Loop
@@ -985,10 +974,7 @@ Jump1:
 EndOfSub:
         br.Close()
 
-        TBUndo.Enabled = sUndo(sI).ofType <> UndoRedo.opNoOperation
-        TBRedo.Enabled = sRedo(sIA).ofType <> UndoRedo.opNoOperation
-        mnUndo.Enabled = sUndo(sI).ofType <> UndoRedo.opNoOperation
-        mnRedo.Enabled = sRedo(sIA).ofType <> UndoRedo.opNoOperation
+        RefreshUndoRedoEnabled()
 
         RefreshDefinitionLists()
 
@@ -1166,46 +1152,28 @@ EndOfSub:
             'Undo / Redo Commands
             'bw.Write("Undo".ToCharArray)
             bw.Write(&H6F646E55)
-            bw.Write(100)
-            bw.Write(sI)
+            Dim xUndoHistory As List(Of UndoRedoHistorySlot) = GetUndoHistory()
+            Dim xRedoHistory As List(Of UndoRedoHistorySlot) = GetRedoHistory()
+            Dim xHistoryCount As Integer = xUndoHistory.Count + xRedoHistory.Count + 2
 
-            For i As Integer = 0 To 99
-                'UndoCommandsCount
-                Dim countUndo As Integer = 0
-                Dim pUndo As UndoRedo.LinkedURCmd = sUndo(i)
-                While pUndo IsNot Nothing
-                    countUndo += 1
-                    pUndo = pUndo.Next
-                End While
-                bw.Write(countUndo)
+            bw.Write(xHistoryCount)
+            bw.Write(xUndoHistory.Count)
 
-                'UndoCommands
-                pUndo = sUndo(i)
-                For xxi As Integer = 1 To countUndo
-                    Dim bUndo() As Byte = pUndo.toBytes
-                    bw.Write(bUndo.Length)  'Length
-                    bw.Write(bUndo)         'Command
-                    pUndo = pUndo.Next
-                Next
+            WriteUndoRedoCommandList(bw, New UndoRedo.NoOperation)
+            WriteUndoRedoCommandList(bw, New UndoRedo.NoOperation)
 
-                'RedoCommandsCount
-                Dim countRedo As Integer = 0
-                Dim pRedo As UndoRedo.LinkedURCmd = sRedo(i)
-                While pRedo IsNot Nothing
-                    countRedo += 1
-                    pRedo = pRedo.Next
-                End While
-                bw.Write(countRedo)
-
-                'RedoCommands
-                pRedo = sRedo(i)
-                For xxi As Integer = 1 To countRedo
-                    Dim bRedo() As Byte = pRedo.toBytes
-                    bw.Write(bRedo.Length)
-                    bw.Write(bRedo)
-                    pRedo = pRedo.Next
-                Next
+            For Each xSlot As UndoRedoHistorySlot In xUndoHistory
+                WriteUndoRedoCommandList(bw, xSlot.UndoCmd)
+                WriteUndoRedoCommandList(bw, xSlot.RedoCmd)
             Next
+
+            For Each xSlot As UndoRedoHistorySlot In xRedoHistory
+                WriteUndoRedoCommandList(bw, xSlot.UndoCmd)
+                WriteUndoRedoCommandList(bw, xSlot.RedoCmd)
+            Next
+
+            WriteUndoRedoCommandList(bw, New UndoRedo.NoOperation)
+            WriteUndoRedoCommandList(bw, New UndoRedo.NoOperation)
 
             bw.Close()
 

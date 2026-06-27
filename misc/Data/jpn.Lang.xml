@@ -408,6 +408,7 @@
 		<minutes>分</minutes>
 		<StopPreviewOnClick>エディットパネル上をクリックするとプレビュー再生をストップ</StopPreviewOnClick>
 		<LaneHighlight>レーンのハイライト表示</LaneHighlight>
+		<UndoRedoMemoryLimit>Undo/Redo履歴メモリ上限</UndoRedoMemoryLimit>
 	</GeneralOptions>
 	<Find>
 		<NoteRange>対象オブジェ</NoteRange>

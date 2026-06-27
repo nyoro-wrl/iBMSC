@@ -408,6 +408,7 @@
 		<minutes>minutes</minutes>
 		<StopPreviewOnClick>Stop preview if clicked on the editing panel</StopPreviewOnClick>
 		<LaneHighlight>Lane highlight</LaneHighlight>
+		<UndoRedoMemoryLimit>Undo/Redo memory limit</UndoRedoMemoryLimit>
 	</GeneralOptions>
 	<Find>
 		<NoteRange>Note Range</NoteRange>

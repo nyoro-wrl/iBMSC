@@ -52,6 +52,9 @@ Partial Class OpGeneral
         Me.nLaneHighlight = New System.Windows.Forms.NumericUpDown()
         Me.LabelLaneHighlight = New System.Windows.Forms.Label()
         Me.LabelLaneHighlightPercent = New System.Windows.Forms.Label()
+        Me.nUndoRedoMemoryLimit = New System.Windows.Forms.NumericUpDown()
+        Me.LabelUndoRedoMemoryLimit = New System.Windows.Forms.Label()
+        Me.LabelUndoRedoMemoryLimitMB = New System.Windows.Forms.Label()
         Me.nGridPartition = New System.Windows.Forms.NumericUpDown()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TBAssociateBME = New System.Windows.Forms.Button()
@@ -64,6 +67,7 @@ Partial Class OpGeneral
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NAutoSave, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nLaneHighlight, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.nUndoRedoMemoryLimit, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nGridPartition, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -76,7 +80,7 @@ Partial Class OpGeneral
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(229, 558)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(229, 587)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -364,6 +368,34 @@ Partial Class OpGeneral
         Me.LabelLaneHighlightPercent.Text = "%"
         Me.LabelLaneHighlightPercent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'nUndoRedoMemoryLimit
+        '
+        Me.nUndoRedoMemoryLimit.Location = New System.Drawing.Point(219, 544)
+        Me.nUndoRedoMemoryLimit.Maximum = New Decimal(New Integer() {1024, 0, 0, 0})
+        Me.nUndoRedoMemoryLimit.Minimum = New Decimal(New Integer() {16, 0, 0, 0})
+        Me.nUndoRedoMemoryLimit.Name = "nUndoRedoMemoryLimit"
+        Me.nUndoRedoMemoryLimit.Size = New System.Drawing.Size(62, 23)
+        Me.nUndoRedoMemoryLimit.TabIndex = 72
+        Me.nUndoRedoMemoryLimit.Value = New Decimal(New Integer() {1024, 0, 0, 0})
+        '
+        'LabelUndoRedoMemoryLimit
+        '
+        Me.LabelUndoRedoMemoryLimit.Location = New System.Drawing.Point(34, 546)
+        Me.LabelUndoRedoMemoryLimit.Name = "LabelUndoRedoMemoryLimit"
+        Me.LabelUndoRedoMemoryLimit.Size = New System.Drawing.Size(179, 17)
+        Me.LabelUndoRedoMemoryLimit.TabIndex = 73
+        Me.LabelUndoRedoMemoryLimit.Text = "Undo/Redo memory limit"
+        Me.LabelUndoRedoMemoryLimit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'LabelUndoRedoMemoryLimitMB
+        '
+        Me.LabelUndoRedoMemoryLimitMB.Location = New System.Drawing.Point(287, 546)
+        Me.LabelUndoRedoMemoryLimitMB.Name = "LabelUndoRedoMemoryLimitMB"
+        Me.LabelUndoRedoMemoryLimitMB.Size = New System.Drawing.Size(28, 17)
+        Me.LabelUndoRedoMemoryLimitMB.TabIndex = 74
+        Me.LabelUndoRedoMemoryLimitMB.Text = "MB"
+        Me.LabelUndoRedoMemoryLimitMB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'nGridPartition
         '
         Me.nGridPartition.Location = New System.Drawing.Point(219, 107)
@@ -452,7 +484,10 @@ Partial Class OpGeneral
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(413, 605)
+        Me.ClientSize = New System.Drawing.Size(413, 634)
+        Me.Controls.Add(Me.LabelUndoRedoMemoryLimitMB)
+        Me.Controls.Add(Me.LabelUndoRedoMemoryLimit)
+        Me.Controls.Add(Me.nUndoRedoMemoryLimit)
         Me.Controls.Add(Me.LabelLaneHighlightPercent)
         Me.Controls.Add(Me.LabelLaneHighlight)
         Me.Controls.Add(Me.nLaneHighlight)
@@ -499,6 +534,7 @@ Partial Class OpGeneral
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NAutoSave, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nLaneHighlight, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.nUndoRedoMemoryLimit, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nGridPartition, System.ComponentModel.ISupportInitialize).EndInit()
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.FlowLayoutPanel1.PerformLayout()
@@ -536,6 +572,9 @@ Partial Class OpGeneral
     Friend WithEvents nLaneHighlight As System.Windows.Forms.NumericUpDown
     Friend WithEvents LabelLaneHighlight As System.Windows.Forms.Label
     Friend WithEvents LabelLaneHighlightPercent As System.Windows.Forms.Label
+    Friend WithEvents nUndoRedoMemoryLimit As System.Windows.Forms.NumericUpDown
+    Friend WithEvents LabelUndoRedoMemoryLimit As System.Windows.Forms.Label
+    Friend WithEvents LabelUndoRedoMemoryLimitMB As System.Windows.Forms.Label
     Friend WithEvents nGridPartition As System.Windows.Forms.NumericUpDown
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents TBAssociateBME As System.Windows.Forms.Button

@@ -21,6 +21,11 @@ Public Class UndoRedo
     Private Const trueByte As Byte = 1
     Private Const falseByte As Byte = 0
 
+    Private Const CommandObjectEstimateBytes As Long = 16
+    Private Const LinkReferenceEstimateBytes As Long = 8
+    Private Const NoteEstimateBytes As Long = 32
+    Private Const ArrayEstimateBytes As Long = 24
+
 
 
     Public MustInherit Class LinkedURCmd
@@ -28,7 +33,24 @@ Public Class UndoRedo
         Public MustOverride Function ofType() As Byte
         Public MustOverride Function toBytes() As Byte()
         'Public MustOverride Sub fromBytes(ByVal b As Byte())
+
+        Public Overridable Function EstimateBytes() As Long
+            Return CommandObjectEstimateBytes + LinkReferenceEstimateBytes
+        End Function
     End Class
+
+
+
+    Public Shared Function EstimateCommandBytes(ByVal cmd As LinkedURCmd) As Long
+        Dim xBytes As Long = 0
+
+        Do While cmd IsNot Nothing
+            If cmd.ofType <> opNoOperation Then xBytes += cmd.EstimateBytes()
+            cmd = cmd.Next
+        Loop
+
+        Return xBytes
+    End Function
 
 
 
@@ -108,6 +130,10 @@ Public Class UndoRedo
 
             Return ms.GetBuffer()
         End Function
+
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + NoteEstimateBytes
+        End Function
     End Class
 
     Public Class AddNote : Inherits LinkedURNoteCmd
@@ -153,6 +179,10 @@ Public Class UndoRedo
             Return ms.GetBuffer()
         End Function
 
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + NoteEstimateBytes
+        End Function
+
         Public Sub New(ByVal b() As Byte)
             Dim br = New BinaryReader(New MemoryStream(b))
             FromBinaryReader(br)
@@ -183,6 +213,10 @@ Public Class UndoRedo
             bw.Write(NVPosition)
 
             Return ms.GetBuffer()
+        End Function
+
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + 12
         End Function
 
         Public Sub New(ByVal b() As Byte)
@@ -219,6 +253,10 @@ Public Class UndoRedo
             Return ms.GetBuffer()
         End Function
 
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + 16
+        End Function
+
         Public Sub New(ByVal b() As Byte)
             Dim br = New BinaryReader(New MemoryStream(b))
             FromBinaryReader(br)
@@ -248,6 +286,10 @@ Public Class UndoRedo
             WriteBinWriter(bw)
             bw.Write(NHidden)
             Return MS.GetBuffer()
+        End Function
+
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + 4
         End Function
 
         Public Sub New(ByVal b() As Byte)
@@ -280,6 +322,10 @@ Public Class UndoRedo
             bw.Write(NValue)
 
             Return ms.GetBuffer()
+        End Function
+
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + 8
         End Function
 
         Public Sub New(ByVal b() As Byte)
@@ -341,6 +387,12 @@ Public Class UndoRedo
             Return xToBytes
         End Function
 
+        Public Overrides Function EstimateBytes() As Long
+            Dim xCount As Long = 0
+            If Indices IsNot Nothing Then xCount = Indices.Length
+            Return MyBase.EstimateBytes() + 8 + ArrayEstimateBytes + 4 * xCount
+        End Function
+
         Public Sub New(ByVal b() As Byte)
             Value = BitConverter.ToDouble(b, 1)
             Dim xUbound As Integer = BitConverter.ToInt32(b, 9)
@@ -380,6 +432,10 @@ Public Class UndoRedo
                                   IIf(Selected, trueByte, falseByte)}
         End Function
 
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + 28
+        End Function
+
         Public Sub New(ByVal b() As Byte)
             SelStart = BitConverter.ToDouble(b, 1)
             SelLength = BitConverter.ToDouble(b, 9)
@@ -412,6 +468,10 @@ Public Class UndoRedo
                                   IIf(AutoConvert, trueByte, falseByte)}
         End Function
 
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + 8
+        End Function
+
         Public Sub New(ByVal b() As Byte)
             BecomeNT = CBool(b(1))
             AutoConvert = CBool(b(2))
@@ -436,6 +496,10 @@ Public Class UndoRedo
         Public Overrides Function toBytes() As Byte()
             toBytes = New Byte() {opWavAutoincFlag,
                                   IIf(Checked, trueByte, falseByte)}
+        End Function
+
+        Public Overrides Function EstimateBytes() As Long
+            Return MyBase.EstimateBytes() + 4
         End Function
 
         Public Sub New(ByVal b() As Byte)

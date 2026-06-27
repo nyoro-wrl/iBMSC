@@ -185,6 +185,7 @@ Public Class Strings
         Public Shared minutes As String = "minutes"
         Public Shared StopPreviewOnClick As String = "Stop preview if clicked on the editing panel"
         Public Shared LaneHighlight As String = "Lane Highlight"
+        Public Shared UndoRedoMemoryLimit As String = "Undo/Redo memory limit"
     End Class
 
     Public Class fFind

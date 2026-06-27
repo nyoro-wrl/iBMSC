@@ -169,16 +169,16 @@ Partial Public Class MainWindow
     Private Sub AddUndo(ByVal sCUndo As UndoRedo.LinkedURCmd, ByVal sCRedo As UndoRedo.LinkedURCmd, Optional ByVal OverWrite As Boolean = False)
         If sCUndo Is Nothing And sCRedo Is Nothing Then Exit Sub
         If IsSaved Then SetIsSaved(False)
+        Dim xHadRedo As Boolean = CanRedo()
         If Not OverWrite Then sI = sIA()
 
-        'ClearURReference(sUndo(sI))
-        'ClearURReference(sRedo(sI))
-        'ClearURReference(sUndo(sIA))
-        'ClearURReference(sRedo(sIA))
-        sUndo(sI) = sCUndo
-        sRedo(sI) = sCRedo
-        sUndo(sIA) = New UndoRedo.NoOperation
-        sRedo(sIA) = New UndoRedo.NoOperation
+        StoreUndoRedoSlot(sI, sCUndo, sCRedo)
+        If xHadRedo Then
+            ClearRedoHistory(sIA())
+        Else
+            SetUndoRedoEnd(sIA())
+        End If
+        EnforceUndoRedoHistoryLimit()
         TBUndo.Enabled = True
         TBRedo.Enabled = False
         mnUndo.Enabled = True
@@ -186,22 +186,206 @@ Partial Public Class MainWindow
     End Sub
 
     Private Sub ClearUndo()
-        'For xI1 As Integer = 0 To 99
-        '    ClearURReference(sUndo(xI1))
-        '    ClearURReference(sRedo(xI1))
-        'Next
-
-        ReDim sUndo(99)
-        ReDim sRedo(99)
-        sUndo(0) = New UndoRedo.NoOperation
-        sUndo(1) = New UndoRedo.NoOperation
-        sRedo(0) = New UndoRedo.NoOperation
-        sRedo(1) = New UndoRedo.NoOperation
+        ReDim sUndo(UndoRedoHistoryCount - 1)
+        ReDim sRedo(UndoRedoHistoryCount - 1)
         sI = 0
-        TBUndo.Enabled = False
-        TBRedo.Enabled = False
-        mnUndo.Enabled = False
-        mnRedo.Enabled = False
+        UndoRedoMemoryUsedBytes = 0
+        SetUndoRedoEnd(0)
+        SetUndoRedoEnd(sIA())
+        RefreshUndoRedoEnabled()
+    End Sub
+
+    Private Sub ClearRedoHistory(ByVal startIndex As Integer)
+        Dim xI As Integer = startIndex
+
+        Do While xI <> sI
+            Dim xIsEnd As Boolean = IsUndoRedoEnd(sUndo(xI)) AndAlso IsUndoRedoEnd(sRedo(xI))
+            ClearUndoRedoSlot(xI)
+
+            If xIsEnd Then Exit Do
+            xI = NextUndoIndex(xI, sUndo.Length)
+        Loop
+
+        SetUndoRedoEnd(startIndex)
+    End Sub
+
+    Private Function FindOldestUndoIndex() As Integer
+        Dim xI As Integer = sI
+        Dim xOldest As Integer = -1
+
+        For xCount As Integer = 1 To sUndo.Length
+            If IsUndoRedoEnd(sUndo(xI)) Then Exit For
+
+            xOldest = xI
+            xI = PreviousUndoIndex(xI, sUndo.Length)
+        Next
+
+        Return xOldest
+    End Function
+
+    Private Function FindFarthestRedoIndex() As Integer
+        Dim xI As Integer = sIA()
+        Dim xFarthest As Integer = -1
+
+        For xCount As Integer = 1 To sRedo.Length
+            If IsUndoRedoEnd(sRedo(xI)) Then Exit For
+
+            xFarthest = xI
+            xI = NextUndoIndex(xI, sRedo.Length)
+        Next
+
+        Return xFarthest
+    End Function
+
+    Private Sub EnforceUndoRedoHistoryLimit()
+        NormalizeUndoRedoMemoryLimit()
+
+        Do While UndoRedoMemoryUsedBytes > UndoRedoMemoryLimitBytes()
+            Dim xOldestUndo As Integer = FindOldestUndoIndex()
+            If xOldestUndo <> -1 AndAlso xOldestUndo <> sI Then
+                SetUndoRedoEnd(xOldestUndo)
+                Continue Do
+            End If
+
+            Dim xFarthestRedo As Integer = FindFarthestRedoIndex()
+            If xFarthestRedo = -1 Then Exit Do
+
+            SetUndoRedoEnd(xFarthestRedo)
+        Loop
+
+        RefreshUndoRedoEnabled()
+    End Sub
+
+    Private Structure UndoRedoHistorySlot
+        Public UndoCmd As UndoRedo.LinkedURCmd
+        Public RedoCmd As UndoRedo.LinkedURCmd
+
+        Public Sub New(ByVal undoCmd As UndoRedo.LinkedURCmd, ByVal redoCmd As UndoRedo.LinkedURCmd)
+            Me.UndoCmd = undoCmd
+            Me.RedoCmd = redoCmd
+        End Sub
+    End Structure
+
+    Private Function GetUndoHistory() As List(Of UndoRedoHistorySlot)
+        Dim xHistory As New List(Of UndoRedoHistorySlot)
+        Dim xI As Integer = sI
+
+        For xCount As Integer = 1 To sUndo.Length
+            If IsUndoRedoEnd(sUndo(xI)) Then Exit For
+
+            xHistory.Add(New UndoRedoHistorySlot(sUndo(xI), sRedo(xI)))
+            xI = PreviousUndoIndex(xI, sUndo.Length)
+        Next
+
+        xHistory.Reverse()
+        Return xHistory
+    End Function
+
+    Private Function GetRedoHistory() As List(Of UndoRedoHistorySlot)
+        Dim xHistory As New List(Of UndoRedoHistorySlot)
+        Dim xI As Integer = sIA()
+
+        For xCount As Integer = 1 To sRedo.Length
+            If IsUndoRedoEnd(sRedo(xI)) Then Exit For
+
+            xHistory.Add(New UndoRedoHistorySlot(sUndo(xI), sRedo(xI)))
+            xI = NextUndoIndex(xI, sRedo.Length)
+        Next
+
+        Return xHistory
+    End Function
+
+    Private Sub ImportUndoRedoHistory(ByVal undoList() As UndoRedo.LinkedURCmd,
+                                      ByVal redoList() As UndoRedo.LinkedURCmd,
+                                      ByVal pointer As Integer)
+        ClearUndo()
+
+        If undoList Is Nothing OrElse redoList Is Nothing Then Exit Sub
+        If undoList.Length = 0 OrElse undoList.Length <> redoList.Length Then Exit Sub
+        If pointer < 0 OrElse pointer >= undoList.Length Then Exit Sub
+
+        Dim xUndoHistory As New List(Of UndoRedoHistorySlot)
+        Dim xI As Integer = pointer
+
+        For xCount As Integer = 1 To undoList.Length
+            If IsUndoRedoEnd(undoList(xI)) Then Exit For
+
+            xUndoHistory.Add(New UndoRedoHistorySlot(undoList(xI), redoList(xI)))
+            xI = PreviousUndoIndex(xI, undoList.Length)
+        Next
+
+        xUndoHistory.Reverse()
+        If xUndoHistory.Count > MaxUndoRedoSteps Then
+            xUndoHistory.RemoveRange(0, xUndoHistory.Count - MaxUndoRedoSteps)
+        End If
+
+        For Each xSlot As UndoRedoHistorySlot In xUndoHistory
+            sI = sIA()
+            StoreUndoRedoSlot(sI, xSlot.UndoCmd, xSlot.RedoCmd)
+        Next
+
+        Dim xRedoHistory As New List(Of UndoRedoHistorySlot)
+        xI = NextUndoIndex(pointer, redoList.Length)
+
+        For xCount As Integer = 1 To redoList.Length
+            If IsUndoRedoEnd(redoList(xI)) Then Exit For
+
+            xRedoHistory.Add(New UndoRedoHistorySlot(undoList(xI), redoList(xI)))
+            xI = NextUndoIndex(xI, redoList.Length)
+        Next
+
+        Dim xRedoLimit As Integer = MaxUndoRedoSteps - xUndoHistory.Count
+        If xRedoHistory.Count > xRedoLimit Then
+            xRedoHistory.RemoveRange(xRedoLimit, xRedoHistory.Count - xRedoLimit)
+        End If
+
+        xI = sIA()
+        For Each xSlot As UndoRedoHistorySlot In xRedoHistory
+            StoreUndoRedoSlot(xI, xSlot.UndoCmd, xSlot.RedoCmd)
+            xI = NextUndoIndex(xI, sUndo.Length)
+        Next
+
+        SetUndoRedoEnd(xI)
+        EnforceUndoRedoHistoryLimit()
+        RefreshUndoRedoEnabled()
+    End Sub
+
+    Private Function ReadUndoRedoCommandList(ByVal br As BinaryReader) As UndoRedo.LinkedURCmd
+        Dim xCount As Integer = br.ReadInt32
+        Dim xBase As New UndoRedo.Void
+        Dim xIterator As UndoRedo.LinkedURCmd = xBase
+
+        For xI As Integer = 1 To xCount
+            Dim xByteLen As Integer = br.ReadInt32
+            Dim xByte() As Byte = br.ReadBytes(xByteLen)
+            Dim xCmd As UndoRedo.LinkedURCmd = UndoRedo.fromBytes(xByte)
+
+            If xCmd Is Nothing Then Continue For
+            xIterator.Next = xCmd
+            xIterator = xIterator.Next
+        Next
+
+        Return xBase.Next
+    End Function
+
+    Private Sub WriteUndoRedoCommandList(ByVal bw As BinaryWriter, ByVal cmd As UndoRedo.LinkedURCmd)
+        Dim xCount As Integer = 0
+        Dim xIterator As UndoRedo.LinkedURCmd = cmd
+
+        While xIterator IsNot Nothing
+            xCount += 1
+            xIterator = xIterator.Next
+        End While
+
+        bw.Write(xCount)
+
+        xIterator = cmd
+        For xI As Integer = 1 To xCount
+            Dim xBytes() As Byte = xIterator.toBytes
+            bw.Write(xBytes.Length)
+            bw.Write(xBytes)
+            xIterator = xIterator.Next
+        Next
     End Sub
 
     Private Sub RedoAddNote(ByVal note As Note,

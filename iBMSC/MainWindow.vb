@@ -100,9 +100,16 @@ Public Class MainWindow
     'Dim SaveTheme As Boolean = True
 
     'Variables for undo/redo
-    Dim sUndo(99) As UndoRedo.LinkedURCmd
-    Dim sRedo(99) As UndoRedo.LinkedURCmd
+    Private Const MaxUndoRedoSteps As Integer = 100000
+    Private Const UndoRedoHistoryCount As Integer = MaxUndoRedoSteps + 1
+    Private Const DefaultUndoRedoMemoryLimitMB As Integer = 1024
+    Private Const MinUndoRedoMemoryLimitMB As Integer = 16
+    Private Const MaxUndoRedoMemoryLimitMB As Integer = 1024
+    Dim sUndo(UndoRedoHistoryCount - 1) As UndoRedo.LinkedURCmd
+    Dim sRedo(UndoRedoHistoryCount - 1) As UndoRedo.LinkedURCmd
     Dim sI As Integer = 0
+    Dim UndoRedoMemoryLimitMB As Integer = DefaultUndoRedoMemoryLimitMB
+    Dim UndoRedoMemoryUsedBytes As Long = 0
 
     'Variables for select tool
     Dim DisableVerticalMove As Boolean = False
@@ -1145,11 +1152,9 @@ Public Class MainWindow
 
         spMain = New Panel() {PMainInL, PMainIn, PMainInR}
 
-        sUndo(0) = New UndoRedo.NoOperation
-        sUndo(1) = New UndoRedo.NoOperation
-        sRedo(0) = New UndoRedo.NoOperation
-        sRedo(1) = New UndoRedo.NoOperation
         sI = 0
+        SetUndoRedoEnd(0)
+        SetUndoRedoEnd(sIA())
 
         RefreshDefinitionLists()
         CHPlayer.SelectedIndex = 0
@@ -2887,13 +2892,83 @@ StartCount:     If Not NTInput Then
 
 
 
+    Private Function NextUndoIndex(ByVal index As Integer, ByVal count As Integer) As Integer
+        If index >= count - 1 Then
+            Return 0
+        End If
+
+        Return index + 1
+    End Function
+
+    Private Function PreviousUndoIndex(ByVal index As Integer, ByVal count As Integer) As Integer
+        If index <= 0 Then
+            Return count - 1
+        End If
+
+        Return index - 1
+    End Function
+
     Private Function sIA() As Integer
-        Return IIf(sI > 98, 0, sI + 1)
+        Return NextUndoIndex(sI, sUndo.Length)
     End Function
 
     Private Function sIM() As Integer
-        Return IIf(sI < 1, 99, sI - 1)
+        Return PreviousUndoIndex(sI, sUndo.Length)
     End Function
+
+    Private Function IsUndoRedoEnd(ByVal cmd As UndoRedo.LinkedURCmd) As Boolean
+        Return cmd Is Nothing OrElse cmd.ofType = UndoRedo.opNoOperation
+    End Function
+
+    Private Function CanUndo() As Boolean
+        Return Not IsUndoRedoEnd(sUndo(sI))
+    End Function
+
+    Private Function CanRedo() As Boolean
+        Return Not IsUndoRedoEnd(sRedo(sIA()))
+    End Function
+
+    Private Function UndoRedoMemoryLimitBytes() As Long
+        Return CLng(UndoRedoMemoryLimitMB) * 1024 * 1024
+    End Function
+
+    Private Sub NormalizeUndoRedoMemoryLimit()
+        UndoRedoMemoryLimitMB = Math.Min(MaxUndoRedoMemoryLimitMB, Math.Max(MinUndoRedoMemoryLimitMB, UndoRedoMemoryLimitMB))
+    End Sub
+
+    Private Function EstimateUndoRedoSlotBytes(ByVal index As Integer) As Long
+        If IsUndoRedoEnd(sUndo(index)) AndAlso IsUndoRedoEnd(sRedo(index)) Then Return 0
+        Return UndoRedo.EstimateCommandBytes(sUndo(index)) + UndoRedo.EstimateCommandBytes(sRedo(index))
+    End Function
+
+    Private Sub ClearUndoRedoSlot(ByVal index As Integer)
+        UndoRedoMemoryUsedBytes -= EstimateUndoRedoSlotBytes(index)
+        If UndoRedoMemoryUsedBytes < 0 Then UndoRedoMemoryUsedBytes = 0
+        sUndo(index) = Nothing
+        sRedo(index) = Nothing
+    End Sub
+
+    Private Sub StoreUndoRedoSlot(ByVal index As Integer,
+                                  ByVal undoCmd As UndoRedo.LinkedURCmd,
+                                  ByVal redoCmd As UndoRedo.LinkedURCmd)
+        ClearUndoRedoSlot(index)
+        sUndo(index) = undoCmd
+        sRedo(index) = redoCmd
+        UndoRedoMemoryUsedBytes += EstimateUndoRedoSlotBytes(index)
+    End Sub
+
+    Private Sub SetUndoRedoEnd(ByVal index As Integer)
+        ClearUndoRedoSlot(index)
+        sUndo(index) = New UndoRedo.NoOperation
+        sRedo(index) = New UndoRedo.NoOperation
+    End Sub
+
+    Private Sub RefreshUndoRedoEnabled()
+        TBUndo.Enabled = CanUndo()
+        TBRedo.Enabled = CanRedo()
+        mnUndo.Enabled = TBUndo.Enabled
+        mnRedo.Enabled = TBRedo.Enabled
+    End Sub
 
 
 
@@ -2901,28 +2976,22 @@ StartCount:     If Not NTInput Then
         KMouseOver = -1
         'KMouseDown = -1
         ReDim SelectedNotes(-1)
-        If sUndo(sI).ofType = UndoRedo.opNoOperation Then Exit Sub
+        If Not CanUndo() Then Exit Sub
         PerformCommand(sUndo(sI))
         sI = sIM()
 
-        TBUndo.Enabled = sUndo(sI).ofType <> UndoRedo.opNoOperation
-        TBRedo.Enabled = sRedo(sIA).ofType <> UndoRedo.opNoOperation
-        mnUndo.Enabled = sUndo(sI).ofType <> UndoRedo.opNoOperation
-        mnRedo.Enabled = sRedo(sIA).ofType <> UndoRedo.opNoOperation
+        RefreshUndoRedoEnabled()
     End Sub
 
     Private Sub TBRedo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBRedo.Click, mnRedo.Click
         KMouseOver = -1
         'KMouseDown = -1
         ReDim SelectedNotes(-1)
-        If sRedo(sIA).ofType = UndoRedo.opNoOperation Then Exit Sub
+        If Not CanRedo() Then Exit Sub
         PerformCommand(sRedo(sIA))
         sI = sIA()
 
-        TBUndo.Enabled = sUndo(sI).ofType <> UndoRedo.opNoOperation
-        TBRedo.Enabled = sRedo(sIA).ofType <> UndoRedo.opNoOperation
-        mnUndo.Enabled = sUndo(sI).ofType <> UndoRedo.opNoOperation
-        mnRedo.Enabled = sRedo(sIA).ofType <> UndoRedo.opNoOperation
+        RefreshUndoRedoEnabled()
     End Sub
 
     'Undo appends before, Redo appends after.
@@ -3539,7 +3608,7 @@ StartCount:     If Not NTInput Then
 
         Dim xDiag As New OpGeneral(gWheel, gPgUpDn, MiddleButtonMoveMethod, xTE, 192.0R / BMSGridLimit,
             AutoSaveInterval, BeepWhileSaved, NewBMSUseBase62Definitions, BPMDefinitionMode, STOPDefinitionMode,
-            ShowMyO2Toolbox, AutoFocusMouseEnter, FirstClickDisabled, ClickStopPreview, LaneHighlight)
+            ShowMyO2Toolbox, AutoFocusMouseEnter, FirstClickDisabled, ClickStopPreview, LaneHighlight, UndoRedoMemoryLimitMB)
 
         If xDiag.ShowDialog() = Windows.Forms.DialogResult.OK Then
             With xDiag
@@ -3559,6 +3628,9 @@ StartCount:     If Not NTInput Then
                 FirstClickDisabled = .cMClickFocus.Checked
                 ClickStopPreview = .cMStopPreview.Checked
                 LaneHighlight = .zLaneHighlight
+                UndoRedoMemoryLimitMB = .zUndoRedoMemoryLimitMB
+                NormalizeUndoRedoMemoryLimit()
+                EnforceUndoRedoHistoryLimit()
             End With
             If AutoSaveInterval Then AutoSaveTimer.Interval = AutoSaveInterval
             AutoSaveTimer.Enabled = AutoSaveInterval
