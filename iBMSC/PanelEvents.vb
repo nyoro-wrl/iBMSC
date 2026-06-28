@@ -419,12 +419,10 @@ Partial Public Class MainWindow
         If gDivide \ 2 >= CGDivide.Minimum Then CGDivide.Value = gDivide \ 2
     End Sub
 
-    Private Sub HandleGridDivideMouseWheel(ByVal delta As Integer)
-        If delta > 0 Then
-            IncreaseGridDivide()
-        ElseIf delta < 0 Then
-            DecreaseGridDivide()
-        End If
+    Private Sub HandleGridWidthMouseWheel(ByVal delta As Integer)
+        Dim dv = Math.Round(CGWidth2.Value + delta / 120)
+        CGWidth2.Value = Math.Min(CGWidth2.Maximum, Math.Max(CGWidth2.Minimum, dv))
+        CGWidth.Value = CGWidth2.Value / 4
     End Sub
 
     Private Sub SelectAllWithHoveredNoteLabel()
@@ -1834,7 +1832,7 @@ Partial Public Class MainWindow
         If Not My.Computer.Keyboard.CtrlKeyDown Then Exit Sub
 
         If My.Computer.Keyboard.ShiftKeyDown Then
-            HandleGridDivideMouseWheel(e.Delta)
+            HandleGridWidthMouseWheel(e.Delta)
             Exit Sub
         End If
 
