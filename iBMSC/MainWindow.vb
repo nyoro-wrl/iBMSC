@@ -726,6 +726,7 @@ Public Class MainWindow
 
         AddHandler combo.ComboBox.Leave, AddressOf TBGridCombo_Leave
         AddHandler combo.ComboBox.KeyDown, AddressOf TBGridCombo_KeyDown
+        AddHandler combo.ComboBox.MouseWheel, AddressOf TBGridCombo_MouseWheel
         Return combo
     End Function
 
@@ -782,6 +783,89 @@ Public Class MainWindow
         Return value >= minimum AndAlso value <= maximum
     End Function
 
+    Private Function TryGridComboValue(ByVal item As ToolStripComboBox, ByVal text As String, ByRef value As Decimal) As Boolean
+        Dim intValue As Integer
+        If Object.ReferenceEquals(item, TBGridDivide) Then
+            If Not TryGridInteger(text, intValue, CGDivide.Minimum, CGDivide.Maximum) Then
+                Return False
+            End If
+            value = intValue
+            Return True
+        ElseIf Object.ReferenceEquals(item, TBGridSub) Then
+            If Not TryGridInteger(text, intValue, CGSub.Minimum, CGSub.Maximum) Then
+                Return False
+            End If
+            value = intValue
+            Return True
+        ElseIf Object.ReferenceEquals(item, TBGridHeight) Then
+            Return TryGridScale(text, value, CGHeight.Minimum, CGHeight.Maximum)
+        ElseIf Object.ReferenceEquals(item, TBGridWidth) Then
+            Return TryGridScale(text, value, CGWidth.Minimum, CGWidth.Maximum)
+        End If
+
+        Return False
+    End Function
+
+    Private Function FindGridComboIndex(ByVal item As ToolStripComboBox, ByVal value As Decimal, ByVal direction As Integer) As Integer
+        If direction > 0 Then
+            For i As Integer = 0 To item.Items.Count - 1
+                Dim itemValue As Decimal
+                If Not TryGridComboValue(item, item.Items(i).ToString(), itemValue) Then Continue For
+                If itemValue > value Then
+                    Return i
+                End If
+                If itemValue = value Then
+                    If i < item.Items.Count - 1 Then
+                        Return i + 1
+                    End If
+                    Return -1
+                End If
+            Next
+        Else
+            For i As Integer = item.Items.Count - 1 To 0 Step -1
+                Dim itemValue As Decimal
+                If Not TryGridComboValue(item, item.Items(i).ToString(), itemValue) Then Continue For
+                If itemValue < value Then
+                    Return i
+                End If
+                If itemValue = value Then
+                    If i > 0 Then
+                        Return i - 1
+                    End If
+                    Return -1
+                End If
+            Next
+        End If
+
+        Return -1
+    End Function
+
+    Private Function MoveGridCombo(ByVal combo As ComboBox, ByVal direction As Integer) As Boolean
+        Dim item As ToolStripComboBox = TryCast(combo.Tag, ToolStripComboBox)
+        If item Is Nothing Then
+            Return False
+        End If
+
+        Dim text As String = combo.Text
+        If item.SelectedIndex >= 0 AndAlso String.Equals(item.Items(item.SelectedIndex).ToString(), text, StringComparison.OrdinalIgnoreCase) Then
+            Return False
+        End If
+
+        Dim value As Decimal
+        If Not TryGridComboValue(item, text, value) Then
+            Return False
+        End If
+
+        Dim index As Integer = FindGridComboIndex(item, value, direction)
+        If index < 0 Then
+            Return False
+        End If
+
+        item.SelectedIndex = index
+        ApplyGridToolbarValue(item)
+        Return True
+    End Function
+
     Private Sub TBGridCombo_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TBGridDivide.SelectedIndexChanged, TBGridSub.SelectedIndexChanged, TBGridHeight.SelectedIndexChanged, TBGridWidth.SelectedIndexChanged
         ApplyGridToolbarValue(DirectCast(sender, ToolStripComboBox))
     End Sub
@@ -791,10 +875,28 @@ Public Class MainWindow
     End Sub
 
     Private Sub TBGridCombo_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+        If e.KeyCode = Keys.Up OrElse e.KeyCode = Keys.Down Then
+            If MoveGridCombo(DirectCast(sender, ComboBox), If(e.KeyCode = Keys.Down, 1, -1)) Then
+                e.SuppressKeyPress = True
+                Return
+            End If
+        End If
+
         If e.KeyCode <> Keys.Enter Then Return
 
         ApplyGridToolbarValue(DirectCast(DirectCast(sender, ComboBox).Tag, ToolStripComboBox))
         e.SuppressKeyPress = True
+    End Sub
+
+    Private Sub TBGridCombo_MouseWheel(ByVal sender As Object, ByVal e As MouseEventArgs)
+        If e.Delta = 0 Then
+            Return
+        End If
+
+        If MoveGridCombo(DirectCast(sender, ComboBox), If(e.Delta < 0, 1, -1)) Then
+            Dim handledArgs As HandledMouseEventArgs = TryCast(e, HandledMouseEventArgs)
+            If handledArgs IsNot Nothing Then handledArgs.Handled = True
+        End If
     End Sub
 
     Private Sub TBDisableVertical_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TBDisableVertical.Click
