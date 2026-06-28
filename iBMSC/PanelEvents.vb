@@ -657,57 +657,73 @@ Partial Public Class MainWindow
                 End If
 
             Case Windows.Forms.MouseButtons.Right
-                DeselectOrRemove(e, xHS, xVS, xHeight)
+                HandleRightClick(sender, e, xHS, xVS, xHeight)
         End Select
     End Sub
 
-    Private Sub DeselectOrRemove(e As MouseEventArgs, xHS As Long, xVS As Long, xHeight As Integer)
+    Private Sub HandleRightClick(ByVal sender As Object, ByVal e As MouseEventArgs, ByVal xHS As Long, ByVal xVS As Long, ByVal xHeight As Integer)
         KMouseOver = -1
         'KMouseDown = -1
         ReDim SelectedNotes(-1)
         'If K Is Nothing Then pMouseDown = e.Location : Exit Select
 
         If Not tempFirstMouseDown Then
+            Dim xNoteIndex As Integer = GetRightClickedNote(e, xHS, xVS, xHeight)
 
-            Dim xI1 As Integer
-            For xI1 = UBound(Notes) To 1 Step -1
-                'If mouse is clicking on a K
-                If MouseInNote(e, xHS, xVS, xHeight, Notes(xI1)) Then
+            If ShouldRemoveOnRightClick(xNoteIndex) Then
+                DeselectOrRemoveNote(xNoteIndex)
+                CalculateTotalPlayableNotes()
+                Return
+            End If
+        End If
 
-                    If My.Computer.Keyboard.ShiftKeyDown Then
-                        If Not IsColumnNumeric(Notes(xI1).ColumnIndex) Then
-                            If IsColumnSound(Notes(xI1).ColumnIndex) Then
-                                LWAV.SelectedIndices.Clear()
-                                Dim xIndex As Integer = Notes(xI1).Value \ 10000 - 1
-                                If xIndex >= 0 AndAlso xIndex < LWAV.Items.Count Then
-                                    LWAV.SelectedIndex = xIndex
-                                    ValidateWavListView()
-                                End If
-                            Else
-                                LBMP.SelectedIndices.Clear()
-                                Dim xIndex As Integer = Notes(xI1).Value \ 10000 - 1
-                                If xIndex >= 0 AndAlso xIndex < LBMP.Items.Count Then
-                                    LBMP.SelectedIndex = xIndex
-                                    ValidateBmpListView()
-                                End If
-                            End If
-                        End If
-                    Else
-                        Dim xUndo As UndoRedo.LinkedURCmd = Nothing
-                        Dim xRedo As UndoRedo.LinkedURCmd = Nothing
+        ShowEditorContextMenu(TryCast(sender, Control), e, xVS, xHeight)
+    End Sub
 
-                        Me.RedoRemoveNote(Notes(xI1), xUndo, xRedo)
-                        RemoveNote(xI1)
+    Private Function GetRightClickedNote(ByVal e As MouseEventArgs, ByVal xHS As Long, ByVal xVS As Long, ByVal xHeight As Integer) As Integer
+        For xI1 As Integer = UBound(Notes) To 1 Step -1
+            If MouseInNote(e, xHS, xVS, xHeight, Notes(xI1)) Then Return xI1
+        Next
 
-                        AddUndo(xUndo, xRedo)
-                        RefreshPanelAll()
+        Return -1
+    End Function
+
+    Private Function ShouldRemoveOnRightClick(ByVal xNoteIndex As Integer) As Boolean
+        If xNoteIndex <= 0 Then Return False
+        If TBWrite.Checked Then Return True
+        If TBSelect.Checked Then Return Not Notes(xNoteIndex).Selected
+
+        Return False
+    End Function
+
+    Private Sub DeselectOrRemoveNote(ByVal xNoteIndex As Integer)
+        If My.Computer.Keyboard.ShiftKeyDown Then
+            If Not IsColumnNumeric(Notes(xNoteIndex).ColumnIndex) Then
+                If IsColumnSound(Notes(xNoteIndex).ColumnIndex) Then
+                    LWAV.SelectedIndices.Clear()
+                    Dim xIndex As Integer = Notes(xNoteIndex).Value \ 10000 - 1
+                    If xIndex >= 0 AndAlso xIndex < LWAV.Items.Count Then
+                        LWAV.SelectedIndex = xIndex
+                        ValidateWavListView()
                     End If
-
-                    Exit For
+                Else
+                    LBMP.SelectedIndices.Clear()
+                    Dim xIndex As Integer = Notes(xNoteIndex).Value \ 10000 - 1
+                    If xIndex >= 0 AndAlso xIndex < LBMP.Items.Count Then
+                        LBMP.SelectedIndex = xIndex
+                        ValidateBmpListView()
+                    End If
                 End If
-            Next
+            End If
+        Else
+            Dim xUndo As UndoRedo.LinkedURCmd = Nothing
+            Dim xRedo As UndoRedo.LinkedURCmd = Nothing
 
-            CalculateTotalPlayableNotes()
+            Me.RedoRemoveNote(Notes(xNoteIndex), xUndo, xRedo)
+            RemoveNote(xNoteIndex)
+
+            AddUndo(xUndo, xRedo)
+            RefreshPanelAll()
         End If
     End Sub
 

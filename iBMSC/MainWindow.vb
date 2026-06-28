@@ -314,6 +314,24 @@ Public Class MainWindow
     Private WithEvents TBSyncSplitterScroll As ToolStripButton
     Private ToolStripSeparatorSplitter As ToolStripSeparator
     Private SplitterResizeCursor As Cursor
+    Private EditorContextMenu As ContextMenuStrip
+    Private EditorContextPanelIndex As Integer = 0
+    Private EditorContextPlayB As ToolStripMenuItem
+    Private EditorContextPlay As ToolStripMenuItem
+    Private EditorContextInsert As ToolStripMenuItem
+    Private EditorContextRemove As ToolStripMenuItem
+    Private EditorContextCut As ToolStripMenuItem
+    Private EditorContextCopy As ToolStripMenuItem
+    Private EditorContextPaste As ToolStripMenuItem
+    Private EditorContextDelete As ToolStripMenuItem
+    Private EditorContextHidden As ToolStripMenuItem
+    Private EditorContextVisible As ToolStripMenuItem
+    Private EditorContextHiddenVisible As ToolStripMenuItem
+    Private EditorContextModify As ToolStripMenuItem
+    Private EditorContextMirror As ToolStripMenuItem
+    Private EditorContextEditSeparator As ToolStripSeparator
+    Private EditorContextConvertSeparator As ToolStripSeparator
+    Private EditorContextModifySeparator As ToolStripSeparator
 
     Private Class EditorScrollBar
         Inherits Control
@@ -671,6 +689,7 @@ Public Class MainWindow
 
     Public Sub New()
         InitializeComponent()
+        InitializeEditorContextMenu()
         InitializeHeaderWheelBlockers()
         InitializePlayerSelector()
         InitializeGridToolbar()
@@ -696,6 +715,164 @@ Public Class MainWindow
 
             If xControl.Controls.Count > 0 Then AddHeaderWheelBlockers(xControl)
         Next
+    End Sub
+
+    Private Sub InitializeEditorContextMenu()
+        EditorContextMenu = New ContextMenuStrip(components)
+        EditorContextMenu.ShowImageMargin = True
+        EditorContextPlayB = New ToolStripMenuItem()
+        EditorContextPlay = New ToolStripMenuItem()
+        EditorContextInsert = New ToolStripMenuItem()
+        EditorContextRemove = New ToolStripMenuItem()
+        EditorContextCut = New ToolStripMenuItem()
+        EditorContextCopy = New ToolStripMenuItem()
+        EditorContextPaste = New ToolStripMenuItem()
+        EditorContextDelete = New ToolStripMenuItem()
+        EditorContextHidden = New ToolStripMenuItem()
+        EditorContextVisible = New ToolStripMenuItem()
+        EditorContextHiddenVisible = New ToolStripMenuItem()
+        EditorContextModify = New ToolStripMenuItem()
+        EditorContextMirror = New ToolStripMenuItem()
+        EditorContextEditSeparator = New ToolStripSeparator()
+        EditorContextConvertSeparator = New ToolStripSeparator()
+        EditorContextModifySeparator = New ToolStripSeparator()
+
+        EditorContextMenu.Items.AddRange(New ToolStripItem() {
+            EditorContextPlayB,
+            EditorContextPlay,
+            New ToolStripSeparator(),
+            EditorContextInsert,
+            EditorContextRemove,
+            EditorContextEditSeparator,
+            EditorContextCut,
+            EditorContextCopy,
+            EditorContextPaste,
+            EditorContextDelete,
+            EditorContextConvertSeparator,
+            EditorContextHidden,
+            EditorContextVisible,
+            EditorContextHiddenVisible,
+            EditorContextModifySeparator,
+            EditorContextModify,
+            EditorContextMirror})
+
+        AddHandler EditorContextMenu.Opening, AddressOf EditorContextMenu_Opening
+        AddHandler EditorContextPlayB.Click, AddressOf TBPlayB_Click
+        AddHandler EditorContextPlay.Click, AddressOf TBPlay_Click
+        AddHandler EditorContextInsert.Click, AddressOf MInsert_Click
+        AddHandler EditorContextRemove.Click, AddressOf MRemove_Click
+        AddHandler EditorContextCut.Click, AddressOf TBCut_Click
+        AddHandler EditorContextCopy.Click, AddressOf TBCopy_Click
+        AddHandler EditorContextPaste.Click, AddressOf EditorContextPaste_Click
+        AddHandler EditorContextDelete.Click, AddressOf EditorContextDelete_Click
+        AddHandler EditorContextHidden.Click, AddressOf POBHidden_Click
+        AddHandler EditorContextVisible.Click, AddressOf POBVisible_Click
+        AddHandler EditorContextHiddenVisible.Click, AddressOf POBHiddenVisible_Click
+        AddHandler EditorContextModify.Click, AddressOf POBModify_Click
+        AddHandler EditorContextMirror.Click, AddressOf POBMirror_Click
+    End Sub
+
+    Private Sub EditorContextMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
+        RefreshEditorContextMenu()
+    End Sub
+
+    Private Sub RefreshEditorContextMenu()
+        CopyMenuItem(EditorContextPlayB, mnPlayB)
+        CopyMenuItem(EditorContextPlay, mnPlay)
+        CopyMenuItem(EditorContextInsert, MInsert)
+        CopyMenuItem(EditorContextRemove, MRemove)
+        CopyMenuItem(EditorContextCut, mnCut)
+        CopyMenuItem(EditorContextCopy, mnCopy)
+        CopyMenuItem(EditorContextPaste, mnPaste)
+        CopyMenuItem(EditorContextDelete, mnDelete)
+        CopyMenuItem(EditorContextHidden, POBHidden)
+        CopyMenuItem(EditorContextVisible, POBVisible)
+        CopyMenuItem(EditorContextHiddenVisible, POBHiddenVisible)
+        CopyMenuItem(EditorContextModify, POBModify)
+        CopyMenuItem(EditorContextMirror, POBMirror)
+
+        EditorContextMenu.Font = Menu1.Font
+
+        Dim xHasSelection As Boolean = HasSelectedNotes()
+        Dim xHasPaste As Boolean = HasPasteSource()
+
+        EditorContextCut.Visible = xHasSelection
+        EditorContextCopy.Visible = xHasSelection
+        EditorContextPaste.Visible = xHasPaste
+        EditorContextDelete.Visible = xHasSelection
+        EditorContextEditSeparator.Visible = xHasSelection OrElse xHasPaste
+
+        EditorContextHidden.Visible = xHasSelection
+        EditorContextVisible.Visible = xHasSelection
+        EditorContextHiddenVisible.Visible = xHasSelection
+        EditorContextConvertSeparator.Visible = xHasSelection
+
+        EditorContextModify.Visible = xHasSelection
+        EditorContextMirror.Visible = xHasSelection
+        EditorContextModifySeparator.Visible = xHasSelection
+    End Sub
+
+    Private Sub CopyMenuItem(ByVal xTarget As ToolStripMenuItem, ByVal xSource As ToolStripMenuItem)
+        xTarget.Text = xSource.Text
+        xTarget.Image = Nothing
+        xTarget.ShortcutKeys = xSource.ShortcutKeys
+        xTarget.ShortcutKeyDisplayString = xSource.ShortcutKeyDisplayString
+        xTarget.ShowShortcutKeys = xSource.ShowShortcutKeys
+    End Sub
+
+    Private Function HasSelectedNotes() As Boolean
+        For xI1 As Integer = 1 To UBound(Notes)
+            If Notes(xI1).Selected Then Return True
+        Next
+
+        Return False
+    End Function
+
+    Private Function HasPasteSource() As Boolean
+        Try
+            If Not Clipboard.ContainsText() Then Return False
+
+            Dim xLines() As String = Split(Clipboard.GetText.Replace(vbCrLf, vbLf).Replace(vbCr, vbLf), vbLf)
+            If xLines.Length = 0 Then Return False
+            Select Case xLines(0)
+                Case "iBMSC Clipboard Data", "iBMSC Clipboard Data xNT", "BMSE ClipBoard Object Data Format"
+                    For xI1 As Integer = 1 To UBound(xLines)
+                        If xLines(xI1).Trim <> "" Then Return True
+                    Next
+            End Select
+        Catch ex As Exception
+        End Try
+
+        Return False
+    End Function
+
+    Private Sub ShowEditorContextMenu(ByVal xControl As Control, ByVal e As MouseEventArgs, ByVal xVS As Long, ByVal xHeight As Integer)
+        If xControl Is Nothing OrElse EditorContextMenu Is Nothing Then Return
+
+        EditorContextPanelIndex = PanelFocus
+        menuVPosition = (xHeight - xVS * gxHeight - e.Y - 1) / gxHeight
+        If menuVPosition < 0 Then menuVPosition = 0
+        If menuVPosition >= GetMaxVPosition() Then menuVPosition = GetMaxVPosition() - 1
+
+        RefreshEditorContextMenu()
+        EditorContextMenu.Show(xControl, e.Location)
+    End Sub
+
+    Private Sub EditorContextDelete_Click(ByVal sender As Object, ByVal e As EventArgs)
+        FocusEditorContextPanel()
+        mnDelete_Click(mnDelete, e)
+    End Sub
+
+    Private Sub EditorContextPaste_Click(ByVal sender As Object, ByVal e As EventArgs)
+        FocusEditorContextPanel()
+        PasteNotes(MeasureBottom(MeasureAtDisplacement(menuVPosition)))
+    End Sub
+
+    Private Sub FocusEditorContextPanel()
+        If Not IsValidPanelIndex(EditorContextPanelIndex) Then Return
+
+        PanelFocus = EditorContextPanelIndex
+        spMain(EditorContextPanelIndex).Focus()
     End Sub
 
     Private Sub ReleaseHeaderWheelBlockers()
@@ -1599,7 +1776,7 @@ Public Class MainWindow
 
     End Sub
 
-    Private Sub AddNotesFromClipboard(Optional ByVal xSelected As Boolean = True, Optional ByVal SortAndUpdatePairing As Boolean = True)
+    Private Sub AddNotesFromClipboard(Optional ByVal xSelected As Boolean = True, Optional ByVal SortAndUpdatePairing As Boolean = True, Optional ByVal xBaseVPosition As Double = -1.0#)
         Dim xStrLine() As String = Split(Clipboard.GetText, vbCrLf)
 
         Dim xI1 As Integer
@@ -1608,6 +1785,7 @@ Public Class MainWindow
         Next
 
         Dim xVS As Long = PanelVScroll(PanelFocus)
+        Dim xPasteBase As Double = If(xBaseVPosition >= 0, xBaseVPosition, MeasureBottom(MeasureAtDisplacement(-xVS) + 1))
         Dim xTempVP As Double
         Dim xKbu() As Note = Notes
 
@@ -1619,7 +1797,7 @@ Public Class MainWindow
             For xI1 = 1 To UBound(xStrLine)
                 If xStrLine(xI1).Trim = "" Then Continue For
                 xStrSub = Split(xStrLine(xI1), " ")
-                xTempVP = Val(xStrSub(1)) + MeasureBottom(MeasureAtDisplacement(-xVS) + 1)
+                xTempVP = Val(xStrSub(1)) + xPasteBase
                 If UBound(xStrSub) = 5 And xTempVP >= 0 And xTempVP < GetMaxVPosition() Then
                     ReDim Preserve Notes(UBound(Notes) + 1)
                     With Notes(UBound(Notes))
@@ -1662,7 +1840,7 @@ Public Class MainWindow
             For xI1 = 1 To UBound(xStrLine)
                 If xStrLine(xI1).Trim = "" Then Continue For
                 xStrSub = Split(xStrLine(xI1), " ")
-                xTempVP = Val(xStrSub(1)) + MeasureBottom(MeasureAtDisplacement(-xVS) + 1)
+                xTempVP = Val(xStrSub(1)) + xPasteBase
                 If UBound(xStrSub) = 5 And xTempVP >= 0 And xTempVP < GetMaxVPosition() Then
                     ReDim Preserve Notes(UBound(Notes) + 1)
                     With Notes(UBound(Notes))
@@ -1704,7 +1882,7 @@ Public Class MainWindow
             For xI1 = 1 To UBound(xStrLine)
                 ' zdr: holy crap this is obtuse
                 Dim posStr = Mid(xStrLine(xI1), 5, 7)
-                Dim vPos = Val(posStr) + MeasureBottom(MeasureAtDisplacement(-xVS) + 1)
+                Dim vPos = Val(posStr) + xPasteBase
 
                 Dim bmsIdent = Mid(xStrLine(xI1), 1, 3)
                 Dim lineCol = BMSEChannelToColumnIndex(bmsIdent)
@@ -3226,7 +3404,11 @@ EndSearch:
     End Sub
 
     Private Sub TBPaste_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBPaste.Click, mnPaste.Click
-        AddNotesFromClipboard()
+        PasteNotes()
+    End Sub
+
+    Private Sub PasteNotes(Optional ByVal xBaseVPosition As Double = -1.0#)
+        AddNotesFromClipboard(True, True, xBaseVPosition)
 
         Dim xUndo As UndoRedo.LinkedURCmd = Nothing
         Dim xRedo As UndoRedo.LinkedURCmd = New UndoRedo.Void
