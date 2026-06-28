@@ -94,6 +94,8 @@
 		<ChangePlaySide>スクラッチ位置の変更</ChangePlaySide>
 		<LeftSplitter>左スプリッタ</LeftSplitter>
 		<RightSplitter>右スプリッタ</RightSplitter>
+		<AddSplitter>スプリッタを追加</AddSplitter>
+		<RemoveSplitter>スプリッタを削除</RemoveSplitter>
 		<SyncSplitterScroll>スプリッタ間のスクロールを同期</SyncSplitterScroll>
 		<Undo>元に戻す (Ctrl+Z)</Undo>
 		<Redo>やり直し (Ctrl+Y)</Redo>
@@ -141,6 +143,8 @@
 			<StatusBar>ステータスバー</StatusBar>
 			<LSplit>スプリッタ（左側）</LSplit>
 			<RSplit>スプリッタ（右側）</RSplit>
+			<AddSplitter>スプリッタを追加</AddSplitter>
+			<RemoveSplitter>スプリッタを削除</RemoveSplitter>
 			<Grid>Grid</Grid>
 			<Sub>補助</Sub>
 			<BG>背景</BG>

@@ -94,6 +94,8 @@
 		<ChangePlaySide>RightScratch Mode</ChangePlaySide>
 		<LeftSplitter>Left Splitter</LeftSplitter>
 		<RightSplitter>Right Splitter</RightSplitter>
+		<AddSplitter>Add Splitter</AddSplitter>
+		<RemoveSplitter>Remove Splitter</RemoveSplitter>
 		<SyncSplitterScroll>Sync Scroll between Splitters</SyncSplitterScroll>
 		<Undo>Undo (Ctrl+Z)</Undo>
 		<Redo>Redo (Ctrl+Y)</Redo>
@@ -141,6 +143,8 @@
 			<StatusBar amp="0">Status Bar</StatusBar>
 			<LSplit amp="0">Left Splitter</LSplit>
 			<RSplit amp="0">Right Splitter</RSplit>
+			<AddSplitter amp="0">Add Splitter</AddSplitter>
+			<RemoveSplitter amp="0">Remove Splitter</RemoveSplitter>
 			<Grid>Grid</Grid>
 			<Sub>Sub</Sub>
 			<BG>BackGround</BG>

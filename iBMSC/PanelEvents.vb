@@ -18,6 +18,7 @@ Partial Public Class MainWindow
         End If
 
         Dim iI As Integer = sender.Tag
+        If Not IsValidPanelIndex(iI) Then Return
         Dim xI1 As Integer
         Dim xTargetColumn As Integer = -1
         Dim xUndo As UndoRedo.LinkedURCmd = Nothing
@@ -146,24 +147,20 @@ Partial Public Class MainWindow
                 mnDelete_Click(mnDelete, New System.EventArgs)
 
             Case Keys.Home
-                If PanelFocus = 0 Then LeftPanelScroll.Value = 0
-                If PanelFocus = 1 Then MainPanelScroll.Value = 0
-                If PanelFocus = 2 Then RightPanelScroll.Value = 0
+                Dim xHomeScroll As EditorScrollBar = GetPanelVScrollBar(PanelFocus)
+                If xHomeScroll IsNot Nothing Then xHomeScroll.Value = 0
 
             Case Keys.End
-                If PanelFocus = 0 Then LeftPanelScroll.Value = LeftPanelScroll.Minimum
-                If PanelFocus = 1 Then MainPanelScroll.Value = MainPanelScroll.Minimum
-                If PanelFocus = 2 Then RightPanelScroll.Value = RightPanelScroll.Minimum
+                Dim xEndScroll As EditorScrollBar = GetPanelVScrollBar(PanelFocus)
+                If xEndScroll IsNot Nothing Then xEndScroll.Value = xEndScroll.Minimum
 
             Case Keys.PageUp
-                If PanelFocus = 0 Then LeftPanelScroll.Value = IIf(LeftPanelScroll.Value - gPgUpDn > LeftPanelScroll.Minimum, LeftPanelScroll.Value - gPgUpDn, LeftPanelScroll.Minimum)
-                If PanelFocus = 1 Then MainPanelScroll.Value = IIf(MainPanelScroll.Value - gPgUpDn > MainPanelScroll.Minimum, MainPanelScroll.Value - gPgUpDn, MainPanelScroll.Minimum)
-                If PanelFocus = 2 Then RightPanelScroll.Value = IIf(RightPanelScroll.Value - gPgUpDn > RightPanelScroll.Minimum, RightPanelScroll.Value - gPgUpDn, RightPanelScroll.Minimum)
+                Dim xPageUpScroll As EditorScrollBar = GetPanelVScrollBar(PanelFocus)
+                If xPageUpScroll IsNot Nothing Then xPageUpScroll.Value = IIf(xPageUpScroll.Value - gPgUpDn > xPageUpScroll.Minimum, xPageUpScroll.Value - gPgUpDn, xPageUpScroll.Minimum)
 
             Case Keys.PageDown
-                If PanelFocus = 0 Then LeftPanelScroll.Value = IIf(LeftPanelScroll.Value + gPgUpDn < 0, LeftPanelScroll.Value + gPgUpDn, 0)
-                If PanelFocus = 1 Then MainPanelScroll.Value = IIf(MainPanelScroll.Value + gPgUpDn < 0, MainPanelScroll.Value + gPgUpDn, 0)
-                If PanelFocus = 2 Then RightPanelScroll.Value = IIf(RightPanelScroll.Value + gPgUpDn < 0, RightPanelScroll.Value + gPgUpDn, 0)
+                Dim xPageDownScroll As EditorScrollBar = GetPanelVScrollBar(PanelFocus)
+                If xPageDownScroll IsNot Nothing Then xPageDownScroll.Value = IIf(xPageDownScroll.Value + gPgUpDn < 0, xPageDownScroll.Value + gPgUpDn, 0)
 
             Case Keys.Oemcomma
                 IncreaseGridDivide()
@@ -337,7 +334,7 @@ Partial Public Class MainWindow
         FollowSelectedNotesVertical(GetPanelVScrollBar(panelIndex), xPanel.Height, xMinV, xMaxV, keyCode)
     End Sub
 
-    Private Sub FollowSelectedNotesHorizontal(ByVal xScroll As HScrollBar, ByVal xPanelWidth As Integer, ByVal xMinLeft As Integer, ByVal xMaxRight As Integer, ByVal keyCode As Keys)
+    Private Sub FollowSelectedNotesHorizontal(ByVal xScroll As EditorScrollBar, ByVal xPanelWidth As Integer, ByVal xMinLeft As Integer, ByVal xMaxRight As Integer, ByVal keyCode As Keys)
         If xScroll Is Nothing Then Return
 
         Dim xValue As Integer = xScroll.Value
@@ -362,7 +359,7 @@ Partial Public Class MainWindow
         SetScrollValue(xScroll, xValue)
     End Sub
 
-    Private Sub FollowSelectedNotesVertical(ByVal xScroll As VScrollBar, ByVal xPanelHeight As Integer, ByVal xMinV As Double, ByVal xMaxV As Double, ByVal keyCode As Keys)
+    Private Sub FollowSelectedNotesVertical(ByVal xScroll As EditorScrollBar, ByVal xPanelHeight As Integer, ByVal xMinV As Double, ByVal xMaxV As Double, ByVal keyCode As Keys)
         If xScroll Is Nothing Then Return
 
         Dim xValue As Integer = xScroll.Value
@@ -390,12 +387,12 @@ Partial Public Class MainWindow
         Return -xScrollValue + (xPanelHeight - vo.kHeight - 1) / gxHeight
     End Function
 
-    Private Sub SetScrollValue(ByVal xScroll As ScrollBar, ByVal xValue As Integer)
+    Private Sub SetScrollValue(ByVal xScroll As EditorScrollBar, ByVal xValue As Integer)
         xValue = ClampScrollValue(xScroll, xValue)
         If xScroll.Value <> xValue Then xScroll.Value = xValue
     End Sub
 
-    Private Function ClampScrollValue(ByVal xScroll As ScrollBar, ByVal xValue As Integer) As Integer
+    Private Function ClampScrollValue(ByVal xScroll As EditorScrollBar, ByVal xValue As Integer) As Integer
         Dim xMaximum As Integer = xScroll.Maximum - xScroll.LargeChange + 1
         If xMaximum < xScroll.Minimum Then xMaximum = xScroll.Minimum
         If xValue > xMaximum Then xValue = xMaximum
@@ -404,24 +401,14 @@ Partial Public Class MainWindow
         Return xValue
     End Function
 
-    Private Function GetPanelHScroll(ByVal panelIndex As Integer) As HScrollBar
-        Select Case panelIndex
-            Case 0 : Return HSL
-            Case 1 : Return HS
-            Case 2 : Return HSR
-        End Select
-
-        Return Nothing
+    Private Function GetPanelHScroll(ByVal panelIndex As Integer) As EditorScrollBar
+        If Not IsValidPanelIndex(panelIndex) Then Return Nothing
+        Return SplitPanes(panelIndex).HScroll
     End Function
 
-    Private Function GetPanelVScrollBar(ByVal panelIndex As Integer) As VScrollBar
-        Select Case panelIndex
-            Case 0 : Return LeftPanelScroll
-            Case 1 : Return MainPanelScroll
-            Case 2 : Return RightPanelScroll
-        End Select
-
-        Return Nothing
+    Private Function GetPanelVScrollBar(ByVal panelIndex As Integer) As EditorScrollBar
+        If Not IsValidPanelIndex(panelIndex) Then Return Nothing
+        Return SplitPanes(panelIndex).VScroll
     End Function
 
     Private Sub IncreaseGridDivide()
@@ -599,30 +586,15 @@ Partial Public Class MainWindow
         If Not Me.Created Then Exit Sub
 
         Dim iI As Integer = sender.Tag
-        PanelWidth(0) = PMainL.Width
-        PanelWidth(1) = PMain.Width
-        PanelWidth(2) = PMainR.Width
+        If Not IsValidPanelIndex(iI) Then Return
 
-        Select Case iI
-            Case 0
-                LeftPanelScroll.LargeChange = sender.Height * 0.9
-                LeftPanelScroll.Maximum = LeftPanelScroll.LargeChange - 1
-                HSL.LargeChange = sender.Width / gxWidth
-                If HSL.Value > HSL.Maximum - HSL.LargeChange + 1 Then HSL.Value = HSL.Maximum - HSL.LargeChange + 1
-            Case 1
-                MainPanelScroll.LargeChange = sender.Height * 0.9
-                MainPanelScroll.Maximum = MainPanelScroll.LargeChange - 1
-                HS.LargeChange = sender.Width / gxWidth
-                If HS.Value > HS.Maximum - HS.LargeChange + 1 Then HS.Value = HS.Maximum - HS.LargeChange + 1
-            Case 2
-                RightPanelScroll.LargeChange = sender.Height * 0.9
-                RightPanelScroll.Maximum = RightPanelScroll.LargeChange - 1
-                HSR.LargeChange = sender.Width / gxWidth
-                If HSR.Value > HSR.Maximum - HSR.LargeChange + 1 Then HSR.Value = HSR.Maximum - HSR.LargeChange + 1
-        End Select
+        PanelWidth(iI) = SplitPanes(iI).Container.Width
+        Dim xVScroll As EditorScrollBar = GetPanelVScrollBar(iI)
+        xVScroll.LargeChange = sender.Height * 0.9
+        xVScroll.Maximum = xVScroll.LargeChange - 1
 
         Dim xPreviousColumns As Integer = gColumns
-        CalculateGreatestColumn()
+        UpdateHorizontalScrollMetrics()
         If xPreviousColumns <> gColumns Then
             RefreshPanelAll()
         Else
@@ -638,6 +610,7 @@ Partial Public Class MainWindow
         tempFirstMouseDown = FirstClickDisabled And Not sender.Focused
 
         PanelFocus = sender.Tag
+        If Not IsValidPanelIndex(PanelFocus) Then Return
         sender.Focus()
         LastMouseDownLocation = New Point(-1, -1)
         VSValue = PanelVScroll(PanelFocus)
@@ -1147,6 +1120,7 @@ Partial Public Class MainWindow
 
     Private Sub PMainInMouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles PMainIn.MouseEnter, PMainInL.MouseEnter, PMainInR.MouseEnter
         spMouseOver = sender.Tag
+        If Not IsValidPanelIndex(spMouseOver) Then Return
         Dim xPMainIn As Panel = sender
         If AutoFocusMouseEnter AndAlso Me.Focused Then xPMainIn.Focus() : PanelFocus = spMouseOver
         If FirstMouseEnter Then FirstMouseEnter = False : xPMainIn.Focus() : PanelFocus = spMouseOver
@@ -1170,6 +1144,7 @@ Partial Public Class MainWindow
         MouseMoveStatus = e.Location
 
         Dim iI As Integer = sender.Tag
+        If Not IsValidPanelIndex(iI) Then Return
 
         Dim xHS As Long = PanelhBMSCROLL(iI)
         Dim xVS As Long = PanelVScroll(iI)
@@ -1367,29 +1342,12 @@ Partial Public Class MainWindow
             If xI1 > 0 Then xI1 = 0
             If xI2 < 0 Then xI2 = 0
 
-            Select Case PanelFocus
-                Case 0
-                    If xI1 < LeftPanelScroll.Minimum Then xI1 = LeftPanelScroll.Minimum
-                    LeftPanelScroll.Value = xI1
+            Dim xVScroll As EditorScrollBar = GetPanelVScrollBar(PanelFocus)
+            Dim xHScroll As EditorScrollBar = GetPanelHScroll(PanelFocus)
+            If xVScroll Is Nothing OrElse xHScroll Is Nothing Then Return
 
-                    If xI2 > HSL.Maximum - HSL.LargeChange + 1 Then xI2 = HSL.Maximum - HSL.LargeChange + 1
-                    HSL.Value = xI2
-
-                Case 1
-                    If xI1 < MainPanelScroll.Minimum Then xI1 = MainPanelScroll.Minimum
-                    MainPanelScroll.Value = xI1
-
-                    If xI2 > HS.Maximum - HS.LargeChange + 1 Then xI2 = HS.Maximum - HS.LargeChange + 1
-                    HS.Value = xI2
-
-                Case 2
-                    If xI1 < RightPanelScroll.Minimum Then xI1 = RightPanelScroll.Minimum
-                    RightPanelScroll.Value = xI1
-
-                    If xI2 > HSR.Maximum - HSR.LargeChange + 1 Then xI2 = HSR.Maximum - HSR.LargeChange + 1
-                    HSR.Value = xI2
-
-            End Select
+            SetScrollValue(xVScroll, xI1)
+            SetScrollValue(xHScroll, xI2)
         End If
     End Sub
 
@@ -1882,6 +1840,7 @@ Partial Public Class MainWindow
         ReDim SelectedNotes(-1)
 
         Dim iI As Integer = sender.Tag
+        If Not IsValidPanelIndex(iI) Then Return
 
         If MiddleButtonClicked AndAlso e.Button = Windows.Forms.MouseButtons.Middle AndAlso
             (MiddleButtonLocation.X - Cursor.Position.X) ^ 2 + (MiddleButtonLocation.Y - Cursor.Position.Y) ^ 2 >= vo.MiddleDeltaRelease Then
@@ -1984,53 +1943,26 @@ Partial Public Class MainWindow
             Exit Sub
         End If
 
-        Dim xI1 As Integer
+        Dim xScroll As EditorScrollBar = GetPanelVScrollBar(spMouseOver)
+        If xScroll Is Nothing Then Return
 
-        Select Case spMouseOver
-            Case 0
-                'xI1 = spV(iI) - Math.Sign(e.Delta) * VSL.SmallChange * 5 / gxHeight
-                xI1 = PanelVScroll(spMouseOver) - Math.Sign(e.Delta) * gWheel
-                If xI1 > 0 Then xI1 = 0
-                If xI1 < LeftPanelScroll.Minimum Then xI1 = LeftPanelScroll.Minimum
-                LeftPanelScroll.Value = xI1
-            Case 1
-                'xI1 = spV(iI) - Math.Sign(e.Delta) * VS.SmallChange * 5 / gxHeight
-                xI1 = PanelVScroll(spMouseOver) - Math.Sign(e.Delta) * gWheel
-                If xI1 > 0 Then xI1 = 0
-                If xI1 < MainPanelScroll.Minimum Then xI1 = MainPanelScroll.Minimum
-                MainPanelScroll.Value = xI1
-            Case 2
-                'xI1 = spV(iI) - Math.Sign(e.Delta) * VSR.SmallChange * 5 / gxHeight
-                xI1 = PanelVScroll(spMouseOver) - Math.Sign(e.Delta) * gWheel
-                If xI1 > 0 Then xI1 = 0
-                If xI1 < RightPanelScroll.Minimum Then xI1 = RightPanelScroll.Minimum
-                RightPanelScroll.Value = xI1
-        End Select
+        Dim xI1 As Integer = PanelVScroll(spMouseOver) - Math.Sign(e.Delta) * gWheel
+        SetScrollValue(xScroll, xI1)
     End Sub
 
     Private Sub HandleHorizontalMouseWheel(ByVal delta As Integer)
-        Dim xScroll As HScrollBar = Nothing
-
-        Select Case spMouseOver
-            Case 0 : xScroll = HSL
-            Case 1 : xScroll = HS
-            Case 2 : xScroll = HSR
-        End Select
+        Dim xScroll As EditorScrollBar = GetPanelHScroll(spMouseOver)
 
         If xScroll Is Nothing Then
             Return
         End If
 
-        Dim xMax As Integer = xScroll.Maximum - xScroll.LargeChange + 1
-        If xMax < xScroll.Minimum Then xMax = xScroll.Minimum
-
         Dim xI1 As Integer = PanelhBMSCROLL(spMouseOver) - Math.Sign(delta) * gWheel
-        If xI1 > xMax Then xI1 = xMax
-        If xI1 < xScroll.Minimum Then xI1 = xScroll.Minimum
-        xScroll.Value = xI1
+        SetScrollValue(xScroll, xI1)
     End Sub
 
     Private Sub PMainInPaint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles PMainIn.Paint, PMainInL.Paint, PMainInR.Paint
+        If Not IsValidPanelIndex(CInt(sender.Tag)) Then Return
         RefreshPanel(sender.Tag, e.ClipRectangle)
     End Sub
 End Class

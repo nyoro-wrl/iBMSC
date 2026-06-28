@@ -4,13 +4,22 @@ Partial Public Class MainWindow
 
     Private Sub RefreshPanelAll()
         If IsInitializing Then Exit Sub
-        RefreshPanel(0, PMainInL.DisplayRectangle)
-        RefreshPanel(1, PMainIn.DisplayRectangle)
-        RefreshPanel(2, PMainInR.DisplayRectangle)
+        For i As Integer = 0 To spMain.Length - 1
+            RefreshPanel(i, spMain(i).DisplayRectangle)
+        Next
     End Sub
 
     Dim bufferlist As Dictionary(Of Integer, BufferedGraphics) = New Dictionary(Of Integer, BufferedGraphics)
     Dim rectList As Dictionary(Of Integer, Rectangle) = New Dictionary(Of Integer, Rectangle)
+
+    Private Sub ClearPanelBuffers()
+        For Each xBuffer As BufferedGraphics In bufferlist.Values
+            xBuffer.Dispose()
+        Next
+
+        bufferlist.Clear()
+        rectList.Clear()
+    End Sub
     Private Function GetBuffer(xIndex As Integer, DisplayRect As Rectangle)
         If bufferlist.ContainsKey(xIndex) AndAlso rectList.Item(xIndex) = DisplayRect Then
             Return bufferlist.Item(xIndex)

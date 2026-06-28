@@ -833,9 +833,6 @@ Jump1:
                     mnSTB.Checked = xPref And &H200
                     mnSOP.Checked = xPref And &H400
                     mnSStatus.Checked = xPref And &H800
-                    SetSplitterEnabled(0, (xPref And &H1000) <> 0)
-                    SetSplitterEnabled(2, (xPref And &H2000) <> 0)
-
                     CGShow.Checked = xPref And &H4000
                     CGShowS.Checked = xPref And &H8000
                     CGShowBG.Checked = xPref And &H10000
@@ -1016,8 +1013,6 @@ EndOfSub:
             If mnSTB.Checked Then xPref = xPref Or &H200
             If mnSOP.Checked Then xPref = xPref Or &H400
             If mnSStatus.Checked Then xPref = xPref Or &H800
-            If mnSLSplitter.Checked Then xPref = xPref Or &H1000
-            If mnSRSplitter.Checked Then xPref = xPref Or &H2000
             If gShowGrid Then xPref = xPref Or &H4000
             If gShowSubGrid Then xPref = xPref Or &H8000
             If gShowBG Then xPref = xPref Or &H10000

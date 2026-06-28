@@ -90,6 +90,8 @@
 		<ShowFileName>Note上显示文件名</ShowFileName>
 		<LeftSplitter>左分割器</LeftSplitter>
 		<RightSplitter>右分割器</RightSplitter>
+		<AddSplitter>添加分割器</AddSplitter>
+		<RemoveSplitter>删除分割器</RemoveSplitter>
 		<SyncSplitterScroll>同步分割器间滚动</SyncSplitterScroll>
 		<Undo>撤销 (Ctrl+Z)</Undo>
 		<Redo>重做 (Ctrl+Y)</Redo>
@@ -136,6 +138,8 @@
 			<StatusBar>状态栏 (&amp;S)</StatusBar>
 			<LSplit>左分割器 (&amp;L)</LSplit>
 			<RSplit>右分割器 (&amp;R)</RSplit>
+			<AddSplitter>添加分割器</AddSplitter>
+			<RemoveSplitter>删除分割器</RemoveSplitter>
 			<Grid>格线</Grid>
 			<Sub>格线加粗</Sub>
 			<BG>背景</BG>
