@@ -954,7 +954,6 @@ EndOfSub:
                 If eGrid IsNot Nothing Then
                     XMLLoadLocale(eGrid.Item("Title"), POGridSwitch.Text)
                     XMLLoadLocale(eGrid.Item("Snap"), CGSnap.Text)
-                    XMLLoadLocale(eGrid.Item("NoSnap"), GridNoSnapText)
                     XMLLoadLocale(eGrid.Item("BCols"), Label1.Text)
                     XMLLoadLocale(eGrid.Item("DisableVertical"), CGDisableVertical.Text)
                     RefreshDisableVerticalToolbar()

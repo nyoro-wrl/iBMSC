@@ -182,7 +182,6 @@ Public Class MainWindow
 
     '----Grid Options
     Dim gSnap As Boolean = True
-    Private GridNoSnapText As String = "Do not snap to grid"
     Dim gShowGrid As Boolean = True 'Grid
     Dim gShowSubGrid As Boolean = True 'Sub
     Dim gShowBG As Boolean = True 'BG Color
@@ -1560,8 +1559,8 @@ Public Class MainWindow
         If TBGridSnap Is Nothing Then Return
 
         TBGridSnap.Checked = CGSnap.Checked
-        TBGridSnap.Text = If(TBGridSnap.Checked, CGSnap.Text, GridNoSnapText)
-        TBGridSnap.ToolTipText = TBGridSnap.Text
+        TBGridSnap.Text = CGSnap.Text
+        TBGridSnap.ToolTipText = CGSnap.Text
     End Sub
 
     Private Sub InitializePlayerSelector()

@@ -239,7 +239,6 @@
 		<Grid>
 			<Title>Grid</Title>
 			<Snap>Grid Snap (G)</Snap>
-			<NoSnap>Do not snap to grid</NoSnap>
 			<BCols>Minimum BGM Columns</BCols>
 			<DisableVertical>Disable vertical moves (D)</DisableVertical>
 		</Grid>

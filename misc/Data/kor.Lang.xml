@@ -236,7 +236,6 @@
 		<Grid>
 			<Title>격자</Title>
 			<Snap>격자 스냅(G)</Snap>
-			<NoSnap>격자에 맞추지 않기</NoSnap>
 			<BCols>BGM 최소 수</BCols>
 			<DisableVertical>수직위치 고정 (D)</DisableVertical>
 		</Grid>

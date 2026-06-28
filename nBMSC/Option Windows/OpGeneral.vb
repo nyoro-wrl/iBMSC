@@ -200,7 +200,7 @@ Public Class OpGeneral
                 'Default Icon
                 xReg.CreateSubKey("DefaultIcon")
                 xReg = .OpenSubKey(xClass & "\DefaultIcon", True)
-                xReg.SetValue("", My.Application.Info.DirectoryPath & "\TypeBMS.ico", Microsoft.Win32.RegistryValueKind.String)
+                xReg.SetValue("", """" & Application.ExecutablePath & """,0", Microsoft.Win32.RegistryValueKind.String)
 
                 xReg = .OpenSubKey(xClass, True)
                 xReg.CreateSubKey("shell")
