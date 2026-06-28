@@ -588,8 +588,87 @@ Public Class MainWindow
         Public PairWidth As Integer
     End Class
 
+    Private Class OptionsPanelTab
+        Public Button As Button
+        Public Panel As Panel
+        Public Header As CheckBox
+    End Class
+
+    Private Class MouseWheelBlocker
+        Inherits NativeWindow
+
+        Private Const WM_MOUSEWHEEL As Integer = &H20A
+        Private ReadOnly Target As Control
+
+        Public Sub New(ByVal xTarget As Control)
+            Target = xTarget
+            AddHandler Target.HandleCreated, AddressOf Target_HandleCreated
+            AddHandler Target.HandleDestroyed, AddressOf Target_HandleDestroyed
+            If Target.IsHandleCreated Then AssignHandle(Target.Handle)
+        End Sub
+
+        Public Sub Release()
+            RemoveHandler Target.HandleCreated, AddressOf Target_HandleCreated
+            RemoveHandler Target.HandleDestroyed, AddressOf Target_HandleDestroyed
+            If Handle <> IntPtr.Zero Then ReleaseHandle()
+        End Sub
+
+        Private Sub Target_HandleCreated(ByVal sender As Object, ByVal e As EventArgs)
+            AssignHandle(Target.Handle)
+        End Sub
+
+        Private Sub Target_HandleDestroyed(ByVal sender As Object, ByVal e As EventArgs)
+            If Handle <> IntPtr.Zero Then ReleaseHandle()
+        End Sub
+
+        Private Function GetScrollParent() As ScrollableControl
+            Dim xParent As Control = Target.Parent
+
+            Do While xParent IsNot Nothing
+                Dim xScrollable As ScrollableControl = TryCast(xParent, ScrollableControl)
+                If xScrollable IsNot Nothing AndAlso xScrollable.AutoScroll Then Return xScrollable
+                xParent = xParent.Parent
+            Loop
+
+            Return Nothing
+        End Function
+
+        Private Function GetWheelDelta(ByVal xWParam As IntPtr) As Integer
+            Dim xValue As Integer = CInt((xWParam.ToInt64() >> 16) And 65535)
+            If xValue >= 32768 Then xValue -= 65536
+            Return xValue
+        End Function
+
+        Private Sub ScrollParent(ByVal xScrollable As ScrollableControl, ByVal xDelta As Integer)
+            If xScrollable Is Nothing Then Return
+            If xDelta = 0 Then Return
+
+            Dim xPoint As Point = xScrollable.PointToClient(Cursor.Position)
+            Dim xArgs As New MouseEventArgs(MouseButtons.None, 0, xPoint.X, xPoint.Y, xDelta)
+            Dim xMethod As System.Reflection.MethodInfo = GetType(ScrollableControl).GetMethod("OnMouseWheel", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
+            If xMethod IsNot Nothing Then xMethod.Invoke(xScrollable, New Object() {xArgs})
+        End Sub
+
+        Protected Overrides Sub WndProc(ByRef m As Message)
+            If m.Msg = WM_MOUSEWHEEL Then
+                ScrollParent(GetScrollParent(), GetWheelDelta(m.WParam))
+                Return
+            End If
+
+            MyBase.WndProc(m)
+        End Sub
+    End Class
+
     Private SplitPanes As New List(Of SplitPane)
     Private SplitterDrag As SplitterDragInfo = Nothing
+    Private POTabHost As TableLayoutPanel = Nothing
+    Private POTabButtons As TableLayoutPanel = Nothing
+    Private POTabContent As Panel = Nothing
+    Private POTabPages As New List(Of OptionsPanelTab)
+    Private POTabSelected As OptionsPanelTab = Nothing
+    Private POHeaderDetailsSeparator As Panel = Nothing
+    Private POHeaderExpansionSeparator As Panel = Nothing
+    Private HeaderWheelBlockers As New List(Of MouseWheelBlocker)
 
     '----Find Delete Replace Options
     Dim fdriMesL As Integer
@@ -603,14 +682,41 @@ Public Class MainWindow
 
     Public Sub New()
         InitializeComponent()
+        InitializeHeaderWheelBlockers()
+        MoveOptionsPanelIntoContentPanel()
         InitializePlayerSelector()
         InitializeGridToolbar()
         RemoveGridOptionsPanel()
+        InitializeOptionsTabs()
         InitializeOptionsMenuItems()
         InitializeSplitterControls()
         InitializeSplitPanes()
         ApplyToolbarLayoutRules()
         Audio.Initialize()
+    End Sub
+
+    Private Sub InitializeHeaderWheelBlockers()
+        HeaderWheelBlockers.Clear()
+        AddHeaderWheelBlockers(POHeaderPart1)
+        AddHeaderWheelBlockers(POHeaderPart2)
+    End Sub
+
+    Private Sub AddHeaderWheelBlockers(ByVal xParent As Control)
+        For Each xControl As Control In xParent.Controls
+            If TypeOf xControl Is ComboBox OrElse TypeOf xControl Is NumericUpDown Then
+                HeaderWheelBlockers.Add(New MouseWheelBlocker(xControl))
+            End If
+
+            If xControl.Controls.Count > 0 Then AddHeaderWheelBlockers(xControl)
+        Next
+    End Sub
+
+    Private Sub ReleaseHeaderWheelBlockers()
+        For Each xBlocker As MouseWheelBlocker In HeaderWheelBlockers
+            xBlocker.Release()
+        Next
+
+        HeaderWheelBlockers.Clear()
     End Sub
 
     Private Sub ApplyToolbarLayoutRules()
@@ -662,7 +768,461 @@ Public Class MainWindow
     End Sub
 
     Private Sub RemoveGridOptionsPanel()
-        POptions.Controls.Remove(POGrid)
+        If POGrid.Parent IsNot Nothing Then
+            POGrid.Parent.Controls.Remove(POGrid)
+        End If
+    End Sub
+
+    Private Sub MoveOptionsPanelIntoContentPanel()
+        POptionsScroll.MinimumSize = New Size(230, 0)
+        If POptionsScroll.Width < 230 Then POptionsScroll.Width = 230
+
+        If Object.ReferenceEquals(POptionsScroll.Parent, ToolStripContainer1.ContentPanel) Then Return
+
+        If POptionsResizer.Parent IsNot Nothing Then POptionsResizer.Parent.Controls.Remove(POptionsResizer)
+        If POptionsScroll.Parent IsNot Nothing Then POptionsScroll.Parent.Controls.Remove(POptionsScroll)
+
+        ToolStripContainer1.ContentPanel.Controls.Add(POptionsResizer)
+        ToolStripContainer1.ContentPanel.Controls.Add(POptionsScroll)
+        KeepOptionsPanelDockedRight()
+    End Sub
+
+    Private Sub KeepOptionsPanelDockedRight()
+        If Not Object.ReferenceEquals(POptionsScroll.Parent, ToolStripContainer1.ContentPanel) Then Return
+        If Not Object.ReferenceEquals(POptionsResizer.Parent, ToolStripContainer1.ContentPanel) Then Return
+
+        Dim xControls As Control.ControlCollection = ToolStripContainer1.ContentPanel.Controls
+        xControls.SetChildIndex(POptionsScroll, xControls.Count - 1)
+        xControls.SetChildIndex(POptionsResizer, xControls.Count - 2)
+    End Sub
+
+    Private Sub InitializeOptionsTabs()
+        POTabHost = New TableLayoutPanel With {
+            .ColumnCount = 1,
+            .Dock = DockStyle.Fill,
+            .Name = "POTabHost",
+            .RowCount = 2,
+            .TabIndex = POptions.TabIndex
+        }
+        POTabHost.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
+        POTabHost.RowStyles.Add(New RowStyle())
+        POTabHost.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
+
+        POTabButtons = New TableLayoutPanel With {
+            .BackColor = SystemColors.Control,
+            .ColumnCount = 3,
+            .Dock = DockStyle.Top,
+            .Height = 52,
+            .Margin = New Padding(0),
+            .Name = "POTabButtons",
+            .Padding = New Padding(2, 1, 2, 3),
+            .RowCount = 2
+        }
+        POTabButtons.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3333!))
+        POTabButtons.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3333!))
+        POTabButtons.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3334!))
+        POTabButtons.RowStyles.Add(New RowStyle(SizeType.Absolute, 24.0!))
+        POTabButtons.RowStyles.Add(New RowStyle(SizeType.Absolute, 24.0!))
+
+        POTabContent = New Panel With {
+            .BackColor = SystemColors.Control,
+            .BorderStyle = BorderStyle.None,
+            .Dock = DockStyle.Fill,
+            .Margin = New Padding(0),
+            .Name = "POTabContent",
+            .Padding = New Padding(2, 3, 2, 0)
+        }
+        POTabHost.Controls.Add(POTabButtons, 0, 0)
+        POTabHost.Controls.Add(POTabContent, 0, 1)
+
+        POptionsScroll.SuspendLayout()
+        POptions.SuspendLayout()
+        Try
+            POptionsScroll.AutoScroll = False
+            POptionsScroll.Controls.Remove(POptions)
+
+            POTabPages.Clear()
+            AddOptionsTab(POHeaderSwitch, POHeader)
+            AddOptionsTab(POWAVSwitch, POWAV)
+            AddOptionsTab(POBMPSwitch, POBMP)
+            AddOptionsTab(POBeatSwitch, POBeat)
+            AddOptionsTab(POWaveFormSwitch, POWaveForm)
+            ApplyOptionsPanelFlatLayout()
+
+            POptionsScroll.Controls.Add(POTabHost)
+            SyncOptionsTabTitles()
+        Finally
+            POptions.ResumeLayout(False)
+            POptionsScroll.ResumeLayout(False)
+        End Try
+    End Sub
+
+    Private Sub AddOptionsTab(ByVal xSwitch As CheckBox, ByVal xPanel As Panel)
+        Dim xButtonFont As New Font(xSwitch.Font.FontFamily, 8.0!, FontStyle.Regular, GraphicsUnit.Point)
+        Dim xButton As New Button With {
+            .AutoSize = False,
+            .BackColor = Color.White,
+            .Dock = DockStyle.Fill,
+            .FlatStyle = FlatStyle.Flat,
+            .Font = xButtonFont,
+            .Margin = New Padding(0, 0, 2, 1),
+            .Name = xPanel.Name & "TabButton",
+            .Padding = New Padding(0),
+            .TabStop = False,
+            .Text = xSwitch.Text,
+            .TextAlign = ContentAlignment.MiddleCenter,
+            .UseCompatibleTextRendering = False,
+            .UseVisualStyleBackColor = False
+        }
+        xButton.FlatAppearance.BorderSize = 1
+        xButton.FlatAppearance.BorderColor = Color.FromArgb(205, 205, 205)
+        xButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(218, 235, 249)
+        xButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 245, 252)
+        ApplyOptionsTabButtonStyle(xButton, False)
+
+        xPanel.SuspendLayout()
+        Try
+            xSwitch.Checked = True
+            xSwitch.Visible = False
+            ShowOptionsPanelContent(xSwitch)
+            xPanel.AutoScroll = True
+            xPanel.AutoSize = False
+            xPanel.Dock = DockStyle.Fill
+            xPanel.Visible = False
+            POTabContent.Controls.Add(xPanel)
+        Finally
+            xPanel.ResumeLayout(False)
+        End Try
+
+        AddHandler xButton.Click, AddressOf OptionsTabButton_Click
+        Dim xTabIndex As Integer = POTabPages.Count
+        Dim xTabRow As Integer = If(xTabIndex < 3, 0, 1)
+        Dim xTabColumn As Integer = If(xTabIndex < 3, xTabIndex, xTabIndex - 3)
+
+        POTabButtons.Controls.Add(xButton, xTabColumn, xTabRow)
+        POTabPages.Add(New OptionsPanelTab With {
+            .Button = xButton,
+            .Panel = xPanel,
+            .Header = xSwitch
+        })
+        AddHandler xSwitch.TextChanged, AddressOf OptionsTabSwitch_TextChanged
+
+        If POTabPages.Count = 1 Then
+            SelectOptionsTab(POTabPages(0))
+        End If
+    End Sub
+
+    Private Sub OptionsTabButton_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Dim xButton As Button = TryCast(sender, Button)
+        If xButton Is Nothing Then Return
+
+        For Each xTab As OptionsPanelTab In POTabPages
+            If Object.ReferenceEquals(xTab.Button, xButton) Then
+                SelectOptionsTab(xTab)
+                Exit For
+            End If
+        Next
+    End Sub
+
+    Private Sub SelectOptionsTab(ByVal xSelectedTab As OptionsPanelTab)
+        POTabSelected = xSelectedTab
+
+        For Each xTab As OptionsPanelTab In POTabPages
+            Dim xIsSelected As Boolean = Object.ReferenceEquals(xTab, xSelectedTab)
+            xTab.Panel.Visible = xIsSelected
+            ApplyOptionsTabButtonStyle(xTab.Button, xIsSelected)
+        Next
+
+        xSelectedTab.Panel.BringToFront()
+        ResetOptionsTabScroll(xSelectedTab.Panel)
+        QueueResetSelectedOptionsTabScroll()
+    End Sub
+
+    Private Sub ResetOptionsTabScroll(ByVal xPanel As ScrollableControl)
+        If xPanel Is Nothing Then Return
+        xPanel.AutoScrollPosition = Point.Empty
+        xPanel.PerformLayout()
+    End Sub
+
+    Private Sub ResetSelectedOptionsTabScroll()
+        If POTabSelected Is Nothing Then Return
+        ResetOptionsTabScroll(POTabSelected.Panel)
+    End Sub
+
+    Private Sub QueueResetSelectedOptionsTabScroll()
+        If Me.IsDisposed OrElse Not Me.IsHandleCreated Then Return
+
+        Try
+            BeginInvoke(New MethodInvoker(AddressOf ResetSelectedOptionsTabScroll))
+        Catch ex As InvalidOperationException
+        End Try
+    End Sub
+
+    Private Sub OptionsTabSwitch_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+        SyncOptionsTabTitles()
+    End Sub
+
+    Private Sub SyncOptionsTabTitles()
+        For Each xTab As OptionsPanelTab In POTabPages
+            xTab.Button.Text = xTab.Header.Text
+        Next
+
+        ApplyOptionsTabButtonSizes()
+
+        For Each xTab As OptionsPanelTab In POTabPages
+            ApplyOptionsTabButtonStyle(xTab.Button, Object.ReferenceEquals(xTab, POTabSelected))
+        Next
+    End Sub
+
+    Private Sub ApplyOptionsTabButtonSizes()
+        Dim xHeight As Integer = 23
+
+        For Each xTab As OptionsPanelTab In POTabPages
+            Dim xTextSize As Size = TextRenderer.MeasureText(xTab.Button.Text, xTab.Button.Font)
+            xHeight = Math.Max(xHeight, xTextSize.Height + 9)
+        Next
+
+        Dim xRowHeight As Single = CSng(xHeight + 1)
+        POTabButtons.RowStyles(0).Height = xRowHeight
+        POTabButtons.RowStyles(1).Height = xRowHeight
+        POTabButtons.Height = POTabButtons.Padding.Top + POTabButtons.Padding.Bottom + CInt(xRowHeight * 2)
+
+        For Each xTab As OptionsPanelTab In POTabPages
+            xTab.Button.Height = xHeight
+            xTab.Button.MinimumSize = New Size(0, xHeight)
+        Next
+    End Sub
+
+    Private Sub ApplyOptionsTabButtonStyle(ByVal xButton As Button, ByVal xSelected As Boolean)
+        xButton.BackColor = If(xSelected, Color.FromArgb(218, 235, 249), Color.FromArgb(248, 248, 248))
+        xButton.FlatAppearance.BorderColor = If(xSelected, Color.FromArgb(49, 119, 178), Color.FromArgb(205, 205, 205))
+    End Sub
+
+    Private Sub ApplyOptionsPanelFlatLayout()
+        ShowAllOptionsExpandableContent()
+        ArrangeHeaderOptionsPanel()
+        ArrangeListOptionsPanels()
+        StretchResizableOptionsPanels()
+    End Sub
+
+    Private Sub ShowAllOptionsExpandableContent()
+        POHeaderExpander.Visible = False
+        POWaveFormExpander.Visible = False
+        POWAVExpander.Visible = False
+        POBMPExpander.Visible = False
+        POBeatExpander.Visible = False
+
+        POHeaderPart2.Visible = True
+        POWaveFormPart2.Visible = True
+        POWAVPart2.Visible = True
+        POBMPPart2.Visible = True
+        POBeatPart2.Visible = True
+        POExpansionInner.Visible = True
+    End Sub
+
+    Private Sub ArrangeHeaderOptionsPanel()
+        MoveHeaderCommentAfterExRank()
+
+        POExpansionSwitch.Visible = False
+        POHeader.Padding = New Padding(0, 0, 0, 10)
+        POHeaderInner.Padding = New Padding(0, 0, 0, 10)
+
+        POExpansionInner.AutoSize = False
+        POExpansionInner.Dock = DockStyle.Top
+        If POExpansionInner.Height < 120 Then POExpansionInner.Height = 120
+        POExpansionResizer.Enabled = False
+        POExpansionResizer.Visible = False
+        TExpansion.Dock = DockStyle.Fill
+        ApplyHeaderFieldSpacing()
+
+        Dim xDetailsSeparator As Panel = GetOptionsSeparator(POHeaderDetailsSeparator, "POHeaderDetailsSeparator")
+        Dim xExpansionSeparator As Panel = GetOptionsSeparator(POHeaderExpansionSeparator, "POHeaderExpansionSeparator", "EXTRA INFORMATION")
+
+        POHeaderInner.SuspendLayout()
+        Try
+            POHeaderInner.Controls.Clear()
+            POExpansionInner.Dock = DockStyle.Top
+            POHeaderPart2.Dock = DockStyle.Top
+            POHeaderPart1.Dock = DockStyle.Top
+            xDetailsSeparator.Dock = DockStyle.Top
+            xExpansionSeparator.Dock = DockStyle.Top
+
+            POHeaderInner.Controls.Add(POExpansionInner)
+            POHeaderInner.Controls.Add(xExpansionSeparator)
+            POHeaderInner.Controls.Add(POHeaderPart2)
+            POHeaderInner.Controls.Add(xDetailsSeparator)
+            POHeaderInner.Controls.Add(POHeaderPart1)
+        Finally
+            POHeaderInner.ResumeLayout(False)
+            POHeaderInner.PerformLayout()
+        End Try
+    End Sub
+
+    Private Sub ApplyHeaderFieldSpacing()
+        SetHeaderRowHeight(POHeaderPart1)
+        SetHeaderRowHeight(POHeaderPart2)
+
+        For Each xControl As Control In New Control() {
+            THTitle, THArtist, THGenre, THBPM, CHPlayer, CHRank, CHDifficulty, THPlayLevel, THTotal, Label25,
+            THSubTitle, THSubArtist, THStageFile, BHStageFile, THBanner, BHBanner, THBackBMP, BHBackBMP,
+            THMissBMP, BHMissBMP, THPreview, BHPreview, THLandMine, BHLandMine, CHLnmode, CHLnObj,
+            THExRank, Label13, THComment
+        }
+            xControl.Margin = New Padding(xControl.Margin.Left, 1, xControl.Margin.Right, 1)
+        Next
+    End Sub
+
+    Private Sub SetHeaderRowHeight(ByVal xPanel As TableLayoutPanel)
+        For Each xStyle As RowStyle In xPanel.RowStyles
+            If xStyle.SizeType = SizeType.Absolute AndAlso xStyle.Height < 25.0! Then xStyle.Height = 25.0!
+        Next
+    End Sub
+
+    Private Function GetOptionsSeparator(ByRef xSeparator As Panel, ByVal xName As String, Optional ByVal xText As String = "") As Panel
+        If xSeparator Is Nothing Then
+            xSeparator = New Panel With {
+                .BackColor = SystemColors.Control,
+                .Name = xName
+            }
+        End If
+
+        xSeparator.AutoSize = False
+        xSeparator.Dock = DockStyle.Top
+        xSeparator.Height = If(String.IsNullOrEmpty(xText), 13, 29)
+        xSeparator.Padding = If(String.IsNullOrEmpty(xText), New Padding(0, 6, 0, 6), New Padding(0, 4, 0, 0))
+        xSeparator.Visible = True
+
+        Do While xSeparator.Controls.Count > 0
+            Dim xControl As Control = xSeparator.Controls(0)
+            xSeparator.Controls.RemoveAt(0)
+            xControl.Dispose()
+        Loop
+
+        If String.IsNullOrEmpty(xText) Then
+            Dim xLine As New Panel With {
+                .BackColor = SystemColors.ControlDark,
+                .Dock = DockStyle.Fill,
+                .Height = 1,
+                .Name = xName & "Line"
+            }
+            xSeparator.Controls.Add(xLine)
+        End If
+
+        If Not String.IsNullOrEmpty(xText) Then
+            Dim xLabel As New Label With {
+                .Dock = DockStyle.Bottom,
+                .Font = Label19.Font,
+                .Height = 20,
+                .Name = xName & "Label",
+                .Padding = New Padding(2, 0, 0, 0),
+                .Text = xText,
+                .TextAlign = ContentAlignment.MiddleLeft
+            }
+            xSeparator.Controls.Add(xLabel)
+        End If
+
+        Return xSeparator
+    End Function
+
+    Private Sub MoveHeaderCommentAfterExRank()
+        MoveHeaderPart2Row(0, Label15, THSubTitle)
+        MoveHeaderPart2Row(1, Label17, THSubArtist)
+        MoveHeaderPart2Row(2, Label16, THStageFile, BHStageFile)
+        MoveHeaderPart2Row(3, Label12, THBanner, BHBanner)
+        MoveHeaderPart2Row(4, Label11, THBackBMP, BHBackBMP)
+        MoveHeaderPart2Row(5, Label27, THMissBMP, BHMissBMP)
+        MoveHeaderPart2Row(6, Label28, THPreview, BHPreview)
+        MoveHeaderPart2Row(7, Label26, THLandMine, BHLandMine)
+        MoveHeaderPart2Row(8, Label29, CHLnmode)
+        MoveHeaderPart2Row(9, Label24, CHLnObj)
+        MoveHeaderPart2Row(10, Label23, THExRank, Label13)
+        MoveHeaderPart2Row(11, Label19, THComment)
+    End Sub
+
+    Private Sub MoveHeaderPart2Row(ByVal xRow As Integer, ByVal ParamArray xControls() As Control)
+        For Each xControl As Control In xControls
+            POHeaderPart2.SetRow(xControl, xRow)
+        Next
+    End Sub
+
+    Private Sub ArrangeListOptionsPanels()
+        FlowLayoutPanel3.Visible = False
+        FlowLayoutPanel4.Visible = False
+
+        CWAVMultiSelect.Checked = True
+        CWAVMultiSelect.Visible = False
+        WAVMultiSelect = True
+        LWAV.SelectionMode = SelectionMode.MultiExtended
+        LBMP.SelectionMode = SelectionMode.MultiExtended
+
+        ArrangeDefinitionOptionRows(POWAVInner, FlowLayoutPanel3, POWAVExpander, LWAV, POWAVPart2, POWAVResizer)
+        ArrangeDefinitionOptionRows(POBMPInner, FlowLayoutPanel4, POBMPExpander, LBMP, POBMPPart2, POBMPResizer)
+    End Sub
+
+    Private Sub ArrangeDefinitionOptionRows(
+        ByVal xPanel As TableLayoutPanel,
+        ByVal xToolbar As Control,
+        ByVal xExpander As Control,
+        ByVal xList As Control,
+        ByVal xOptions As Control,
+        ByVal xResizer As Control
+    )
+        xPanel.SetRow(xToolbar, 0)
+        xPanel.SetRow(xExpander, 1)
+        xPanel.SetRow(xList, 2)
+        xPanel.SetRow(xOptions, 3)
+        xPanel.SetRow(xResizer, 4)
+
+        SetDefinitionOptionRowStyle(xPanel, 0, SizeType.Absolute, 0.0!)
+        SetDefinitionOptionRowStyle(xPanel, 1, SizeType.Absolute, 0.0!)
+        SetDefinitionOptionRowStyle(xPanel, 2, SizeType.Percent, 100.0!)
+        SetDefinitionOptionRowStyle(xPanel, 3, SizeType.AutoSize, 0.0!)
+        SetDefinitionOptionRowStyle(xPanel, 4, SizeType.Absolute, 0.0!)
+    End Sub
+
+    Private Sub SetDefinitionOptionRowStyle(ByVal xPanel As TableLayoutPanel, ByVal xRow As Integer, ByVal xSizeType As SizeType, ByVal xHeight As Single)
+        xPanel.RowStyles(xRow).SizeType = xSizeType
+        xPanel.RowStyles(xRow).Height = xHeight
+    End Sub
+
+    Private Sub ShowOptionsPanelContent(ByVal xSwitch As CheckBox)
+        Dim xContent As Control = GetOptionsPanelContent(xSwitch)
+        If xContent IsNot Nothing Then xContent.Visible = True
+    End Sub
+
+    Private Function GetOptionsPanelContent(ByVal xSwitch As CheckBox) As Control
+        If Object.ReferenceEquals(xSwitch, POHeaderSwitch) Then Return POHeaderInner
+        If Object.ReferenceEquals(xSwitch, POGridSwitch) Then Return POGridInner
+        If Object.ReferenceEquals(xSwitch, POWaveFormSwitch) Then Return POWaveFormInner
+        If Object.ReferenceEquals(xSwitch, POWAVSwitch) Then Return POWAVInner
+        If Object.ReferenceEquals(xSwitch, POBMPSwitch) Then Return POBMPInner
+        If Object.ReferenceEquals(xSwitch, POBeatSwitch) Then Return POBeatInner
+        If Object.ReferenceEquals(xSwitch, POExpansionSwitch) Then Return POExpansionInner
+
+        Return Nothing
+    End Function
+
+    Private Sub StretchResizableOptionsPanels()
+        Dim xBottomMargin As Padding = New Padding(0, 0, 0, 10)
+
+        POWAV.Padding = xBottomMargin
+        POBMP.Padding = xBottomMargin
+        POBeat.Padding = xBottomMargin
+
+        StretchDefinitionListPanel(POWAVInner, POWAVResizer)
+        StretchDefinitionListPanel(POBMPInner, POBMPResizer)
+        StretchDefinitionListPanel(POBeatInner, POBeatResizer)
+    End Sub
+
+    Private Sub StretchDefinitionListPanel(ByVal xPanel As TableLayoutPanel, ByVal xResizer As Button)
+        xPanel.AutoSize = False
+        xPanel.Dock = DockStyle.Fill
+        xResizer.Enabled = False
+        xResizer.Visible = False
+
+        Dim xLastRow As Integer = xPanel.RowCount - 1
+        xPanel.RowStyles(xLastRow).SizeType = SizeType.Absolute
+        xPanel.RowStyles(xLastRow).Height = 0.0!
     End Sub
 
     Private Sub InitializeGridToolbar()
@@ -1893,6 +2453,7 @@ Public Class MainWindow
     End Function
 
     Private Sub Unload() Handles MyBase.Disposed
+        ReleaseHeaderWheelBlockers()
         Audio.Finalize()
     End Sub
 
@@ -1916,18 +2477,11 @@ Public Class MainWindow
 
         Try
             Dim xTempFileName As String = RandomFileName(".cur")
-            My.Computer.FileSystem.WriteAllBytes(xTempFileName, My.Resources.CursorResizeDown, False)
-            Dim xDownCursor As Cursor = ActuallyLoadCursor(xTempFileName)
             My.Computer.FileSystem.WriteAllBytes(xTempFileName, My.Resources.CursorResizeLeft, False)
             Dim xLeftCursor As Cursor = ActuallyLoadCursor(xTempFileName)
             My.Computer.FileSystem.WriteAllBytes(xTempFileName, My.Resources.CursorResizeRight, False)
             Dim xRightCursor As Cursor = ActuallyLoadCursor(xTempFileName)
             File.Delete(xTempFileName)
-
-            POWAVResizer.Cursor = xDownCursor
-            POBMPResizer.Cursor = xDownCursor
-            POBeatResizer.Cursor = xDownCursor
-            POExpansionResizer.Cursor = xDownCursor
 
             POptionsResizer.Cursor = xLeftCursor
 
@@ -1949,9 +2503,7 @@ Public Class MainWindow
         TBLangRefresh_Click(TBLangRefresh, Nothing)
         TBThemeRefresh_Click(TBThemeRefresh, Nothing)
 
-        POHeaderPart2.Visible = False
-        POGridPart2.Visible = False
-        POWaveFormPart2.Visible = False
+        ApplyOptionsPanelFlatLayout()
 
         If My.Computer.FileSystem.FileExists(My.Application.Info.DirectoryPath & "\iBMSC.Settings.xml") Then
             LoadSettings(My.Application.Info.DirectoryPath & "\iBMSC.Settings.xml")
@@ -1961,6 +2513,7 @@ Public Class MainWindow
         RefreshPlayerSelector()
         SetUseBase62Definitions(NewBMSUseBase62Definitions)
         RefreshDefinitionLists()
+        ApplyOptionsPanelFlatLayout()
         'On Error GoTo 0
         SetIsSaved(True)
 
@@ -2004,6 +2557,8 @@ Public Class MainWindow
         Me.Visible = True
         UpdateHorizontalScrollMetrics()
         RefreshPanelAll()
+        ResetSelectedOptionsTabScroll()
+        QueueResetSelectedOptionsTabScroll()
     End Sub
 
     Private Sub LoadInitialPreferences()
@@ -3916,10 +4471,6 @@ StartCount:     If Not NTInput Then
         RefreshPanelAll()
     End Sub
 
-    Private Sub POWAV_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles POWAV.Resize
-        LWAV.Height = sender.Height - 25
-    End Sub
-
     Private Sub AddToPOBMP(ByVal xPath() As String)
         Dim xIndices(LBMP.SelectedIndices.Count - 1) As Integer
         LBMP.SelectedIndices.CopyTo(xIndices, 0)
@@ -4016,16 +4567,6 @@ StartCount:     If Not NTInput Then
     Private Sub POBMP_DragLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles POBMP.DragLeave
         ReDim DDFileName(-1)
         RefreshPanelAll()
-    End Sub
-
-    Private Sub POBMP_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles POBMP.Resize
-        LBMP.Height = sender.Height - 25
-    End Sub
-    Private Sub POBeat_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles POBeat.Resize
-        LBeat.Height = POBeat.Height - 25
-    End Sub
-    Private Sub POExpansion_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles POExpansion.Resize
-        TExpansion.Height = POExpansion.Height - 2
     End Sub
 
     Private Sub mn_DropDownClosed(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -5576,6 +6117,14 @@ Jump2:
     End Sub
     Private Sub mnSOP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSOP.CheckedChanged
         POptions.Visible = mnSOP.Checked
+        POptionsScroll.Visible = mnSOP.Checked
+        POptionsResizer.Visible = mnSOP.Checked
+        KeepOptionsPanelDockedRight()
+        ResizeSplitPanelsByRatio()
+        If mnSOP.Checked Then
+            ResetSelectedOptionsTabScroll()
+            QueueResetSelectedOptionsTabScroll()
+        End If
     End Sub
     Private Sub mnSStatus_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSStatus.CheckedChanged
         pStatus.Visible = mnSStatus.Checked
@@ -5655,7 +6204,7 @@ Jump2:
     End Function
 
     Private Function CanAddRightSplitPane() As Boolean
-        If ToolStripContainer1 Is Nothing OrElse ToolStripContainer1.ContentPanel.Width <= 0 Then Return True
+        If GetSplitLayoutWidth() <= 0 Then Return True
         Return GetMaxSplitPanelWidth(SplitPanes.Count) >= MinSplitPanelWidth
     End Function
 
@@ -5732,6 +6281,7 @@ Jump2:
         PositionSplitterGrip(xSplitter, xContainer)
         xSplitter.BringToFront()
         ToolStripContainer1.ContentPanel.Controls.Add(xContainer)
+        KeepOptionsPanelDockedRight()
 
         AddPanelHandlers(xCanvas, xVScroll, xHScroll)
         AddHandler xContainer.Resize, AddressOf SplitPaneContainer_Resize
@@ -5919,21 +6469,35 @@ Jump2:
         Next
     End Sub
 
+    Private Function GetOptionsPanelDockWidth() As Integer
+        If POptionsScroll Is Nothing OrElse Not POptionsScroll.Visible Then Return 0
+
+        Dim xWidth As Integer = POptionsScroll.Width
+        If POptionsResizer IsNot Nothing AndAlso POptionsResizer.Visible Then xWidth += POptionsResizer.Width
+        Return xWidth
+    End Function
+
+    Private Function GetSplitLayoutWidth() As Integer
+        If ToolStripContainer1 Is Nothing Then Return 0
+        Return Math.Max(0, ToolStripContainer1.ContentPanel.Width - GetOptionsPanelDockWidth())
+    End Function
+
     Private Function GetSplitPanelWidth(ByVal panelIndex As Integer, Optional ByVal limitOnShow As Boolean = False) As Integer
         If panelIndex <= MainPanelIndex OrElse panelIndex >= SplitPanes.Count Then Return 0
 
+        Dim xLayoutWidth As Integer = GetSplitLayoutWidth()
         Dim xRatio As Single = GetSplitPanelRatio(panelIndex)
         If limitOnShow AndAlso xRatio > MaxSplitPanelShowRatio Then
             SplitPanes(panelIndex).Ratio = MaxSplitPanelShowRatio
             xRatio = MaxSplitPanelShowRatio
         End If
 
-        Dim xWidth As Integer = CInt(ToolStripContainer1.ContentPanel.Width * xRatio)
+        Dim xWidth As Integer = CInt(xLayoutWidth * xRatio)
         xWidth = Math.Max(MinSplitPanelWidth, xWidth)
 
         Dim xMaxWidth As Integer = GetMaxSplitPanelWidth(panelIndex)
         If limitOnShow Then
-            Dim xMaxShowWidth As Integer = Math.Max(MinSplitPanelWidth, CInt(ToolStripContainer1.ContentPanel.Width * MaxSplitPanelShowRatio))
+            Dim xMaxShowWidth As Integer = Math.Max(MinSplitPanelWidth, CInt(xLayoutWidth * MaxSplitPanelShowRatio))
             xMaxWidth = Math.Min(xMaxWidth, xMaxShowWidth)
         End If
 
@@ -5949,7 +6513,7 @@ Jump2:
             xOtherWidth += SplitPanes(i).Container.Width
         Next
 
-        Dim xMaxWidth As Integer = ToolStripContainer1.ContentPanel.Width - MinMainPanelWidth - xOtherWidth
+        Dim xMaxWidth As Integer = GetSplitLayoutWidth() - MinMainPanelWidth - xOtherWidth
         If panelIndex >= SplitPanes.Count Then Return Math.Max(0, xMaxWidth)
         Return Math.Max(MinSplitPanelWidth, xMaxWidth)
     End Function
@@ -5958,8 +6522,9 @@ Jump2:
         If panelIndex <= MainPanelIndex OrElse panelIndex >= SplitPanes.Count Then Return
 
         Dim xPanel As Panel = SplitPanes(panelIndex).Container
-        If xPanel.Width > 0 AndAlso ToolStripContainer1.ContentPanel.Width > 0 Then
-            SplitPanes(panelIndex).Ratio = ClampSplitPanelRatio(xPanel.Width / ToolStripContainer1.ContentPanel.Width)
+        Dim xLayoutWidth As Integer = GetSplitLayoutWidth()
+        If xPanel.Width > 0 AndAlso xLayoutWidth > 0 Then
+            SplitPanes(panelIndex).Ratio = ClampSplitPanelRatio(xPanel.Width / xLayoutWidth)
         End If
     End Sub
 
@@ -6019,7 +6584,7 @@ Jump2:
 
     Private Sub ResizeSplitPanelsByRatio() Handles ToolStripContainer1.ContentPanel.Resize
         If UpdatingSplitterControls OrElse Not Me.Created Then Return
-        If ToolStripContainer1.ContentPanel.Width <= 0 Then Return
+        If GetSplitLayoutWidth() <= 0 Then Return
 
         UpdatingSplitterControls = True
         Try
@@ -6468,10 +7033,6 @@ case2:              Dim xI0 As Integer
 
     End Sub
 
-    Private Sub VerticalResizer_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles POWAVResizer.MouseDown, POBMPResizer.MouseDown, POBeatResizer.MouseDown, POExpansionResizer.MouseDown
-        tempResize = e.Y
-    End Sub
-
     Private Sub HorizontalResizer_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles POptionsResizer.MouseDown, SpL.MouseDown, SpR.MouseDown
         tempResize = e.X
         BeginSplitterDrag(TryCast(sender, Control), e)
@@ -6513,31 +7074,13 @@ case2:              Dim xI0 As Integer
         If xWasDragging Then RefreshSplitterControls()
     End Sub
 
-    Private Sub POResizer_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles POWAVResizer.MouseMove, POBMPResizer.MouseMove, POBeatResizer.MouseMove, POExpansionResizer.MouseMove
-        If e.Button <> Windows.Forms.MouseButtons.Left Then Exit Sub
-        If e.Y = tempResize Then Exit Sub
-
-        Try
-            Dim Source As Button = CType(sender, Button)
-            Dim Target As Panel = Source.Parent
-
-            Dim xHeight As Integer = Target.Height + e.Y - tempResize
-            If xHeight < 10 Then xHeight = 10
-            Target.Height = xHeight
-
-            Target.Refresh()
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
     Private Sub POptionsResizer_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles POptionsResizer.MouseMove
         If e.Button <> Windows.Forms.MouseButtons.Left Then Exit Sub
         If e.X = tempResize Then Exit Sub
 
         Try
             Dim xWidth As Integer = POptionsScroll.Width - e.X + tempResize
-            If xWidth < 25 Then xWidth = 25
+            If xWidth < 230 Then xWidth = 230
             POptionsScroll.Width = xWidth
 
             Me.Refresh()

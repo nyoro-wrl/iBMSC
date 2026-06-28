@@ -197,7 +197,7 @@
 	</SubMenu>
 	<OptionsPanel>
 		<Header>
-			<Header>HEADER</Header>
+			<Header>ヘッダ</Header>
 			<Title>TITLE</Title>
 			<Artist>ARTIST</Artist>
 			<Genre>GENRE</Genre>
@@ -242,7 +242,7 @@
 			<DisableVertical>オブジェを縦移動させない (D)</DisableVertical>
 		</Grid>
 		<WaveForm>
-			<Title>BGM 波形</Title>
+			<Title>BGM波形</Title>
 			<Load>選択</Load>
 			<Clear>削除</Clear>
 			<Lock>BGM の位置をロック</Lock>
@@ -373,7 +373,7 @@
 		<SubGrid>補助</SubGrid>
 		<VerticalLine>縦線</VerticalLine>
 		<MeasureBarLine>小節線</MeasureBarLine>
-		<BGMWaveform>BGM 波形</BGMWaveform>
+		<BGMWaveform>BGM波形</BGMWaveform>
 		<NoteHeight>通常オブジェの高さ</NoteHeight>
 		<NoteLabel>通常オブジェのフォント</NoteLabel>
 		<MeasureLabel>小節番号のフォント</MeasureLabel>
