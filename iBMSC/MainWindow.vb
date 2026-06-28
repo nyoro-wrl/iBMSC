@@ -285,8 +285,6 @@ Public Class MainWindow
     Dim SyncSplitterScroll As Boolean = False
     Dim UpdatingSplitterControls As Boolean = False
     Dim SyncingPanelScroll As Boolean = False
-    Dim spLock() As Boolean = {False, False, False}
-    Dim spDiff() As Integer = {0, 0, 0}
     Dim PanelFocus As Integer = 1 '0 = Left, 1 = Middle, 2 = Right
     Dim spMouseOver As Integer = 1
 
@@ -325,7 +323,7 @@ Public Class MainWindow
         InitializeComponent()
         InitializePlayerSelector()
         InitializeGridToolbar()
-        ArrangeGridOptionsPanel()
+        RemoveGridOptionsPanel()
         InitializeOptionsMenuItems()
         InitializeSplitterControls()
         ApplyToolbarLayoutRules()
@@ -382,35 +380,8 @@ Public Class MainWindow
         End If
     End Sub
 
-    Private Sub ArrangeGridOptionsPanel()
-        POGridInner.SuspendLayout()
-        POGridPart1.SuspendLayout()
-        TableLayoutPanel5.SuspendLayout()
-
-        POGridPart1.Controls.Remove(TableLayoutPanel2)
-        POGridPart1.Controls.Remove(TableLayoutPanel3)
-        POGridPart1.Controls.Remove(CGDisableVertical)
-        POGridInner.Controls.Remove(POGridExpander)
-        POGridInner.Controls.Remove(POGridPart2)
-        TableLayoutPanel5.Controls.Remove(Label5)
-        TableLayoutPanel5.Controls.Remove(FlowLayoutPanel2)
-
-        FlowLayoutPanel2.Margin = New Padding(3, 0, 0, 0)
-        FlowLayoutPanel2.Padding = New Padding(0)
-        FlowLayoutPanel2.WrapContents = False
-
-        POGridPart1.Controls.Clear()
-        POGridPart1.ColumnStyles.Clear()
-        POGridPart1.RowStyles.Clear()
-        POGridPart1.ColumnCount = 1
-        POGridPart1.RowCount = 1
-        POGridPart1.ColumnStyles.Add(New ColumnStyle())
-        POGridPart1.RowStyles.Add(New RowStyle())
-        POGridPart1.Controls.Add(FlowLayoutPanel2, 0, 0)
-
-        TableLayoutPanel5.ResumeLayout(True)
-        POGridPart1.ResumeLayout(True)
-        POGridInner.ResumeLayout(True)
+    Private Sub RemoveGridOptionsPanel()
+        POptions.Controls.Remove(POGrid)
     End Sub
 
     Private Sub InitializeGridToolbar()
@@ -2231,38 +2202,30 @@ EndSearch:
             Exit Sub
         End If
 
-        If iI = PanelFocus And Not LastMouseDownLocation = New Point(-1, -1) And Not VSValue = -1 Then LastMouseDownLocation.Y += (VSValue - sender.Value) * gxHeight
-        PanelVScroll(iI) = sender.Value
+        Dim xOldValue As Integer = PanelVScroll(iI)
+        Dim xDelta As Integer = sender.Value - xOldValue
+        If SyncSplitterScroll Then
+            xDelta = LimitPanelVScrollDelta(xDelta)
+            Dim xValue As Integer = xOldValue + xDelta
+
+            If sender.Value <> xValue Then
+                SyncingPanelScroll = True
+                Try
+                    sender.Value = xValue
+                Finally
+                    SyncingPanelScroll = False
+                End Try
+            End If
+        End If
+
+        If iI = PanelFocus And Not LastMouseDownLocation = New Point(-1, -1) And Not VSValue = -1 Then LastMouseDownLocation.Y += (VSValue - (xOldValue + xDelta)) * gxHeight
+        PanelVScroll(iI) = xOldValue + xDelta
 
         If SyncSplitterScroll Then
-            SyncPanelVScroll(iI, sender.Value)
-
-        ElseIf spLock((iI + 1) Mod 3) Then
-            Dim xVS As Integer = PanelVScroll(iI) + spDiff(iI)
-            If xVS > 0 Then xVS = 0
-            If xVS < MainPanelScroll.Minimum Then xVS = MainPanelScroll.Minimum
-            Select Case iI
-                Case 0 : MainPanelScroll.Value = xVS
-                Case 1 : RightPanelScroll.Value = xVS
-                Case 2 : LeftPanelScroll.Value = xVS
-            End Select
+            SyncPanelVScroll(iI, xDelta)
         End If
 
-        If Not SyncSplitterScroll AndAlso spLock((iI + 2) Mod 3) Then
-            Dim xVS As Integer = PanelVScroll(iI) - spDiff((iI + 2) Mod 3)
-            If xVS > 0 Then xVS = 0
-            If xVS < MainPanelScroll.Minimum Then xVS = MainPanelScroll.Minimum
-            Select Case iI
-                Case 0 : RightPanelScroll.Value = xVS
-                Case 1 : LeftPanelScroll.Value = xVS
-                Case 2 : MainPanelScroll.Value = xVS
-            End Select
-        End If
-
-        spDiff(iI) = PanelVScroll((iI + 1) Mod 3) - PanelVScroll(iI)
-        spDiff((iI + 2) Mod 3) = PanelVScroll(iI) - PanelVScroll((iI + 2) Mod 3)
-
-        VSValue = sender.Value
+        VSValue = xOldValue + xDelta
         If SyncSplitterScroll Then
             RefreshPanelAll()
         Else
@@ -2270,14 +2233,17 @@ EndSearch:
         End If
     End Sub
 
-    Private Sub SyncPanelVScroll(ByVal sourceIndex As Integer, ByVal value As Integer)
+    Private Sub SyncPanelVScroll(ByVal sourceIndex As Integer, ByVal delta As Integer)
+        If delta = 0 Then Return
+
         SyncingPanelScroll = True
         Try
             For i As Integer = 0 To 2
                 If i = sourceIndex Then Continue For
+                If Not IsPanelVScrollSynced(i) Then Continue For
 
                 Dim xScroll As VScrollBar = GetPanelVScrollBar(i)
-                Dim xValue As Integer = ClampPanelVScroll(xScroll, value)
+                Dim xValue As Integer = ClampPanelVScroll(xScroll, PanelVScroll(i) + delta)
                 If xScroll.Value <> xValue Then xScroll.Value = xValue
                 PanelVScroll(i) = xValue
             Next
@@ -2286,21 +2252,51 @@ EndSearch:
         End Try
     End Sub
 
+    Private Function LimitPanelVScrollDelta(ByVal delta As Integer) As Integer
+        If delta = 0 Then Return 0
+
+        Dim xDelta As Integer = delta
+        For i As Integer = 0 To 2
+            If Not IsPanelVScrollSynced(i) Then Continue For
+
+            Dim xScroll As VScrollBar = GetPanelVScrollBar(i)
+            If delta > 0 Then
+                xDelta = Math.Min(xDelta, 0 - PanelVScroll(i))
+            Else
+                xDelta = Math.Max(xDelta, xScroll.Minimum - PanelVScroll(i))
+            End If
+        Next
+
+        Return xDelta
+    End Function
+
+    Private Function IsPanelVScrollSynced(ByVal panelIndex As Integer) As Boolean
+        Select Case panelIndex
+            Case 0 : Return PMainL.Visible
+            Case 1 : Return True
+            Case 2 : Return PMainR.Visible
+        End Select
+
+        Return False
+    End Function
+
     Private Function ClampPanelVScroll(ByVal xScroll As VScrollBar, ByVal value As Integer) As Integer
         If value > 0 Then Return 0
         If value < xScroll.Minimum Then Return xScroll.Minimum
         Return value
     End Function
 
-    Private Sub cVSLock_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cVSLockL.CheckedChanged, cVSLock.CheckedChanged, cVSLockR.CheckedChanged
-        Dim iI As Integer = sender.Tag
-        spLock(iI) = sender.Checked
-        If Not spLock(iI) Then Return
+    Private Sub SetPanelVScroll(ByVal panelIndex As Integer, ByVal value As Integer)
+        Dim xScroll As VScrollBar = GetPanelVScrollBar(panelIndex)
+        Dim xValue As Integer = ClampPanelVScroll(xScroll, value)
 
-        spDiff(iI) = PanelVScroll((iI + 1) Mod 3) - PanelVScroll(iI)
-        spDiff((iI + 2) Mod 3) = PanelVScroll(iI) - PanelVScroll((iI + 2) Mod 3)
-
-        'POHeaderB.Text = spDiff(0) & "_" & spDiff(1) & "_" & spDiff(2)
+        SyncingPanelScroll = True
+        Try
+            If xScroll.Value <> xValue Then xScroll.Value = xValue
+            PanelVScroll(panelIndex) = xValue
+        Finally
+            SyncingPanelScroll = False
+        End Try
     End Sub
 
     Private Sub HSGotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles HS.GotFocus, HSL.GotFocus, HSR.GotFocus
@@ -5284,7 +5280,7 @@ Jump2:
             xPanel.Visible = True
             xPanel.Width = GetSplitPanelWidth(panelIndex, limitOnShow)
             xSplitter.Visible = True
-            If SyncSplitterScroll Then SyncPanelVScroll(PanelFocus, PanelVScroll(PanelFocus))
+            SetPanelVScroll(panelIndex, PanelVScroll(1))
         Else
             StoreSplitPanelRatio(panelIndex)
             xSplitter.Visible = False
@@ -5371,10 +5367,6 @@ Jump2:
             UpdatingSplitterControls = False
         End Try
 
-        If enabled Then
-            SyncPanelVScroll(PanelFocus, PanelVScroll(PanelFocus))
-            RefreshPanelAll()
-        End If
     End Sub
     Private Sub CGShow_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CGShow.CheckedChanged
         gShowGrid = CGShow.Checked

@@ -850,10 +850,6 @@ Jump1:
 
                     CGSnap.Checked = xPref And &H1000000
                     CGDisableVertical.Checked = xPref And &H2000000
-                    cVSLockL.Checked = xPref And &H4000000
-                    cVSLock.Checked = xPref And &H8000000
-                    cVSLockR.Checked = xPref And &H10000000
-
                     CGDivide.Value = br.ReadInt32
                     CGSub.Value = br.ReadInt32
                     gSlash = br.ReadInt32
@@ -1035,9 +1031,6 @@ EndOfSub:
             If gSCROLL Then xPref = xPref Or &H20000000
             If gSnap Then xPref = xPref Or &H1000000
             If DisableVerticalMove Then xPref = xPref Or &H2000000
-            If spLock(0) Then xPref = xPref Or &H4000000
-            If spLock(1) Then xPref = xPref Or &H8000000
-            If spLock(2) Then xPref = xPref Or &H10000000
             bw.Write(xPref)
             bw.Write(BitConverter.GetBytes(gDivide))
             bw.Write(BitConverter.GetBytes(gSub))

@@ -973,10 +973,6 @@ EndOfSub:
                     XMLLoadLocale(eGrid.Item("DisableVertical"), CGDisableVertical.Text)
                     RefreshDisableVerticalToolbar()
                     RefreshGridSnapToolbar()
-                    XMLLoadLocale(eGrid.Item("Scroll"), Label5.Text)
-                    XMLLoadLocaleToolTipUniversal(eGrid.Item("LockLeft"), cVSLockL)
-                    XMLLoadLocaleToolTipUniversal(eGrid.Item("LockMiddle"), cVSLock)
-                    XMLLoadLocaleToolTipUniversal(eGrid.Item("LockRight"), cVSLockR)
                 End If
 
                 Dim eWaveForm As XmlElement = eOptionsPanel.Item("WaveForm")

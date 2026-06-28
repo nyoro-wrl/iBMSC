@@ -123,12 +123,6 @@ Partial Class MainWindow
         Me.POGrid = New System.Windows.Forms.Panel()
         Me.POGridInner = New System.Windows.Forms.Panel()
         Me.POGridPart2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.TableLayoutPanel5 = New System.Windows.Forms.TableLayoutPanel()
-        Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.cVSLockL = New System.Windows.Forms.CheckBox()
-        Me.cVSLock = New System.Windows.Forms.CheckBox()
-        Me.cVSLockR = New System.Windows.Forms.CheckBox()
-        Me.Label5 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CGB = New System.Windows.Forms.NumericUpDown()
@@ -435,8 +429,6 @@ Partial Class MainWindow
         Me.POGrid.SuspendLayout()
         Me.POGridInner.SuspendLayout()
         Me.POGridPart2.SuspendLayout()
-        Me.TableLayoutPanel5.SuspendLayout()
-        Me.FlowLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel4.SuspendLayout()
         CType(Me.CGB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.POGridPart1.SuspendLayout()
@@ -1798,98 +1790,14 @@ Partial Class MainWindow
         Me.POGridPart2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.POGridPart2.ColumnCount = 1
         Me.POGridPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.POGridPart2.Controls.Add(Me.TableLayoutPanel5, 0, 1)
         Me.POGridPart2.Controls.Add(Me.TableLayoutPanel4, 0, 0)
         Me.POGridPart2.Dock = System.Windows.Forms.DockStyle.Top
         Me.POGridPart2.Location = New System.Drawing.Point(0, 152)
         Me.POGridPart2.Name = "POGridPart2"
-        Me.POGridPart2.RowCount = 2
+        Me.POGridPart2.RowCount = 1
         Me.POGridPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POGridPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POGridPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.POGridPart2.Size = New System.Drawing.Size(183, 58)
+        Me.POGridPart2.Size = New System.Drawing.Size(183, 29)
         Me.POGridPart2.TabIndex = 0
-        '
-        'TableLayoutPanel5
-        '
-        Me.TableLayoutPanel5.AutoSize = True
-        Me.TableLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.TableLayoutPanel5.ColumnCount = 2
-        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel5.Controls.Add(Me.FlowLayoutPanel2, 1, 0)
-        Me.TableLayoutPanel5.Controls.Add(Me.Label5, 0, 0)
-        Me.TableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel5.Location = New System.Drawing.Point(0, 29)
-        Me.TableLayoutPanel5.Margin = New System.Windows.Forms.Padding(0)
-        Me.TableLayoutPanel5.Name = "TableLayoutPanel5"
-        Me.TableLayoutPanel5.RowCount = 1
-        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel5.Size = New System.Drawing.Size(183, 29)
-        Me.TableLayoutPanel5.TabIndex = 46
-        '
-        'FlowLayoutPanel2
-        '
-        Me.FlowLayoutPanel2.AutoSize = True
-        Me.FlowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.FlowLayoutPanel2.Controls.Add(Me.cVSLockL)
-        Me.FlowLayoutPanel2.Controls.Add(Me.cVSLock)
-        Me.FlowLayoutPanel2.Controls.Add(Me.cVSLockR)
-        Me.FlowLayoutPanel2.Location = New System.Drawing.Point(115, 3)
-        Me.FlowLayoutPanel2.Name = "FlowLayoutPanel2"
-        Me.FlowLayoutPanel2.Size = New System.Drawing.Size(65, 23)
-        Me.FlowLayoutPanel2.TabIndex = 72
-        Me.FlowLayoutPanel2.WrapContents = False
-        '
-        'cVSLockL
-        '
-        Me.cVSLockL.Appearance = System.Windows.Forms.Appearance.Button
-        Me.cVSLockL.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cVSLockL.Image = Global.iBMSC.My.Resources.Resources.x16Lock
-        Me.cVSLockL.Location = New System.Drawing.Point(0, 0)
-        Me.cVSLockL.Margin = New System.Windows.Forms.Padding(0)
-        Me.cVSLockL.Name = "cVSLockL"
-        Me.cVSLockL.Size = New System.Drawing.Size(23, 23)
-        Me.cVSLockL.TabIndex = 38
-        Me.cVSLockL.Tag = "0"
-        Me.ToolTipUniversal.SetToolTip(Me.cVSLockL, "Lock Left Editing Panel")
-        '
-        'cVSLock
-        '
-        Me.cVSLock.Appearance = System.Windows.Forms.Appearance.Button
-        Me.cVSLock.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cVSLock.Image = Global.iBMSC.My.Resources.Resources.x16Lock
-        Me.cVSLock.Location = New System.Drawing.Point(23, 0)
-        Me.cVSLock.Margin = New System.Windows.Forms.Padding(0)
-        Me.cVSLock.Name = "cVSLock"
-        Me.cVSLock.Size = New System.Drawing.Size(23, 23)
-        Me.cVSLock.TabIndex = 40
-        Me.cVSLock.Tag = "1"
-        Me.ToolTipUniversal.SetToolTip(Me.cVSLock, "Lock Middle Editing Panel")
-        '
-        'cVSLockR
-        '
-        Me.cVSLockR.Appearance = System.Windows.Forms.Appearance.Button
-        Me.cVSLockR.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cVSLockR.Image = Global.iBMSC.My.Resources.Resources.x16Lock
-        Me.cVSLockR.Location = New System.Drawing.Point(46, 0)
-        Me.cVSLockR.Margin = New System.Windows.Forms.Padding(0)
-        Me.cVSLockR.Name = "cVSLockR"
-        Me.cVSLockR.Size = New System.Drawing.Size(23, 23)
-        Me.cVSLockR.TabIndex = 41
-        Me.cVSLockR.Tag = "2"
-        Me.ToolTipUniversal.SetToolTip(Me.cVSLockR, "Lock Right Editing Panel")
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Label5.Location = New System.Drawing.Point(3, 0)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(106, 29)
-        Me.Label5.TabIndex = 39
-        Me.Label5.Text = "Vertical Scroll Lock"
-        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'TableLayoutPanel4
         '
@@ -4523,9 +4431,6 @@ Partial Class MainWindow
         Me.POGridInner.PerformLayout()
         Me.POGridPart2.ResumeLayout(False)
         Me.POGridPart2.PerformLayout()
-        Me.TableLayoutPanel5.ResumeLayout(False)
-        Me.TableLayoutPanel5.PerformLayout()
-        Me.FlowLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel4.ResumeLayout(False)
         Me.TableLayoutPanel4.PerformLayout()
         CType(Me.CGB, System.ComponentModel.ISupportInitialize).EndInit()
@@ -4856,11 +4761,6 @@ Partial Class MainWindow
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents POGridInner As System.Windows.Forms.Panel
     Friend WithEvents POGridPart2 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents TableLayoutPanel5 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents cVSLockR As System.Windows.Forms.CheckBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents cVSLock As System.Windows.Forms.CheckBox
-    Friend WithEvents cVSLockL As System.Windows.Forms.CheckBox
     Friend WithEvents CGDisableVertical As System.Windows.Forms.CheckBox
     Friend WithEvents TableLayoutPanel4 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Label1 As System.Windows.Forms.Label
@@ -4882,7 +4782,6 @@ Partial Class MainWindow
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents TableLayoutPanel6 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents FlowLayoutPanel1 As System.Windows.Forms.FlowLayoutPanel
-    Friend WithEvents FlowLayoutPanel2 As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents POWAV As System.Windows.Forms.Panel
     Friend WithEvents POWAVInner As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents POWAVSwitch As System.Windows.Forms.CheckBox

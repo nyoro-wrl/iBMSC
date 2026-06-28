@@ -235,10 +235,6 @@
 			<NoSnap>グリッドに合わせない</NoSnap>
 			<BCols>BGM 列の最小数</BCols>
 			<DisableVertical>オブジェを縦移動させない (D)</DisableVertical>
-			<Scroll>縦スクロールロック</Scroll>
-			<LockLeft>左エディット画面のロック</LockLeft>
-			<LockMiddle>中エディット画面のロック</LockMiddle>
-			<LockRight>右エディット画面のロック</LockRight>
 		</Grid>
 		<WaveForm>
 			<Title>BGM 波形</Title>
