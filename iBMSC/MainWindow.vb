@@ -588,12 +588,6 @@ Public Class MainWindow
         Public PairWidth As Integer
     End Class
 
-    Private Class OptionsPanelTab
-        Public Button As Button
-        Public Panel As Panel
-        Public Header As CheckBox
-    End Class
-
     Private Class MouseWheelBlocker
         Inherits NativeWindow
 
@@ -661,13 +655,8 @@ Public Class MainWindow
 
     Private SplitPanes As New List(Of SplitPane)
     Private SplitterDrag As SplitterDragInfo = Nothing
-    Private POTabHost As TableLayoutPanel = Nothing
-    Private POTabButtons As TableLayoutPanel = Nothing
-    Private POTabContent As Panel = Nothing
-    Private POTabPages As New List(Of OptionsPanelTab)
-    Private POTabSelected As OptionsPanelTab = Nothing
-    Private POHeaderDetailsSeparator As Panel = Nothing
-    Private POHeaderExpansionSeparator As Panel = Nothing
+    Private OptionsTabsInitialized As Boolean = False
+    Private POTabSelected As Panel = Nothing
     Private HeaderWheelBlockers As New List(Of MouseWheelBlocker)
 
     '----Find Delete Replace Options
@@ -683,10 +672,8 @@ Public Class MainWindow
     Public Sub New()
         InitializeComponent()
         InitializeHeaderWheelBlockers()
-        MoveOptionsPanelIntoContentPanel()
         InitializePlayerSelector()
         InitializeGridToolbar()
-        RemoveGridOptionsPanel()
         InitializeOptionsTabs()
         InitializeOptionsMenuItems()
         InitializeSplitterControls()
@@ -767,26 +754,6 @@ Public Class MainWindow
         End If
     End Sub
 
-    Private Sub RemoveGridOptionsPanel()
-        If POGrid.Parent IsNot Nothing Then
-            POGrid.Parent.Controls.Remove(POGrid)
-        End If
-    End Sub
-
-    Private Sub MoveOptionsPanelIntoContentPanel()
-        POptionsScroll.MinimumSize = New Size(230, 0)
-        If POptionsScroll.Width < 230 Then POptionsScroll.Width = 230
-
-        If Object.ReferenceEquals(POptionsScroll.Parent, ToolStripContainer1.ContentPanel) Then Return
-
-        If POptionsResizer.Parent IsNot Nothing Then POptionsResizer.Parent.Controls.Remove(POptionsResizer)
-        If POptionsScroll.Parent IsNot Nothing Then POptionsScroll.Parent.Controls.Remove(POptionsScroll)
-
-        ToolStripContainer1.ContentPanel.Controls.Add(POptionsResizer)
-        ToolStripContainer1.ContentPanel.Controls.Add(POptionsScroll)
-        KeepOptionsPanelDockedRight()
-    End Sub
-
     Private Sub KeepOptionsPanelDockedRight()
         If Not Object.ReferenceEquals(POptionsScroll.Parent, ToolStripContainer1.ContentPanel) Then Return
         If Not Object.ReferenceEquals(POptionsResizer.Parent, ToolStripContainer1.ContentPanel) Then Return
@@ -797,156 +764,61 @@ Public Class MainWindow
     End Sub
 
     Private Sub InitializeOptionsTabs()
-        POTabHost = New TableLayoutPanel With {
-            .ColumnCount = 1,
-            .Dock = DockStyle.Fill,
-            .Name = "POTabHost",
-            .RowCount = 2,
-            .TabIndex = POptions.TabIndex
-        }
-        POTabHost.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
-        POTabHost.RowStyles.Add(New RowStyle())
-        POTabHost.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
-
-        POTabButtons = New TableLayoutPanel With {
-            .BackColor = SystemColors.Control,
-            .ColumnCount = 3,
-            .Dock = DockStyle.Top,
-            .Height = 52,
-            .Margin = New Padding(0),
-            .Name = "POTabButtons",
-            .Padding = New Padding(2, 1, 2, 3),
-            .RowCount = 2
-        }
-        POTabButtons.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3333!))
-        POTabButtons.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3333!))
-        POTabButtons.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3334!))
-        POTabButtons.RowStyles.Add(New RowStyle(SizeType.Absolute, 24.0!))
-        POTabButtons.RowStyles.Add(New RowStyle(SizeType.Absolute, 24.0!))
-
-        POTabContent = New Panel With {
-            .BackColor = SystemColors.Control,
-            .BorderStyle = BorderStyle.None,
-            .Dock = DockStyle.Fill,
-            .Margin = New Padding(0),
-            .Name = "POTabContent",
-            .Padding = New Padding(2, 3, 2, 0)
-        }
-        POTabHost.Controls.Add(POTabButtons, 0, 0)
-        POTabHost.Controls.Add(POTabContent, 0, 1)
-
-        POptionsScroll.SuspendLayout()
-        POptions.SuspendLayout()
-        Try
-            POptionsScroll.AutoScroll = False
-            POptionsScroll.Controls.Remove(POptions)
-
-            POTabPages.Clear()
-            AddOptionsTab(POHeaderSwitch, POHeader)
-            AddOptionsTab(POWAVSwitch, POWAV)
-            AddOptionsTab(POBMPSwitch, POBMP)
-            AddOptionsTab(POBeatSwitch, POBeat)
-            AddOptionsTab(POWaveFormSwitch, POWaveForm)
-            ApplyOptionsPanelFlatLayout()
-
-            POptionsScroll.Controls.Add(POTabHost)
-            SyncOptionsTabTitles()
-        Finally
-            POptions.ResumeLayout(False)
-            POptionsScroll.ResumeLayout(False)
-        End Try
+        OptionsTabsInitialized = True
+        SyncOptionsTabTitles()
+        SelectOptionsTab(POHeader, POHeaderTabButton)
     End Sub
 
-    Private Sub AddOptionsTab(ByVal xSwitch As CheckBox, ByVal xPanel As Panel)
-        Dim xButtonFont As New Font(xSwitch.Font.FontFamily, 8.0!, FontStyle.Regular, GraphicsUnit.Point)
-        Dim xButton As New Button With {
-            .AutoSize = False,
-            .BackColor = Color.White,
-            .Dock = DockStyle.Fill,
-            .FlatStyle = FlatStyle.Flat,
-            .Font = xButtonFont,
-            .Margin = New Padding(0, 0, 2, 1),
-            .Name = xPanel.Name & "TabButton",
-            .Padding = New Padding(0),
-            .TabStop = False,
-            .Text = xSwitch.Text,
-            .TextAlign = ContentAlignment.MiddleCenter,
-            .UseCompatibleTextRendering = False,
-            .UseVisualStyleBackColor = False
-        }
-        xButton.FlatAppearance.BorderSize = 1
-        xButton.FlatAppearance.BorderColor = Color.FromArgb(205, 205, 205)
-        xButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(218, 235, 249)
-        xButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 245, 252)
-        ApplyOptionsTabButtonStyle(xButton, False)
+    Private Function GetOptionsTabPanels() As Panel()
+        Return New Panel() {POHeader, POWAV, POBMP, POBeat, POWaveForm}
+    End Function
 
-        xPanel.SuspendLayout()
-        Try
-            xSwitch.Checked = True
-            xSwitch.Visible = False
-            ShowOptionsPanelContent(xSwitch)
-            xPanel.AutoScroll = True
-            xPanel.AutoSize = False
-            xPanel.Dock = DockStyle.Fill
-            xPanel.Visible = False
-            POTabContent.Controls.Add(xPanel)
-        Finally
-            xPanel.ResumeLayout(False)
-        End Try
+    Private Function GetOptionsTabButtons() As Button()
+        Return New Button() {POHeaderTabButton, POWAVTabButton, POBMPTabButton, POBeatTabButton, POWaveFormTabButton}
+    End Function
 
-        AddHandler xButton.Click, AddressOf OptionsTabButton_Click
-        Dim xTabIndex As Integer = POTabPages.Count
-        Dim xTabRow As Integer = If(xTabIndex < 3, 0, 1)
-        Dim xTabColumn As Integer = If(xTabIndex < 3, xTabIndex, xTabIndex - 3)
-
-        POTabButtons.Controls.Add(xButton, xTabColumn, xTabRow)
-        POTabPages.Add(New OptionsPanelTab With {
-            .Button = xButton,
-            .Panel = xPanel,
-            .Header = xSwitch
-        })
-        AddHandler xSwitch.TextChanged, AddressOf OptionsTabSwitch_TextChanged
-
-        If POTabPages.Count = 1 Then
-            SelectOptionsTab(POTabPages(0))
-        End If
-    End Sub
-
-    Private Sub OptionsTabButton_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub OptionsTabButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles POHeaderTabButton.Click, POWAVTabButton.Click, POBMPTabButton.Click, POBeatTabButton.Click, POWaveFormTabButton.Click
         Dim xButton As Button = TryCast(sender, Button)
         If xButton Is Nothing Then Return
 
-        For Each xTab As OptionsPanelTab In POTabPages
-            If Object.ReferenceEquals(xTab.Button, xButton) Then
-                SelectOptionsTab(xTab)
-                Exit For
-            End If
-        Next
+        If Object.ReferenceEquals(xButton, POHeaderTabButton) Then SelectOptionsTab(POHeader, xButton)
+        If Object.ReferenceEquals(xButton, POWAVTabButton) Then SelectOptionsTab(POWAV, xButton)
+        If Object.ReferenceEquals(xButton, POBMPTabButton) Then SelectOptionsTab(POBMP, xButton)
+        If Object.ReferenceEquals(xButton, POBeatTabButton) Then SelectOptionsTab(POBeat, xButton)
+        If Object.ReferenceEquals(xButton, POWaveFormTabButton) Then SelectOptionsTab(POWaveForm, xButton)
     End Sub
 
-    Private Sub SelectOptionsTab(ByVal xSelectedTab As OptionsPanelTab)
-        POTabSelected = xSelectedTab
+    Private Sub SelectOptionsTab(ByVal xSelectedPanel As Panel, ByVal xSelectedButton As Button)
+        POTabSelected = xSelectedPanel
 
-        For Each xTab As OptionsPanelTab In POTabPages
-            Dim xIsSelected As Boolean = Object.ReferenceEquals(xTab, xSelectedTab)
-            xTab.Panel.Visible = xIsSelected
-            ApplyOptionsTabButtonStyle(xTab.Button, xIsSelected)
+        For Each xPanel As Panel In GetOptionsTabPanels()
+            xPanel.Visible = Object.ReferenceEquals(xPanel, xSelectedPanel)
         Next
 
-        xSelectedTab.Panel.BringToFront()
-        ResetOptionsTabScroll(xSelectedTab.Panel)
+        For Each xButton As Button In GetOptionsTabButtons()
+            ApplyOptionsTabButtonStyle(xButton, Object.ReferenceEquals(xButton, xSelectedButton))
+        Next
+
+        xSelectedPanel.BringToFront()
+        ResetOptionsTabScroll(xSelectedPanel)
         QueueResetSelectedOptionsTabScroll()
     End Sub
 
     Private Sub ResetOptionsTabScroll(ByVal xPanel As ScrollableControl)
         If xPanel Is Nothing Then Return
-        xPanel.AutoScrollPosition = Point.Empty
-        xPanel.PerformLayout()
+
+        Dim xScrollPanel As ScrollableControl = xPanel
+        If xPanel.Parent IsNot Nothing AndAlso TypeOf xPanel.Parent Is ScrollableControl Then
+            xScrollPanel = CType(xPanel.Parent, ScrollableControl)
+        End If
+
+        xScrollPanel.AutoScrollPosition = Point.Empty
+        xScrollPanel.PerformLayout()
     End Sub
 
     Private Sub ResetSelectedOptionsTabScroll()
         If POTabSelected Is Nothing Then Return
-        ResetOptionsTabScroll(POTabSelected.Panel)
+        ResetOptionsTabScroll(POTabSelected)
     End Sub
 
     Private Sub QueueResetSelectedOptionsTabScroll()
@@ -958,27 +830,40 @@ Public Class MainWindow
         End Try
     End Sub
 
-    Private Sub OptionsTabSwitch_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub OptionsTabSwitch_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles POHeaderSwitch.TextChanged, POWAVSwitch.TextChanged, POBMPSwitch.TextChanged, POBeatSwitch.TextChanged, POWaveFormSwitch.TextChanged
+        If Not OptionsTabsInitialized Then Return
         SyncOptionsTabTitles()
     End Sub
 
     Private Sub SyncOptionsTabTitles()
-        For Each xTab As OptionsPanelTab In POTabPages
-            xTab.Button.Text = xTab.Header.Text
-        Next
+        POHeaderTabButton.Text = POHeaderSwitch.Text
+        POWAVTabButton.Text = POWAVSwitch.Text
+        POBMPTabButton.Text = POBMPSwitch.Text
+        POBeatTabButton.Text = POBeatSwitch.Text
+        POWaveFormTabButton.Text = POWaveFormSwitch.Text
 
         ApplyOptionsTabButtonSizes()
 
-        For Each xTab As OptionsPanelTab In POTabPages
-            ApplyOptionsTabButtonStyle(xTab.Button, Object.ReferenceEquals(xTab, POTabSelected))
+        For Each xButton As Button In GetOptionsTabButtons()
+            ApplyOptionsTabButtonStyle(xButton, IsSelectedOptionsTabButton(xButton))
         Next
     End Sub
+
+    Private Function IsSelectedOptionsTabButton(ByVal xButton As Button) As Boolean
+        If Object.ReferenceEquals(POTabSelected, POHeader) Then Return Object.ReferenceEquals(xButton, POHeaderTabButton)
+        If Object.ReferenceEquals(POTabSelected, POWAV) Then Return Object.ReferenceEquals(xButton, POWAVTabButton)
+        If Object.ReferenceEquals(POTabSelected, POBMP) Then Return Object.ReferenceEquals(xButton, POBMPTabButton)
+        If Object.ReferenceEquals(POTabSelected, POBeat) Then Return Object.ReferenceEquals(xButton, POBeatTabButton)
+        If Object.ReferenceEquals(POTabSelected, POWaveForm) Then Return Object.ReferenceEquals(xButton, POWaveFormTabButton)
+
+        Return False
+    End Function
 
     Private Sub ApplyOptionsTabButtonSizes()
         Dim xHeight As Integer = 23
 
-        For Each xTab As OptionsPanelTab In POTabPages
-            Dim xTextSize As Size = TextRenderer.MeasureText(xTab.Button.Text, xTab.Button.Font)
+        For Each xButton As Button In GetOptionsTabButtons()
+            Dim xTextSize As Size = TextRenderer.MeasureText(xButton.Text, xButton.Font)
             xHeight = Math.Max(xHeight, xTextSize.Height + 9)
         Next
 
@@ -987,242 +872,15 @@ Public Class MainWindow
         POTabButtons.RowStyles(1).Height = xRowHeight
         POTabButtons.Height = POTabButtons.Padding.Top + POTabButtons.Padding.Bottom + CInt(xRowHeight * 2)
 
-        For Each xTab As OptionsPanelTab In POTabPages
-            xTab.Button.Height = xHeight
-            xTab.Button.MinimumSize = New Size(0, xHeight)
+        For Each xButton As Button In GetOptionsTabButtons()
+            xButton.Height = xHeight
+            xButton.MinimumSize = New Size(0, xHeight)
         Next
     End Sub
 
     Private Sub ApplyOptionsTabButtonStyle(ByVal xButton As Button, ByVal xSelected As Boolean)
         xButton.BackColor = If(xSelected, Color.FromArgb(218, 235, 249), Color.FromArgb(248, 248, 248))
         xButton.FlatAppearance.BorderColor = If(xSelected, Color.FromArgb(49, 119, 178), Color.FromArgb(205, 205, 205))
-    End Sub
-
-    Private Sub ApplyOptionsPanelFlatLayout()
-        ShowAllOptionsExpandableContent()
-        ArrangeHeaderOptionsPanel()
-        ArrangeListOptionsPanels()
-        StretchResizableOptionsPanels()
-    End Sub
-
-    Private Sub ShowAllOptionsExpandableContent()
-        POHeaderExpander.Visible = False
-        POWaveFormExpander.Visible = False
-        POWAVExpander.Visible = False
-        POBMPExpander.Visible = False
-        POBeatExpander.Visible = False
-
-        POHeaderPart2.Visible = True
-        POWaveFormPart2.Visible = True
-        POWAVPart2.Visible = True
-        POBMPPart2.Visible = True
-        POBeatPart2.Visible = True
-        POExpansionInner.Visible = True
-    End Sub
-
-    Private Sub ArrangeHeaderOptionsPanel()
-        MoveHeaderCommentAfterExRank()
-
-        POExpansionSwitch.Visible = False
-        POHeader.Padding = New Padding(0, 0, 0, 10)
-        POHeaderInner.Padding = New Padding(0, 0, 0, 10)
-
-        POExpansionInner.AutoSize = False
-        POExpansionInner.Dock = DockStyle.Top
-        If POExpansionInner.Height < 120 Then POExpansionInner.Height = 120
-        POExpansionResizer.Enabled = False
-        POExpansionResizer.Visible = False
-        TExpansion.Dock = DockStyle.Fill
-        ApplyHeaderFieldSpacing()
-
-        Dim xDetailsSeparator As Panel = GetOptionsSeparator(POHeaderDetailsSeparator, "POHeaderDetailsSeparator")
-        Dim xExpansionSeparator As Panel = GetOptionsSeparator(POHeaderExpansionSeparator, "POHeaderExpansionSeparator", "EXTRA INFORMATION")
-
-        POHeaderInner.SuspendLayout()
-        Try
-            POHeaderInner.Controls.Clear()
-            POExpansionInner.Dock = DockStyle.Top
-            POHeaderPart2.Dock = DockStyle.Top
-            POHeaderPart1.Dock = DockStyle.Top
-            xDetailsSeparator.Dock = DockStyle.Top
-            xExpansionSeparator.Dock = DockStyle.Top
-
-            POHeaderInner.Controls.Add(POExpansionInner)
-            POHeaderInner.Controls.Add(xExpansionSeparator)
-            POHeaderInner.Controls.Add(POHeaderPart2)
-            POHeaderInner.Controls.Add(xDetailsSeparator)
-            POHeaderInner.Controls.Add(POHeaderPart1)
-        Finally
-            POHeaderInner.ResumeLayout(False)
-            POHeaderInner.PerformLayout()
-        End Try
-    End Sub
-
-    Private Sub ApplyHeaderFieldSpacing()
-        SetHeaderRowHeight(POHeaderPart1)
-        SetHeaderRowHeight(POHeaderPart2)
-
-        For Each xControl As Control In New Control() {
-            THTitle, THArtist, THGenre, THBPM, CHPlayer, CHRank, CHDifficulty, THPlayLevel, THTotal, Label25,
-            THSubTitle, THSubArtist, THStageFile, BHStageFile, THBanner, BHBanner, THBackBMP, BHBackBMP,
-            THMissBMP, BHMissBMP, THPreview, BHPreview, THLandMine, BHLandMine, CHLnmode, CHLnObj,
-            THExRank, Label13, THComment
-        }
-            xControl.Margin = New Padding(xControl.Margin.Left, 1, xControl.Margin.Right, 1)
-        Next
-    End Sub
-
-    Private Sub SetHeaderRowHeight(ByVal xPanel As TableLayoutPanel)
-        For Each xStyle As RowStyle In xPanel.RowStyles
-            If xStyle.SizeType = SizeType.Absolute AndAlso xStyle.Height < 25.0! Then xStyle.Height = 25.0!
-        Next
-    End Sub
-
-    Private Function GetOptionsSeparator(ByRef xSeparator As Panel, ByVal xName As String, Optional ByVal xText As String = "") As Panel
-        If xSeparator Is Nothing Then
-            xSeparator = New Panel With {
-                .BackColor = SystemColors.Control,
-                .Name = xName
-            }
-        End If
-
-        xSeparator.AutoSize = False
-        xSeparator.Dock = DockStyle.Top
-        xSeparator.Height = If(String.IsNullOrEmpty(xText), 13, 29)
-        xSeparator.Padding = If(String.IsNullOrEmpty(xText), New Padding(0, 6, 0, 6), New Padding(0, 4, 0, 0))
-        xSeparator.Visible = True
-
-        Do While xSeparator.Controls.Count > 0
-            Dim xControl As Control = xSeparator.Controls(0)
-            xSeparator.Controls.RemoveAt(0)
-            xControl.Dispose()
-        Loop
-
-        If String.IsNullOrEmpty(xText) Then
-            Dim xLine As New Panel With {
-                .BackColor = SystemColors.ControlDark,
-                .Dock = DockStyle.Fill,
-                .Height = 1,
-                .Name = xName & "Line"
-            }
-            xSeparator.Controls.Add(xLine)
-        End If
-
-        If Not String.IsNullOrEmpty(xText) Then
-            Dim xLabel As New Label With {
-                .Dock = DockStyle.Bottom,
-                .Font = Label19.Font,
-                .Height = 20,
-                .Name = xName & "Label",
-                .Padding = New Padding(2, 0, 0, 0),
-                .Text = xText,
-                .TextAlign = ContentAlignment.MiddleLeft
-            }
-            xSeparator.Controls.Add(xLabel)
-        End If
-
-        Return xSeparator
-    End Function
-
-    Private Sub MoveHeaderCommentAfterExRank()
-        MoveHeaderPart2Row(0, Label15, THSubTitle)
-        MoveHeaderPart2Row(1, Label17, THSubArtist)
-        MoveHeaderPart2Row(2, Label16, THStageFile, BHStageFile)
-        MoveHeaderPart2Row(3, Label12, THBanner, BHBanner)
-        MoveHeaderPart2Row(4, Label11, THBackBMP, BHBackBMP)
-        MoveHeaderPart2Row(5, Label27, THMissBMP, BHMissBMP)
-        MoveHeaderPart2Row(6, Label28, THPreview, BHPreview)
-        MoveHeaderPart2Row(7, Label26, THLandMine, BHLandMine)
-        MoveHeaderPart2Row(8, Label29, CHLnmode)
-        MoveHeaderPart2Row(9, Label24, CHLnObj)
-        MoveHeaderPart2Row(10, Label23, THExRank, Label13)
-        MoveHeaderPart2Row(11, Label19, THComment)
-    End Sub
-
-    Private Sub MoveHeaderPart2Row(ByVal xRow As Integer, ByVal ParamArray xControls() As Control)
-        For Each xControl As Control In xControls
-            POHeaderPart2.SetRow(xControl, xRow)
-        Next
-    End Sub
-
-    Private Sub ArrangeListOptionsPanels()
-        FlowLayoutPanel3.Visible = False
-        FlowLayoutPanel4.Visible = False
-
-        CWAVMultiSelect.Checked = True
-        CWAVMultiSelect.Visible = False
-        WAVMultiSelect = True
-        LWAV.SelectionMode = SelectionMode.MultiExtended
-        LBMP.SelectionMode = SelectionMode.MultiExtended
-
-        ArrangeDefinitionOptionRows(POWAVInner, FlowLayoutPanel3, POWAVExpander, LWAV, POWAVPart2, POWAVResizer)
-        ArrangeDefinitionOptionRows(POBMPInner, FlowLayoutPanel4, POBMPExpander, LBMP, POBMPPart2, POBMPResizer)
-    End Sub
-
-    Private Sub ArrangeDefinitionOptionRows(
-        ByVal xPanel As TableLayoutPanel,
-        ByVal xToolbar As Control,
-        ByVal xExpander As Control,
-        ByVal xList As Control,
-        ByVal xOptions As Control,
-        ByVal xResizer As Control
-    )
-        xPanel.SetRow(xToolbar, 0)
-        xPanel.SetRow(xExpander, 1)
-        xPanel.SetRow(xList, 2)
-        xPanel.SetRow(xOptions, 3)
-        xPanel.SetRow(xResizer, 4)
-
-        SetDefinitionOptionRowStyle(xPanel, 0, SizeType.Absolute, 0.0!)
-        SetDefinitionOptionRowStyle(xPanel, 1, SizeType.Absolute, 0.0!)
-        SetDefinitionOptionRowStyle(xPanel, 2, SizeType.Percent, 100.0!)
-        SetDefinitionOptionRowStyle(xPanel, 3, SizeType.AutoSize, 0.0!)
-        SetDefinitionOptionRowStyle(xPanel, 4, SizeType.Absolute, 0.0!)
-    End Sub
-
-    Private Sub SetDefinitionOptionRowStyle(ByVal xPanel As TableLayoutPanel, ByVal xRow As Integer, ByVal xSizeType As SizeType, ByVal xHeight As Single)
-        xPanel.RowStyles(xRow).SizeType = xSizeType
-        xPanel.RowStyles(xRow).Height = xHeight
-    End Sub
-
-    Private Sub ShowOptionsPanelContent(ByVal xSwitch As CheckBox)
-        Dim xContent As Control = GetOptionsPanelContent(xSwitch)
-        If xContent IsNot Nothing Then xContent.Visible = True
-    End Sub
-
-    Private Function GetOptionsPanelContent(ByVal xSwitch As CheckBox) As Control
-        If Object.ReferenceEquals(xSwitch, POHeaderSwitch) Then Return POHeaderInner
-        If Object.ReferenceEquals(xSwitch, POGridSwitch) Then Return POGridInner
-        If Object.ReferenceEquals(xSwitch, POWaveFormSwitch) Then Return POWaveFormInner
-        If Object.ReferenceEquals(xSwitch, POWAVSwitch) Then Return POWAVInner
-        If Object.ReferenceEquals(xSwitch, POBMPSwitch) Then Return POBMPInner
-        If Object.ReferenceEquals(xSwitch, POBeatSwitch) Then Return POBeatInner
-        If Object.ReferenceEquals(xSwitch, POExpansionSwitch) Then Return POExpansionInner
-
-        Return Nothing
-    End Function
-
-    Private Sub StretchResizableOptionsPanels()
-        Dim xBottomMargin As Padding = New Padding(0, 0, 0, 10)
-
-        POWAV.Padding = xBottomMargin
-        POBMP.Padding = xBottomMargin
-        POBeat.Padding = xBottomMargin
-
-        StretchDefinitionListPanel(POWAVInner, POWAVResizer)
-        StretchDefinitionListPanel(POBMPInner, POBMPResizer)
-        StretchDefinitionListPanel(POBeatInner, POBeatResizer)
-    End Sub
-
-    Private Sub StretchDefinitionListPanel(ByVal xPanel As TableLayoutPanel, ByVal xResizer As Button)
-        xPanel.AutoSize = False
-        xPanel.Dock = DockStyle.Fill
-        xResizer.Enabled = False
-        xResizer.Visible = False
-
-        Dim xLastRow As Integer = xPanel.RowCount - 1
-        xPanel.RowStyles(xLastRow).SizeType = SizeType.Absolute
-        xPanel.RowStyles(xLastRow).Height = 0.0!
     End Sub
 
     Private Sub InitializeGridToolbar()
@@ -2503,8 +2161,6 @@ Public Class MainWindow
         TBLangRefresh_Click(TBLangRefresh, Nothing)
         TBThemeRefresh_Click(TBThemeRefresh, Nothing)
 
-        ApplyOptionsPanelFlatLayout()
-
         If My.Computer.FileSystem.FileExists(My.Application.Info.DirectoryPath & "\iBMSC.Settings.xml") Then
             LoadSettings(My.Application.Info.DirectoryPath & "\iBMSC.Settings.xml")
         Else
@@ -2513,7 +2169,6 @@ Public Class MainWindow
         RefreshPlayerSelector()
         SetUseBase62Definitions(NewBMSUseBase62Definitions)
         RefreshDefinitionLists()
-        ApplyOptionsPanelFlatLayout()
         'On Error GoTo 0
         SetIsSaved(True)
 
@@ -2557,6 +2212,7 @@ Public Class MainWindow
         Me.Visible = True
         UpdateHorizontalScrollMetrics()
         RefreshPanelAll()
+        PMainIn.Focus()
         ResetSelectedOptionsTabScroll()
         QueueResetSelectedOptionsTabScroll()
     End Sub
@@ -6116,7 +5772,6 @@ Jump2:
         TBMain.Visible = mnSTB.Checked
     End Sub
     Private Sub mnSOP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSOP.CheckedChanged
-        POptions.Visible = mnSOP.Checked
         POptionsScroll.Visible = mnSOP.Checked
         POptionsResizer.Visible = mnSOP.Checked
         KeepOptionsPanelDockedRight()
@@ -6963,14 +6618,7 @@ case2:              Dim xI0 As Integer
         End If
     End Sub
 
-    Private Sub Switches_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-    POHeaderSwitch.CheckedChanged,
-    POGridSwitch.CheckedChanged,
-    POWaveFormSwitch.CheckedChanged,
-    POWAVSwitch.CheckedChanged,
-    POBMPSwitch.CheckedChanged,
-    POBeatSwitch.CheckedChanged,
-    POExpansionSwitch.CheckedChanged
+    Private Sub Switches_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles POGridSwitch.CheckedChanged
 
         Try
             Dim Source As CheckBox = CType(sender, CheckBox)
@@ -6997,13 +6645,7 @@ case2:              Dim xI0 As Integer
         End Try
     End Sub
 
-    Private Sub Expanders_CheckChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-    POHeaderExpander.CheckedChanged,
-    POGridExpander.CheckedChanged,
-    POWaveFormExpander.CheckedChanged,
-    POWAVExpander.CheckedChanged,
-    POBMPExpander.CheckedChanged,
-    POBeatExpander.CheckedChanged
+    Private Sub Expanders_CheckChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles POGridExpander.CheckedChanged
 
         Try
             Dim Source As CheckBox = CType(sender, CheckBox)

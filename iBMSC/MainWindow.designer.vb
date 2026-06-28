@@ -36,6 +36,14 @@ Partial Class MainWindow
         Me.TBTheme = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnTheme = New System.Windows.Forms.ToolStripMenuItem()
         Me.POptionsScroll = New System.Windows.Forms.Panel()
+        Me.POTabHost = New System.Windows.Forms.TableLayoutPanel()
+        Me.POTabButtons = New System.Windows.Forms.TableLayoutPanel()
+        Me.POHeaderTabButton = New System.Windows.Forms.Button()
+        Me.POWAVTabButton = New System.Windows.Forms.Button()
+        Me.POBMPTabButton = New System.Windows.Forms.Button()
+        Me.POBeatTabButton = New System.Windows.Forms.Button()
+        Me.POWaveFormTabButton = New System.Windows.Forms.Button()
+        Me.POTabContent = New System.Windows.Forms.Panel()
         Me.POptions = New System.Windows.Forms.Panel()
         Me.POExpansion = New System.Windows.Forms.Panel()
         Me.POExpansionInner = New System.Windows.Forms.Panel()
@@ -199,6 +207,10 @@ Partial Class MainWindow
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.POHeaderSwitch = New System.Windows.Forms.CheckBox()
+        Me.POHeaderDetailsSeparator = New System.Windows.Forms.Panel()
+        Me.POHeaderDetailsSeparatorLine = New System.Windows.Forms.Panel()
+        Me.POHeaderExpansionSeparator = New System.Windows.Forms.Panel()
+        Me.POHeaderExpansionSeparatorLabel = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Menu1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.MInsert = New System.Windows.Forms.ToolStripMenuItem()
@@ -384,6 +396,9 @@ Partial Class MainWindow
         Me.cmnLanguage.SuspendLayout()
         Me.cmnTheme.SuspendLayout()
         Me.POptionsScroll.SuspendLayout()
+        Me.POTabHost.SuspendLayout()
+        Me.POTabButtons.SuspendLayout()
+        Me.POTabContent.SuspendLayout()
         Me.POptions.SuspendLayout()
         Me.POExpansion.SuspendLayout()
         Me.POExpansionInner.SuspendLayout()
@@ -445,6 +460,8 @@ Partial Class MainWindow
         CType(Me.CGSub, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.POHeader.SuspendLayout()
         Me.POHeaderInner.SuspendLayout()
+        Me.POHeaderDetailsSeparator.SuspendLayout()
+        Me.POHeaderExpansionSeparator.SuspendLayout()
         Me.POHeaderPart2.SuspendLayout()
         Me.POHeaderPart1.SuspendLayout()
         CType(Me.THBPM, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -564,36 +581,181 @@ Partial Class MainWindow
         '
         'POptionsScroll
         '
-        Me.POptionsScroll.AutoScroll = True
-        Me.POptionsScroll.Controls.Add(Me.POptions)
+        Me.POptionsScroll.Controls.Add(Me.POTabHost)
         Me.POptionsScroll.Dock = System.Windows.Forms.DockStyle.Right
-        Me.POptionsScroll.Location = New System.Drawing.Point(882, 0)
+        Me.POptionsScroll.Location = New System.Drawing.Point(852, 0)
+        Me.POptionsScroll.MinimumSize = New System.Drawing.Size(230, 0)
         Me.POptionsScroll.Name = "POptionsScroll"
-        Me.POptionsScroll.Size = New System.Drawing.Size(200, 730)
+        Me.POptionsScroll.Size = New System.Drawing.Size(230, 660)
         Me.POptionsScroll.TabIndex = 28
+        '
+        'POTabHost
+        '
+        Me.POTabHost.ColumnCount = 1
+        Me.POTabHost.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.POTabHost.Controls.Add(Me.POTabButtons, 0, 0)
+        Me.POTabHost.Controls.Add(Me.POTabContent, 0, 1)
+        Me.POTabHost.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POTabHost.Location = New System.Drawing.Point(0, 0)
+        Me.POTabHost.Name = "POTabHost"
+        Me.POTabHost.RowCount = 2
+        Me.POTabHost.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.POTabHost.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.POTabHost.Size = New System.Drawing.Size(230, 660)
+        Me.POTabHost.TabIndex = 29
+        '
+        'POTabButtons
+        '
+        Me.POTabButtons.BackColor = System.Drawing.SystemColors.Control
+        Me.POTabButtons.ColumnCount = 3
+        Me.POTabButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3333!))
+        Me.POTabButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3333!))
+        Me.POTabButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3334!))
+        Me.POTabButtons.Controls.Add(Me.POHeaderTabButton, 0, 0)
+        Me.POTabButtons.Controls.Add(Me.POWAVTabButton, 1, 0)
+        Me.POTabButtons.Controls.Add(Me.POBMPTabButton, 2, 0)
+        Me.POTabButtons.Controls.Add(Me.POBeatTabButton, 0, 1)
+        Me.POTabButtons.Controls.Add(Me.POWaveFormTabButton, 1, 1)
+        Me.POTabButtons.Dock = System.Windows.Forms.DockStyle.Top
+        Me.POTabButtons.Location = New System.Drawing.Point(0, 0)
+        Me.POTabButtons.Margin = New System.Windows.Forms.Padding(0)
+        Me.POTabButtons.Name = "POTabButtons"
+        Me.POTabButtons.Padding = New System.Windows.Forms.Padding(2, 1, 2, 3)
+        Me.POTabButtons.RowCount = 2
+        Me.POTabButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24.0!))
+        Me.POTabButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24.0!))
+        Me.POTabButtons.Size = New System.Drawing.Size(230, 52)
+        Me.POTabButtons.TabIndex = 0
+        '
+        'POHeaderTabButton
+        '
+        Me.POHeaderTabButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.POHeaderTabButton.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POHeaderTabButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(49, Byte), Integer), CType(CType(119, Byte), Integer), CType(CType(178, Byte), Integer))
+        Me.POHeaderTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.POHeaderTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(235, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(252, Byte), Integer))
+        Me.POHeaderTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.POHeaderTabButton.Font = New System.Drawing.Font("Segoe UI", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.POHeaderTabButton.Location = New System.Drawing.Point(2, 1)
+        Me.POHeaderTabButton.Margin = New System.Windows.Forms.Padding(0, 0, 2, 1)
+        Me.POHeaderTabButton.Name = "POHeaderTabButton"
+        Me.POHeaderTabButton.Size = New System.Drawing.Size(73, 23)
+        Me.POHeaderTabButton.TabIndex = 0
+        Me.POHeaderTabButton.TabStop = False
+        Me.POHeaderTabButton.Text = "Header"
+        Me.POHeaderTabButton.UseCompatibleTextRendering = False
+        Me.POHeaderTabButton.UseVisualStyleBackColor = False
+        '
+        'POWAVTabButton
+        '
+        Me.POWAVTabButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(248, Byte), Integer), CType(CType(248, Byte), Integer), CType(CType(248, Byte), Integer))
+        Me.POWAVTabButton.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POWAVTabButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(205, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(205, Byte), Integer))
+        Me.POWAVTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.POWAVTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(235, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(252, Byte), Integer))
+        Me.POWAVTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.POWAVTabButton.Font = New System.Drawing.Font("Segoe UI", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.POWAVTabButton.Location = New System.Drawing.Point(77, 1)
+        Me.POWAVTabButton.Margin = New System.Windows.Forms.Padding(0, 0, 2, 1)
+        Me.POWAVTabButton.Name = "POWAVTabButton"
+        Me.POWAVTabButton.Size = New System.Drawing.Size(73, 23)
+        Me.POWAVTabButton.TabIndex = 1
+        Me.POWAVTabButton.TabStop = False
+        Me.POWAVTabButton.Text = "#WAV (Sounds List)"
+        Me.POWAVTabButton.UseCompatibleTextRendering = False
+        Me.POWAVTabButton.UseVisualStyleBackColor = False
+        '
+        'POBMPTabButton
+        '
+        Me.POBMPTabButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(248, Byte), Integer), CType(CType(248, Byte), Integer), CType(CType(248, Byte), Integer))
+        Me.POBMPTabButton.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POBMPTabButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(205, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(205, Byte), Integer))
+        Me.POBMPTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.POBMPTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(235, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(252, Byte), Integer))
+        Me.POBMPTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.POBMPTabButton.Font = New System.Drawing.Font("Segoe UI", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.POBMPTabButton.Location = New System.Drawing.Point(152, 1)
+        Me.POBMPTabButton.Margin = New System.Windows.Forms.Padding(0, 0, 2, 1)
+        Me.POBMPTabButton.Name = "POBMPTabButton"
+        Me.POBMPTabButton.Size = New System.Drawing.Size(74, 23)
+        Me.POBMPTabButton.TabIndex = 2
+        Me.POBMPTabButton.TabStop = False
+        Me.POBMPTabButton.Text = "#BMP (Images List)"
+        Me.POBMPTabButton.UseCompatibleTextRendering = False
+        Me.POBMPTabButton.UseVisualStyleBackColor = False
+        '
+        'POBeatTabButton
+        '
+        Me.POBeatTabButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(248, Byte), Integer), CType(CType(248, Byte), Integer), CType(CType(248, Byte), Integer))
+        Me.POBeatTabButton.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POBeatTabButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(205, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(205, Byte), Integer))
+        Me.POBeatTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.POBeatTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(235, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(252, Byte), Integer))
+        Me.POBeatTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.POBeatTabButton.Font = New System.Drawing.Font("Segoe UI", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.POBeatTabButton.Location = New System.Drawing.Point(2, 25)
+        Me.POBeatTabButton.Margin = New System.Windows.Forms.Padding(0, 0, 2, 1)
+        Me.POBeatTabButton.Name = "POBeatTabButton"
+        Me.POBeatTabButton.Size = New System.Drawing.Size(73, 23)
+        Me.POBeatTabButton.TabIndex = 3
+        Me.POBeatTabButton.TabStop = False
+        Me.POBeatTabButton.Text = "Beat"
+        Me.POBeatTabButton.UseCompatibleTextRendering = False
+        Me.POBeatTabButton.UseVisualStyleBackColor = False
+        '
+        'POWaveFormTabButton
+        '
+        Me.POWaveFormTabButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(248, Byte), Integer), CType(CType(248, Byte), Integer), CType(CType(248, Byte), Integer))
+        Me.POWaveFormTabButton.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POWaveFormTabButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(205, Byte), Integer), CType(CType(205, Byte), Integer), CType(CType(205, Byte), Integer))
+        Me.POWaveFormTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(CType(CType(218, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.POWaveFormTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(235, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(252, Byte), Integer))
+        Me.POWaveFormTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.POWaveFormTabButton.Font = New System.Drawing.Font("Segoe UI", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.POWaveFormTabButton.Location = New System.Drawing.Point(77, 25)
+        Me.POWaveFormTabButton.Margin = New System.Windows.Forms.Padding(0, 0, 2, 1)
+        Me.POWaveFormTabButton.Name = "POWaveFormTabButton"
+        Me.POWaveFormTabButton.Size = New System.Drawing.Size(73, 23)
+        Me.POWaveFormTabButton.TabIndex = 4
+        Me.POWaveFormTabButton.TabStop = False
+        Me.POWaveFormTabButton.Text = "WaveForm"
+        Me.POWaveFormTabButton.UseCompatibleTextRendering = False
+        Me.POWaveFormTabButton.UseVisualStyleBackColor = False
+        '
+        'POTabContent
+        '
+        Me.POTabContent.AutoScroll = True
+        Me.POTabContent.BackColor = System.Drawing.SystemColors.Control
+        Me.POTabContent.Controls.Add(Me.POptions)
+        Me.POTabContent.Controls.Add(Me.POWaveForm)
+        Me.POTabContent.Controls.Add(Me.POBeat)
+        Me.POTabContent.Controls.Add(Me.POBMP)
+        Me.POTabContent.Controls.Add(Me.POWAV)
+        Me.POTabContent.Controls.Add(Me.POHeader)
+        Me.POTabContent.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POTabContent.Location = New System.Drawing.Point(0, 52)
+        Me.POTabContent.Margin = New System.Windows.Forms.Padding(0)
+        Me.POTabContent.Name = "POTabContent"
+        Me.POTabContent.Padding = New System.Windows.Forms.Padding(2, 3, 2, 0)
+        Me.POTabContent.Size = New System.Drawing.Size(230, 608)
+        Me.POTabContent.TabIndex = 1
         '
         'POptions
         '
         Me.POptions.AutoSize = True
         Me.POptions.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.POptions.Controls.Add(Me.POExpansion)
-        Me.POptions.Controls.Add(Me.POWaveForm)
-        Me.POptions.Controls.Add(Me.POBeat)
-        Me.POptions.Controls.Add(Me.POBMP)
-        Me.POptions.Controls.Add(Me.POWAV)
         Me.POptions.Controls.Add(Me.POGrid)
-        Me.POptions.Controls.Add(Me.POHeader)
         Me.POptions.Dock = System.Windows.Forms.DockStyle.Top
         Me.POptions.Location = New System.Drawing.Point(0, 0)
         Me.POptions.Name = "POptions"
-        Me.POptions.Size = New System.Drawing.Size(183, 1722)
+        Me.POptions.Size = New System.Drawing.Size(183, 384)
         Me.POptions.TabIndex = 29
+        Me.POptions.Visible = False
         '
         'POExpansion
         '
         Me.POExpansion.AutoSize = True
         Me.POExpansion.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.POExpansion.Controls.Add(Me.POExpansionInner)
         Me.POExpansion.Controls.Add(Me.POExpansionSwitch)
         Me.POExpansion.Dock = System.Windows.Forms.DockStyle.Top
         Me.POExpansion.Location = New System.Drawing.Point(0, 1452)
@@ -607,11 +769,10 @@ Partial Class MainWindow
         Me.POExpansionInner.Controls.Add(Me.POExpansionResizer)
         Me.POExpansionInner.Dock = System.Windows.Forms.DockStyle.Top
         Me.POExpansionInner.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.POExpansionInner.Location = New System.Drawing.Point(0, 20)
+        Me.POExpansionInner.Location = New System.Drawing.Point(0, 567)
         Me.POExpansionInner.Name = "POExpansionInner"
-        Me.POExpansionInner.Size = New System.Drawing.Size(183, 250)
+        Me.POExpansionInner.Size = New System.Drawing.Size(226, 120)
         Me.POExpansionInner.TabIndex = 7
-        Me.POExpansionInner.Visible = False
         '
         'TExpansion
         '
@@ -622,22 +783,24 @@ Partial Class MainWindow
         Me.TExpansion.Multiline = True
         Me.TExpansion.Name = "TExpansion"
         Me.TExpansion.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TExpansion.Size = New System.Drawing.Size(183, 245)
+        Me.TExpansion.Size = New System.Drawing.Size(226, 120)
         Me.TExpansion.TabIndex = 0
         Me.TExpansion.WordWrap = False
         '
         'POExpansionResizer
         '
         Me.POExpansionResizer.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.POExpansionResizer.Enabled = False
         Me.POExpansionResizer.FlatAppearance.BorderSize = 0
         Me.POExpansionResizer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.POExpansionResizer.Location = New System.Drawing.Point(0, 245)
+        Me.POExpansionResizer.Location = New System.Drawing.Point(0, 115)
         Me.POExpansionResizer.Margin = New System.Windows.Forms.Padding(0)
         Me.POExpansionResizer.Name = "POExpansionResizer"
-        Me.POExpansionResizer.Size = New System.Drawing.Size(183, 5)
+        Me.POExpansionResizer.Size = New System.Drawing.Size(226, 5)
         Me.POExpansionResizer.TabIndex = 65
         Me.POExpansionResizer.TabStop = False
         Me.POExpansionResizer.UseVisualStyleBackColor = True
+        Me.POExpansionResizer.Visible = False
         '
         'POExpansionSwitch
         '
@@ -655,18 +818,21 @@ Partial Class MainWindow
         Me.POExpansionSwitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POExpansionSwitch.UseCompatibleTextRendering = True
         Me.POExpansionSwitch.UseVisualStyleBackColor = False
+        Me.POExpansionSwitch.Visible = False
         '
         'POBeat
         '
-        Me.POBeat.AutoSize = True
+        Me.POBeat.AutoSize = False
         Me.POBeat.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.POBeat.Controls.Add(Me.POBeatInner)
         Me.POBeat.Controls.Add(Me.POBeatSwitch)
-        Me.POBeat.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POBeat.Location = New System.Drawing.Point(0, 1182)
+        Me.POBeat.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POBeat.Location = New System.Drawing.Point(2, 3)
         Me.POBeat.Name = "POBeat"
-        Me.POBeat.Size = New System.Drawing.Size(183, 270)
+        Me.POBeat.Padding = New System.Windows.Forms.Padding(0, 0, 0, 10)
+        Me.POBeat.Size = New System.Drawing.Size(226, 605)
         Me.POBeat.TabIndex = 5
+        Me.POBeat.Visible = False
         '
         'POBeatInner
         '
@@ -677,18 +843,17 @@ Partial Class MainWindow
         Me.POBeatInner.Controls.Add(Me.TableLayoutPanel7, 0, 0)
         Me.POBeatInner.Controls.Add(Me.LBeat, 0, 3)
         Me.POBeatInner.Controls.Add(Me.POBeatPart2, 0, 2)
-        Me.POBeatInner.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POBeatInner.Location = New System.Drawing.Point(0, 20)
+        Me.POBeatInner.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POBeatInner.Location = New System.Drawing.Point(0, 0)
         Me.POBeatInner.Name = "POBeatInner"
         Me.POBeatInner.RowCount = 5
         Me.POBeatInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POBeatInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POBeatInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POBeatInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.POBeatInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POBeatInner.Size = New System.Drawing.Size(183, 250)
+        Me.POBeatInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0.0!))
+        Me.POBeatInner.Size = New System.Drawing.Size(226, 595)
         Me.POBeatInner.TabIndex = 6
-        Me.POBeatInner.Visible = False
         '
         'POBeatExpander
         '
@@ -707,11 +872,13 @@ Partial Class MainWindow
         Me.POBeatExpander.Text = "Expand..."
         Me.POBeatExpander.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POBeatExpander.UseVisualStyleBackColor = False
+        Me.POBeatExpander.Visible = False
         '
         'POBeatResizer
         '
         Me.POBeatInner.SetColumnSpan(Me.POBeatResizer, 2)
         Me.POBeatResizer.Dock = System.Windows.Forms.DockStyle.Top
+        Me.POBeatResizer.Enabled = False
         Me.POBeatResizer.FlatAppearance.BorderSize = 0
         Me.POBeatResizer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.POBeatResizer.Location = New System.Drawing.Point(0, 245)
@@ -721,6 +888,7 @@ Partial Class MainWindow
         Me.POBeatResizer.TabIndex = 64
         Me.POBeatResizer.TabStop = False
         Me.POBeatResizer.UseVisualStyleBackColor = True
+        Me.POBeatResizer.Visible = False
         '
         'TableLayoutPanel7
         '
@@ -853,7 +1021,6 @@ Partial Class MainWindow
         Me.POBeatPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POBeatPart2.Size = New System.Drawing.Size(183, 76)
         Me.POBeatPart2.TabIndex = 66
-        Me.POBeatPart2.Visible = False
         '
         'CBeatScale
         '
@@ -906,6 +1073,8 @@ Partial Class MainWindow
         '
         Me.POBeatSwitch.Appearance = System.Windows.Forms.Appearance.Button
         Me.POBeatSwitch.BackColor = System.Drawing.SystemColors.Control
+        Me.POBeatSwitch.Checked = True
+        Me.POBeatSwitch.CheckState = System.Windows.Forms.CheckState.Checked
         Me.POBeatSwitch.Cursor = System.Windows.Forms.Cursors.Hand
         Me.POBeatSwitch.Dock = System.Windows.Forms.DockStyle.Top
         Me.POBeatSwitch.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -918,41 +1087,43 @@ Partial Class MainWindow
         Me.POBeatSwitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POBeatSwitch.UseCompatibleTextRendering = True
         Me.POBeatSwitch.UseVisualStyleBackColor = False
+        Me.POBeatSwitch.Visible = False
         '
         'POBMP
         '
         Me.POBMP.AllowDrop = True
-        Me.POBMP.AutoSize = True
+        Me.POBMP.AutoSize = False
         Me.POBMP.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.POBMP.Controls.Add(Me.POBMPInner)
         Me.POBMP.Controls.Add(Me.POBMPSwitch)
-        Me.POBMP.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POBMP.Location = New System.Drawing.Point(0, 912)
+        Me.POBMP.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POBMP.Location = New System.Drawing.Point(2, 3)
         Me.POBMP.Name = "POBMP"
-        Me.POBMP.Size = New System.Drawing.Size(183, 270)
+        Me.POBMP.Padding = New System.Windows.Forms.Padding(0, 0, 0, 10)
+        Me.POBMP.Size = New System.Drawing.Size(226, 605)
         Me.POBMP.TabIndex = 4
+        Me.POBMP.Visible = False
         '
         'POBMPInner
         '
         Me.POBMPInner.ColumnCount = 1
         Me.POBMPInner.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POBMPInner.Controls.Add(Me.POBMPExpander, 0, 1)
-        Me.POBMPInner.Controls.Add(Me.POBMPPart2, 0, 2)
-        Me.POBMPInner.Controls.Add(Me.LBMP, 0, 3)
+        Me.POBMPInner.Controls.Add(Me.POBMPPart2, 0, 3)
+        Me.POBMPInner.Controls.Add(Me.LBMP, 0, 2)
         Me.POBMPInner.Controls.Add(Me.FlowLayoutPanel4, 0, 0)
         Me.POBMPInner.Controls.Add(Me.POBMPResizer, 0, 4)
-        Me.POBMPInner.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POBMPInner.Location = New System.Drawing.Point(0, 20)
+        Me.POBMPInner.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POBMPInner.Location = New System.Drawing.Point(0, 0)
         Me.POBMPInner.Name = "POBMPInner"
         Me.POBMPInner.RowCount = 5
-        Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0.0!))
+        Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0.0!))
         Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POBMPInner.Size = New System.Drawing.Size(183, 250)
+        Me.POBMPInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0.0!))
+        Me.POBMPInner.Size = New System.Drawing.Size(226, 595)
         Me.POBMPInner.TabIndex = 5
-        Me.POBMPInner.Visible = False
         '
         'LBMP
         '
@@ -984,6 +1155,7 @@ Partial Class MainWindow
         Me.POBMPExpander.Text = "Expand..."
         Me.POBMPExpander.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POBMPExpander.UseVisualStyleBackColor = False
+        Me.POBMPExpander.Visible = False
         '
         'POBMPPart2
         '
@@ -1000,7 +1172,6 @@ Partial Class MainWindow
         Me.POBMPPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POBMPPart2.Size = New System.Drawing.Size(183, 19)
         Me.POBMPPart2.TabIndex = 35
-        Me.POBMPPart2.Visible = False
         '
         'CBMPBase62
         '
@@ -1025,6 +1196,7 @@ Partial Class MainWindow
         Me.FlowLayoutPanel4.Name = "FlowLayoutPanel4"
         Me.FlowLayoutPanel4.Size = New System.Drawing.Size(96, 24)
         Me.FlowLayoutPanel4.TabIndex = 26
+        Me.FlowLayoutPanel4.Visible = False
         Me.FlowLayoutPanel4.WrapContents = False
         '
         'BBMPUp
@@ -1074,6 +1246,7 @@ Partial Class MainWindow
         'POBMPResizer
         '
         Me.POBMPResizer.Dock = System.Windows.Forms.DockStyle.Top
+        Me.POBMPResizer.Enabled = False
         Me.POBMPResizer.FlatAppearance.BorderSize = 0
         Me.POBMPResizer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.POBMPResizer.Location = New System.Drawing.Point(0, 245)
@@ -1083,6 +1256,7 @@ Partial Class MainWindow
         Me.POBMPResizer.TabIndex = 33
         Me.POBMPResizer.TabStop = False
         Me.POBMPResizer.UseVisualStyleBackColor = True
+        Me.POBMPResizer.Visible = False
         '
         'POBMPSwitch
         '
@@ -1102,40 +1276,43 @@ Partial Class MainWindow
         Me.POBMPSwitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POBMPSwitch.UseCompatibleTextRendering = True
         Me.POBMPSwitch.UseVisualStyleBackColor = False
+        Me.POBMPSwitch.Visible = False
 
         '
         'POWAV
         '
         Me.POWAV.AllowDrop = True
-        Me.POWAV.AutoSize = True
+        Me.POWAV.AutoSize = False
         Me.POWAV.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.POWAV.Controls.Add(Me.POWAVInner)
         Me.POWAV.Controls.Add(Me.POWAVSwitch)
-        Me.POWAV.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POWAV.Location = New System.Drawing.Point(0, 912)
+        Me.POWAV.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POWAV.Location = New System.Drawing.Point(2, 3)
         Me.POWAV.Name = "POWAV"
-        Me.POWAV.Size = New System.Drawing.Size(183, 270)
+        Me.POWAV.Padding = New System.Windows.Forms.Padding(0, 0, 0, 10)
+        Me.POWAV.Size = New System.Drawing.Size(226, 605)
         Me.POWAV.TabIndex = 4
+        Me.POWAV.Visible = False
         '
         'POWAVInner
         '
         Me.POWAVInner.ColumnCount = 1
         Me.POWAVInner.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POWAVInner.Controls.Add(Me.POWAVExpander, 0, 1)
-        Me.POWAVInner.Controls.Add(Me.LWAV, 0, 3)
+        Me.POWAVInner.Controls.Add(Me.LWAV, 0, 2)
         Me.POWAVInner.Controls.Add(Me.FlowLayoutPanel3, 0, 0)
         Me.POWAVInner.Controls.Add(Me.POWAVResizer, 0, 4)
-        Me.POWAVInner.Controls.Add(Me.POWAVPart2, 0, 2)
-        Me.POWAVInner.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POWAVInner.Location = New System.Drawing.Point(0, 20)
+        Me.POWAVInner.Controls.Add(Me.POWAVPart2, 0, 3)
+        Me.POWAVInner.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POWAVInner.Location = New System.Drawing.Point(0, 0)
         Me.POWAVInner.Name = "POWAVInner"
         Me.POWAVInner.RowCount = 5
-        Me.POWAVInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POWAVInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POWAVInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.POWAVInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0.0!))
+        Me.POWAVInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0.0!))
         Me.POWAVInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POWAVInner.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.POWAVInner.Size = New System.Drawing.Size(183, 250)
+        Me.POWAVInner.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0.0!))
+        Me.POWAVInner.Size = New System.Drawing.Size(226, 595)
         Me.POWAVInner.TabIndex = 5
         '
         'POWAVExpander
@@ -1155,6 +1332,7 @@ Partial Class MainWindow
         Me.POWAVExpander.Text = "Expand..."
         Me.POWAVExpander.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POWAVExpander.UseVisualStyleBackColor = False
+        Me.POWAVExpander.Visible = False
         '
         'LWAV
         '
@@ -1181,6 +1359,7 @@ Partial Class MainWindow
         Me.FlowLayoutPanel3.Name = "FlowLayoutPanel3"
         Me.FlowLayoutPanel3.Size = New System.Drawing.Size(96, 24)
         Me.FlowLayoutPanel3.TabIndex = 26
+        Me.FlowLayoutPanel3.Visible = False
         Me.FlowLayoutPanel3.WrapContents = False
         '
         'BWAVUp
@@ -1230,6 +1409,7 @@ Partial Class MainWindow
         'POWAVResizer
         '
         Me.POWAVResizer.Dock = System.Windows.Forms.DockStyle.Top
+        Me.POWAVResizer.Enabled = False
         Me.POWAVResizer.FlatAppearance.BorderSize = 0
         Me.POWAVResizer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.POWAVResizer.Location = New System.Drawing.Point(0, 245)
@@ -1239,6 +1419,7 @@ Partial Class MainWindow
         Me.POWAVResizer.TabIndex = 33
         Me.POWAVResizer.TabStop = False
         Me.POWAVResizer.UseVisualStyleBackColor = True
+        Me.POWAVResizer.Visible = False
         '
         'POWAVPart2
         '
@@ -1261,7 +1442,6 @@ Partial Class MainWindow
         Me.POWAVPart2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.POWAVPart2.Size = New System.Drawing.Size(183, 76)
         Me.POWAVPart2.TabIndex = 35
-        Me.POWAVPart2.Visible = False
         '
         'CWAVBase62
         '
@@ -1286,6 +1466,7 @@ Partial Class MainWindow
         Me.CWAVMultiSelect.TabIndex = 1
         Me.CWAVMultiSelect.Text = "Allow Multiple Selection"
         Me.CWAVMultiSelect.UseVisualStyleBackColor = True
+        Me.CWAVMultiSelect.Visible = False
         '
         'CWAVChangeLabel
         '
@@ -1331,6 +1512,7 @@ Partial Class MainWindow
         Me.POWAVSwitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POWAVSwitch.UseCompatibleTextRendering = True
         Me.POWAVSwitch.UseVisualStyleBackColor = False
+        Me.POWAVSwitch.Visible = False
         '
         'POWaveForm
         '
@@ -1339,10 +1521,11 @@ Partial Class MainWindow
         Me.POWaveForm.Controls.Add(Me.POWaveFormInner)
         Me.POWaveForm.Controls.Add(Me.POWaveFormSwitch)
         Me.POWaveForm.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POWaveForm.Location = New System.Drawing.Point(0, 669)
+        Me.POWaveForm.Location = New System.Drawing.Point(2, 3)
         Me.POWaveForm.Name = "POWaveForm"
-        Me.POWaveForm.Size = New System.Drawing.Size(183, 243)
+        Me.POWaveForm.Size = New System.Drawing.Size(226, 605)
         Me.POWaveForm.TabIndex = 3
+        Me.POWaveForm.Visible = False
         '
         'POWaveFormInner
         '
@@ -1356,7 +1539,6 @@ Partial Class MainWindow
         Me.POWaveFormInner.Name = "POWaveFormInner"
         Me.POWaveFormInner.Size = New System.Drawing.Size(183, 223)
         Me.POWaveFormInner.TabIndex = 29
-        Me.POWaveFormInner.Visible = False
         '
         'POWaveFormPart2
         '
@@ -1591,6 +1773,7 @@ Partial Class MainWindow
         Me.POWaveFormExpander.Text = "Expand..."
         Me.POWaveFormExpander.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POWaveFormExpander.UseVisualStyleBackColor = False
+        Me.POWaveFormExpander.Visible = False
         '
         'POWaveFormPart1
         '
@@ -1746,6 +1929,8 @@ Partial Class MainWindow
         '
         Me.POWaveFormSwitch.Appearance = System.Windows.Forms.Appearance.Button
         Me.POWaveFormSwitch.BackColor = System.Drawing.SystemColors.Control
+        Me.POWaveFormSwitch.Checked = True
+        Me.POWaveFormSwitch.CheckState = System.Windows.Forms.CheckState.Checked
         Me.POWaveFormSwitch.Cursor = System.Windows.Forms.Cursors.Hand
         Me.POWaveFormSwitch.Dock = System.Windows.Forms.DockStyle.Top
         Me.POWaveFormSwitch.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1758,6 +1943,7 @@ Partial Class MainWindow
         Me.POWaveFormSwitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POWaveFormSwitch.UseCompatibleTextRendering = True
         Me.POWaveFormSwitch.UseVisualStyleBackColor = False
+        Me.POWaveFormSwitch.Visible = False
         '
         'POGrid
         '
@@ -2097,23 +2283,70 @@ Partial Class MainWindow
         Me.POHeader.Controls.Add(Me.POHeaderInner)
         Me.POHeader.Controls.Add(Me.POHeaderSwitch)
         Me.POHeader.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POHeader.Location = New System.Drawing.Point(0, 0)
+        Me.POHeader.Location = New System.Drawing.Point(2, 3)
         Me.POHeader.Name = "POHeader"
-        Me.POHeader.Size = New System.Drawing.Size(183, 528)
+        Me.POHeader.Padding = New System.Windows.Forms.Padding(0, 0, 0, 10)
+        Me.POHeader.Size = New System.Drawing.Size(226, 605)
         Me.POHeader.TabIndex = 1
         '
         'POHeaderInner
         '
         Me.POHeaderInner.AutoSize = True
         Me.POHeaderInner.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.POHeaderInner.Controls.Add(Me.POExpansionInner)
+        Me.POHeaderInner.Controls.Add(Me.POHeaderExpansionSeparator)
         Me.POHeaderInner.Controls.Add(Me.POHeaderPart2)
-        Me.POHeaderInner.Controls.Add(Me.POHeaderExpander)
+        Me.POHeaderInner.Controls.Add(Me.POHeaderDetailsSeparator)
         Me.POHeaderInner.Controls.Add(Me.POHeaderPart1)
         Me.POHeaderInner.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POHeaderInner.Location = New System.Drawing.Point(0, 20)
+        Me.POHeaderInner.Location = New System.Drawing.Point(0, 0)
         Me.POHeaderInner.Name = "POHeaderInner"
-        Me.POHeaderInner.Size = New System.Drawing.Size(183, 508)
+        Me.POHeaderInner.Padding = New System.Windows.Forms.Padding(0, 0, 0, 10)
+        Me.POHeaderInner.Size = New System.Drawing.Size(226, 697)
         Me.POHeaderInner.TabIndex = 2
+        '
+        'POHeaderDetailsSeparator
+        '
+        Me.POHeaderDetailsSeparator.BackColor = System.Drawing.SystemColors.Control
+        Me.POHeaderDetailsSeparator.Controls.Add(Me.POHeaderDetailsSeparatorLine)
+        Me.POHeaderDetailsSeparator.Dock = System.Windows.Forms.DockStyle.Top
+        Me.POHeaderDetailsSeparator.Location = New System.Drawing.Point(0, 225)
+        Me.POHeaderDetailsSeparator.Name = "POHeaderDetailsSeparator"
+        Me.POHeaderDetailsSeparator.Padding = New System.Windows.Forms.Padding(0, 6, 0, 6)
+        Me.POHeaderDetailsSeparator.Size = New System.Drawing.Size(226, 13)
+        Me.POHeaderDetailsSeparator.TabIndex = 28
+        '
+        'POHeaderDetailsSeparatorLine
+        '
+        Me.POHeaderDetailsSeparatorLine.BackColor = System.Drawing.SystemColors.ControlDark
+        Me.POHeaderDetailsSeparatorLine.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.POHeaderDetailsSeparatorLine.Location = New System.Drawing.Point(0, 6)
+        Me.POHeaderDetailsSeparatorLine.Name = "POHeaderDetailsSeparatorLine"
+        Me.POHeaderDetailsSeparatorLine.Size = New System.Drawing.Size(226, 1)
+        Me.POHeaderDetailsSeparatorLine.TabIndex = 0
+        '
+        'POHeaderExpansionSeparator
+        '
+        Me.POHeaderExpansionSeparator.BackColor = System.Drawing.SystemColors.Control
+        Me.POHeaderExpansionSeparator.Controls.Add(Me.POHeaderExpansionSeparatorLabel)
+        Me.POHeaderExpansionSeparator.Dock = System.Windows.Forms.DockStyle.Top
+        Me.POHeaderExpansionSeparator.Location = New System.Drawing.Point(0, 538)
+        Me.POHeaderExpansionSeparator.Name = "POHeaderExpansionSeparator"
+        Me.POHeaderExpansionSeparator.Padding = New System.Windows.Forms.Padding(0, 4, 0, 0)
+        Me.POHeaderExpansionSeparator.Size = New System.Drawing.Size(226, 29)
+        Me.POHeaderExpansionSeparator.TabIndex = 29
+        '
+        'POHeaderExpansionSeparatorLabel
+        '
+        Me.POHeaderExpansionSeparatorLabel.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.POHeaderExpansionSeparatorLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.POHeaderExpansionSeparatorLabel.Location = New System.Drawing.Point(0, 9)
+        Me.POHeaderExpansionSeparatorLabel.Name = "POHeaderExpansionSeparatorLabel"
+        Me.POHeaderExpansionSeparatorLabel.Padding = New System.Windows.Forms.Padding(2, 0, 0, 0)
+        Me.POHeaderExpansionSeparatorLabel.Size = New System.Drawing.Size(226, 20)
+        Me.POHeaderExpansionSeparatorLabel.TabIndex = 0
+        Me.POHeaderExpansionSeparatorLabel.Text = "EXTRA INFORMATION"
+        Me.POHeaderExpansionSeparatorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'POHeaderPart2
         '
@@ -2123,54 +2356,54 @@ Partial Class MainWindow
         Me.POHeaderPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.POHeaderPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POHeaderPart2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.POHeaderPart2.Controls.Add(Me.Label13, 2, 11)
-        Me.POHeaderPart2.Controls.Add(Me.THExRank, 1, 11)
-        Me.POHeaderPart2.Controls.Add(Me.CHLnObj, 1, 10)
-        Me.POHeaderPart2.Controls.Add(Me.Label23, 0, 11)
-        Me.POHeaderPart2.Controls.Add(Me.THComment, 1, 2)
-        Me.POHeaderPart2.Controls.Add(Me.Label24, 0, 10)
+        Me.POHeaderPart2.Controls.Add(Me.Label13, 2, 10)
+        Me.POHeaderPart2.Controls.Add(Me.THExRank, 1, 10)
+        Me.POHeaderPart2.Controls.Add(Me.CHLnObj, 1, 9)
+        Me.POHeaderPart2.Controls.Add(Me.Label23, 0, 10)
+        Me.POHeaderPart2.Controls.Add(Me.THComment, 1, 11)
+        Me.POHeaderPart2.Controls.Add(Me.Label24, 0, 9)
         Me.POHeaderPart2.Controls.Add(Me.Label15, 0, 0)
-        Me.POHeaderPart2.Controls.Add(Me.BHStageFile, 2, 3)
-        Me.POHeaderPart2.Controls.Add(Me.BHBanner, 2, 4)
-        Me.POHeaderPart2.Controls.Add(Me.Label19, 0, 2)
-        Me.POHeaderPart2.Controls.Add(Me.BHBackBMP, 2, 5)
+        Me.POHeaderPart2.Controls.Add(Me.BHStageFile, 2, 2)
+        Me.POHeaderPart2.Controls.Add(Me.BHBanner, 2, 3)
+        Me.POHeaderPart2.Controls.Add(Me.Label19, 0, 11)
+        Me.POHeaderPart2.Controls.Add(Me.BHBackBMP, 2, 4)
         Me.POHeaderPart2.Controls.Add(Me.Label17, 0, 1)
-        Me.POHeaderPart2.Controls.Add(Me.Label16, 0, 3)
-        Me.POHeaderPart2.Controls.Add(Me.Label12, 0, 4)
-        Me.POHeaderPart2.Controls.Add(Me.THBackBMP, 1, 5)
-        Me.POHeaderPart2.Controls.Add(Me.Label11, 0, 5)
-        Me.POHeaderPart2.Controls.Add(Me.THBanner, 1, 4)
-        Me.POHeaderPart2.Controls.Add(Me.THStageFile, 1, 3)
+        Me.POHeaderPart2.Controls.Add(Me.Label16, 0, 2)
+        Me.POHeaderPart2.Controls.Add(Me.Label12, 0, 3)
+        Me.POHeaderPart2.Controls.Add(Me.THBackBMP, 1, 4)
+        Me.POHeaderPart2.Controls.Add(Me.Label11, 0, 4)
+        Me.POHeaderPart2.Controls.Add(Me.THBanner, 1, 3)
+        Me.POHeaderPart2.Controls.Add(Me.THStageFile, 1, 2)
         Me.POHeaderPart2.Controls.Add(Me.THSubTitle, 1, 0)
         Me.POHeaderPart2.Controls.Add(Me.THSubArtist, 1, 1)
-        Me.POHeaderPart2.Controls.Add(Me.Label26, 0, 8)
-        Me.POHeaderPart2.Controls.Add(Me.Label27, 0, 6)
-        Me.POHeaderPart2.Controls.Add(Me.THLandMine, 1, 8)
-        Me.POHeaderPart2.Controls.Add(Me.BHLandMine, 2, 8)
-        Me.POHeaderPart2.Controls.Add(Me.THMissBMP, 1, 6)
-        Me.POHeaderPart2.Controls.Add(Me.BHMissBMP, 2, 6)
-        Me.POHeaderPart2.Controls.Add(Me.Label28, 0, 7)
-        Me.POHeaderPart2.Controls.Add(Me.Label29, 0, 9)
-        Me.POHeaderPart2.Controls.Add(Me.THPreview, 1, 7)
-        Me.POHeaderPart2.Controls.Add(Me.BHPreview, 2, 7)
-        Me.POHeaderPart2.Controls.Add(Me.CHLnmode, 1, 9)
+        Me.POHeaderPart2.Controls.Add(Me.Label26, 0, 7)
+        Me.POHeaderPart2.Controls.Add(Me.Label27, 0, 5)
+        Me.POHeaderPart2.Controls.Add(Me.THLandMine, 1, 7)
+        Me.POHeaderPart2.Controls.Add(Me.BHLandMine, 2, 7)
+        Me.POHeaderPart2.Controls.Add(Me.THMissBMP, 1, 5)
+        Me.POHeaderPart2.Controls.Add(Me.BHMissBMP, 2, 5)
+        Me.POHeaderPart2.Controls.Add(Me.Label28, 0, 6)
+        Me.POHeaderPart2.Controls.Add(Me.Label29, 0, 8)
+        Me.POHeaderPart2.Controls.Add(Me.THPreview, 1, 6)
+        Me.POHeaderPart2.Controls.Add(Me.BHPreview, 2, 6)
+        Me.POHeaderPart2.Controls.Add(Me.CHLnmode, 1, 8)
         Me.POHeaderPart2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POHeaderPart2.Location = New System.Drawing.Point(0, 232)
+        Me.POHeaderPart2.Location = New System.Drawing.Point(0, 238)
         Me.POHeaderPart2.Name = "POHeaderPart2"
         Me.POHeaderPart2.RowCount = 12
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart2.Size = New System.Drawing.Size(183, 276)
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart2.Size = New System.Drawing.Size(226, 300)
         Me.POHeaderPart2.TabIndex = 27
         '
         'CHDifficulty
@@ -2581,6 +2814,7 @@ Partial Class MainWindow
         Me.POHeaderExpander.Text = "Expand..."
         Me.POHeaderExpander.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POHeaderExpander.UseVisualStyleBackColor = False
+        Me.POHeaderExpander.Visible = False
         '
         'POHeaderPart1
         '
@@ -2613,16 +2847,16 @@ Partial Class MainWindow
         Me.POHeaderPart1.Location = New System.Drawing.Point(0, 0)
         Me.POHeaderPart1.Name = "POHeaderPart1"
         Me.POHeaderPart1.RowCount = 9
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23.0!))
-        Me.POHeaderPart1.Size = New System.Drawing.Size(183, 207)
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.Size = New System.Drawing.Size(226, 225)
         Me.POHeaderPart1.TabIndex = 25
         '
         'Label3
@@ -2801,6 +3035,7 @@ Partial Class MainWindow
         Me.POHeaderSwitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.POHeaderSwitch.UseCompatibleTextRendering = True
         Me.POHeaderSwitch.UseVisualStyleBackColor = False
+        Me.POHeaderSwitch.Visible = False
         '
         'Timer1
         '
@@ -4138,11 +4373,13 @@ Partial Class MainWindow
         Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.SpL)
         Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.PMainR)
         Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.PMainL)
-        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(876, 660)
+        Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.POptionsResizer)
+        Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.POptionsScroll)
+        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(1082, 660)
         Me.ToolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ToolStripContainer1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripContainer1.Name = "ToolStripContainer1"
-        Me.ToolStripContainer1.Size = New System.Drawing.Size(876, 708)
+        Me.ToolStripContainer1.Size = New System.Drawing.Size(1082, 708)
         Me.ToolStripContainer1.TabIndex = 65
         Me.ToolStripContainer1.Text = "ToolStripContainer1"
         '
@@ -4162,7 +4399,7 @@ Partial Class MainWindow
         Me.PMain.ForeColor = System.Drawing.Color.White
         Me.PMain.Location = New System.Drawing.Point(5, 0)
         Me.PMain.Name = "PMain"
-        Me.PMain.Size = New System.Drawing.Size(866, 660)
+        Me.PMain.Size = New System.Drawing.Size(841, 660)
         Me.PMain.TabIndex = 58
         Me.PMain.Tag = "1"
         '
@@ -4174,7 +4411,7 @@ Partial Class MainWindow
         Me.PMainIn.ForeColor = System.Drawing.Color.White
         Me.PMainIn.Location = New System.Drawing.Point(0, 0)
         Me.PMainIn.Name = "PMainIn"
-        Me.PMainIn.Size = New System.Drawing.Size(849, 643)
+        Me.PMainIn.Size = New System.Drawing.Size(824, 643)
         Me.PMainIn.TabIndex = 0
         Me.PMainIn.TabStop = True
         Me.PMainIn.Tag = "1"
@@ -4184,7 +4421,7 @@ Partial Class MainWindow
         Me.MainPanelScroll.AccessibleRole = System.Windows.Forms.AccessibleRole.ScrollBar
         Me.MainPanelScroll.Dock = System.Windows.Forms.DockStyle.Right
         Me.MainPanelScroll.LargeChange = 592
-        Me.MainPanelScroll.Location = New System.Drawing.Point(849, 0)
+        Me.MainPanelScroll.Location = New System.Drawing.Point(824, 0)
         Me.MainPanelScroll.Maximum = 591
         Me.MainPanelScroll.Minimum = -10000
         Me.MainPanelScroll.Name = "MainPanelScroll"
@@ -4201,7 +4438,7 @@ Partial Class MainWindow
         Me.HS.Location = New System.Drawing.Point(0, 643)
         Me.HS.Maximum = 1233
         Me.HS.Name = "HS"
-        Me.HS.Size = New System.Drawing.Size(866, 17)
+        Me.HS.Size = New System.Drawing.Size(841, 17)
         Me.HS.TabIndex = 3
         Me.HS.Tag = "1"
         '
@@ -4210,7 +4447,7 @@ Partial Class MainWindow
         Me.SpR.Dock = System.Windows.Forms.DockStyle.Right
         Me.SpR.FlatAppearance.BorderSize = 0
         Me.SpR.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.SpR.Location = New System.Drawing.Point(871, 0)
+        Me.SpR.Location = New System.Drawing.Point(846, 0)
         Me.SpR.Name = "SpR"
         Me.SpR.Size = New System.Drawing.Size(5, 660)
         Me.SpR.TabIndex = 59
@@ -4240,7 +4477,7 @@ Partial Class MainWindow
         Me.PMainR.Dock = System.Windows.Forms.DockStyle.Right
         Me.PMainR.Font = New System.Drawing.Font("Verdana", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PMainR.ForeColor = System.Drawing.Color.White
-        Me.PMainR.Location = New System.Drawing.Point(876, 0)
+        Me.PMainR.Location = New System.Drawing.Point(846, 0)
         Me.PMainR.Name = "PMainR"
         Me.PMainR.Size = New System.Drawing.Size(0, 660)
         Me.PMainR.TabIndex = 56
@@ -4342,9 +4579,9 @@ Partial Class MainWindow
         Me.POptionsResizer.Dock = System.Windows.Forms.DockStyle.Right
         Me.POptionsResizer.FlatAppearance.BorderSize = 0
         Me.POptionsResizer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.POptionsResizer.Location = New System.Drawing.Point(876, 0)
+        Me.POptionsResizer.Location = New System.Drawing.Point(846, 0)
         Me.POptionsResizer.Name = "POptionsResizer"
-        Me.POptionsResizer.Size = New System.Drawing.Size(6, 730)
+        Me.POptionsResizer.Size = New System.Drawing.Size(6, 660)
         Me.POptionsResizer.TabIndex = 67
         Me.POptionsResizer.TabStop = False
         Me.POptionsResizer.UseVisualStyleBackColor = True
@@ -4356,8 +4593,6 @@ Partial Class MainWindow
         Me.ClientSize = New System.Drawing.Size(1082, 730)
         Me.Controls.Add(Me.ToolStripContainer1)
         Me.Controls.Add(Me.pStatus)
-        Me.Controls.Add(Me.POptionsResizer)
-        Me.Controls.Add(Me.POptionsScroll)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -4368,6 +4603,9 @@ Partial Class MainWindow
         Me.cmnTheme.ResumeLayout(False)
         Me.POptionsScroll.ResumeLayout(False)
         Me.POptionsScroll.PerformLayout()
+        Me.POTabHost.ResumeLayout(False)
+        Me.POTabButtons.ResumeLayout(False)
+        Me.POTabContent.ResumeLayout(False)
         Me.POptions.ResumeLayout(False)
         Me.POptions.PerformLayout()
         Me.POExpansion.ResumeLayout(False)
@@ -4453,6 +4691,8 @@ Partial Class MainWindow
         Me.POHeader.PerformLayout()
         Me.POHeaderInner.ResumeLayout(False)
         Me.POHeaderInner.PerformLayout()
+        Me.POHeaderDetailsSeparator.ResumeLayout(False)
+        Me.POHeaderExpansionSeparator.ResumeLayout(False)
         Me.POHeaderPart2.ResumeLayout(False)
         Me.POHeaderPart2.PerformLayout()
         Me.POHeaderPart1.ResumeLayout(False)
@@ -4483,6 +4723,14 @@ Partial Class MainWindow
 
     End Sub
     Friend WithEvents POptionsScroll As System.Windows.Forms.Panel
+    Friend WithEvents POTabHost As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents POTabButtons As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents POTabContent As System.Windows.Forms.Panel
+    Friend WithEvents POHeaderTabButton As System.Windows.Forms.Button
+    Friend WithEvents POWAVTabButton As System.Windows.Forms.Button
+    Friend WithEvents POBMPTabButton As System.Windows.Forms.Button
+    Friend WithEvents POBeatTabButton As System.Windows.Forms.Button
+    Friend WithEvents POWaveFormTabButton As System.Windows.Forms.Button
     Friend WithEvents LWAV As System.Windows.Forms.ListBox
     Friend WithEvents LBMP As System.Windows.Forms.ListBox
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
@@ -4757,6 +5005,10 @@ Partial Class MainWindow
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents POHeaderDetailsSeparator As System.Windows.Forms.Panel
+    Friend WithEvents POHeaderDetailsSeparatorLine As System.Windows.Forms.Panel
+    Friend WithEvents POHeaderExpansionSeparator As System.Windows.Forms.Panel
+    Friend WithEvents POHeaderExpansionSeparatorLabel As System.Windows.Forms.Label
     Friend WithEvents POGridPart1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents POGridInner As System.Windows.Forms.Panel

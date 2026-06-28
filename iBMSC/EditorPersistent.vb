@@ -600,9 +600,7 @@ EndOfSub:
         Dim Doc As XmlDocument = Nothing
         Dim FileStream As IO.FileStream = Nothing
 
-        Dim xPOHeaderPart2 As Boolean = POHeaderPart2.Visible
         Dim xPOGridPart2 As Boolean = POGridPart2.Visible
-        Dim xPOWaveFormPart2 As Boolean = POWaveFormPart2.Visible
         POHeaderPart2.Visible = True
         POGridPart2.Visible = True
         POWaveFormPart2.Visible = True
@@ -1227,9 +1225,7 @@ EndOfSub:
         Finally
             If FileStream IsNot Nothing Then FileStream.Close()
 
-            POHeaderPart2.Visible = xPOHeaderPart2
             POGridPart2.Visible = xPOGridPart2
-            POWaveFormPart2.Visible = xPOWaveFormPart2
         End Try
 
         'File.Delete(xTempFileName)
