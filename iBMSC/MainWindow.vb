@@ -1482,6 +1482,15 @@ Public Class MainWindow
         Return Math.Floor((xVPos - xOffset) / xRatio) * xRatio + xOffset
     End Function
 
+    Private Function AlignVScrollMinimumToWheel(ByVal value As Integer) As Integer
+        If value >= 0 OrElse gWheel <= 0 Then Return value
+
+        Dim xRemainder As Integer = Math.Abs(value) Mod gWheel
+        If xRemainder = 0 Then Return value
+
+        Return value - (gWheel - xRemainder)
+    End Function
+
     Private Sub CalculateGreatestVPosition()
         'If K Is Nothing Then Exit Sub
         Dim xI1 As Integer
@@ -1497,7 +1506,8 @@ Public Class MainWindow
             Next
         End If
 
-        Dim xI2 As Integer = -CInt(IIf(GreatestVPosition + 2000 > GetMaxVPosition(), GetMaxVPosition, GreatestVPosition + 2000))
+        Dim xLimit As Integer = CInt(IIf(GreatestVPosition + 2000 > GetMaxVPosition(), GetMaxVPosition, GreatestVPosition + 2000))
+        Dim xI2 As Integer = AlignVScrollMinimumToWheel(-xLimit)
         For i As Integer = 0 To SplitPanes.Count - 1
             SplitPanes(i).VScroll.Minimum = xI2
         Next
