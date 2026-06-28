@@ -1,7 +1,10 @@
-﻿Imports iBMSC.Editor
+﻿Imports nBMSC.Editor
 Imports System.Text.Json
 
 Partial Public Class MainWindow
+    Private Const NBMSCFileSignature As Integer = &H534D426E
+    Private Const NBMSCFileSuffix As Byte = &H43
+
     Private Sub OpenBMS(ByVal xStrAll As String)
         KMouseOver = -1
 
@@ -767,13 +770,13 @@ Jump1:
     End Function
 
     ''' <summary>Do not clear Undo.</summary>
-    Private Sub OpeniBMSC(ByVal Path As String)
+    Private Sub OpenNBMSC(ByVal Path As String)
         KMouseOver = -1
 
         Dim br As New BinaryReader(New FileStream(Path, FileMode.Open, FileAccess.Read), System.Text.Encoding.Unicode)
 
-        If br.ReadInt32 <> &H534D4269 Then GoTo EndOfSub
-        If br.ReadByte <> CByte(&H43) Then GoTo EndOfSub
+        If br.ReadInt32 <> NBMSCFileSignature Then GoTo EndOfSub
+        If br.ReadByte <> NBMSCFileSuffix Then GoTo EndOfSub
         Dim xMajor As Integer = br.ReadByte
         Dim xMinor As Integer = br.ReadByte
         Dim xBuild As Integer = br.ReadByte
@@ -984,7 +987,7 @@ EndOfSub:
         POStatusRefresh()
     End Sub
 
-    Private Sub SaveiBMSC(ByVal Path As String)
+    Private Sub SaveNBMSC(ByVal Path As String)
         CalculateGreatestVPosition()
         SortByVPositionInsertion()
         UpdatePairing()
@@ -993,9 +996,9 @@ EndOfSub:
 
             Dim bw As New BinaryWriter(New IO.FileStream(Path, FileMode.Create), System.Text.Encoding.Unicode)
 
-            'bw.Write("iBMSC".ToCharArray)
-            bw.Write(&H534D4269)
-            bw.Write(CByte(&H43))
+            'bw.Write("nBMSC".ToCharArray)
+            bw.Write(NBMSCFileSignature)
+            bw.Write(NBMSCFileSuffix)
             bw.Write(CByte(My.Application.Info.Version.Major))
             bw.Write(CByte(My.Application.Info.Version.Minor))
             bw.Write(CByte(My.Application.Info.Version.Build))

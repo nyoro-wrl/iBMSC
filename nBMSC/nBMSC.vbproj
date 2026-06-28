@@ -6,9 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{35281D99-2A97-4AA0-AC1E-6CDC78999A3D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>iBMSC.My.MyApplication</StartupObject>
-    <RootNamespace>iBMSC</RootNamespace>
-    <AssemblyName>μBMSC</AssemblyName>
+    <StartupObject>nBMSC.My.MyApplication</StartupObject>
+    <RootNamespace>nBMSC</RootNamespace>
+    <AssemblyName>nBMSC</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -38,7 +38,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>μBMSC.xml</DocumentationFile>
+    <DocumentationFile>nBMSC.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>

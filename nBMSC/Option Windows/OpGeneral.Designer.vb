@@ -41,7 +41,7 @@ Partial Class OpGeneral
         Me.cMEnterFocus = New System.Windows.Forms.CheckBox()
         Me.cMClickFocus = New System.Windows.Forms.CheckBox()
         Me.TBAssociatePMS = New System.Windows.Forms.Button()
-        Me.TBAssociateIBMSC = New System.Windows.Forms.Button()
+        Me.TBAssociateNBMSC = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.CPgUpDn = New System.Windows.Forms.ComboBox()
         Me.NAutoSave = New System.Windows.Forms.NumericUpDown()
@@ -263,14 +263,14 @@ Partial Class OpGeneral
         Me.TBAssociatePMS.Text = "*.pms"
         Me.TBAssociatePMS.UseVisualStyleBackColor = True
         '
-        'TBAssociateIBMSC
+        'TBAssociateNBMSC
         '
-        Me.TBAssociateIBMSC.Location = New System.Drawing.Point(265, 47)
-        Me.TBAssociateIBMSC.Name = "TBAssociateIBMSC"
-        Me.TBAssociateIBMSC.Size = New System.Drawing.Size(127, 23)
-        Me.TBAssociateIBMSC.TabIndex = 5
-        Me.TBAssociateIBMSC.Text = "*.ibmsc"
-        Me.TBAssociateIBMSC.UseVisualStyleBackColor = True
+        Me.TBAssociateNBMSC.Location = New System.Drawing.Point(265, 47)
+        Me.TBAssociateNBMSC.Name = "TBAssociateNBMSC"
+        Me.TBAssociateNBMSC.Size = New System.Drawing.Size(127, 23)
+        Me.TBAssociateNBMSC.TabIndex = 5
+        Me.TBAssociateNBMSC.Text = "*.nbmsc"
+        Me.TBAssociateNBMSC.UseVisualStyleBackColor = True
         '
         'Label5
         '
@@ -528,7 +528,7 @@ Partial Class OpGeneral
         Me.Controls.Add(Me.NAutoSave)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.CPgUpDn)
-        Me.Controls.Add(Me.TBAssociateIBMSC)
+        Me.Controls.Add(Me.TBAssociateNBMSC)
         Me.Controls.Add(Me.TBAssociatePMS)
         Me.Controls.Add(Me.cMClickFocus)
         Me.Controls.Add(Me.cMEnterFocus)
@@ -586,7 +586,7 @@ Partial Class OpGeneral
     Friend WithEvents cMEnterFocus As System.Windows.Forms.CheckBox
     Friend WithEvents cMClickFocus As System.Windows.Forms.CheckBox
     Friend WithEvents TBAssociatePMS As System.Windows.Forms.Button
-    Friend WithEvents TBAssociateIBMSC As System.Windows.Forms.Button
+    Friend WithEvents TBAssociateNBMSC As System.Windows.Forms.Button
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents CPgUpDn As System.Windows.Forms.ComboBox
     Friend WithEvents NAutoSave As System.Windows.Forms.NumericUpDown

@@ -67,10 +67,10 @@
                 OpenBMS(My.Computer.FileSystem.ReadAllText(xFileName, TextEncoding))
                 SetFileName(FileName)
                 SetIsSaved(True)
-            Case ".IBMSC"
+            Case ".NBMSC"
                 InitPath = ExcludeFileName(xFileName)
                 SetFileName("Imported_" & GetFileName(xFileName))
-                OpeniBMSC(xFileName)
+                OpenNBMSC(xFileName)
                 SetIsSaved(False)
         End Select
     End Sub

@@ -195,11 +195,11 @@ Partial Class MainWindow
         Me.mnNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnOpen = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnImportSM = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnImportIBMSC = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnImportNBMSC = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSaveAs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnExportIBMSC = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnExportNBMSC = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnExportBMSON = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator15 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnOpenR0 = New System.Windows.Forms.ToolStripMenuItem()
@@ -288,10 +288,10 @@ Partial Class MainWindow
         Me.TBOpenR4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator()
         Me.TBImportSM = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TBImportIBMSC = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TBImportNBMSC = New System.Windows.Forms.ToolStripMenuItem()
         Me.TBSave = New System.Windows.Forms.ToolStripSplitButton()
         Me.TBSaveAs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TBExportIBMSC = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TBExportNBMSC = New System.Windows.Forms.ToolStripMenuItem()
         Me.TBExportBMSON = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.TBCut = New System.Windows.Forms.ToolStripButton()
@@ -467,7 +467,7 @@ Partial Class MainWindow
         '
         'TBLangRefresh
         '
-        Me.TBLangRefresh.Image = Global.iBMSC.My.Resources.Resources.x16Refresh
+        Me.TBLangRefresh.Image = Global.nBMSC.My.Resources.Resources.x16Refresh
         Me.TBLangRefresh.Name = "TBLangRefresh"
         Me.TBLangRefresh.Size = New System.Drawing.Size(120, 22)
         Me.TBLangRefresh.Text = "Refresh"
@@ -481,7 +481,7 @@ Partial Class MainWindow
         '
         Me.TBLanguage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.TBLanguage.DropDown = Me.cmnLanguage
-        Me.TBLanguage.Image = Global.iBMSC.My.Resources.Resources.x16Language
+        Me.TBLanguage.Image = Global.nBMSC.My.Resources.Resources.x16Language
         Me.TBLanguage.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBLanguage.Name = "TBLanguage"
         Me.TBLanguage.Size = New System.Drawing.Size(29, 22)
@@ -490,7 +490,7 @@ Partial Class MainWindow
         'mnLanguage
         '
         Me.mnLanguage.DropDown = Me.cmnLanguage
-        Me.mnLanguage.Image = Global.iBMSC.My.Resources.Resources.x16Language
+        Me.mnLanguage.Image = Global.nBMSC.My.Resources.Resources.x16Language
         Me.mnLanguage.Name = "mnLanguage"
         Me.mnLanguage.Size = New System.Drawing.Size(229, 22)
         Me.mnLanguage.Text = "&Language"
@@ -510,14 +510,14 @@ Partial Class MainWindow
         '
         'TBThemeSave
         '
-        Me.TBThemeSave.Image = Global.iBMSC.My.Resources.Resources.x16SaveAs
+        Me.TBThemeSave.Image = Global.nBMSC.My.Resources.Resources.x16SaveAs
         Me.TBThemeSave.Name = "TBThemeSave"
         Me.TBThemeSave.Size = New System.Drawing.Size(245, 22)
         Me.TBThemeSave.Text = "Save Theme"
         '
         'TBThemeRefresh
         '
-        Me.TBThemeRefresh.Image = Global.iBMSC.My.Resources.Resources.x16Refresh
+        Me.TBThemeRefresh.Image = Global.nBMSC.My.Resources.Resources.x16Refresh
         Me.TBThemeRefresh.Name = "TBThemeRefresh"
         Me.TBThemeRefresh.Size = New System.Drawing.Size(245, 22)
         Me.TBThemeRefresh.Text = "Refresh"
@@ -537,7 +537,7 @@ Partial Class MainWindow
         '
         Me.TBTheme.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.TBTheme.DropDown = Me.cmnTheme
-        Me.TBTheme.Image = Global.iBMSC.My.Resources.Resources.x16Theme
+        Me.TBTheme.Image = Global.nBMSC.My.Resources.Resources.x16Theme
         Me.TBTheme.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBTheme.Name = "TBTheme"
         Me.TBTheme.Size = New System.Drawing.Size(29, 22)
@@ -546,7 +546,7 @@ Partial Class MainWindow
         'mnTheme
         '
         Me.mnTheme.DropDown = Me.cmnTheme
-        Me.mnTheme.Image = Global.iBMSC.My.Resources.Resources.x16Theme
+        Me.mnTheme.Image = Global.nBMSC.My.Resources.Resources.x16Theme
         Me.mnTheme.Name = "mnTheme"
         Me.mnTheme.Size = New System.Drawing.Size(229, 22)
         Me.mnTheme.Text = "&Theme"
@@ -1212,7 +1212,7 @@ Partial Class MainWindow
         '
         'PictureBox2
         '
-        Me.PictureBox2.Image = Global.iBMSC.My.Resources.Resources.WAVLeft
+        Me.PictureBox2.Image = Global.nBMSC.My.Resources.Resources.WAVLeft
         Me.PictureBox2.Location = New System.Drawing.Point(3, 0)
         Me.PictureBox2.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.PictureBox2.Name = "PictureBox2"
@@ -1235,7 +1235,7 @@ Partial Class MainWindow
         '
         'PictureBox3
         '
-        Me.PictureBox3.Image = Global.iBMSC.My.Resources.Resources.WAVWidth
+        Me.PictureBox3.Image = Global.nBMSC.My.Resources.Resources.WAVWidth
         Me.PictureBox3.Location = New System.Drawing.Point(3, 28)
         Me.PictureBox3.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.PictureBox3.Name = "PictureBox3"
@@ -1257,7 +1257,7 @@ Partial Class MainWindow
         '
         'PictureBox4
         '
-        Me.PictureBox4.Image = Global.iBMSC.My.Resources.Resources.WAVPrecision
+        Me.PictureBox4.Image = Global.nBMSC.My.Resources.Resources.WAVPrecision
         Me.PictureBox4.Location = New System.Drawing.Point(3, 56)
         Me.PictureBox4.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.PictureBox4.Name = "PictureBox4"
@@ -1280,7 +1280,7 @@ Partial Class MainWindow
         '
         'PictureBox5
         '
-        Me.PictureBox5.Image = Global.iBMSC.My.Resources.Resources.WAVTransparency
+        Me.PictureBox5.Image = Global.nBMSC.My.Resources.Resources.WAVTransparency
         Me.PictureBox5.Location = New System.Drawing.Point(3, 84)
         Me.PictureBox5.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.PictureBox5.Name = "PictureBox5"
@@ -1303,7 +1303,7 @@ Partial Class MainWindow
         '
         'PictureBox6
         '
-        Me.PictureBox6.Image = Global.iBMSC.My.Resources.Resources.WAVSaturation
+        Me.PictureBox6.Image = Global.nBMSC.My.Resources.Resources.WAVSaturation
         Me.PictureBox6.Location = New System.Drawing.Point(3, 112)
         Me.PictureBox6.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.PictureBox6.Name = "PictureBox6"
@@ -1430,7 +1430,7 @@ Partial Class MainWindow
         '
         'BWLoad
         '
-        Me.BWLoad.Image = Global.iBMSC.My.Resources.Resources.x16Add
+        Me.BWLoad.Image = Global.nBMSC.My.Resources.Resources.x16Add
         Me.BWLoad.Location = New System.Drawing.Point(0, 0)
         Me.BWLoad.Margin = New System.Windows.Forms.Padding(0)
         Me.BWLoad.Name = "BWLoad"
@@ -1441,7 +1441,7 @@ Partial Class MainWindow
         '
         'BWClear
         '
-        Me.BWClear.Image = Global.iBMSC.My.Resources.Resources.x16Remove
+        Me.BWClear.Image = Global.nBMSC.My.Resources.Resources.x16Remove
         Me.BWClear.Location = New System.Drawing.Point(24, 0)
         Me.BWClear.Margin = New System.Windows.Forms.Padding(0)
         Me.BWClear.Name = "BWClear"
@@ -1455,7 +1455,7 @@ Partial Class MainWindow
         Me.BWLock.Appearance = System.Windows.Forms.Appearance.Button
         Me.BWLock.Checked = True
         Me.BWLock.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.BWLock.Image = Global.iBMSC.My.Resources.Resources.x16Lock
+        Me.BWLock.Image = Global.nBMSC.My.Resources.Resources.x16Lock
         Me.BWLock.Location = New System.Drawing.Point(48, 0)
         Me.BWLock.Margin = New System.Windows.Forms.Padding(0)
         Me.BWLock.Name = "BWLock"
@@ -1496,7 +1496,7 @@ Partial Class MainWindow
         '
         'PictureBox1
         '
-        Me.PictureBox1.Image = Global.iBMSC.My.Resources.Resources.WAVOffset
+        Me.PictureBox1.Image = Global.nBMSC.My.Resources.Resources.WAVOffset
         Me.PictureBox1.Location = New System.Drawing.Point(3, 0)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.PictureBox1.Name = "PictureBox1"
@@ -1676,7 +1676,7 @@ Partial Class MainWindow
         '
         'PictureBox9
         '
-        Me.PictureBox9.Image = Global.iBMSC.My.Resources.Resources.lgheight
+        Me.PictureBox9.Image = Global.nBMSC.My.Resources.Resources.lgheight
         Me.PictureBox9.Location = New System.Drawing.Point(3, 0)
         Me.PictureBox9.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.PictureBox9.Name = "PictureBox9"
@@ -1715,7 +1715,7 @@ Partial Class MainWindow
         '
         'PictureBox10
         '
-        Me.PictureBox10.Image = Global.iBMSC.My.Resources.Resources.lgwidth
+        Me.PictureBox10.Image = Global.nBMSC.My.Resources.Resources.lgwidth
         Me.PictureBox10.Location = New System.Drawing.Point(3, 28)
         Me.PictureBox10.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.PictureBox10.Name = "PictureBox10"
@@ -1801,7 +1801,7 @@ Partial Class MainWindow
         'PictureBox7
         '
         Me.PictureBox7.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.PictureBox7.Image = Global.iBMSC.My.Resources.Resources.lgpartition
+        Me.PictureBox7.Image = Global.nBMSC.My.Resources.Resources.lgpartition
         Me.PictureBox7.Location = New System.Drawing.Point(3, 3)
         Me.PictureBox7.Name = "PictureBox7"
         Me.PictureBox7.Size = New System.Drawing.Size(24, 24)
@@ -1834,7 +1834,7 @@ Partial Class MainWindow
         'BGSlash
         '
         Me.BGSlash.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.BGSlash.Image = Global.iBMSC.My.Resources.Resources.Shortcut
+        Me.BGSlash.Image = Global.nBMSC.My.Resources.Resources.Shortcut
         Me.BGSlash.Location = New System.Drawing.Point(158, 4)
         Me.BGSlash.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
         Me.BGSlash.Name = "BGSlash"
@@ -2594,14 +2594,14 @@ Partial Class MainWindow
         '
         'MInsert
         '
-        Me.MInsert.Image = Global.iBMSC.My.Resources.Resources.x16Add
+        Me.MInsert.Image = Global.nBMSC.My.Resources.Resources.x16Add
         Me.MInsert.Name = "MInsert"
         Me.MInsert.Size = New System.Drawing.Size(165, 22)
         Me.MInsert.Text = "Insert Measure"
         '
         'MRemove
         '
-        Me.MRemove.Image = Global.iBMSC.My.Resources.Resources.x16Remove
+        Me.MRemove.Image = Global.nBMSC.My.Resources.Resources.x16Remove
         Me.MRemove.Name = "MRemove"
         Me.MRemove.Size = New System.Drawing.Size(165, 22)
         Me.MRemove.Text = "Remove Measure"
@@ -2626,14 +2626,14 @@ Partial Class MainWindow
         '
         'mnFile
         '
-        Me.mnFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnNew, Me.mnOpen, Me.mnImportSM, Me.mnImportIBMSC, Me.ToolStripSeparator14, Me.mnSave, Me.mnSaveAs, Me.mnExportIBMSC, Me.mnExportBMSON, Me.ToolStripSeparator15, Me.mnOpenR0, Me.mnOpenR1, Me.mnOpenR2, Me.mnOpenR3, Me.mnOpenR4, Me.ToolStripSeparator16, Me.mnQuit})
+        Me.mnFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnNew, Me.mnOpen, Me.mnImportSM, Me.mnImportNBMSC, Me.ToolStripSeparator14, Me.mnSave, Me.mnSaveAs, Me.mnExportNBMSC, Me.mnExportBMSON, Me.ToolStripSeparator15, Me.mnOpenR0, Me.mnOpenR1, Me.mnOpenR2, Me.mnOpenR3, Me.mnOpenR4, Me.ToolStripSeparator16, Me.mnQuit})
         Me.mnFile.Name = "mnFile"
         Me.mnFile.Size = New System.Drawing.Size(37, 19)
         Me.mnFile.Text = "&File"
         '
         'mnNew
         '
-        Me.mnNew.Image = Global.iBMSC.My.Resources.Resources.x16New
+        Me.mnNew.Image = Global.nBMSC.My.Resources.Resources.x16New
         Me.mnNew.Name = "mnNew"
         Me.mnNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
         Me.mnNew.Size = New System.Drawing.Size(199, 22)
@@ -2641,7 +2641,7 @@ Partial Class MainWindow
         '
         'mnOpen
         '
-        Me.mnOpen.Image = Global.iBMSC.My.Resources.Resources.x16Open
+        Me.mnOpen.Image = Global.nBMSC.My.Resources.Resources.x16Open
         Me.mnOpen.Name = "mnOpen"
         Me.mnOpen.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
         Me.mnOpen.Size = New System.Drawing.Size(199, 22)
@@ -2649,17 +2649,17 @@ Partial Class MainWindow
         '
         'mnImportSM
         '
-        Me.mnImportSM.Image = Global.iBMSC.My.Resources.Resources.x16Import2
+        Me.mnImportSM.Image = Global.nBMSC.My.Resources.Resources.x16Import2
         Me.mnImportSM.Name = "mnImportSM"
         Me.mnImportSM.Size = New System.Drawing.Size(199, 22)
         Me.mnImportSM.Text = "Import from .S&M file"
         '
-        'mnImportIBMSC
+        'mnImportNBMSC
         '
-        Me.mnImportIBMSC.Image = Global.iBMSC.My.Resources.Resources.x16Import2
-        Me.mnImportIBMSC.Name = "mnImportIBMSC"
-        Me.mnImportIBMSC.Size = New System.Drawing.Size(199, 22)
-        Me.mnImportIBMSC.Text = "Import from .&IBMSC file"
+        Me.mnImportNBMSC.Image = Global.nBMSC.My.Resources.Resources.x16Import2
+        Me.mnImportNBMSC.Name = "mnImportNBMSC"
+        Me.mnImportNBMSC.Size = New System.Drawing.Size(199, 22)
+        Me.mnImportNBMSC.Text = "Import from .&NBMSC file"
         '
         'ToolStripSeparator14
         '
@@ -2668,7 +2668,7 @@ Partial Class MainWindow
         '
         'mnSave
         '
-        Me.mnSave.Image = Global.iBMSC.My.Resources.Resources.x16Save
+        Me.mnSave.Image = Global.nBMSC.My.Resources.Resources.x16Save
         Me.mnSave.Name = "mnSave"
         Me.mnSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
         Me.mnSave.Size = New System.Drawing.Size(199, 22)
@@ -2676,21 +2676,21 @@ Partial Class MainWindow
         '
         'mnSaveAs
         '
-        Me.mnSaveAs.Image = Global.iBMSC.My.Resources.Resources.x16SaveAs
+        Me.mnSaveAs.Image = Global.nBMSC.My.Resources.Resources.x16SaveAs
         Me.mnSaveAs.Name = "mnSaveAs"
         Me.mnSaveAs.Size = New System.Drawing.Size(199, 22)
         Me.mnSaveAs.Text = "Save &As..."
         '
-        'mnExportIBMSC
+        'mnExportNBMSC
         '
-        Me.mnExportIBMSC.Image = Global.iBMSC.My.Resources.Resources.x16Export
-        Me.mnExportIBMSC.Name = "mnExportIBMSC"
-        Me.mnExportIBMSC.Size = New System.Drawing.Size(199, 22)
-        Me.mnExportIBMSC.Text = "&Export .IBMSC file"
+        Me.mnExportNBMSC.Image = Global.nBMSC.My.Resources.Resources.x16Export
+        Me.mnExportNBMSC.Name = "mnExportNBMSC"
+        Me.mnExportNBMSC.Size = New System.Drawing.Size(199, 22)
+        Me.mnExportNBMSC.Text = "&Export .NBMSC file"
         '
         'mnExportBMSON
         '
-        Me.mnExportBMSON.Image = Global.iBMSC.My.Resources.Resources.x16Export
+        Me.mnExportBMSON.Image = Global.nBMSC.My.Resources.Resources.x16Export
         Me.mnExportBMSON.Name = "mnExportBMSON"
         Me.mnExportBMSON.Size = New System.Drawing.Size(199, 22)
         Me.mnExportBMSON.Text = "Export .&BMSON file"
@@ -2761,7 +2761,7 @@ Partial Class MainWindow
         'mnUndo
         '
         Me.mnUndo.Enabled = False
-        Me.mnUndo.Image = Global.iBMSC.My.Resources.Resources.x16Undo
+        Me.mnUndo.Image = Global.nBMSC.My.Resources.Resources.x16Undo
         Me.mnUndo.Name = "mnUndo"
         Me.mnUndo.ShortcutKeyDisplayString = "Ctrl+Z"
         Me.mnUndo.Size = New System.Drawing.Size(233, 22)
@@ -2770,7 +2770,7 @@ Partial Class MainWindow
         'mnRedo
         '
         Me.mnRedo.Enabled = False
-        Me.mnRedo.Image = Global.iBMSC.My.Resources.Resources.x16Redo
+        Me.mnRedo.Image = Global.nBMSC.My.Resources.Resources.x16Redo
         Me.mnRedo.Name = "mnRedo"
         Me.mnRedo.ShortcutKeyDisplayString = "Ctrl+Y"
         Me.mnRedo.Size = New System.Drawing.Size(233, 22)
@@ -2783,7 +2783,7 @@ Partial Class MainWindow
         '
         'mnCut
         '
-        Me.mnCut.Image = Global.iBMSC.My.Resources.Resources.x16Cut
+        Me.mnCut.Image = Global.nBMSC.My.Resources.Resources.x16Cut
         Me.mnCut.Name = "mnCut"
         Me.mnCut.ShortcutKeyDisplayString = "Ctrl+X"
         Me.mnCut.Size = New System.Drawing.Size(233, 22)
@@ -2791,7 +2791,7 @@ Partial Class MainWindow
         '
         'mnCopy
         '
-        Me.mnCopy.Image = Global.iBMSC.My.Resources.Resources.x16Copy
+        Me.mnCopy.Image = Global.nBMSC.My.Resources.Resources.x16Copy
         Me.mnCopy.Name = "mnCopy"
         Me.mnCopy.ShortcutKeyDisplayString = "Ctrl+C"
         Me.mnCopy.Size = New System.Drawing.Size(233, 22)
@@ -2799,7 +2799,7 @@ Partial Class MainWindow
         '
         'mnPaste
         '
-        Me.mnPaste.Image = Global.iBMSC.My.Resources.Resources.x16Paste
+        Me.mnPaste.Image = Global.nBMSC.My.Resources.Resources.x16Paste
         Me.mnPaste.Name = "mnPaste"
         Me.mnPaste.ShortcutKeyDisplayString = "Ctrl+V"
         Me.mnPaste.Size = New System.Drawing.Size(233, 22)
@@ -2807,7 +2807,7 @@ Partial Class MainWindow
         '
         'mnDelete
         '
-        Me.mnDelete.Image = Global.iBMSC.My.Resources.Resources.x16Remove
+        Me.mnDelete.Image = Global.nBMSC.My.Resources.Resources.x16Remove
         Me.mnDelete.Name = "mnDelete"
         Me.mnDelete.ShortcutKeyDisplayString = "Del"
         Me.mnDelete.Size = New System.Drawing.Size(233, 22)
@@ -2834,7 +2834,7 @@ Partial Class MainWindow
         '
         'mnFind
         '
-        Me.mnFind.Image = Global.iBMSC.My.Resources.Resources.x16Find
+        Me.mnFind.Image = Global.nBMSC.My.Resources.Resources.x16Find
         Me.mnFind.Name = "mnFind"
         Me.mnFind.ShortcutKeyDisplayString = "Ctrl+F"
         Me.mnFind.Size = New System.Drawing.Size(233, 22)
@@ -2842,7 +2842,7 @@ Partial Class MainWindow
         '
         'mnStatistics
         '
-        Me.mnStatistics.Image = Global.iBMSC.My.Resources.Resources.x16Statistics
+        Me.mnStatistics.Image = Global.nBMSC.My.Resources.Resources.x16Statistics
         Me.mnStatistics.Name = "mnStatistics"
         Me.mnStatistics.ShortcutKeyDisplayString = "Ctrl+T"
         Me.mnStatistics.Size = New System.Drawing.Size(233, 22)
@@ -2856,7 +2856,7 @@ Partial Class MainWindow
         'mnTimeSelect
         '
         Me.mnTimeSelect.CheckOnClick = True
-        Me.mnTimeSelect.Image = Global.iBMSC.My.Resources.Resources.x16TimeSelection
+        Me.mnTimeSelect.Image = Global.nBMSC.My.Resources.Resources.x16TimeSelection
         Me.mnTimeSelect.Name = "mnTimeSelect"
         Me.mnTimeSelect.ShortcutKeys = System.Windows.Forms.Keys.F1
         Me.mnTimeSelect.Size = New System.Drawing.Size(233, 22)
@@ -2867,7 +2867,7 @@ Partial Class MainWindow
         Me.mnSelect.Checked = True
         Me.mnSelect.CheckOnClick = True
         Me.mnSelect.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnSelect.Image = Global.iBMSC.My.Resources.Resources.x16Select
+        Me.mnSelect.Image = Global.nBMSC.My.Resources.Resources.x16Select
         Me.mnSelect.Name = "mnSelect"
         Me.mnSelect.ShortcutKeys = System.Windows.Forms.Keys.F2
         Me.mnSelect.Size = New System.Drawing.Size(233, 22)
@@ -2876,7 +2876,7 @@ Partial Class MainWindow
         'mnWrite
         '
         Me.mnWrite.CheckOnClick = True
-        Me.mnWrite.Image = Global.iBMSC.My.Resources.Resources.x16Pen
+        Me.mnWrite.Image = Global.nBMSC.My.Resources.Resources.x16Pen
         Me.mnWrite.Name = "mnWrite"
         Me.mnWrite.ShortcutKeys = System.Windows.Forms.Keys.F3
         Me.mnWrite.Size = New System.Drawing.Size(233, 22)
@@ -2889,7 +2889,7 @@ Partial Class MainWindow
         '
         'mnMyO2
         '
-        Me.mnMyO2.Image = Global.iBMSC.My.Resources.Resources.x16MyO2
+        Me.mnMyO2.Image = Global.nBMSC.My.Resources.Resources.x16MyO2
         Me.mnMyO2.Name = "mnMyO2"
         Me.mnMyO2.Size = New System.Drawing.Size(233, 22)
         Me.mnMyO2.Text = "MyO2 ToolBox (Chinese Only)"
@@ -3072,7 +3072,7 @@ Partial Class MainWindow
         Me.mnNTInput.Checked = True
         Me.mnNTInput.CheckOnClick = True
         Me.mnNTInput.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnNTInput.Image = Global.iBMSC.My.Resources.Resources.x16NTInput
+        Me.mnNTInput.Image = Global.nBMSC.My.Resources.Resources.x16NTInput
         Me.mnNTInput.Name = "mnNTInput"
         Me.mnNTInput.ShortcutKeys = System.Windows.Forms.Keys.None
         Me.mnNTInput.Size = New System.Drawing.Size(229, 22)
@@ -3083,7 +3083,7 @@ Partial Class MainWindow
         Me.mnErrorCheck.Checked = True
         Me.mnErrorCheck.CheckOnClick = True
         Me.mnErrorCheck.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnErrorCheck.Image = Global.iBMSC.My.Resources.Resources.x16CheckError
+        Me.mnErrorCheck.Image = Global.nBMSC.My.Resources.Resources.x16CheckError
         Me.mnErrorCheck.Name = "mnErrorCheck"
         Me.mnErrorCheck.Size = New System.Drawing.Size(229, 22)
         Me.mnErrorCheck.Text = "&Error Check"
@@ -3093,7 +3093,7 @@ Partial Class MainWindow
         Me.mnPreviewOnClick.Checked = True
         Me.mnPreviewOnClick.CheckOnClick = True
         Me.mnPreviewOnClick.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnPreviewOnClick.Image = Global.iBMSC.My.Resources.Resources.x16PreviewOnClick
+        Me.mnPreviewOnClick.Image = Global.nBMSC.My.Resources.Resources.x16PreviewOnClick
         Me.mnPreviewOnClick.Name = "mnPreviewOnClick"
         Me.mnPreviewOnClick.Size = New System.Drawing.Size(229, 22)
         Me.mnPreviewOnClick.Text = "Preview on &Click"
@@ -3101,7 +3101,7 @@ Partial Class MainWindow
         'mnShowFileName
         '
         Me.mnShowFileName.CheckOnClick = True
-        Me.mnShowFileName.Image = Global.iBMSC.My.Resources.Resources.x16ShowFileNameN
+        Me.mnShowFileName.Image = Global.nBMSC.My.Resources.Resources.x16ShowFileNameN
         Me.mnShowFileName.Name = "mnShowFileName"
         Me.mnShowFileName.Size = New System.Drawing.Size(229, 22)
         Me.mnShowFileName.Text = "Show &File Name on Notes"
@@ -3109,7 +3109,7 @@ Partial Class MainWindow
         'mnChangePlaySide
         '
         Me.mnChangePlaySide.CheckOnClick = True
-        Me.mnChangePlaySide.Image = Global.iBMSC.My.Resources.Resources.x16ChangePlaySide
+        Me.mnChangePlaySide.Image = Global.nBMSC.My.Resources.Resources.x16ChangePlaySide
         Me.mnChangePlaySide.Name = "mnChangePlaySide"
         Me.mnChangePlaySide.Size = New System.Drawing.Size(229, 22)
         Me.mnChangePlaySide.Text = "&RightScratch Mode"
@@ -3129,21 +3129,21 @@ Partial Class MainWindow
         '
         'mnGOptions
         '
-        Me.mnGOptions.Image = Global.iBMSC.My.Resources.Resources.x16GeneralOptions
+        Me.mnGOptions.Image = Global.nBMSC.My.Resources.Resources.x16GeneralOptions
         Me.mnGOptions.Name = "mnGOptions"
         Me.mnGOptions.Size = New System.Drawing.Size(229, 22)
         Me.mnGOptions.Text = "&General Options"
         '
         'mnVOptions
         '
-        Me.mnVOptions.Image = Global.iBMSC.My.Resources.Resources.x16VisualOptions
+        Me.mnVOptions.Image = Global.nBMSC.My.Resources.Resources.x16VisualOptions
         Me.mnVOptions.Name = "mnVOptions"
         Me.mnVOptions.Size = New System.Drawing.Size(229, 22)
         Me.mnVOptions.Text = "&Visual Options"
         '
         'mnPOptions
         '
-        Me.mnPOptions.Image = Global.iBMSC.My.Resources.Resources.x16PlayerOptions
+        Me.mnPOptions.Image = Global.nBMSC.My.Resources.Resources.x16PlayerOptions
         Me.mnPOptions.Name = "mnPOptions"
         Me.mnPOptions.Size = New System.Drawing.Size(229, 22)
         Me.mnPOptions.Text = "&Player Options"
@@ -3165,14 +3165,14 @@ Partial Class MainWindow
         'POBLong
         '
         Me.POBLong.Enabled = False
-        Me.POBLong.Image = Global.iBMSC.My.Resources.Resources.ConvertNotesL
+        Me.POBLong.Image = Global.nBMSC.My.Resources.Resources.ConvertNotesL
         Me.POBLong.Name = "POBLong"
         Me.POBLong.Size = New System.Drawing.Size(252, 22)
         Me.POBLong.Text = "→ &Long Note"
         '
         'POBShort
         '
-        Me.POBShort.Image = Global.iBMSC.My.Resources.Resources.ConvertNotesN
+        Me.POBShort.Image = Global.nBMSC.My.Resources.Resources.ConvertNotesN
         Me.POBShort.Name = "POBShort"
         Me.POBShort.Size = New System.Drawing.Size(252, 22)
         Me.POBShort.Text = "→ &Short Note"
@@ -3180,7 +3180,7 @@ Partial Class MainWindow
         'POBLongShort
         '
         Me.POBLongShort.Enabled = False
-        Me.POBLongShort.Image = Global.iBMSC.My.Resources.Resources.ConvertNotes
+        Me.POBLongShort.Image = Global.nBMSC.My.Resources.Resources.ConvertNotes
         Me.POBLongShort.Name = "POBLongShort"
         Me.POBLongShort.Size = New System.Drawing.Size(252, 22)
         Me.POBLongShort.Text = "Long Note ↔ Short Note"
@@ -3192,35 +3192,35 @@ Partial Class MainWindow
         '
         'POBHidden
         '
-        Me.POBHidden.Image = Global.iBMSC.My.Resources.Resources.ConvertNotesH
+        Me.POBHidden.Image = Global.nBMSC.My.Resources.Resources.ConvertNotesH
         Me.POBHidden.Name = "POBHidden"
         Me.POBHidden.Size = New System.Drawing.Size(252, 22)
         Me.POBHidden.Text = "→ &Hidden Note"
         '
         'POBVisible
         '
-        Me.POBVisible.Image = Global.iBMSC.My.Resources.Resources.ConvertNotesV
+        Me.POBVisible.Image = Global.nBMSC.My.Resources.Resources.ConvertNotesV
         Me.POBVisible.Name = "POBVisible"
         Me.POBVisible.Size = New System.Drawing.Size(252, 22)
         Me.POBVisible.Text = "→ &Normal Note"
         '
         'POBHiddenVisible
         '
-        Me.POBHiddenVisible.Image = Global.iBMSC.My.Resources.Resources.ConvertNotesHV
+        Me.POBHiddenVisible.Image = Global.nBMSC.My.Resources.Resources.ConvertNotesHV
         Me.POBHiddenVisible.Name = "POBHiddenVisible"
         Me.POBHiddenVisible.Size = New System.Drawing.Size(252, 22)
         Me.POBHiddenVisible.Text = "Normal Note ↔ Hidden Note"
         '
         'POBLandmine
         '
-        Me.POBLandmine.Image = Global.iBMSC.My.Resources.Resources.ConvertNotesM
+        Me.POBLandmine.Image = Global.nBMSC.My.Resources.Resources.ConvertNotesM
         Me.POBLandmine.Name = "POBLandmine"
         Me.POBLandmine.Size = New System.Drawing.Size(252, 22)
         Me.POBLandmine.Text = "→ LandMine Note"
         '
         'POBNormalLandmine
         '
-        Me.POBNormalLandmine.Image = Global.iBMSC.My.Resources.Resources.ConvertNotesVM
+        Me.POBNormalLandmine.Image = Global.nBMSC.My.Resources.Resources.ConvertNotesVM
         Me.POBNormalLandmine.Name = "POBNormalLandmine"
         Me.POBNormalLandmine.Size = New System.Drawing.Size(252, 22)
         Me.POBNormalLandmine.Text = "Normal Note ↔ LandMine Note"
@@ -3232,14 +3232,14 @@ Partial Class MainWindow
         '
         'POBModify
         '
-        Me.POBModify.Image = Global.iBMSC.My.Resources.Resources.x16ModifyLabel
+        Me.POBModify.Image = Global.nBMSC.My.Resources.Resources.x16ModifyLabel
         Me.POBModify.Name = "POBModify"
         Me.POBModify.Size = New System.Drawing.Size(252, 22)
         Me.POBModify.Text = "&Modify Labels"
         '
         'POBMirror
         '
-        Me.POBMirror.Image = Global.iBMSC.My.Resources.Resources.x16Mirror
+        Me.POBMirror.Image = Global.nBMSC.My.Resources.Resources.x16Mirror
         Me.POBMirror.Name = "POBMirror"
         Me.POBMirror.Size = New System.Drawing.Size(252, 22)
         Me.POBMirror.Text = "Mi&rror"
@@ -3253,7 +3253,7 @@ Partial Class MainWindow
         '
         'mnPlayB
         '
-        Me.mnPlayB.Image = Global.iBMSC.My.Resources.Resources.x16PlayB
+        Me.mnPlayB.Image = Global.nBMSC.My.Resources.Resources.x16PlayB
         Me.mnPlayB.Name = "mnPlayB"
         Me.mnPlayB.ShortcutKeys = System.Windows.Forms.Keys.F5
         Me.mnPlayB.Size = New System.Drawing.Size(201, 22)
@@ -3261,7 +3261,7 @@ Partial Class MainWindow
         '
         'mnPlay
         '
-        Me.mnPlay.Image = Global.iBMSC.My.Resources.Resources.x16Play
+        Me.mnPlay.Image = Global.nBMSC.My.Resources.Resources.x16Play
         Me.mnPlay.Name = "mnPlay"
         Me.mnPlay.ShortcutKeys = System.Windows.Forms.Keys.F6
         Me.mnPlay.Size = New System.Drawing.Size(201, 22)
@@ -3269,7 +3269,7 @@ Partial Class MainWindow
         '
         'mnStop
         '
-        Me.mnStop.Image = Global.iBMSC.My.Resources.Resources.x16Stop
+        Me.mnStop.Image = Global.nBMSC.My.Resources.Resources.x16Stop
         Me.mnStop.Name = "mnStop"
         Me.mnStop.ShortcutKeys = System.Windows.Forms.Keys.F7
         Me.mnStop.Size = New System.Drawing.Size(201, 22)
@@ -3279,7 +3279,7 @@ Partial Class MainWindow
         '
         Me.POConvert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.POConvert.DropDown = Me.cmnConversion
-        Me.POConvert.Image = Global.iBMSC.My.Resources.Resources.ConvertNotes
+        Me.POConvert.Image = Global.nBMSC.My.Resources.Resources.ConvertNotes
         Me.POConvert.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.POConvert.Name = "POConvert"
         Me.POConvert.Size = New System.Drawing.Size(29, 22)
@@ -3300,7 +3300,7 @@ Partial Class MainWindow
         'TBNew
         '
         Me.TBNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBNew.Image = Global.iBMSC.My.Resources.Resources.x16New
+        Me.TBNew.Image = Global.nBMSC.My.Resources.Resources.x16New
         Me.TBNew.ImageTransparentColor = System.Drawing.Color.Transparent
         Me.TBNew.Name = "TBNew"
         Me.TBNew.Size = New System.Drawing.Size(23, 22)
@@ -3309,8 +3309,8 @@ Partial Class MainWindow
         'TBOpen
         '
         Me.TBOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBOpen.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TBOpenR0, Me.TBOpenR1, Me.TBOpenR2, Me.TBOpenR3, Me.TBOpenR4, Me.ToolStripSeparator12, Me.TBImportSM, Me.TBImportIBMSC})
-        Me.TBOpen.Image = Global.iBMSC.My.Resources.Resources.x16Open
+        Me.TBOpen.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TBOpenR0, Me.TBOpenR1, Me.TBOpenR2, Me.TBOpenR3, Me.TBOpenR4, Me.ToolStripSeparator12, Me.TBImportSM, Me.TBImportNBMSC})
+        Me.TBOpen.Image = Global.nBMSC.My.Resources.Resources.x16Open
         Me.TBOpen.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBOpen.Name = "TBOpen"
         Me.TBOpen.Size = New System.Drawing.Size(32, 22)
@@ -3363,23 +3363,23 @@ Partial Class MainWindow
         '
         'TBImportSM
         '
-        Me.TBImportSM.Image = Global.iBMSC.My.Resources.Resources.x16Import2
+        Me.TBImportSM.Image = Global.nBMSC.My.Resources.Resources.x16Import2
         Me.TBImportSM.Name = "TBImportSM"
         Me.TBImportSM.Size = New System.Drawing.Size(199, 22)
         Me.TBImportSM.Text = "Import from .SM file"
         '
-        'TBImportIBMSC
+        'TBImportNBMSC
         '
-        Me.TBImportIBMSC.Image = Global.iBMSC.My.Resources.Resources.x16Import2
-        Me.TBImportIBMSC.Name = "TBImportIBMSC"
-        Me.TBImportIBMSC.Size = New System.Drawing.Size(199, 22)
-        Me.TBImportIBMSC.Text = "Import from .IBMSC file"
+        Me.TBImportNBMSC.Image = Global.nBMSC.My.Resources.Resources.x16Import2
+        Me.TBImportNBMSC.Name = "TBImportNBMSC"
+        Me.TBImportNBMSC.Size = New System.Drawing.Size(199, 22)
+        Me.TBImportNBMSC.Text = "Import from .NBMSC file"
         '
         'TBSave
         '
         Me.TBSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBSave.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TBSaveAs, Me.TBExportIBMSC, Me.TBExportBMSON})
-        Me.TBSave.Image = Global.iBMSC.My.Resources.Resources.x16Save
+        Me.TBSave.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TBSaveAs, Me.TBExportNBMSC, Me.TBExportBMSON})
+        Me.TBSave.Image = Global.nBMSC.My.Resources.Resources.x16Save
         Me.TBSave.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBSave.Name = "TBSave"
         Me.TBSave.Size = New System.Drawing.Size(32, 22)
@@ -3387,21 +3387,21 @@ Partial Class MainWindow
         '
         'TBSaveAs
         '
-        Me.TBSaveAs.Image = Global.iBMSC.My.Resources.Resources.x16SaveAs
+        Me.TBSaveAs.Image = Global.nBMSC.My.Resources.Resources.x16SaveAs
         Me.TBSaveAs.Name = "TBSaveAs"
         Me.TBSaveAs.Size = New System.Drawing.Size(167, 22)
         Me.TBSaveAs.Text = "Save As..."
         '
-        'TBExportIBMSC
+        'TBExportNBMSC
         '
-        Me.TBExportIBMSC.Image = Global.iBMSC.My.Resources.Resources.x16Export
-        Me.TBExportIBMSC.Name = "TBExportIBMSC"
-        Me.TBExportIBMSC.Size = New System.Drawing.Size(167, 22)
-        Me.TBExportIBMSC.Text = "Export .IBMSC file"
+        Me.TBExportNBMSC.Image = Global.nBMSC.My.Resources.Resources.x16Export
+        Me.TBExportNBMSC.Name = "TBExportNBMSC"
+        Me.TBExportNBMSC.Size = New System.Drawing.Size(167, 22)
+        Me.TBExportNBMSC.Text = "Export .NBMSC file"
         '
         'TBExportBMSON
         '
-        Me.TBExportBMSON.Image = Global.iBMSC.My.Resources.Resources.x16Export
+        Me.TBExportBMSON.Image = Global.nBMSC.My.Resources.Resources.x16Export
         Me.TBExportBMSON.Name = "TBExportBMSON"
         Me.TBExportBMSON.Size = New System.Drawing.Size(167, 22)
         Me.TBExportBMSON.Text = "Export .BMSON file"
@@ -3414,7 +3414,7 @@ Partial Class MainWindow
         'TBCut
         '
         Me.TBCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBCut.Image = Global.iBMSC.My.Resources.Resources.x16Cut
+        Me.TBCut.Image = Global.nBMSC.My.Resources.Resources.x16Cut
         Me.TBCut.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBCut.Name = "TBCut"
         Me.TBCut.Size = New System.Drawing.Size(23, 22)
@@ -3423,7 +3423,7 @@ Partial Class MainWindow
         'TBCopy
         '
         Me.TBCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBCopy.Image = Global.iBMSC.My.Resources.Resources.x16Copy
+        Me.TBCopy.Image = Global.nBMSC.My.Resources.Resources.x16Copy
         Me.TBCopy.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBCopy.Name = "TBCopy"
         Me.TBCopy.Size = New System.Drawing.Size(23, 22)
@@ -3432,7 +3432,7 @@ Partial Class MainWindow
         'TBPaste
         '
         Me.TBPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBPaste.Image = Global.iBMSC.My.Resources.Resources.x16Paste
+        Me.TBPaste.Image = Global.nBMSC.My.Resources.Resources.x16Paste
         Me.TBPaste.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBPaste.Name = "TBPaste"
         Me.TBPaste.Size = New System.Drawing.Size(23, 22)
@@ -3441,7 +3441,7 @@ Partial Class MainWindow
         'TBFind
         '
         Me.TBFind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBFind.Image = Global.iBMSC.My.Resources.Resources.x16Find
+        Me.TBFind.Image = Global.nBMSC.My.Resources.Resources.x16Find
         Me.TBFind.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBFind.Name = "TBFind"
         Me.TBFind.Size = New System.Drawing.Size(23, 22)
@@ -3455,7 +3455,7 @@ Partial Class MainWindow
         'TBStatistics
         '
         Me.TBStatistics.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
-        Me.TBStatistics.Image = Global.iBMSC.My.Resources.Resources.x16Statistics
+        Me.TBStatistics.Image = Global.nBMSC.My.Resources.Resources.x16Statistics
         Me.TBStatistics.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBStatistics.Name = "TBStatistics"
         Me.TBStatistics.Size = New System.Drawing.Size(34, 22)
@@ -3473,7 +3473,7 @@ Partial Class MainWindow
         Me.TBErrorCheck.CheckOnClick = True
         Me.TBErrorCheck.CheckState = System.Windows.Forms.CheckState.Checked
         Me.TBErrorCheck.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBErrorCheck.Image = Global.iBMSC.My.Resources.Resources.x16CheckError
+        Me.TBErrorCheck.Image = Global.nBMSC.My.Resources.Resources.x16CheckError
         Me.TBErrorCheck.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBErrorCheck.Name = "TBErrorCheck"
         Me.TBErrorCheck.Size = New System.Drawing.Size(23, 22)
@@ -3485,7 +3485,7 @@ Partial Class MainWindow
         Me.TBPreviewOnClick.CheckOnClick = True
         Me.TBPreviewOnClick.CheckState = System.Windows.Forms.CheckState.Checked
         Me.TBPreviewOnClick.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBPreviewOnClick.Image = Global.iBMSC.My.Resources.Resources.x16PreviewOnClick
+        Me.TBPreviewOnClick.Image = Global.nBMSC.My.Resources.Resources.x16PreviewOnClick
         Me.TBPreviewOnClick.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBPreviewOnClick.Name = "TBPreviewOnClick"
         Me.TBPreviewOnClick.Size = New System.Drawing.Size(23, 22)
@@ -3495,7 +3495,7 @@ Partial Class MainWindow
         '
         Me.TBShowFileName.CheckOnClick = True
         Me.TBShowFileName.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBShowFileName.Image = Global.iBMSC.My.Resources.Resources.x16ShowFileNameN
+        Me.TBShowFileName.Image = Global.nBMSC.My.Resources.Resources.x16ShowFileNameN
         Me.TBShowFileName.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBShowFileName.Name = "TBShowFileName"
         Me.TBShowFileName.Size = New System.Drawing.Size(23, 22)
@@ -3505,7 +3505,7 @@ Partial Class MainWindow
         '
         Me.TBChangePlaySide.CheckOnClick = True
         Me.TBChangePlaySide.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBChangePlaySide.Image = Global.iBMSC.My.Resources.Resources.x16ChangePlaySide
+        Me.TBChangePlaySide.Image = Global.nBMSC.My.Resources.Resources.x16ChangePlaySide
         Me.TBChangePlaySide.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBChangePlaySide.Name = "TBChangePlaySide"
         Me.TBChangePlaySide.Size = New System.Drawing.Size(23, 22)
@@ -3522,7 +3522,7 @@ Partial Class MainWindow
         Me.TBNTInput.CheckOnClick = True
         Me.TBNTInput.CheckState = System.Windows.Forms.CheckState.Checked
         Me.TBNTInput.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBNTInput.Image = Global.iBMSC.My.Resources.Resources.x16NTInput
+        Me.TBNTInput.Image = Global.nBMSC.My.Resources.Resources.x16NTInput
         Me.TBNTInput.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBNTInput.Name = "TBNTInput"
         Me.TBNTInput.Size = New System.Drawing.Size(23, 22)
@@ -3546,7 +3546,7 @@ Partial Class MainWindow
         '
         Me.TBUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.TBUndo.Enabled = False
-        Me.TBUndo.Image = Global.iBMSC.My.Resources.Resources.x16Undo
+        Me.TBUndo.Image = Global.nBMSC.My.Resources.Resources.x16Undo
         Me.TBUndo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBUndo.Name = "TBUndo"
         Me.TBUndo.Size = New System.Drawing.Size(23, 22)
@@ -3556,7 +3556,7 @@ Partial Class MainWindow
         '
         Me.TBRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.TBRedo.Enabled = False
-        Me.TBRedo.Image = Global.iBMSC.My.Resources.Resources.x16Redo
+        Me.TBRedo.Image = Global.nBMSC.My.Resources.Resources.x16Redo
         Me.TBRedo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBRedo.Name = "TBRedo"
         Me.TBRedo.Size = New System.Drawing.Size(23, 22)
@@ -3570,7 +3570,7 @@ Partial Class MainWindow
         'TBTimeSelect
         '
         Me.TBTimeSelect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBTimeSelect.Image = Global.iBMSC.My.Resources.Resources.x16TimeSelection
+        Me.TBTimeSelect.Image = Global.nBMSC.My.Resources.Resources.x16TimeSelection
         Me.TBTimeSelect.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBTimeSelect.Name = "TBTimeSelect"
         Me.TBTimeSelect.Size = New System.Drawing.Size(23, 22)
@@ -3581,7 +3581,7 @@ Partial Class MainWindow
         Me.TBSelect.Checked = True
         Me.TBSelect.CheckState = System.Windows.Forms.CheckState.Checked
         Me.TBSelect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBSelect.Image = Global.iBMSC.My.Resources.Resources.x16Select
+        Me.TBSelect.Image = Global.nBMSC.My.Resources.Resources.x16Select
         Me.TBSelect.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBSelect.Name = "TBSelect"
         Me.TBSelect.Size = New System.Drawing.Size(23, 22)
@@ -3590,7 +3590,7 @@ Partial Class MainWindow
         'TBWrite
         '
         Me.TBWrite.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBWrite.Image = Global.iBMSC.My.Resources.Resources.x16Pen
+        Me.TBWrite.Image = Global.nBMSC.My.Resources.Resources.x16Pen
         Me.TBWrite.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBWrite.Name = "TBWrite"
         Me.TBWrite.Size = New System.Drawing.Size(23, 22)
@@ -3604,7 +3604,7 @@ Partial Class MainWindow
         'TBPlayB
         '
         Me.TBPlayB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBPlayB.Image = Global.iBMSC.My.Resources.Resources.x16PlayB
+        Me.TBPlayB.Image = Global.nBMSC.My.Resources.Resources.x16PlayB
         Me.TBPlayB.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBPlayB.Name = "TBPlayB"
         Me.TBPlayB.Size = New System.Drawing.Size(23, 22)
@@ -3613,7 +3613,7 @@ Partial Class MainWindow
         'TBPlay
         '
         Me.TBPlay.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBPlay.Image = Global.iBMSC.My.Resources.Resources.x16Play
+        Me.TBPlay.Image = Global.nBMSC.My.Resources.Resources.x16Play
         Me.TBPlay.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBPlay.Name = "TBPlay"
         Me.TBPlay.Size = New System.Drawing.Size(23, 22)
@@ -3622,7 +3622,7 @@ Partial Class MainWindow
         'TBStop
         '
         Me.TBStop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBStop.Image = Global.iBMSC.My.Resources.Resources.x16Stop
+        Me.TBStop.Image = Global.nBMSC.My.Resources.Resources.x16Stop
         Me.TBStop.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBStop.Name = "TBStop"
         Me.TBStop.Size = New System.Drawing.Size(23, 22)
@@ -3631,7 +3631,7 @@ Partial Class MainWindow
         'TBPOptions
         '
         Me.TBPOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBPOptions.Image = Global.iBMSC.My.Resources.Resources.x16PlayerOptions
+        Me.TBPOptions.Image = Global.nBMSC.My.Resources.Resources.x16PlayerOptions
         Me.TBPOptions.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBPOptions.Name = "TBPOptions"
         Me.TBPOptions.Size = New System.Drawing.Size(23, 22)
@@ -3645,7 +3645,7 @@ Partial Class MainWindow
         'TBVOptions
         '
         Me.TBVOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBVOptions.Image = Global.iBMSC.My.Resources.Resources.x16VisualOptions
+        Me.TBVOptions.Image = Global.nBMSC.My.Resources.Resources.x16VisualOptions
         Me.TBVOptions.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBVOptions.Name = "TBVOptions"
         Me.TBVOptions.Size = New System.Drawing.Size(23, 22)
@@ -3654,7 +3654,7 @@ Partial Class MainWindow
         'TBGOptions
         '
         Me.TBGOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBGOptions.Image = Global.iBMSC.My.Resources.Resources.x16GeneralOptions
+        Me.TBGOptions.Image = Global.nBMSC.My.Resources.Resources.x16GeneralOptions
         Me.TBGOptions.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBGOptions.Name = "TBGOptions"
         Me.TBGOptions.Size = New System.Drawing.Size(23, 22)
@@ -4289,11 +4289,11 @@ Partial Class MainWindow
     Friend WithEvents mnNew As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnOpen As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnImportSM As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnImportIBMSC As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnImportNBMSC As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator14 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents mnSave As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnSaveAs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnExportIBMSC As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnExportNBMSC As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnExportBMSON As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator15 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents mnOpenR0 As System.Windows.Forms.ToolStripMenuItem
@@ -4403,10 +4403,10 @@ Partial Class MainWindow
     Friend WithEvents TBOpenR4 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator12 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents TBImportSM As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TBImportIBMSC As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TBImportNBMSC As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TBSave As System.Windows.Forms.ToolStripSplitButton
     Friend WithEvents TBSaveAs As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TBExportIBMSC As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TBExportNBMSC As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TBExportBMSON As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents TBCut As System.Windows.Forms.ToolStripButton

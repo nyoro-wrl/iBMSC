@@ -1,4 +1,4 @@
-﻿Imports iBMSC.Editor
+﻿Imports nBMSC.Editor
 
 Module BMS
     Public Function IsChannelLongNote(ByVal I As String) As Boolean

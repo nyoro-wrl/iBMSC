@@ -1,4 +1,4 @@
-Imports iBMSC.Editor
+Imports nBMSC.Editor
 
 Public Class UndoRedo
     Public Const opVoid As Byte = 0

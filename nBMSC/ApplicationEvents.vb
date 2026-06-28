@@ -54,7 +54,7 @@ Namespace My
                 Dim xFN As String
                 Dim xDate As Date = DateTime.Now
                 With xDate
-                    xFN = "\AutoSave_" & .Year & "_" & .Month & "_" & .Day & "_" & .Hour & "_" & .Minute & "_" & .Second & "_" & .Millisecond & ".IBMSC"
+                    xFN = "\AutoSave_" & .Year & "_" & .Month & "_" & .Day & "_" & .Hour & "_" & .Minute & "_" & .Second & "_" & .Millisecond & ".NBMSC"
                 End With
 
                 'My.Computer.FileSystem.WriteAllText(My.Application.Info.DirectoryPath & xFN, Form1.ExceptionSave, False)

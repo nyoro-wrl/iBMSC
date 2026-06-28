@@ -17,10 +17,10 @@
 			<New amp="4">새로 만들기 (N)</New>
 			<Open amp="4">열기 (O)</Open>
 			<ImportSM amp="2">.SM 에서 가져오기</ImportSM>
-			<ImportIBMSC amp="1">.IBMSC 에서 가져오기</ImportIBMSC>
+			<ImportNBMSC amp="1">.NBMSC 에서 가져오기</ImportNBMSC>
 			<Save amp="4">저장 (S)</Save>
 			<SaveAs amp="10">다른 이름으로 저장 (A)</SaveAs>
-			<ExportIBMSC amp="18">.IBMSC 형식으로 내보내기 (E)</ExportIBMSC>
+			<ExportNBMSC amp="18">.NBMSC 형식으로 내보내기 (E)</ExportNBMSC>
 			<ExportBMSON amp="18">.BMSON 형식으로 내보내기 (B)</ExportBMSON>
 			<Recent0>최근 사용된 파일 #0</Recent0>
 			<Recent1>최근 사용된 파일 #1</Recent1>
@@ -73,7 +73,7 @@
 		</Preview>
 		<About>
 			<Title amp="0">정보 (A)</Title>
-			<About amp="0">μBMSC 에 대해서... (A)</About>
+			<About amp="0">nBMSC 에 대해서... (A)</About>
 			<CheckUpdates amp="6">업데이트 확인 (C)</CheckUpdates>
 			<CheckUpdatesC>업데이트 확인 (중국어)</CheckUpdatesC>
 		</About>
@@ -113,7 +113,7 @@
 		<GeneralOptions>일반 옵션</GeneralOptions>
 		<Language>언어</Language>
 		<Theme>테마</Theme>
-		<About>μBMSC에 대해서... </About>
+		<About>nBMSC에 대해서... </About>
 	</ToolBar>
 	<StatusBar>
 		<ColumnCaption>열 머리</ColumnCaption>
@@ -286,7 +286,7 @@
 		<BPMOverflowError>확장 BPM 값이 너무 큽니다. : </BPMOverflowError>
 		<STOPOverflowError>STOP 노트가 너무 많습니다. : </STOPOverflowError>
 		<SavedFileWillContainErrors>저장할 파일에 오류가 있습니다.</SavedFileWillContainErrors>
-		<FileAssociationPrompt>μBMSC를 {} 파일의 기본 프로그램으로 하시겠습니까?</FileAssociationPrompt>
+		<FileAssociationPrompt>nBMSC를 {} 파일의 기본 프로그램으로 하시겠습니까?</FileAssociationPrompt>
 		<FileAssociationError>관련 변경 오류 : </FileAssociationError>
 		<RestoreDefaultSettings>설정을 초기화 하시겠습니까? : </RestoreDefaultSettings>
 		<RestoreAutosavedFile>{} 자동으로 저장된 파일이 있습니다. 이걸로 되돌리시겠습니까?</RestoreAutosavedFile>
@@ -300,7 +300,7 @@
 		<PMS>Po-Mu Script (*.pms)</PMS>
 		<TXT>텍스트 파일 (*.txt)</TXT>
 		<SM>Step Mania files (*.sm)</SM>
-		<IBMSC>iBMSC 바이너리 포맷 (*.ibmsc)</IBMSC>
+		<NBMSC>nBMSC 바이너리 포맷 (*.nbmsc)</NBMSC>
 		<XML>XML files (*.xml)</XML>
 		<THEME_XML>iBMSC 테마 (*.Theme.xml)</THEME_XML>
 		<TH>iBMSC 2.x 테마 파일 (*.Theme.xml)</TH>
@@ -453,7 +453,7 @@
 		<BME>Be-Music Extended Format</BME>
 		<BML>Be-Music Longnote Format</BML>
 		<PMS>Po-Mu Script</PMS>
-		<IBMSC>iBMSC Format</IBMSC>
+		<NBMSC>nBMSC Format</NBMSC>
 		<Open>열기</Open>
 		<Preview>재생</Preview>
 		<ViewCode>스크립트 보기</ViewCode>

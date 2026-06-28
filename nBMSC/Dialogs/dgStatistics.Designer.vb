@@ -55,7 +55,7 @@ Partial Class dgStatistics
         '
         'lIcon
         '
-        Me.lIcon.Image = Global.iBMSC.My.Resources.Resources.Statistics3
+        Me.lIcon.Image = Global.nBMSC.My.Resources.Resources.Statistics3
         Me.lIcon.Location = New System.Drawing.Point(12, 9)
         Me.lIcon.Name = "lIcon"
         Me.lIcon.Size = New System.Drawing.Size(42, 42)

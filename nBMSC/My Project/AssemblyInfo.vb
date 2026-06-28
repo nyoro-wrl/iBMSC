@@ -10,10 +10,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("μBMSC Editor")>
+<Assembly: AssemblyTitle("nBMSC Editor")>
 <Assembly: AssemblyDescription("iBMS by Doaz Patched by zardoru")>
 <Assembly: AssemblyCompany("iBMS")>
-<Assembly: AssemblyProduct("μBMSC")>
+<Assembly: AssemblyProduct("nBMSC")>
 <Assembly: AssemblyCopyright("Copyright (C) [4th Age]")>
 <Assembly: AssemblyTrademark("iBMS.[4th Age]")> 
 

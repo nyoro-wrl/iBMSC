@@ -161,26 +161,26 @@ Public Class OpGeneral
     End Sub
 
     Private Sub TBAssociate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBAssociate.Click
-        Associate(".bms", "iBMSC.BMS", Strings.FileAssociation.BMS, False)
+        Associate(".bms", "nBMSC.BMS", Strings.FileAssociation.BMS, False)
     End Sub
 
-    Private Sub TBAssociateIBMSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBAssociateIBMSC.Click
-        Associate(".ibmsc", "iBMSC.iBMSC", Strings.FileAssociation.IBMSC, True)
+    Private Sub TBAssociateNBMSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBAssociateNBMSC.Click
+        Associate(".nbmsc", "nBMSC.NBMSC", Strings.FileAssociation.NBMSC, True)
     End Sub
 
     Private Sub TBAssociateBME_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBAssociateBME.Click
-        Associate(".bme", "iBMSC.BME", Strings.FileAssociation.BME, False)
+        Associate(".bme", "nBMSC.BME", Strings.FileAssociation.BME, False)
     End Sub
 
     Private Sub TBAssociateBML_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBAssociateBML.Click
-        Associate(".bml", "iBMSC.BML", Strings.FileAssociation.BML, False)
+        Associate(".bml", "nBMSC.BML", Strings.FileAssociation.BML, False)
     End Sub
 
     Private Sub TBAssociatePMS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBAssociatePMS.Click
-        Associate(".pms", "iBMSC.PMS", Strings.FileAssociation.PMS, False)
+        Associate(".pms", "nBMSC.PMS", Strings.FileAssociation.PMS, False)
     End Sub
 
-    Private Sub Associate(ByVal xExt As String, ByVal xClass As String, ByVal xDescription As String, ByVal isIBMSC As Boolean)
+    Private Sub Associate(ByVal xExt As String, ByVal xClass As String, ByVal xDescription As String, ByVal isNBMSC As Boolean)
         If MsgBox(Replace(Strings.Messages.FileAssociationPrompt, "{}", "*" & xExt), MsgBoxStyle.YesNo Or MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Exit Sub
 
         Dim xReg As Microsoft.Win32.RegistryKey
@@ -214,7 +214,7 @@ Public Class OpGeneral
                 xReg = .OpenSubKey(xClass & "\shell\open\command", True)
                 xReg.SetValue("", """" & Application.ExecutablePath & """ ""%1""")
 
-                If Not isIBMSC Then
+                If Not isNBMSC Then
                     xReg = .OpenSubKey(xClass & "\shell", True)
                     xReg.CreateSubKey("preview\command")
                     xReg = .OpenSubKey(xClass & "\shell\preview", True)
@@ -256,7 +256,7 @@ Public Class OpGeneral
     '        On Error GoTo Jump1
     '
     '        Dim xExt As String = ".bme"
-    '        Dim xCtg As String = "iBMSC.BME"
+    '        Dim xCtg As String = "nBMSC.BME"
     '
     'Jump2:
     '
@@ -308,9 +308,9 @@ Public Class OpGeneral
     '            xReg.SetValue("Progid", xCtg)
     '        End With
     '
-    '        If xExt <> ".bml" Or xCtg <> "iBMSC.BML" Then
+    '        If xExt <> ".bml" Or xCtg <> "nBMSC.BML" Then
     '            xExt = ".bml"
-    '            xCtg = "iBMSC.BML"
+    '            xCtg = "nBMSC.BML"
     '            GoTo Jump2
     '        End If
     '
@@ -318,14 +318,14 @@ Public Class OpGeneral
     '        Beep()
     '    End Sub
 
-    '    Private Sub TBAssociateIBMSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBAssociateIBMSC.Click
-    '        If MsgBox(Replace(Locale.Messages.FileAssociationPrompt, "{}", "*.ibmsc"), MsgBoxStyle.YesNo + MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Exit Sub
+    '    Private Sub TBAssociateNBMSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBAssociateNBMSC.Click
+    '        If MsgBox(Replace(Locale.Messages.FileAssociationPrompt, "{}", "*.nbmsc"), MsgBoxStyle.YesNo + MsgBoxStyle.Question) <> MsgBoxResult.Yes Then Exit Sub
     '
     '        Dim xReg As Microsoft.Win32.RegistryKey
     '        On Error GoTo Jump1
     '
-    '        Dim xExt As String = ".ibmsc"
-    '        Dim xCtg As String = "iBMSC.iBMSC"
+    '        Dim xExt As String = ".nbmsc"
+    '        Dim xCtg As String = "nBMSC.NBMSC"
     '
     '        With Microsoft.Win32.Registry.ClassesRoot
     '            If Array.IndexOf(.GetSubKeyNames(), xExt) <> -1 Then .DeleteSubKeyTree(xExt)

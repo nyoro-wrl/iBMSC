@@ -1,4 +1,4 @@
-﻿Imports iBMSC.Editor
+﻿Imports nBMSC.Editor
 
 Partial Public Class MainWindow
 

@@ -17,10 +17,10 @@
 			<New amp="0">New</New>
 			<Open amp="0">Open</Open>
 			<ImportSM amp="14">Import from .SM file</ImportSM>
-			<ImportIBMSC amp="13">Import from .IBMSC file</ImportIBMSC>
+			<ImportNBMSC amp="13">Import from .NBMSC file</ImportNBMSC>
 			<Save amp="0">Save</Save>
 			<SaveAs amp="5">Save As...</SaveAs>
-			<ExportIBMSC amp="0">Export .IBMSC file</ExportIBMSC>
+			<ExportNBMSC amp="0">Export .NBMSC file</ExportNBMSC>
 			<ExportBMSON amp="8">Export .BMSON file</ExportBMSON>
 			<Recent0>Recent #0</Recent0>
 			<Recent1>Recent #1</Recent1>
@@ -291,7 +291,7 @@
 		<STOPOverflowError>Numbers of STOPs has exceeded supported maximum:</STOPOverflowError>
 		<SCROLLOverflowError>Numbers of SCROLLs has exceeded supported maximum:</SCROLLOverflowError>
 		<SavedFileWillContainErrors>The saved file will contain errors.</SavedFileWillContainErrors>
-		<FileAssociationPrompt>Do you want to set μBMSC as default program to all {} files?</FileAssociationPrompt>
+		<FileAssociationPrompt>Do you want to set nBMSC as default program to all {} files?</FileAssociationPrompt>
 		<FileAssociationError>Error changing file type association:</FileAssociationError>
 		<RestoreDefaultSettings>Restore default settings?</RestoreDefaultSettings>
 		<RestoreAutosavedFile>{} autosaved file(s) have been found. Do you want to recover these files?</RestoreAutosavedFile>
@@ -305,7 +305,7 @@
 		<PMS>Po-Mu Script (*.pms)</PMS>
 		<TXT>Text document (*.txt)</TXT>
 		<SM>StepMania Script (*.sm)</SM>
-		<IBMSC>iBMSC Binary Format (*.ibmsc)</IBMSC>
+		<NBMSC>nBMSC Binary Format (*.nbmsc)</NBMSC>
 		<XML>Extensible Markup Language (*.xml)</XML>
 		<THEME_XML>iBMSC Theme File (*.Theme.xml)</THEME_XML>
 		<TH>iBMSC 2.x Theme File (*.Theme.xml)</TH>
@@ -458,7 +458,7 @@
 		<BME>Be-Music Extended Format</BME>
 		<BML>Be-Music Longnote Format</BML>
 		<PMS>Po-Mu Script</PMS>
-		<IBMSC>iBMSC Binary Format</IBMSC>
+		<NBMSC>nBMSC Binary Format</NBMSC>
 		<Open>Open</Open>
 		<Preview>Preview</Preview>
 		<ViewCode>View Code</ViewCode>

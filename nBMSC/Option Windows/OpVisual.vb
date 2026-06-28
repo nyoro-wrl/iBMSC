@@ -1,6 +1,6 @@
 Imports System.Runtime.CompilerServices
 Imports System.Windows.Forms
-Imports iBMSC.Editor
+Imports nBMSC.Editor
 
 Public Class OpVisual
     Dim niB As Integer = MainWindow.niB

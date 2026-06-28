@@ -1,5 +1,5 @@
 Imports System.Linq
-Imports iBMSC.Editor
+Imports nBMSC.Editor
 
 Partial Public Class MainWindow
 

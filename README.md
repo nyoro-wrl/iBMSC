@@ -1,6 +1,6 @@
-µBMSC
+nBMSC
 =====
-µBMSC is a modified version of iBMSC to add features and clean up the iBMSC code, fix bugs and so on.
+nBMSC is a fork of µBMSC, originally based on iBMSC, with additional fixes and cleanup.
 See README.md.old for original iBMSC README file.
 
 Changes

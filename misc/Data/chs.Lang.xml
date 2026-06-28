@@ -19,10 +19,10 @@
 			<New>新建 (&amp;N)</New>
 			<Open>打开 (&amp;O)</Open>
 			<ImportSM>导入 .S&amp;M 文件</ImportSM>
-			<ImportIBMSC>导入 .&amp;IBMSC 文件</ImportIBMSC>
+			<ImportNBMSC>导入 .&amp;NBMSC 文件</ImportNBMSC>
 			<Save>保存 (&amp;S)</Save>
 			<SaveAs>另存为 (&amp;A) ...</SaveAs>
-			<ExportIBMSC>导出 .IBMSC 文件 (&amp;E)</ExportIBMSC>
+			<ExportNBMSC>导出 .NBMSC 文件 (&amp;E)</ExportNBMSC>
 			<Recent0>Recent #0</Recent0>
 			<Recent1>Recent #1</Recent1>
 			<Recent2>Recent #2</Recent2>
@@ -277,7 +277,7 @@
 		<BPMOverflowError>多字节 BPM 数量已经超过上限：</BPMOverflowError>
 		<STOPOverflowError>多字节 STOP 数量已经超过上限：</STOPOverflowError>
 		<SavedFileWillContainErrors>文件将无法正确保存。</SavedFileWillContainErrors>
-		<FileAssociationPrompt>是否将 iBMSC 设置为打开所有 {} 文件的默认程序？</FileAssociationPrompt>
+		<FileAssociationPrompt>是否将 nBMSC 设置为打开所有 {} 文件的默认程序？</FileAssociationPrompt>
 		<FileAssociationError>文件关联设置失败：</FileAssociationError>
 		<RestoreDefaultSettings>恢复默认设置？</RestoreDefaultSettings>
 		<RestoreAutosavedFile>找到 {} 个自动保存文件。是否恢复这些文件？</RestoreAutosavedFile>
@@ -291,7 +291,7 @@
 		<PMS>PMS谱面文件 (*.pms)</PMS>
 		<TXT>文本文档 (*.txt)</TXT>
 		<SM>StepMania谱面文件 (*.sm)</SM>
-		<IBMSC>iBMSC二进制文件 (*.ibmsc)</IBMSC>
+		<NBMSC>nBMSC二进制文件 (*.nbmsc)</NBMSC>
 		<XML>可扩展标记语言 (*.xml)</XML>
 		<THEME_XML>iBMSC 皮肤文件 (*.Theme.xml)</THEME_XML>
 		<TH>iBMSC 2.x 皮肤文件 (*.Theme.xml)</TH>
@@ -431,7 +431,7 @@
 		<BME>BME 谱面文件</BME>
 		<BML>BML 谱面文件</BML>
 		<PMS>PMS 谱面文件</PMS>
-		<IBMSC>iBMSC 文件</IBMSC>
+		<NBMSC>nBMSC 文件</NBMSC>
 		<Open>打开</Open>
 		<Preview>预览</Preview>
 		<ViewCode>查看源码</ViewCode>

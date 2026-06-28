@@ -17,10 +17,10 @@
 			<New amp="4">新規 (N)</New>
 			<Open amp="4">開く (O)</Open>
 			<ImportSM amp="2">.SM ファイルからインポート</ImportSM>
-			<ImportIBMSC amp="1">.IBMSC ファイルからインポート</ImportIBMSC>
+			<ImportNBMSC amp="1">.NBMSC ファイルからインポート</ImportNBMSC>
 			<Save amp="4">保存 (S)</Save>
 			<SaveAs amp="10">名前をつけて保存 (A)</SaveAs>
-			<ExportIBMSC amp="18">.IBMSC 形式にエクスポート (E)</ExportIBMSC>
+			<ExportNBMSC amp="18">.NBMSC 形式にエクスポート (E)</ExportNBMSC>
 			<ExportBMSON amp="18">.BMSON 形式にエクスポート (B)</ExportBMSON>
 			<Recent0>最近使ったファイル #0</Recent0>
 			<Recent1>最近使ったファイル #1</Recent1>
@@ -73,7 +73,7 @@
 		</Preview>
 		<About>
 			<Title amp="7">About (A)</Title>
-			<About amp="12">μBMSC について (A)</About>
+			<About amp="12">nBMSC について (A)</About>
 			<CheckUpdates amp="9">更新を確認する (C)</CheckUpdates>
 			<CheckUpdatesC>更新を確認する（中国語）</CheckUpdatesC>
 		</About>
@@ -113,7 +113,7 @@
 		<GeneralOptions>一般オプション</GeneralOptions>
 		<Language>言語</Language>
 		<Theme>テーマ</Theme>
-		<About>μBMSC について</About>
+		<About>nBMSC について</About>
 	</ToolBar>
 	<StatusBar>
 		<ColumnCaption>列の見出し</ColumnCaption>
@@ -291,7 +291,7 @@
 		<STOPOverflowError>STOP の数が使用できる最大値を超えています。：</STOPOverflowError>
 		<SCROLLOverflowError>SCROLL の数が使用できる最大値を超えています。：</SCROLLOverflowError>
 		<SavedFileWillContainErrors>保存するファイルにエラーがあります。</SavedFileWillContainErrors>
-		<FileAssociationPrompt>μBMSC を {} ファイルの既定プログラムにしますか。</FileAssociationPrompt>
+		<FileAssociationPrompt>nBMSC を {} ファイルの既定プログラムにしますか。</FileAssociationPrompt>
 		<FileAssociationError>関連づけ変更エラー：</FileAssociationError>
 		<RestoreDefaultSettings>設定を初期化しますか？</RestoreDefaultSettings>
 		<RestoreAutosavedFile>{} 自動保存のファイルが見つかりました。復元しますか？</RestoreAutosavedFile>
@@ -305,7 +305,7 @@
 		<PMS>Po-Mu Script (*.pms)</PMS>
 		<TXT>テキストドキュメント (*.txt)</TXT>
 		<SM>Step Mania files (*.sm)</SM>
-		<IBMSC>iBMSC files (*.ibmsc)</IBMSC>
+		<NBMSC>nBMSC files (*.nbmsc)</NBMSC>
 		<XML>XML files (*.xml)</XML>
 		<THEME_XML>iBMSC テーマ (*.Theme.xml)</THEME_XML>
 		<TH>iBMSC 2.x テーマファイル (*.Theme.xml)</TH>
@@ -459,7 +459,7 @@
 		<BME>Be-Music Extended Format</BME>
 		<BML>Be-Music Longnote Format</BML>
 		<PMS>Po-Mu Script</PMS>
-		<IBMSC>iBMSC Format</IBMSC>
+		<NBMSC>nBMSC Format</NBMSC>
 		<Open>開く</Open>
 		<Preview>再生</Preview>
 		<ViewCode>コードを見る</ViewCode>

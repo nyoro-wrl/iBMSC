@@ -1,6 +1,6 @@
 Imports System.Linq
 Imports System.Collections.Generic
-Imports iBMSC.Editor
+Imports nBMSC.Editor
 
 
 Public Class MainWindow
@@ -92,7 +92,7 @@ Public Class MainWindow
 
     'Variables for Drag/Drop
     Dim DDFileName() As String = {}
-    Dim SupportedFileExtension() As String = {".bms", ".bme", ".bml", ".pms", ".txt", ".sm", ".ibmsc"}
+    Dim SupportedFileExtension() As String = {".bms", ".bme", ".bml", ".pms", ".txt", ".sm", ".nbmsc"}
     Dim SupportedAudioExtension() As String = {".wav", ".mp3", ".ogg", ".flac"}
     Dim SupportedImageExtension() As String = {".bmp", ".png", ".jpg", ".jpeg", ".gif", ".mpg", ".mpeg", ".avi", ".m1v", ".m2v", ".m4v", ".mp4", ".webm", ".wmv"}
 
@@ -934,7 +934,7 @@ Public Class MainWindow
             Dim xLines() As String = Split(Clipboard.GetText.Replace(vbCrLf, vbLf).Replace(vbCr, vbLf), vbLf)
             If xLines.Length = 0 Then Return False
             Select Case xLines(0)
-                Case "iBMSC Clipboard Data", "iBMSC Clipboard Data xNT", "BMSE ClipBoard Object Data Format"
+                Case "nBMSC Clipboard Data", "nBMSC Clipboard Data xNT", "BMSE ClipBoard Object Data Format"
                     For xI1 As Integer = 1 To UBound(xLines)
                         If xLines(xI1).Trim <> "" Then Return True
                     Next
@@ -2048,7 +2048,7 @@ Public Class MainWindow
         Dim xTempVP As Double
         Dim xKbu() As Note = Notes
 
-        If xStrLine(0) = "iBMSC Clipboard Data" Then
+        If xStrLine(0) = "nBMSC Clipboard Data" Then
             If NTInput Then ReDim Preserve Notes(0)
 
             'paste
@@ -2091,7 +2091,7 @@ Public Class MainWindow
                 Next
             End If
 
-        ElseIf xStrLine(0) = "iBMSC Clipboard Data xNT" Then
+        ElseIf xStrLine(0) = "nBMSC Clipboard Data xNT" Then
             If Not NTInput Then ReDim Preserve Notes(0)
 
             'paste
@@ -2192,7 +2192,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub CopyNotes(Optional ByVal Unselect As Boolean = True)
-        Dim xStrAll As String = "iBMSC Clipboard Data" & IIf(NTInput, " xNT", "")
+        Dim xStrAll As String = "nBMSC Clipboard Data" & IIf(NTInput, " xNT", "")
         Dim xI1 As Integer
         Dim MinMeasure As Double = 999
 
@@ -2322,7 +2322,7 @@ Public Class MainWindow
             'My.Computer.FileSystem.WriteAllText(My.Application.Info.DirectoryPath & "\PlayerArgs.cff", SavePlayerCFF, False, System.Text.Encoding.Unicode)
             'My.Computer.FileSystem.WriteAllText(My.Application.Info.DirectoryPath & "\Config.cff", SaveCFF, False, System.Text.Encoding.Unicode)
             'My.Computer.FileSystem.WriteAllText(My.Application.Info.DirectoryPath & "\PreConfig.cff", "", False, System.Text.Encoding.Unicode)
-            Me.SaveSettings(My.Application.Info.DirectoryPath & "\iBMSC.Settings.xml", False)
+            Me.SaveSettings(My.Application.Info.DirectoryPath & "\nBMSC.Settings.xml", False)
         End If
     End Sub
 
@@ -2572,8 +2572,8 @@ Public Class MainWindow
                 SetFileName("Untitled.bms")
                 SetIsSaved(False)
 
-            Case ".ibmsc"
-                OpeniBMSC(xPath)
+            Case ".nbmsc"
+                OpenNBMSC(xPath)
                 InitPath = ExcludeFileName(xPath)
                 NewRecent(xPath)
                 SetFileName("Imported_" & GetFileName(xPath))
@@ -2672,8 +2672,8 @@ Public Class MainWindow
         TBLangRefresh_Click(TBLangRefresh, Nothing)
         TBThemeRefresh_Click(TBThemeRefresh, Nothing)
 
-        If My.Computer.FileSystem.FileExists(My.Application.Info.DirectoryPath & "\iBMSC.Settings.xml") Then
-            LoadSettings(My.Application.Info.DirectoryPath & "\iBMSC.Settings.xml")
+        If My.Computer.FileSystem.FileExists(My.Application.Info.DirectoryPath & "\nBMSC.Settings.xml") Then
+            LoadSettings(My.Application.Info.DirectoryPath & "\nBMSC.Settings.xml")
         Else
             LoadInitialPreferences()
         End If
@@ -2688,14 +2688,14 @@ Public Class MainWindow
 
         If xStr.Length = 2 Then
             ReadFile(xStr(1))
-            If LCase(Path.GetExtension(xStr(1))) = ".ibmsc" AndAlso GetFileName(xStr(1)).StartsWith("AutoSave_", True, Nothing) Then GoTo 1000
+            If LCase(Path.GetExtension(xStr(1))) = ".nbmsc" AndAlso GetFileName(xStr(1)).StartsWith("AutoSave_", True, Nothing) Then GoTo 1000
         End If
 
         'pIsSaved.Visible = Not IsSaved
         IsInitializing = False
 
         If Process.GetProcessesByName(Process.GetCurrentProcess.ProcessName).Length > 1 Then GoTo 1000
-        Dim xFiles() As FileInfo = My.Computer.FileSystem.GetDirectoryInfo(My.Application.Info.DirectoryPath).GetFiles("AutoSave_*.IBMSC")
+        Dim xFiles() As FileInfo = My.Computer.FileSystem.GetDirectoryInfo(My.Application.Info.DirectoryPath).GetFiles("AutoSave_*.NBMSC")
         If xFiles Is Nothing OrElse xFiles.Length = 0 Then GoTo 1000
 
         'Me.TopMost = True
@@ -2896,7 +2896,7 @@ EndSearch:
 
 
     Public Sub ExceptionSave(ByVal Path As String)
-        SaveiBMSC(Path)
+        SaveNBMSC(Path)
     End Sub
 
     Private Function DefinitionDisplayMax() As Integer
@@ -3219,21 +3219,21 @@ EndSearch:
         'pIsSaved.Visible = Not IsSaved
     End Sub
 
-    Private Sub TBImportIBMSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBImportIBMSC.Click, mnImportIBMSC.Click
+    Private Sub TBImportNBMSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBImportNBMSC.Click, mnImportNBMSC.Click
         'KMouseDown = -1
         ReDim SelectedNotes(-1)
         KMouseOver = -1
         If ClosingPopSave() Then Return
 
         Dim xDOpen As New OpenFileDialog
-        xDOpen.Filter = Strings.FileType.IBMSC & "|*.ibmsc"
-        xDOpen.DefaultExt = "ibmsc"
+        xDOpen.Filter = Strings.FileType.NBMSC & "|*.nbmsc"
+        xDOpen.DefaultExt = "nbmsc"
         xDOpen.InitialDirectory = IIf(ExcludeFileName(FileName) = "", InitPath, ExcludeFileName(FileName))
 
         If xDOpen.ShowDialog = Windows.Forms.DialogResult.Cancel Then Return
         InitPath = ExcludeFileName(xDOpen.FileName)
         SetFileName("Imported_" & GetFileName(xDOpen.FileName))
-        OpeniBMSC(xDOpen.FileName)
+        OpenNBMSC(xDOpen.FileName)
         NewRecent(xDOpen.FileName)
         SetIsSaved(False)
         'pIsSaved.Visible = Not IsSaved
@@ -3317,18 +3317,18 @@ EndSearch:
         If BeepWhileSaved Then Beep()
     End Sub
 
-    Private Sub TBExportIBMSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBExportIBMSC.Click, mnExportIBMSC.Click
+    Private Sub TBExportNBMSC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBExportNBMSC.Click, mnExportNBMSC.Click
         'KMouseDown = -1
         ReDim SelectedNotes(-1)
         KMouseOver = -1
 
         Dim xDSave As New SaveFileDialog
-        xDSave.Filter = Strings.FileType.IBMSC & "|*.ibmsc"
-        xDSave.DefaultExt = "ibmsc"
+        xDSave.Filter = Strings.FileType.NBMSC & "|*.nbmsc"
+        xDSave.DefaultExt = "nbmsc"
         xDSave.InitialDirectory = IIf(ExcludeFileName(FileName) = "", InitPath, ExcludeFileName(FileName))
         If xDSave.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
 
-        SaveiBMSC(xDSave.FileName)
+        SaveNBMSC(xDSave.FileName)
         'My.Computer.FileSystem.WriteAllText(xDSave.FileName, xStrAll, False, TextEncoding)
         NewRecent(FileName)
         If BeepWhileSaved Then Beep()
@@ -5923,10 +5923,10 @@ Jump2:
         Dim xFileName As String
         With xTime
             xFileName = My.Application.Info.DirectoryPath & "\AutoSave_" &
-                              .Year & "_" & .Month & "_" & .Day & "_" & .Hour & "_" & .Minute & "_" & .Second & "_" & .Millisecond & ".IBMSC"
+                              .Year & "_" & .Month & "_" & .Day & "_" & .Hour & "_" & .Minute & "_" & .Second & "_" & .Millisecond & ".NBMSC"
         End With
-        'My.Computer.FileSystem.WriteAllText(xFileName, SaveiBMSC, False, System.Text.Encoding.Unicode)
-        SaveiBMSC(xFileName)
+        'My.Computer.FileSystem.WriteAllText(xFileName, SaveNBMSC, False, System.Text.Encoding.Unicode)
+        SaveNBMSC(xFileName)
 
         On Error Resume Next
         If PreviousAutoSavedFileName <> "" Then IO.File.Delete(PreviousAutoSavedFileName)
