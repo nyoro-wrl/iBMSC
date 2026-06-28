@@ -239,7 +239,6 @@
 		<Grid>
 			<Title>Grid</Title>
 			<Snap>グリッドスナップ (G)</Snap>
-			<NoSnap>グリッドに合わせない</NoSnap>
 			<BCols>BGM 列の最小数</BCols>
 			<DisableVertical>オブジェを縦移動させない (D)</DisableVertical>
 		</Grid>

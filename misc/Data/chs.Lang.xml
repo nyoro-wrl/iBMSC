@@ -230,7 +230,6 @@
 		<Grid>
 			<Title>格线</Title>
 			<Snap>网格吸附 (G)</Snap>
-			<NoSnap>不对齐至格线</NoSnap>
 			<BCols>BGM 列最小数量</BCols>
 			<DisableVertical>禁用垂直移动 (D)</DisableVertical>
 		</Grid>
