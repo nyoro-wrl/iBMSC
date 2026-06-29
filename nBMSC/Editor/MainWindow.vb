@@ -683,11 +683,129 @@ Public Class MainWindow
         End Sub
     End Class
 
+    Private Class ImmediateListBoxScroller
+        Inherits NativeWindow
+
+        Private Const WM_MOUSEWHEEL As Integer = &H20A
+        Private Const WM_VSCROLL As Integer = &H115
+        Private Const WHEEL_DELTA As Integer = 120
+        Private Const WHEEL_SCROLL_MULTIPLIER As Double = 1.5R
+        Private Const SB_LINEUP As Integer = 0
+        Private Const SB_LINEDOWN As Integer = 1
+        Private Const SB_PAGEUP As Integer = 2
+        Private Const SB_PAGEDOWN As Integer = 3
+        Private Const SB_THUMBPOSITION As Integer = 4
+        Private Const SB_THUMBTRACK As Integer = 5
+        Private Const SB_TOP As Integer = 6
+        Private Const SB_BOTTOM As Integer = 7
+        Private Const SB_ENDSCROLL As Integer = 8
+
+        Private ReadOnly Target As ListBox
+        Private WheelRemainder As Integer = 0
+        Private LineRemainder As Double = 0.0R
+
+        Public Sub New(ByVal xTarget As ListBox)
+            Target = xTarget
+            AddHandler Target.HandleCreated, AddressOf Target_HandleCreated
+            AddHandler Target.HandleDestroyed, AddressOf Target_HandleDestroyed
+            If Target.IsHandleCreated Then AssignHandle(Target.Handle)
+        End Sub
+
+        Public Sub Release()
+            RemoveHandler Target.HandleCreated, AddressOf Target_HandleCreated
+            RemoveHandler Target.HandleDestroyed, AddressOf Target_HandleDestroyed
+            If Handle <> IntPtr.Zero Then ReleaseHandle()
+        End Sub
+
+        Private Sub Target_HandleCreated(ByVal sender As Object, ByVal e As EventArgs)
+            AssignHandle(Target.Handle)
+        End Sub
+
+        Private Sub Target_HandleDestroyed(ByVal sender As Object, ByVal e As EventArgs)
+            If Handle <> IntPtr.Zero Then ReleaseHandle()
+        End Sub
+
+        Private Function GetWheelDelta(ByVal xWParam As IntPtr) As Integer
+            Dim xValue As Integer = CInt((xWParam.ToInt64() >> 16) And 65535)
+            If xValue >= 32768 Then xValue -= 65536
+            Return xValue
+        End Function
+
+        Private Function GetLowWord(ByVal xWParam As IntPtr) As Integer
+            Return CInt(xWParam.ToInt64() And 65535)
+        End Function
+
+        Private Function GetHighWord(ByVal xWParam As IntPtr) As Integer
+            Return CInt((xWParam.ToInt64() >> 16) And 65535)
+        End Function
+
+        Private Sub ScrollBy(ByVal xDelta As Integer)
+            MainWindow.SetListTopIndex(Target, Target.TopIndex + xDelta)
+        End Sub
+
+        Private Sub ScrollByWheel(ByVal xDelta As Integer)
+            If xDelta = 0 Then Return
+
+            WheelRemainder += xDelta
+            Dim xSteps As Integer = CInt(Math.Truncate(WheelRemainder / CDbl(WHEEL_DELTA)))
+            If xSteps = 0 Then Return
+            WheelRemainder -= xSteps * WHEEL_DELTA
+
+            Dim xLines As Integer = SystemInformation.MouseWheelScrollLines
+            If xLines = 0 Then Return
+            If xLines < 0 Then xLines = MainWindow.GetVisibleListItemCount(Target)
+
+            Dim xLineDelta As Double = xSteps * xLines * WHEEL_SCROLL_MULTIPLIER + LineRemainder
+            Dim xScrollLines As Integer = CInt(Math.Truncate(xLineDelta))
+            LineRemainder = xLineDelta - xScrollLines
+            If xScrollLines = 0 Then Return
+
+            ScrollBy(-xScrollLines)
+        End Sub
+
+        Private Function ScrollByBar(ByVal xCode As Integer, ByVal xPosition As Integer) As Boolean
+            Select Case xCode
+                Case SB_LINEUP
+                    ScrollBy(-1)
+                Case SB_LINEDOWN
+                    ScrollBy(1)
+                Case SB_PAGEUP
+                    ScrollBy(-MainWindow.GetVisibleListItemCount(Target))
+                Case SB_PAGEDOWN
+                    ScrollBy(MainWindow.GetVisibleListItemCount(Target))
+                Case SB_THUMBPOSITION, SB_THUMBTRACK
+                    MainWindow.SetListTopIndex(Target, xPosition)
+                Case SB_TOP
+                    MainWindow.SetListTopIndex(Target, 0)
+                Case SB_BOTTOM
+                    MainWindow.SetListTopIndex(Target, MainWindow.GetMaxListTopIndex(Target))
+                Case SB_ENDSCROLL
+                    Return True
+                Case Else
+                    Return False
+            End Select
+
+            Return True
+        End Function
+
+        Protected Overrides Sub WndProc(ByRef m As Message)
+            If m.Msg = WM_MOUSEWHEEL Then
+                ScrollByWheel(GetWheelDelta(m.WParam))
+                Return
+            End If
+
+            If m.Msg = WM_VSCROLL AndAlso ScrollByBar(GetLowWord(m.WParam), GetHighWord(m.WParam)) Then Return
+
+            MyBase.WndProc(m)
+        End Sub
+    End Class
+
     Private SplitPanes As New List(Of SplitPane)
     Private SplitterDrag As SplitterDragInfo = Nothing
     Private OptionsTabsInitialized As Boolean = False
     Private POTabSelected As Panel = Nothing
     Private HeaderWheelBlockers As New List(Of MouseWheelBlocker)
+    Private FastListScrollers As New List(Of ImmediateListBoxScroller)
 
     '----Find Delete Replace Options
     Dim fdriMesL As Integer
@@ -703,6 +821,7 @@ Public Class MainWindow
         InitializeComponent()
         InitializeEditorContextMenu()
         InitializeDefinitionContextMenu()
+        InitializeFastListScrollers()
         InitializeHeaderWheelBlockers()
         InitializePlayerSelector()
         InitializeGridToolbar()
@@ -730,6 +849,13 @@ Public Class MainWindow
 
             If xControl.Controls.Count > 0 Then AddHeaderWheelBlockers(xControl)
         Next
+    End Sub
+
+    Private Sub InitializeFastListScrollers()
+        FastListScrollers.Clear()
+        FastListScrollers.Add(New ImmediateListBoxScroller(LWAV))
+        FastListScrollers.Add(New ImmediateListBoxScroller(LBMP))
+        FastListScrollers.Add(New ImmediateListBoxScroller(LBeat))
     End Sub
 
     Private Sub InitializeEditorContextMenu()
@@ -1025,6 +1151,14 @@ Public Class MainWindow
         Next
 
         HeaderWheelBlockers.Clear()
+    End Sub
+
+    Private Sub ReleaseFastListScrollers()
+        For Each xScroller As ImmediateListBoxScroller In FastListScrollers
+            xScroller.Release()
+        Next
+
+        FastListScrollers.Clear()
     End Sub
 
     Private Sub ApplyToolbarLayoutRules()
@@ -2676,6 +2810,7 @@ Public Class MainWindow
 
     Private Sub Unload() Handles MyBase.Disposed
         ReleaseHeaderWheelBlockers()
+        ReleaseFastListScrollers()
         Audio.Finalize()
     End Sub
 
@@ -3686,20 +3821,49 @@ EndSearch:
         SetScrollValue(xHScroll, CInt(xHScroll.Value + hDelta))
     End Sub
 
+    Private Shared Function GetVisibleListItemCount(ByVal xList As ListBox) As Integer
+        If xList Is Nothing Then Return 1
+        If xList.ItemHeight <= 0 Then Return 1
+
+        Return Math.Max(1, xList.ClientSize.Height \ xList.ItemHeight)
+    End Function
+
+    Private Shared Function GetMaxListTopIndex(ByVal xList As ListBox) As Integer
+        If xList Is Nothing Then Return 0
+        If xList.Items.Count = 0 Then Return 0
+
+        Return Math.Max(0, xList.Items.Count - GetVisibleListItemCount(xList))
+    End Function
+
+    Private Shared Sub SetListTopIndex(ByVal xList As ListBox, ByVal xTopIndex As Integer)
+        If xList Is Nothing Then Return
+        If xList.Items.Count = 0 Then Return
+
+        Dim xValue As Integer = Math.Max(0, Math.Min(xTopIndex, GetMaxListTopIndex(xList)))
+        If xList.TopIndex <> xValue Then xList.TopIndex = xValue
+    End Sub
+
+    Private Shared Sub EnsureSelectedListItemVisible(ByVal xList As ListBox)
+        If xList Is Nothing Then Return
+        If xList.SelectedIndex < 0 Then Return
+
+        Dim xSelectedIndex As Integer = xList.SelectedIndex
+        Dim xTopIndex As Integer = xList.TopIndex
+        Dim xVisibleCount As Integer = GetVisibleListItemCount(xList)
+
+        If xSelectedIndex < xTopIndex Then
+            SetListTopIndex(xList, xSelectedIndex)
+        ElseIf xSelectedIndex >= xTopIndex + xVisibleCount Then
+            SetListTopIndex(xList, xSelectedIndex - xVisibleCount + 1)
+        End If
+    End Sub
+
     Private Sub ValidateWavListView()
-        Try
-            Dim xRect As Rectangle = LWAV.GetItemRectangle(LWAV.SelectedIndex)
-            If xRect.Top + xRect.Height > LWAV.DisplayRectangle.Height Then SendMessage(LWAV.Handle, &H115, 1, 0)
-        Catch ex As Exception
-        End Try
+        EnsureSelectedListItemVisible(LWAV)
     End Sub
 
     Private Sub ValidateBmpListView()
-        Try
-            Dim xRect As Rectangle = LBMP.GetItemRectangle(LBMP.SelectedIndex)
-            If xRect.Top + xRect.Height > LBMP.DisplayRectangle.Height Then SendMessage(LBMP.Handle, &H115, 1, 0)
-        Catch ex As Exception
-        End Try
+        EnsureSelectedListItemVisible(LBMP)
     End Sub
 
     Private Sub LWAV_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles LWAV.Click

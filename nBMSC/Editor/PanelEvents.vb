@@ -539,7 +539,7 @@ Partial Public Class MainWindow
             If newIndex > LBMP.Items.Count - 1 Then newIndex = LBMP.Items.Count - 1
             LBMP.SelectedIndices.Clear()
             LBMP.SelectedIndex = newIndex
-            ValidateWavListView()
+            ValidateBmpListView()
         End If
     End Sub
 
