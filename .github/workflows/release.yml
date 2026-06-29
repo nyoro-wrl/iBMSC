@@ -56,6 +56,14 @@ jobs:
 
           "path=$msbuild" >> $env:GITHUB_OUTPUT
 
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        shell: pwsh
+        run: |
+          nuget restore nBMSC.sln
+
       - name: Build
         shell: pwsh
         run: |
