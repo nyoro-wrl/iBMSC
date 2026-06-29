@@ -279,6 +279,7 @@ Public Class MainWindow
     Dim PanelWidth() As Single = {100}
     Dim PanelhBMSCROLL() As Integer = {0}
     Dim PanelVScroll() As Integer = {0}
+    Dim VScrollMinimum As Integer = 0
     Private Const DefaultSplitPanelRatio As Single = 0.25!
     Private Const MaxSplitPanelShowRatio As Single = 0.4!
     Private Const MinSplitPanelWidth As Integer = 25
@@ -1922,10 +1923,8 @@ Public Class MainWindow
         End If
 
         Dim xLimit As Integer = CInt(IIf(GreatestVPosition + 2000 > GetMaxVPosition(), GetMaxVPosition, GreatestVPosition + 2000))
-        Dim xI2 As Integer = AlignVScrollMinimumToWheel(-xLimit)
-        For i As Integer = 0 To SplitPanes.Count - 1
-            SplitPanes(i).VScroll.Minimum = xI2
-        Next
+        VScrollMinimum = AlignVScrollMinimumToWheel(-xLimit)
+        UpdateVScrollMinimums()
     End Sub
 
     Private Sub CalculateGreatestColumn()
@@ -3574,6 +3573,7 @@ EndSearch:
 
         If SyncSplitterScroll Then
             SyncPanelVScroll(iI, xDelta)
+            UpdateVScrollMinimums()
         End If
 
         VSValue = xOldValue + xDelta
@@ -3603,22 +3603,63 @@ EndSearch:
         End Try
     End Sub
 
-    Private Function LimitPanelVScrollDelta(ByVal delta As Integer) As Integer
-        If delta = 0 Then Return 0
+    Private Sub UpdateVScrollMinimums()
+        If PanelVScroll.Length <> SplitPanes.Count Then Return
 
-        Dim xDelta As Integer = delta
+        Dim xMinimum As Integer = GetVScrollMinimum()
+
+        SyncingPanelScroll = True
+        Try
+            For i As Integer = 0 To SplitPanes.Count - 1
+                SplitPanes(i).VScroll.Minimum = xMinimum
+                PanelVScroll(i) = SplitPanes(i).VScroll.Value
+            Next
+        Finally
+            SyncingPanelScroll = False
+        End Try
+    End Sub
+
+    Private Function GetVScrollMinimum() As Integer
+        If Not SyncSplitterScroll Then Return VScrollMinimum
+
+        Dim xLowestValue As Integer = Integer.MinValue
+        Dim xHighestValue As Integer = Integer.MaxValue
         For i As Integer = 0 To SplitPanes.Count - 1
             If Not IsPanelVScrollSynced(i) Then Continue For
 
-            Dim xScroll As EditorScrollBar = GetPanelVScrollBar(i)
-            If delta > 0 Then
-                xDelta = Math.Min(xDelta, 0 - PanelVScroll(i))
-            Else
-                xDelta = Math.Max(xDelta, xScroll.Minimum - PanelVScroll(i))
-            End If
+            xLowestValue = Math.Max(xLowestValue, PanelVScroll(i))
+            xHighestValue = Math.Min(xHighestValue, PanelVScroll(i))
         Next
 
-        Return xDelta
+        If xLowestValue = Integer.MinValue Then Return VScrollMinimum
+        Return VScrollMinimum - (xLowestValue - xHighestValue)
+    End Function
+
+    Private Function LimitPanelVScrollDelta(ByVal delta As Integer) As Integer
+        If delta = 0 Then Return 0
+
+        If delta > 0 Then
+            Dim xDelta As Integer = delta
+            For i As Integer = 0 To SplitPanes.Count - 1
+                If Not IsPanelVScrollSynced(i) Then Continue For
+
+                xDelta = Math.Min(xDelta, 0 - PanelVScroll(i))
+            Next
+
+            Return xDelta
+        End If
+
+        Dim xLowestValue As Integer = Integer.MinValue
+        For i As Integer = 0 To SplitPanes.Count - 1
+            If Not IsPanelVScrollSynced(i) Then Continue For
+
+            If PanelVScroll(i) <= xLowestValue Then Continue For
+
+            xLowestValue = PanelVScroll(i)
+        Next
+
+        If xLowestValue = Integer.MinValue Then Return delta
+        Return Math.Max(delta, VScrollMinimum - xLowestValue)
     End Function
 
     Private Function IsPanelVScrollSynced(ByVal panelIndex As Integer) As Boolean
@@ -3644,6 +3685,8 @@ EndSearch:
         Finally
             SyncingPanelScroll = False
         End Try
+
+        If SyncSplitterScroll Then UpdateVScrollMinimums()
     End Sub
 
     Private Sub HSGotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles HS.GotFocus, HSL.GotFocus, HSR.GotFocus
@@ -6591,6 +6634,7 @@ Jump2:
         AddHandler xMainVScroll.ValueChanged, AddressOf VSValueChanged
         AddHandler xMainHScroll.GotFocus, AddressOf HSGotFocus
         AddHandler xMainHScroll.ValueChanged, AddressOf HSValueChanged
+        VScrollMinimum = xMainVScroll.Minimum
         RebuildPanelArrays()
         UpdateHorizontalScrollMetrics()
         RefreshSplitterControls()
@@ -6862,6 +6906,8 @@ Jump2:
             PanelhBMSCROLL(i) = xPane.HScroll.Value
             PanelVScroll(i) = xPane.VScroll.Value
         Next
+
+        UpdateVScrollMinimums()
     End Sub
 
     Private Sub RefreshSplitterControls()
@@ -7017,6 +7063,7 @@ Jump2:
             SyncSplitterScroll = enabled
             If mnSyncSplitterScroll IsNot Nothing Then mnSyncSplitterScroll.Checked = enabled
             If TBSyncSplitterScroll IsNot Nothing Then TBSyncSplitterScroll.Checked = enabled
+            UpdateVScrollMinimums()
         Finally
             UpdatingSplitterControls = False
         End Try
