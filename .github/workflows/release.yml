@@ -26,7 +26,7 @@ jobs:
         shell: pwsh
         run: |
           $assemblyInfo = Get-Content -Encoding UTF8 -Raw 'nBMSC/My Project/AssemblyInfo.vb'
-          if ($assemblyInfo -notmatch '<Assembly:\s*AssemblyVersion\("([^"]+)"\)>') {
+          if ($assemblyInfo -notmatch '(?m)^\s*<Assembly:\s*AssemblyVersion\("([^"]+)"\)>') {
             throw 'AssemblyVersion was not found.'
           }
 
