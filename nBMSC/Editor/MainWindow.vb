@@ -2872,8 +2872,6 @@ Public Class MainWindow
         SetIsSaved(True)
 
         Dim xStr() As String = Environment.GetCommandLineArgs
-        'Dim xStr() As String = {Application.ExecutablePath, "C:\Users\User\Desktop\yang run xuan\SoFtwArES\Games\O2Mania\music\SHOOT!\shoot! -NM-.bms"}
-
         If xStr.Length = 2 Then
             ReadFile(xStr(1))
             If LCase(Path.GetExtension(xStr(1))) = ".nbmsc" AndAlso GetFileName(xStr(1)).StartsWith("AutoSave_", True, Nothing) Then GoTo 1000
@@ -2920,16 +2918,9 @@ Public Class MainWindow
     Private Sub LoadInitialPreferences()
         Dim xDataPath As String = My.Application.Info.DirectoryPath & "\Data"
         Dim xLangPath As String = xDataPath & "\jpn.Lang.xml"
-        Dim xThemePath As String = xDataPath & "\IIDX.Theme.xml"
 
         If My.Computer.FileSystem.FileExists(xLangPath) Then
             LoadLocale(xLangPath)
-        End If
-
-        If My.Computer.FileSystem.FileExists(xThemePath) Then
-            LoadSettings(xThemePath)
-            ChangePlaySideSkin(False)
-            RefreshGridToolbar()
         End If
     End Sub
 
@@ -5664,12 +5655,6 @@ Jump2:
         RefreshPanelAll()
     End Sub
 
-    Private Sub mnMyO2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnMyO2.Click
-        Dim xDiag As New dgMyO2
-        xDiag.Show()
-    End Sub
-
-
     Private Sub TBFind_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBFind.Click, mnFind.Click
         Dim xDiag As New diagFind(gColumns, Strings.Messages.Err, Strings.Messages.InvalidLabel)
         xDiag.Show()
@@ -6043,11 +6028,12 @@ Jump2:
     End Sub
 
     Private Sub TBThemeDef_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBThemeDef.Click
-        Dim xTempFileName As String = My.Application.Info.DirectoryPath & "\____TempFile.Theme.xml"
-        My.Computer.FileSystem.WriteAllText(xTempFileName, My.Resources.O2Mania_Theme, False, System.Text.Encoding.Unicode)
-        LoadSettings(xTempFileName)
+        Dim xThemePath As String = My.Application.Info.DirectoryPath & "\Data\IIDX.Theme.xml"
+
+        If Not My.Computer.FileSystem.FileExists(xThemePath) Then Return
+
+        LoadSettings(xThemePath)
         ChangePlaySideSkin(False)
-        System.IO.File.Delete(xTempFileName)
 
         RefreshPanelAll()
     End Sub

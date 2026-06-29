@@ -44,7 +44,6 @@
 			<TimeSelectionTool>Time Selection Tool</TimeSelectionTool>
 			<SelectTool>Select Tool</SelectTool>
 			<WriteTool>Write Tool</WriteTool>
-			<MyO2>MyO2 ToolBox (Chinese Only)</MyO2>
 		</Edit>
 		<View>
 			<Title>View</Title>
@@ -88,7 +87,6 @@
 		<Find>Find / Delete / Replace (Ctrl+F)</Find>
 		<Stat>Statistics (Ctrl+T)</Stat>
 		<Conversion>Convert Notes</Conversion>
-		<MyO2>MyO2 ToolBox (Chinese Only)</MyO2>
 		<ErrorCheck>Error Check</ErrorCheck>
 		<PreviewOnClick>Preview On Click</PreviewOnClick>
 		<ShowFileName>Show File Name on Notes</ShowFileName>
@@ -423,7 +421,6 @@ Open the release page?</UpdateVersionUnsupported>
 		<MaxGridPartition>Max Grid Partition in BMS</MaxGridPartition>
 		<BeepWhileSaved>Beep while saved</BeepWhileSaved>
 		<NewBMSUseBase62>Use base62 for new BMS</NewBMSUseBase62>
-		<MyO2Toolbox>MyO2 ToolBox</MyO2Toolbox>
 		<BPMDefinitionMode>BPM definitions</BPMDefinitionMode>
 		<STOPDefinitionMode>STOP definitions</STOPDefinitionMode>
 		<DefinitionModeDefault>Default (01-FF)</DefinitionModeDefault>

@@ -723,7 +723,6 @@ EndOfSub:
                     XMLLoadLocaleMenu(eEdit.Item("TimeSelectionTool"), mnTimeSelect.Text)
                     XMLLoadLocaleMenu(eEdit.Item("SelectTool"), mnSelect.Text)
                     XMLLoadLocaleMenu(eEdit.Item("WriteTool"), mnWrite.Text)
-                    XMLLoadLocaleMenu(eEdit.Item("MyO2"), mnMyO2.Text)
                 End If
 
                 Dim eView As XmlElement = eMenu.Item("View")

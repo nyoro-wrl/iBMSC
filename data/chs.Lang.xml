@@ -45,7 +45,6 @@
 			<TimeSelectionTool>时间选择工具</TimeSelectionTool>
 			<SelectTool>选择工具</SelectTool>
 			<WriteTool>写入工具</WriteTool>
-			<MyO2>MyO2 工具箱</MyO2>
 		</Edit>
 		<Options>
 			<Title>选项</Title>
@@ -85,7 +84,6 @@
 		<Find>查找 / 删除 / 替换 (Ctrl+F)</Find>
 		<Stat>统计 (Ctrl+T)</Stat>
 		<Conversion>Note转换</Conversion>
-		<MyO2>MyO2 工具箱</MyO2>
 		<ErrorCheck>错误检查</ErrorCheck>
 		<PreviewOnClick>单击播放Key音</PreviewOnClick>
 		<ShowFileName>Note上显示文件名</ShowFileName>
@@ -395,7 +393,6 @@
 		<MaxGridPartition>BMS 最大格线</MaxGridPartition>
 		<BeepWhileSaved>保存后播放提示音</BeepWhileSaved>
 		<NewBMSUseBase62>新建 BMS 使用 62 进制</NewBMSUseBase62>
-		<MyO2Toolbox>MyO2 工具箱</MyO2Toolbox>
 		<BPMDefinitionMode>BPM 定义数</BPMDefinitionMode>
 		<STOPDefinitionMode>STOP 定义数</STOPDefinitionMode>
 		<DefinitionModeDefault>默认（01～FF）</DefinitionModeDefault>

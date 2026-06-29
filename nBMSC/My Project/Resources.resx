@@ -160,9 +160,6 @@
   <data name="lgwidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\Misc\lgwidth.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="O2Mania_Theme" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Themes\O2Mania.Theme.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
-  </data>
   <data name="pgmbl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\Misc\pgmbl.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -234,9 +231,6 @@
   </data>
   <data name="x16ModifyLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\ButtonsSmall\x16ModifyLabel.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="x16MyO2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Images\ButtonsSmall\x16MyO2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="x16New" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\ButtonsSmall\x16New.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

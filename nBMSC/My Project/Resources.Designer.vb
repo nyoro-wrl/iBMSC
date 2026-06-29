@@ -201,21 +201,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;
-        '''&lt;iBMSC Major=&quot;3&quot; Minor=&quot;1&quot; Build=&quot;0&quot;&gt;
-        '''    &lt;Columns&gt;
-        '''        &lt;Column Index=&quot;0&quot; Width=&quot;50&quot; Title=&quot;Measure&quot; NoteColor=&quot;0&quot; TextColor=&quot;-16711681&quot; LongNoteColor=&quot;0&quot; LongTextColor=&quot;-16711681&quot; BG=&quot;0&quot; /&gt;
-        '''        &lt;Column Index=&quot;1&quot; Width=&quot;60&quot; Title=&quot;SCROLL&quot; NoteColor=&quot;0&quot; TextColor=&quot;-65536&quot; LongNoteColor=&quot;0&quot; LongTextColor=&quot;-65536&quot; BG=&quot;0&quot; /&gt;
-        '''        &lt;Column Index=&quot;2&quot; Width=&quot;60&quot; Title=&quot;BPM&quot; NoteColor=&quot;0&quot; TextColor=&quot;-65536&quot; LongNoteColor=&quot;0&quot; LongTextColor=&quot;-65536&quot; BG=&quot;0&quot; /&gt;
-        '''   [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
-        '''</summary>
-        Friend ReadOnly Property O2Mania_Theme() As String
-            Get
-                Return ResourceManager.GetString("O2Mania_Theme", resourceCulture)
-            End Get
-        End Property
-
-        '''<summary>
         '''  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         '''</summary>
         Friend ReadOnly Property pgmbl() As System.Drawing.Bitmap
@@ -451,16 +436,6 @@ Namespace My.Resources
         Friend ReadOnly Property x16ModifyLabel() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("x16ModifyLabel", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        '''</summary>
-        Friend ReadOnly Property x16MyO2() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("x16MyO2", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

@@ -149,12 +149,6 @@
     <Compile Include="Dialogs\dgImportSM.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\dgMyO2.designer.vb">
-      <DependentUpon>dgMyO2.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\dgMyO2.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Dialogs\dgStatistics.designer.vb">
       <DependentUpon>dgStatistics.vb</DependentUpon>
     </Compile>
@@ -196,9 +190,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editor\EditorPersistent.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Editor\MyO2.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editor\PanelDraw.vb">
@@ -262,12 +253,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\dgImportSM.resx">
       <DependentUpon>dgImportSM.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\dgMyO2.af.resx">
-      <DependentUpon>dgMyO2.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\dgMyO2.resx">
-      <DependentUpon>dgMyO2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\dgStatistics.resx">
       <DependentUpon>dgStatistics.vb</DependentUpon>

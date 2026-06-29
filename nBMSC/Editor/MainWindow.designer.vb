@@ -226,8 +226,6 @@ Partial Class MainWindow
         Me.mnTimeSelect = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSelect = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnWrite = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator23 = New System.Windows.Forms.ToolStripSeparator()
-        Me.mnMyO2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSys = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSTB = New System.Windows.Forms.ToolStripMenuItem()
@@ -2758,7 +2756,7 @@ Partial Class MainWindow
         '
         'mnEdit
         '
-        Me.mnEdit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnUndo, Me.mnRedo, Me.ToolStripSeparator17, Me.mnCut, Me.mnCopy, Me.mnPaste, Me.mnDelete, Me.mnSelectAll, Me.mnGotoMeasure, Me.ToolStripSeparator18, Me.mnFind, Me.mnStatistics, Me.ToolStripSeparator19, Me.mnTimeSelect, Me.mnSelect, Me.mnWrite, Me.ToolStripSeparator23, Me.mnMyO2})
+        Me.mnEdit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnUndo, Me.mnRedo, Me.ToolStripSeparator17, Me.mnCut, Me.mnCopy, Me.mnPaste, Me.mnDelete, Me.mnSelectAll, Me.mnGotoMeasure, Me.ToolStripSeparator18, Me.mnFind, Me.mnStatistics, Me.ToolStripSeparator19, Me.mnTimeSelect, Me.mnSelect, Me.mnWrite})
         Me.mnEdit.Name = "mnEdit"
         Me.mnEdit.Size = New System.Drawing.Size(39, 19)
         Me.mnEdit.Text = "&Edit"
@@ -2886,18 +2884,6 @@ Partial Class MainWindow
         Me.mnWrite.ShortcutKeys = System.Windows.Forms.Keys.F3
         Me.mnWrite.Size = New System.Drawing.Size(233, 22)
         Me.mnWrite.Text = "&Write Tool"
-        '
-        'ToolStripSeparator23
-        '
-        Me.ToolStripSeparator23.Name = "ToolStripSeparator23"
-        Me.ToolStripSeparator23.Size = New System.Drawing.Size(230, 6)
-        '
-        'mnMyO2
-        '
-        Me.mnMyO2.Image = Global.nBMSC.My.Resources.Resources.x16MyO2
-        Me.mnMyO2.Name = "mnMyO2"
-        Me.mnMyO2.Size = New System.Drawing.Size(233, 22)
-        Me.mnMyO2.Text = "MyO2 ToolBox (Chinese Only)"
         '
         'mnSys
         '
@@ -4353,7 +4339,6 @@ Partial Class MainWindow
     Friend WithEvents mnStatistics As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnDelete As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnSelectAll As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnMyO2 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator19 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents mnOptions As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnPreview As System.Windows.Forms.ToolStripMenuItem
@@ -4368,7 +4353,6 @@ Partial Class MainWindow
     Friend WithEvents mnTimeSelect As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnSelect As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnWrite As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator23 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents mnConversion As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnErrorCheck As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnPreviewOnClick As System.Windows.Forms.ToolStripMenuItem
