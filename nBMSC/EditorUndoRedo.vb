@@ -48,7 +48,7 @@ Partial Public Class MainWindow
                     Dim xI2 As Integer = FindNoteIndex(xCmd.note)
 
                     If xI2 < Notes.Length Then
-                        Notes(xI2) = xCmd.note
+                        Notes(xI2) = xCmd.NNote
                     End If
 
                 Case UndoRedo.opMoveNote
