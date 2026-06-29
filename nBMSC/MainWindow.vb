@@ -911,7 +911,19 @@ Public Class MainWindow
         If TBAddSplitter IsNot Nothing Then TBAddSplitter.ToolTipText = TBAddSplitter.Text & " (Ctrl++)"
         If TBRemoveSplitter IsNot Nothing Then TBRemoveSplitter.ToolTipText = TBRemoveSplitter.Text & " (Ctrl+-)"
         If TBSyncSplitterScroll IsNot Nothing Then TBSyncSplitterScroll.ToolTipText = TBSyncSplitterScroll.Text & " (Ctrl+\)"
+        If CGSnap IsNot Nothing Then CGSnap.Text = AppendShortcutText(CGSnap.Text, "G")
+        If CGDisableVertical IsNot Nothing Then CGDisableVertical.Text = AppendShortcutText(CGDisableVertical.Text, "D")
+        RefreshGridSnapToolbar()
+        RefreshDisableVerticalToolbar()
     End Sub
+
+    Private Function AppendShortcutText(ByVal text As String, ByVal shortcutText As String) As String
+        Dim xSuffix As String = " (" & shortcutText & ")"
+        If String.IsNullOrEmpty(text) Then Return xSuffix.Trim()
+        If text.EndsWith(xSuffix) Then Return text
+
+        Return text & xSuffix
+    End Function
 
     Private Sub ReorderConversionMenu()
         cmnConversion.Items.Clear()
