@@ -6071,7 +6071,7 @@ Jump2:
     End Sub
 
     Private Sub TBThemeDef_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBThemeDef.Click
-        Dim xThemePath As String = My.Application.Info.DirectoryPath & "\Data\IIDX.Theme.xml"
+        Dim xThemePath As String = My.Application.Info.DirectoryPath & "\Data\7k.Theme.xml"
 
         If Not My.Computer.FileSystem.FileExists(xThemePath) Then Return
 
