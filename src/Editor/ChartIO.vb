@@ -1072,7 +1072,7 @@ EndOfSub:
             If THTotal.Text <> "" Then
                 format.info.total = CalcBMSONTotal(CDbl(THTotal.Text))
             Else
-                format.info.total = CalcBMSONTotal(CalcBMSTotal())
+                format.info.total = CalcBMSONTotal(CalculateRecommendedTotal())
             End If
             format.info.init_bpm = CDbl(THBPM.Text)
             If THPlayLevel.Text <> "" Then
@@ -1284,13 +1284,8 @@ EndOfSub:
         End Try
     End Sub
 
-    Function CalcBMSTotal() As Double
-        Dim notes = CalculateTotalNotes()
-        Return System.Math.Max((720.0 / (800 + notes) * notes), 200.0)
-    End Function
-
     Function CalcBMSONTotal(total As Double) As Double
-        Dim notes = CalculateTotalNotes()
+        Dim notes = CalculateRecommendedTotalNotes()
         Return total / System.Math.Max((800.0 / (700 + notes) * notes), 250.0) * 100
     End Function
 

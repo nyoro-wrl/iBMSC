@@ -1392,6 +1392,8 @@ EndOfSub:
                     XMLLoadLocale(eHeader.Item("Difficulty"), Label21.Text)
                     XMLLoadLocale(eHeader.Item("ExRank"), Label23.Text)
                     XMLLoadLocale(eHeader.Item("Total"), Label20.Text)
+                    XMLLoadLocale(eHeader.Item("RecommendedTotal"), LRecommendedTotalCaption.Text)
+                    UpdateRecommendedTotal()
                     'XMLLoadLocale(eHeader.Item("VolWav"), Label22.Text)
                     XMLLoadLocale(eHeader.Item("Comment"), Label19.Text)
                     'XMLLoadLocale(eHeader.Item("LnType"), Label13.Text)

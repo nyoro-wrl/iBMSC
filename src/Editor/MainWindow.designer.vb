@@ -141,6 +141,8 @@ Partial Class MainWindow
         Me.Label15 = New System.Windows.Forms.Label()
         Me.THTotal = New System.Windows.Forms.TextBox()
         Me.Label20 = New System.Windows.Forms.Label()
+        Me.LRecommendedTotalCaption = New System.Windows.Forms.Label()
+        Me.LRecommendedTotal = New System.Windows.Forms.Label()
         Me.BHStageFile = New System.Windows.Forms.Button()
         Me.BHBanner = New System.Windows.Forms.Button()
         Me.Label19 = New System.Windows.Forms.Label()
@@ -1874,7 +1876,7 @@ Partial Class MainWindow
         Me.POHeaderInner.Location = New System.Drawing.Point(0, 0)
         Me.POHeaderInner.Name = "POHeaderInner"
         Me.POHeaderInner.Padding = New System.Windows.Forms.Padding(0, 0, 0, 10)
-        Me.POHeaderInner.Size = New System.Drawing.Size(226, 697)
+        Me.POHeaderInner.Size = New System.Drawing.Size(226, 722)
         Me.POHeaderInner.TabIndex = 2
         '
         'POHeaderDetailsSeparator
@@ -1882,7 +1884,7 @@ Partial Class MainWindow
         Me.POHeaderDetailsSeparator.BackColor = System.Drawing.SystemColors.Control
         Me.POHeaderDetailsSeparator.Controls.Add(Me.POHeaderDetailsSeparatorLine)
         Me.POHeaderDetailsSeparator.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POHeaderDetailsSeparator.Location = New System.Drawing.Point(0, 225)
+        Me.POHeaderDetailsSeparator.Location = New System.Drawing.Point(0, 250)
         Me.POHeaderDetailsSeparator.Name = "POHeaderDetailsSeparator"
         Me.POHeaderDetailsSeparator.Padding = New System.Windows.Forms.Padding(0, 6, 0, 6)
         Me.POHeaderDetailsSeparator.Size = New System.Drawing.Size(226, 13)
@@ -1902,7 +1904,7 @@ Partial Class MainWindow
         Me.POHeaderExpansionSeparator.BackColor = System.Drawing.SystemColors.Control
         Me.POHeaderExpansionSeparator.Controls.Add(Me.POHeaderExpansionSeparatorLabel)
         Me.POHeaderExpansionSeparator.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POHeaderExpansionSeparator.Location = New System.Drawing.Point(0, 538)
+        Me.POHeaderExpansionSeparator.Location = New System.Drawing.Point(0, 563)
         Me.POHeaderExpansionSeparator.Name = "POHeaderExpansionSeparator"
         Me.POHeaderExpansionSeparator.Padding = New System.Windows.Forms.Padding(0, 4, 0, 0)
         Me.POHeaderExpansionSeparator.Size = New System.Drawing.Size(226, 29)
@@ -1960,7 +1962,7 @@ Partial Class MainWindow
         Me.POHeaderPart2.Controls.Add(Me.BHPreview, 2, 6)
         Me.POHeaderPart2.Controls.Add(Me.CHLnmode, 1, 8)
         Me.POHeaderPart2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.POHeaderPart2.Location = New System.Drawing.Point(0, 238)
+        Me.POHeaderPart2.Location = New System.Drawing.Point(0, 263)
         Me.POHeaderPart2.Name = "POHeaderPart2"
         Me.POHeaderPart2.RowCount = 12
         Me.POHeaderPart2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
@@ -2111,6 +2113,32 @@ Partial Class MainWindow
         Me.Label20.TabIndex = 5
         Me.Label20.Text = "Total"
         Me.Label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'LRecommendedTotalCaption
+        '
+        Me.LRecommendedTotalCaption.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.LRecommendedTotalCaption.AutoSize = True
+        Me.LRecommendedTotalCaption.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.LRecommendedTotalCaption.Location = New System.Drawing.Point(5, 193)
+        Me.LRecommendedTotalCaption.Name = "LRecommendedTotalCaption"
+        Me.LRecommendedTotalCaption.Size = New System.Drawing.Size(59, 15)
+        Me.LRecommendedTotalCaption.TabIndex = 64
+        Me.LRecommendedTotalCaption.Text = "Calc. Total"
+        Me.LRecommendedTotalCaption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'LRecommendedTotal
+        '
+        Me.POHeaderPart1.SetColumnSpan(Me.LRecommendedTotal, 2)
+        Me.LRecommendedTotal.AutoEllipsis = True
+        Me.LRecommendedTotal.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LRecommendedTotal.ForeColor = System.Drawing.SystemColors.GrayText
+        Me.LRecommendedTotal.Location = New System.Drawing.Point(67, 187)
+        Me.LRecommendedTotal.Margin = New System.Windows.Forms.Padding(0)
+        Me.LRecommendedTotal.Name = "LRecommendedTotal"
+        Me.LRecommendedTotal.Size = New System.Drawing.Size(116, 25)
+        Me.LRecommendedTotal.TabIndex = 65
+        Me.LRecommendedTotal.Text = "260"
+        Me.LRecommendedTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'BHStageFile
         '
@@ -2397,10 +2425,12 @@ Partial Class MainWindow
         Me.POHeaderPart1.Controls.Add(Me.THTotal, 1, 8)
         Me.POHeaderPart1.Controls.Add(Me.Label20, 0, 8)
         Me.POHeaderPart1.Controls.Add(Me.Label25, 2, 8)
+        Me.POHeaderPart1.Controls.Add(Me.LRecommendedTotalCaption, 0, 9)
+        Me.POHeaderPart1.Controls.Add(Me.LRecommendedTotal, 1, 9)
         Me.POHeaderPart1.Dock = System.Windows.Forms.DockStyle.Top
         Me.POHeaderPart1.Location = New System.Drawing.Point(0, 0)
         Me.POHeaderPart1.Name = "POHeaderPart1"
-        Me.POHeaderPart1.RowCount = 9
+        Me.POHeaderPart1.RowCount = 10
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
@@ -2410,7 +2440,8 @@ Partial Class MainWindow
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
-        Me.POHeaderPart1.Size = New System.Drawing.Size(226, 225)
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.Size = New System.Drawing.Size(226, 250)
         Me.POHeaderPart1.TabIndex = 25
         '
         'Label3
@@ -4463,6 +4494,8 @@ Partial Class MainWindow
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents THTotal As System.Windows.Forms.TextBox
     Friend WithEvents Label20 As System.Windows.Forms.Label
+    Friend WithEvents LRecommendedTotalCaption As System.Windows.Forms.Label
+    Friend WithEvents LRecommendedTotal As System.Windows.Forms.Label
     Friend WithEvents BHStageFile As System.Windows.Forms.Button
     Friend WithEvents BHBanner As System.Windows.Forms.Button
     Friend WithEvents Label19 As System.Windows.Forms.Label

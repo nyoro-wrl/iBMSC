@@ -203,6 +203,7 @@
 			<Difficulty>Difficulty</Difficulty>
 			<ExRank>DefExRank</ExRank>
 			<Total>Total</Total>
+			<RecommendedTotal>推荐TOTAL</RecommendedTotal>
 			<Comment>Comment</Comment>
 			<LnObj>LnObj</LnObj>
 			<Preview>Preview</Preview>

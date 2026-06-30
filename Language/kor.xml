@@ -207,6 +207,7 @@
 			<Difficulty>난이도</Difficulty>
 			<ExRank>DefExRank</ExRank>
 			<Total>토탈값</Total>
+			<RecommendedTotal>추천TOTAL</RecommendedTotal>
 			<Comment>Comment</Comment>
 			<LnObj>LnObj</LnObj>
 			<LandMine>#WAV00</LandMine>

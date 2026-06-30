@@ -211,6 +211,7 @@
 			<Difficulty>Difficulty</Difficulty>
 			<ExRank>DefExRank</ExRank>
 			<Total>Total</Total>
+			<RecommendedTotal>Calc. Total</RecommendedTotal>
 			<Comment>Comment</Comment>
 			<LnObj>LnObj</LnObj>
 			<LandMine>#WAV00</LandMine>

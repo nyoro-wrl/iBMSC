@@ -97,6 +97,7 @@ Public Class MainWindow
     Dim BMSGridLimit As Double = 1.0R
 
     Dim LnObj As Integer = 0    '0 for none, 1-3843 for 01-zz
+    Private Const RecommendedTotalMin As Integer = 260
 
     'IO
     Dim FileName As String = "Untitled.bms"
@@ -4735,25 +4736,70 @@ StartCount:     If Not NTInput Then
         End If
 
         TBStatistics.Text = xIAll
+        UpdateRecommendedTotal()
         If updateGreatestColumn Then CalculateGreatestColumn()
     End Sub
 
-    Private Function CalculateTotalNotes() As Integer
-        Dim xI1 As Integer
-        Dim xIAll As Integer = 0
+    Private Sub UpdateRecommendedTotal()
+        If LRecommendedTotal Is Nothing Then
+            Return
+        End If
 
-        For xI1 = 1 To UBound(Notes)
-            If (Notes(xI1).ColumnIndex >= niA1 AndAlso Notes(xI1).ColumnIndex <= niAQ) AndAlso
-                   Not Notes(xI1).Hidden AndAlso Not Notes(xI1).Landmine AndAlso column(Notes(xI1).ColumnIndex).isVisible Then
-                xIAll += 1
-            End If
-            If (Notes(xI1).ColumnIndex >= niD1 AndAlso Notes(xI1).ColumnIndex <= niDQ) AndAlso
-                   Not Notes(xI1).Hidden AndAlso Not Notes(xI1).Landmine AndAlso column(Notes(xI1).ColumnIndex).isVisible Then
-                xIAll += 1
-            End If
+        Dim xNotes As Integer = CalculateRecommendedTotalNotes()
+        If xNotes = 0 Then
+            LRecommendedTotal.Text = ""
+        Else
+            LRecommendedTotal.Text = CalculateRecommendedTotal(xNotes).ToString()
+        End If
+    End Sub
+
+    Private Function CalculateRecommendedTotal() As Integer
+        Dim xNotes As Integer = CalculateRecommendedTotalNotes()
+        Return CalculateRecommendedTotal(xNotes)
+    End Function
+
+    Private Function CalculateRecommendedTotal(ByVal xNotes As Integer) As Integer
+        Return Math.Max(RecommendedTotalMin, CInt(Math.Floor(760.5R * xNotes / (xNotes + 650.0R))))
+    End Function
+
+    Private Function CalculateRecommendedTotalNotes() As Integer
+        Dim xNotes As Integer = 0
+
+        For xI1 As Integer = 1 To UBound(Notes)
+            xNotes += GetRecommendedTotalNoteUnit(xI1)
         Next
 
-        Return xIAll
+        Return xNotes
+    End Function
+
+    Private Function GetRecommendedTotalNoteUnit(ByVal noteIndex As Integer) As Integer
+        If Not IsRecommendedTotalNote(Notes(noteIndex)) Then
+            Return 0
+        End If
+
+        If NTInput AndAlso Notes(noteIndex).Length > 0 Then
+            Return If(IsChargeLnMode(), 2, 1)
+        End If
+
+        If Notes(noteIndex).LNPair > 0 Then
+            If noteIndex > Notes(noteIndex).LNPair Then
+                Return If(IsChargeLnMode(), 1, 0)
+            End If
+
+            Return 1
+        End If
+
+        Return 1
+    End Function
+
+    Private Function IsRecommendedTotalNote(ByVal note As Note) As Boolean
+        Return ((note.ColumnIndex >= niA1 AndAlso note.ColumnIndex <= niAQ) OrElse
+                (note.ColumnIndex >= niD1 AndAlso note.ColumnIndex <= niDQ)) AndAlso
+               Not note.Hidden AndAlso Not note.Landmine AndAlso column(note.ColumnIndex).isVisible
+    End Function
+
+    Private Function IsChargeLnMode() As Boolean
+        Return CHLnmode.SelectedIndex >= 2
     End Function
 
     Public Function GetMouseVPosition(Optional snap As Boolean = True)
@@ -5426,6 +5472,10 @@ StartCount:     If Not NTInput Then
     CHDifficulty.SelectedIndexChanged, THExRank.TextChanged, THTotal.TextChanged, THComment.TextChanged, THPreview.TextChanged, CHLnmode.SelectedIndexChanged
         If IsSaved Then SetIsSaved(False)
 
+        If [Object].ReferenceEquals(sender, CHLnmode) Then
+            UpdateRecommendedTotal()
+        End If
+
         If [Object].ReferenceEquals(sender, THLandMine) Then
             hWAV(0) = THLandMine.Text
         ElseIf [Object].ReferenceEquals(sender, THMissBMP) Then
@@ -5437,6 +5487,7 @@ StartCount:     If Not NTInput Then
         If IsSaved Then SetIsSaved(False)
         LnObj = CHLnObj.SelectedIndex
         UpdatePairing()
+        CalculateTotalPlayableNotes(False)
         RefreshPanelAll()
     End Sub
 
