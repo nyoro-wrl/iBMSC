@@ -1,29 +1,29 @@
 # nBMSC
 
-nBMSC is an improved version of µBMSC designed to balance convenience and simplicity.
-It supports Base62 definitions.
+nBMSC は、利便性とシンプルさのバランスを取るために再設計された、μBMSC の改良版です。
+62進数定義をサポートしています。
 
-# Changes
+## 変更点
 
-- Base62 definition support
-- Layout adjustments
-  - Rebuilt the formerly complex screen layout into a simpler one
-  - Moved grid settings from the right panel to the toolbar for easier access
-  - Changed the right panel to a tabbed layout for better usability
-- Chart editing
-  - Added a BMSE-style right-click menu with support for inserting and deleting measures, mirror placement, and more
-  - Expanded the Undo/Redo history, now limited by available memory
-  - BGM lanes expand automatically, so you no longer need to manage the lane count manually
-  - Horizontal scrolling with Shift+mouse wheel
-  - The view now follows notes when they are moved with the arrow keys
-  - Long notes can now be resized with Shift+arrow keys
-  - Adjusted scrolling so the position is less likely to drift away from measure lines
-  - Relative paths are supported for audio and image files
-  - Added landmine note conversion
-  - Rebuilt the splitter behavior to make it easier to use
-- Other minor adjustments
+- 62進数定義のサポート
+- レイアウト調整
+  - 複雑だった画面構成を、よりシンプルなレイアウトに再構築
+  - グリッド設定を右パネルからツールバーに移動し、アクセスしやすくなりました
+  - 右パネルをタブレイアウト化し、使いやすさがアップ
+  - #WAV, #BMP リストのスクロールがサクサク動きます
+- 譜面編集
+  - BMSE 風の右クリックメニューを追加。小節の挿入・削除や、ミラー配置などに対応
+  - 元に戻す/やり直しの回数が増加（メモリ容量ベース）
+  - BGMレーンは自動で拡張されるため、レーン数を手動で管理する必要がなくなりました
+  - Shift+マウスホイール で横スクロール
+  - 矢印キー でノートを移動する際、画面も追従します
+  - Shift+矢印キー でロングノートの長さを変更可能に
+  - スクロール位置が小節線からズレにくくなるように調整
+  - 音声ファイル・画像ファイルの相対パスに対応
+  - 地雷ノートの変換機能を追加
+  - 画面分割を使いやすく再構築
+- ほか細かい調整が入ってます
 
-# Requests
+## その他
 
-- For requests and feedback, please use [GitHub Issues](https://github.com/nyoro-wrl/nBMSC/issues) or contact [@nyoro_wrl](https://x.com/nyoro_wrl).
-- ご要望は [GitHub Issues](https://github.com/nyoro-wrl/nBMSC/issues) または [@nyoro_wrl](https://x.com/nyoro_wrl) までお願いします。
+要望は [GitHub Issues](https://github.com/nyoro-wrl/nBMSC/issues) または [@nyoro_wrl](https://x.com/nyoro_wrl) までお願いします。
