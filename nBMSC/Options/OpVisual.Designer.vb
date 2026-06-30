@@ -79,7 +79,7 @@ Partial Class OpVisual
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
-        Me.cTSSplitter = New System.Windows.Forms.Button()
+        Me.cTSSplitView = New System.Windows.Forms.Button()
         Me.Label97 = New System.Windows.Forms.Label()
         Me.Label96 = New System.Windows.Forms.Label()
         Me.iTSSensitivity = New System.Windows.Forms.NumericUpDown()
@@ -663,16 +663,16 @@ Partial Class OpVisual
         Me.Label9.Text = "Column Caption Font"
         Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'cTSSplitter
+        'cTSSplitView
         '
-        Me.cTSSplitter.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.cTSSplitter.Location = New System.Drawing.Point(870, 60)
-        Me.cTSSplitter.Name = "cTSSplitter"
-        Me.cTSSplitter.Size = New System.Drawing.Size(80, 23)
-        Me.cTSSplitter.TabIndex = 141
-        Me.cTSSplitter.Tag = "9"
-        Me.cTSSplitter.Text = "FF000000"
-        Me.cTSSplitter.UseVisualStyleBackColor = True
+        Me.cTSSplitView.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.cTSSplitView.Location = New System.Drawing.Point(870, 60)
+        Me.cTSSplitView.Name = "cTSSplitView"
+        Me.cTSSplitView.Size = New System.Drawing.Size(80, 23)
+        Me.cTSSplitView.TabIndex = 141
+        Me.cTSSplitView.Tag = "9"
+        Me.cTSSplitView.Text = "FF000000"
+        Me.cTSSplitView.UseVisualStyleBackColor = True
         '
         'Label97
         '
@@ -772,7 +772,7 @@ Partial Class OpVisual
         Me.Controls.Add(Me.Label91)
         Me.Controls.Add(Me.Label96)
         Me.Controls.Add(Me.iTSSensitivity)
-        Me.Controls.Add(Me.cTSSplitter)
+        Me.Controls.Add(Me.cTSSplitView)
         Me.Controls.Add(Me.Label97)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.PictureBox1)
@@ -901,7 +901,7 @@ Partial Class OpVisual
     Friend WithEvents iHiddenNoteOpacity As System.Windows.Forms.NumericUpDown
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents cTSSplitter As System.Windows.Forms.Button
+    Friend WithEvents cTSSplitView As System.Windows.Forms.Button
     Friend WithEvents Label97 As System.Windows.Forms.Label
     Friend WithEvents Label96 As System.Windows.Forms.Label
     Friend WithEvents iTSSensitivity As System.Windows.Forms.NumericUpDown

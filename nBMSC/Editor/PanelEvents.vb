@@ -1871,7 +1871,7 @@ Partial Public Class MainWindow
         Return GetColumnAtX(e.X, xHS)
     End Function
 
-    ' az: Handle zoom in/out. Should work with any of the three splitters.
+    ' az: Handle zoom in/out. Should work with any of the three split views.
     Private Sub PMain_Scroll(sender As Object, e As MouseEventArgs) Handles PMainIn.MouseWheel, PMainInL.MouseWheel, PMainInR.MouseWheel
         If Not My.Computer.Keyboard.CtrlKeyDown Then Exit Sub
 

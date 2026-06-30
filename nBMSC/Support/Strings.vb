@@ -154,7 +154,7 @@ Public Class Strings
         Public Shared NoteBorderOnAdjustingLength As String = "Note Border on Adjusting Length"
         Public Shared SelectionBoxBorder As String = "Selection Box Border"
         Public Shared TSCursor As String = "Time Selection Cursor"
-        Public Shared TSSplitter As String = "Time Selection Splitter"
+        Public Shared TSSplitView As String = "Time Selection Splitter"
         Public Shared TSCursorSensitivity As String = "Time Selection Cursor Sensitivity"
         Public Shared TSMouseOverBorder As String = "Time Selection MouseOver Border"
         Public Shared TSFill As String = "Time Selection Fill"

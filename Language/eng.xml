@@ -55,7 +55,7 @@
 			<PreviewOnClick>Preview on Click</PreviewOnClick>
 			<ShowFileName>Show File Name on Notes</ShowFileName>
 			<ChangePlaySide>RightScratch Mode</ChangePlaySide>
-			<SyncSplitterScroll>Sync Scroll between Splitters</SyncSplitterScroll>
+			<SyncSplitViewScroll>Sync Scroll between Splitters</SyncSplitViewScroll>
 			<SlashGrid>Slash key grid value</SlashGrid>
 			<GeneralOptions>General Options</GeneralOptions>
 			<VisualOptions>Visual Options</VisualOptions>
@@ -91,11 +91,11 @@
 		<PreviewOnClick>Preview On Click</PreviewOnClick>
 		<ShowFileName>Show File Name on Notes</ShowFileName>
 		<ChangePlaySide>RightScratch Mode</ChangePlaySide>
-		<LeftSplitter>Left Splitter</LeftSplitter>
-		<RightSplitter>Right Splitter</RightSplitter>
-		<AddSplitter>Add Splitter</AddSplitter>
-		<RemoveSplitter>Remove Splitter</RemoveSplitter>
-		<SyncSplitterScroll>Sync Scroll between Splitters</SyncSplitterScroll>
+		<LeftSplitView>Left Splitter</LeftSplitView>
+		<RightSplitView>Right Splitter</RightSplitView>
+		<AddSplitView>Add Splitter</AddSplitView>
+		<RemoveSplitView>Remove Splitter</RemoveSplitView>
+		<SyncSplitViewScroll>Sync Scroll between Splitters</SyncSplitViewScroll>
 		<Undo>Undo (Ctrl+Z)</Undo>
 		<Redo>Redo (Ctrl+Y)</Redo>
 		<NT>LongNote Input Style - NoteTool/BMSE</NT>
@@ -139,11 +139,11 @@
 			<ToolBar>ToolBar</ToolBar>
 			<OptionsPanel>Options Panel</OptionsPanel>
 			<StatusBar>Status Bar</StatusBar>
-			<LSplit>Left Splitter</LSplit>
-			<RSplit>Right Splitter</RSplit>
-			<AddSplitter>Add Splitter</AddSplitter>
-			<RemoveSplitter>Remove Splitter</RemoveSplitter>
-			<CloseSplitter>Close Splitter</CloseSplitter>
+			<LSplitView>Left Splitter</LSplitView>
+			<RSplitView>Right Splitter</RSplitView>
+			<AddSplitView>Add Splitter</AddSplitView>
+			<RemoveSplitView>Remove Splitter</RemoveSplitView>
+			<CloseSplitView>Close Splitter</CloseSplitView>
 			<Grid>Grid</Grid>
 			<Sub>Sub</Sub>
 			<BG>BackGround</BG>
@@ -172,7 +172,7 @@
 		<Convert>
 			<Long>→ Long Note</Long>
 			<Short>→ Short Note</Short>
-			<LongShort>Long Note ↔ Short Note</LongShort>
+			<LongShort>Short Note ↔ Long Note</LongShort>
 			<Hidden>→ Hidden Note</Hidden>
 			<Landmine>→ LandMine Note</Landmine>
 			<Visible>→ Normal Note</Visible>
@@ -399,7 +399,7 @@ Open the release page?</UpdateVersionUnsupported>
 		<NoteBorderOnAdjustingLength>Note Border on Adjusting Length</NoteBorderOnAdjustingLength>
 		<SelectionBoxBorder>Selection Box Border</SelectionBoxBorder>
 		<TSCursor>Time Selection Cursor</TSCursor>
-		<TSSplitter>Time Selection Splitter</TSSplitter>
+		<TSSplitView>Time Selection Splitter</TSSplitView>
 		<TSCursorSensitivity>Time Selection Cursor Sensitivity</TSCursorSensitivity>
 		<TSMouseOverBorder>Time Selection MouseOver Border</TSMouseOverBorder>
 		<TSFill>Time Selection Fill</TSFill>

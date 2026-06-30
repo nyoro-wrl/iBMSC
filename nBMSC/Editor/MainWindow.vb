@@ -294,8 +294,8 @@ Public Class MainWindow
     Private Const MainPanelIndex As Integer = 0
     Private Const EditorScrollBarThickness As Integer = 8
     Private Const SplitPanelSettingSeparator As Char = ";"c
-    Dim SyncSplitterScroll As Boolean = False
-    Dim UpdatingSplitterControls As Boolean = False
+    Dim SyncSplitViewScroll As Boolean = False
+    Dim UpdatingSplitViewControls As Boolean = False
     Dim SyncingPanelScroll As Boolean = False
     Dim PanelFocus As Integer = MainPanelIndex
     Dim spMouseOver As Integer = MainPanelIndex
@@ -309,9 +309,9 @@ Public Class MainWindow
     Dim tempFirstMouseDown As Boolean = False
 
     Dim spMain() As Panel = {}
-    Private WithEvents mnSyncSplitterScroll As ToolStripMenuItem
-    Private WithEvents mnSAddSplitter As ToolStripMenuItem
-    Private WithEvents mnSRemoveSplitter As ToolStripMenuItem
+    Private WithEvents mnSyncSplitViewScroll As ToolStripMenuItem
+    Private WithEvents mnSAddSplitView As ToolStripMenuItem
+    Private WithEvents mnSRemoveSplitView As ToolStripMenuItem
     Private WithEvents mnSlashGrid As ToolStripMenuItem
     Private WithEvents TBGridDivide As ToolStripComboBox
     Private WithEvents TBGridSub As ToolStripComboBox
@@ -322,11 +322,11 @@ Public Class MainWindow
     Private UpdatingGridToolbar As Boolean = False
     Private WithEvents TBPlayer As ToolStripComboBox
     Private UpdatingPlayerSelector As Boolean = False
-    Private WithEvents TBAddSplitter As ToolStripButton
-    Private WithEvents TBRemoveSplitter As ToolStripButton
-    Private WithEvents TBSyncSplitterScroll As ToolStripButton
-    Private ToolStripSeparatorSplitter As ToolStripSeparator
-    Private SplitterResizeCursor As Cursor
+    Private WithEvents TBAddSplitView As ToolStripButton
+    Private WithEvents TBRemoveSplitView As ToolStripButton
+    Private WithEvents TBSyncSplitViewScroll As ToolStripButton
+    Private ToolStripSeparatorSplitView As ToolStripSeparator
+    Private SplitViewResizeCursor As Cursor
     Private EditorContextMenu As ContextMenuStrip
     Private EditorContextPanelIndex As Integer = 0
     Private EditorContextPlayB As ToolStripMenuItem
@@ -344,11 +344,11 @@ Public Class MainWindow
     Private EditorContextNormalLandmine As ToolStripMenuItem
     Private EditorContextModify As ToolStripMenuItem
     Private EditorContextMirror As ToolStripMenuItem
-    Private EditorContextCloseSplitter As ToolStripMenuItem
+    Private EditorContextCloseSplitView As ToolStripMenuItem
     Private EditorContextEditSeparator As ToolStripSeparator
     Private EditorContextConvertSeparator As ToolStripSeparator
     Private EditorContextModifySeparator As ToolStripSeparator
-    Private EditorContextSplitterSeparator As ToolStripSeparator
+    Private EditorContextSplitViewSeparator As ToolStripSeparator
     Private DefinitionContextMenu As ContextMenuStrip
     Private DefinitionContextDelete As ToolStripMenuItem
     Private DefinitionContextList As ListBox
@@ -586,7 +586,7 @@ Public Class MainWindow
         End Sub
     End Class
 
-    Private Class TransparentSplitterGrip
+    Private Class TransparentSplitViewGrip
         Inherits Control
 
         Public Sub New()
@@ -615,11 +615,11 @@ Public Class MainWindow
         Public Canvas As Panel
         Public VScroll As EditorScrollBar
         Public HScroll As EditorScrollBar
-        Public Splitter As Control
+        Public SplitViewGrip As Control
         Public Ratio As Single
     End Class
 
-    Private Class SplitterDragInfo
+    Private Class SplitViewDragInfo
         Public PanelIndex As Integer
         Public StartScreenX As Integer
         Public StartWidth As Integer
@@ -809,7 +809,7 @@ Public Class MainWindow
     End Class
 
     Private SplitPanes As New List(Of SplitPane)
-    Private SplitterDrag As SplitterDragInfo = Nothing
+    Private SplitViewDrag As SplitViewDragInfo = Nothing
     Private OptionsTabsInitialized As Boolean = False
     Private POTabSelected As Panel = Nothing
     Private HeaderWheelBlockers As New List(Of MouseWheelBlocker)
@@ -837,7 +837,7 @@ Public Class MainWindow
         InitializeGridToolbar()
         InitializeOptionsTabs()
         InitializeOptionsMenuItems()
-        InitializeSplitterControls()
+        InitializeSplitViewControls()
         ReorderConversionMenu()
         RefreshMenuShortcutDisplay()
         InitializeSplitPanes()
@@ -886,12 +886,12 @@ Public Class MainWindow
         EditorContextNormalLandmine = New ToolStripMenuItem()
         EditorContextModify = New ToolStripMenuItem()
         EditorContextMirror = New ToolStripMenuItem()
-        EditorContextCloseSplitter = New ToolStripMenuItem()
+        EditorContextCloseSplitView = New ToolStripMenuItem()
         EditorContextEditSeparator = New ToolStripSeparator()
         EditorContextConvertSeparator = New ToolStripSeparator()
         EditorContextModifySeparator = New ToolStripSeparator()
-        EditorContextSplitterSeparator = New ToolStripSeparator()
-        EditorContextCloseSplitter.Text = "Close Splitter"
+        EditorContextSplitViewSeparator = New ToolStripSeparator()
+        EditorContextCloseSplitView.Text = "Close Splitter"
 
         EditorContextMenu.Items.AddRange(New ToolStripItem() {
             EditorContextPlayB,
@@ -913,8 +913,8 @@ Public Class MainWindow
             EditorContextModifySeparator,
             EditorContextModify,
             EditorContextMirror,
-            EditorContextSplitterSeparator,
-            EditorContextCloseSplitter})
+            EditorContextSplitViewSeparator,
+            EditorContextCloseSplitView})
 
         AddHandler EditorContextMenu.Opening, AddressOf EditorContextMenu_Opening
         AddHandler EditorContextPlayB.Click, AddressOf TBPlayB_Click
@@ -932,7 +932,7 @@ Public Class MainWindow
         AddHandler EditorContextNormalLandmine.Click, AddressOf POBNormalLandmine_Click
         AddHandler EditorContextModify.Click, AddressOf POBModify_Click
         AddHandler EditorContextMirror.Click, AddressOf POBMirror_Click
-        AddHandler EditorContextCloseSplitter.Click, AddressOf EditorContextCloseSplitter_Click
+        AddHandler EditorContextCloseSplitView.Click, AddressOf EditorContextCloseSplitView_Click
     End Sub
 
     Private Sub EditorContextMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
@@ -978,9 +978,9 @@ Public Class MainWindow
         EditorContextMirror.Visible = xHasSelection
         EditorContextModifySeparator.Visible = xHasSelection
 
-        Dim xCanCloseSplitter As Boolean = EditorContextPanelIndex > MainPanelIndex AndAlso IsValidPanelIndex(EditorContextPanelIndex)
-        EditorContextCloseSplitter.Visible = xCanCloseSplitter
-        EditorContextSplitterSeparator.Visible = xCanCloseSplitter
+        Dim xCanCloseSplitView As Boolean = EditorContextPanelIndex > MainPanelIndex AndAlso IsValidPanelIndex(EditorContextPanelIndex)
+        EditorContextCloseSplitView.Visible = xCanCloseSplitView
+        EditorContextSplitViewSeparator.Visible = xCanCloseSplitView
     End Sub
 
     Private Sub CopyMenuItem(ByVal xTarget As ToolStripMenuItem, ByVal xSource As ToolStripMenuItem, Optional ByVal xCopyImage As Boolean = False)
@@ -1039,14 +1039,14 @@ Public Class MainWindow
         POBLong.ShortcutKeyDisplayString = "L"
         POBShort.ShortcutKeyDisplayString = "S"
         POBMirror.ShortcutKeyDisplayString = "M"
-        If mnSAddSplitter IsNot Nothing Then mnSAddSplitter.ShortcutKeyDisplayString = "Ctrl++"
-        If mnSRemoveSplitter IsNot Nothing Then mnSRemoveSplitter.ShortcutKeyDisplayString = "Ctrl+-"
-        If mnSyncSplitterScroll IsNot Nothing Then mnSyncSplitterScroll.ShortcutKeyDisplayString = "Ctrl+\"
+        If mnSAddSplitView IsNot Nothing Then mnSAddSplitView.ShortcutKeyDisplayString = "Ctrl++"
+        If mnSRemoveSplitView IsNot Nothing Then mnSRemoveSplitView.ShortcutKeyDisplayString = "Ctrl+-"
+        If mnSyncSplitViewScroll IsNot Nothing Then mnSyncSplitViewScroll.ShortcutKeyDisplayString = "Ctrl+\"
         If mnSlashGrid IsNot Nothing Then mnSlashGrid.ShortcutKeyDisplayString = "/"
 
-        If TBAddSplitter IsNot Nothing Then TBAddSplitter.ToolTipText = TBAddSplitter.Text & " (Ctrl++)"
-        If TBRemoveSplitter IsNot Nothing Then TBRemoveSplitter.ToolTipText = TBRemoveSplitter.Text & " (Ctrl+-)"
-        If TBSyncSplitterScroll IsNot Nothing Then TBSyncSplitterScroll.ToolTipText = TBSyncSplitterScroll.Text & " (Ctrl+\)"
+        If TBAddSplitView IsNot Nothing Then TBAddSplitView.ToolTipText = TBAddSplitView.Text & " (Ctrl++)"
+        If TBRemoveSplitView IsNot Nothing Then TBRemoveSplitView.ToolTipText = TBRemoveSplitView.Text & " (Ctrl+-)"
+        If TBSyncSplitViewScroll IsNot Nothing Then TBSyncSplitViewScroll.ToolTipText = TBSyncSplitViewScroll.Text & " (Ctrl+\)"
         If CGSnap IsNot Nothing Then CGSnap.Text = AppendShortcutText(CGSnap.Text, "G")
         If CGDisableVertical IsNot Nothing Then CGDisableVertical.Text = AppendShortcutText(CGDisableVertical.Text, "D")
         RefreshGridSnapToolbar()
@@ -1127,7 +1127,7 @@ Public Class MainWindow
             Dim xPane As SplitPane = SplitPanes(i)
             If xPane.Canvas Is xControl Then Return i
             If xPane.Container Is xControl Then Return i
-            If xPane.Splitter Is xControl Then Return i
+            If xPane.SplitViewGrip Is xControl Then Return i
             If xPane.Container IsNot Nothing AndAlso xPane.Container.Contains(xControl) Then Return i
         Next
 
@@ -1144,7 +1144,7 @@ Public Class MainWindow
         PasteNotes(MeasureBottom(MeasureAtDisplacement(menuVPosition)))
     End Sub
 
-    Private Sub EditorContextCloseSplitter_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub EditorContextCloseSplitView_Click(ByVal sender As Object, ByVal e As EventArgs)
         RemoveRightSplitPane(EditorContextPanelIndex)
     End Sub
 
@@ -1804,64 +1804,64 @@ Public Class MainWindow
         TBPlayer.ToolTipText = TBPlayer.Text
     End Sub
 
-    Private Sub InitializeSplitterControls()
-        mnSyncSplitterScroll = New ToolStripMenuItem With {
+    Private Sub InitializeSplitViewControls()
+        mnSyncSplitViewScroll = New ToolStripMenuItem With {
             .CheckOnClick = True,
             .Image = My.Resources.x16Lock,
-            .Name = "mnSyncSplitterScroll",
+            .Name = "mnSyncSplitViewScroll",
             .Text = "Sync Scroll between Splitters"
         }
-        mnSAddSplitter = New ToolStripMenuItem With {
+        mnSAddSplitView = New ToolStripMenuItem With {
             .Image = My.Resources.x16Add,
-            .Name = "mnSAddSplitter",
+            .Name = "mnSAddSplitView",
             .Text = "Add Splitter"
         }
-        mnSRemoveSplitter = New ToolStripMenuItem With {
+        mnSRemoveSplitView = New ToolStripMenuItem With {
             .Image = My.Resources.x16Remove,
-            .Name = "mnSRemoveSplitter",
+            .Name = "mnSRemoveSplitView",
             .Text = "Remove Splitter"
         }
 
-        If mnSys.DropDownItems.Contains(mnSLSplitter) Then mnSys.DropDownItems.Remove(mnSLSplitter)
-        If mnSys.DropDownItems.Contains(mnSRSplitter) Then mnSys.DropDownItems.Remove(mnSRSplitter)
+        If mnSys.DropDownItems.Contains(mnSLSplitView) Then mnSys.DropDownItems.Remove(mnSLSplitView)
+        If mnSys.DropDownItems.Contains(mnSRSplitView) Then mnSys.DropDownItems.Remove(mnSRSplitView)
 
-        ToolStripSeparatorSplitter = New ToolStripSeparator With {
-            .Name = "ToolStripSeparatorSplitter"
+        ToolStripSeparatorSplitView = New ToolStripSeparator With {
+            .Name = "ToolStripSeparatorSplitView"
         }
-        TBAddSplitter = New ToolStripButton With {
+        TBAddSplitView = New ToolStripButton With {
             .DisplayStyle = ToolStripItemDisplayStyle.Image,
             .Image = My.Resources.x16Add,
             .ImageTransparentColor = Color.Magenta,
-            .Name = "TBAddSplitter",
+            .Name = "TBAddSplitView",
             .Text = "Add Splitter"
         }
-        TBRemoveSplitter = New ToolStripButton With {
+        TBRemoveSplitView = New ToolStripButton With {
             .DisplayStyle = ToolStripItemDisplayStyle.Image,
             .Image = My.Resources.x16Remove,
             .ImageTransparentColor = Color.Magenta,
-            .Name = "TBRemoveSplitter",
+            .Name = "TBRemoveSplitView",
             .Text = "Remove Splitter"
         }
-        TBSyncSplitterScroll = New ToolStripButton With {
+        TBSyncSplitViewScroll = New ToolStripButton With {
             .CheckOnClick = True,
             .DisplayStyle = ToolStripItemDisplayStyle.Image,
             .Image = My.Resources.x16Lock,
             .ImageTransparentColor = Color.Magenta,
-            .Name = "TBSyncSplitterScroll",
+            .Name = "TBSyncSplitViewScroll",
             .Text = "Sync Scroll between Splitters"
         }
 
         Dim toolbarIndex As Integer = TBMain.Items.IndexOf(ToolStripSeparator4)
-        Dim splitterItems As ToolStripItem() = {ToolStripSeparatorSplitter, TBAddSplitter, TBRemoveSplitter, TBSyncSplitterScroll}
+        Dim splitViewItems As ToolStripItem() = {ToolStripSeparatorSplitView, TBAddSplitView, TBRemoveSplitView, TBSyncSplitViewScroll}
         If toolbarIndex >= 0 Then
-            For i As Integer = 0 To splitterItems.Length - 1
-                TBMain.Items.Insert(toolbarIndex + i, splitterItems(i))
+            For i As Integer = 0 To splitViewItems.Length - 1
+                TBMain.Items.Insert(toolbarIndex + i, splitViewItems(i))
             Next
         Else
-            TBMain.Items.AddRange(splitterItems)
+            TBMain.Items.AddRange(splitViewItems)
         End If
 
-        RefreshSplitterControls()
+        RefreshSplitViewControls()
     End Sub
 
     ''' <summary>
@@ -2738,7 +2738,7 @@ Public Class MainWindow
             Case Keys.OemMinus, Keys.Subtract
                 RemoveRightSplitPane()
             Case Keys.Oem5, Keys.Oem102
-                SetSplitterScrollSync(Not SyncSplitterScroll)
+                SetSplitViewScrollSync(Not SyncSplitViewScroll)
             Case Else
                 Return False
         End Select
@@ -2853,7 +2853,7 @@ Public Class MainWindow
 
             SpL.Cursor = xRightCursor
             SpR.Cursor = xLeftCursor
-            SplitterResizeCursor = xLeftCursor
+            SplitViewResizeCursor = xLeftCursor
         Catch ex As Exception
 
         End Try
@@ -3564,7 +3564,7 @@ EndSearch:
 
         Dim xOldValue As Integer = PanelVScroll(iI)
         Dim xDelta As Integer = sender.Value - xOldValue
-        If SyncSplitterScroll Then
+        If SyncSplitViewScroll Then
             xDelta = LimitPanelVScrollDelta(xDelta)
             Dim xValue As Integer = xOldValue + xDelta
 
@@ -3581,13 +3581,13 @@ EndSearch:
         If iI = PanelFocus And Not LastMouseDownLocation = New Point(-1, -1) And Not VSValue = -1 Then LastMouseDownLocation.Y += (VSValue - (xOldValue + xDelta)) * gxHeight
         PanelVScroll(iI) = xOldValue + xDelta
 
-        If SyncSplitterScroll Then
+        If SyncSplitViewScroll Then
             SyncPanelVScroll(iI, xDelta)
             UpdateVScrollMinimums()
         End If
 
         VSValue = xOldValue + xDelta
-        If SyncSplitterScroll Then
+        If SyncSplitViewScroll Then
             RefreshPanelAll()
         Else
             RefreshPanel(iI, spMain(iI).DisplayRectangle)
@@ -3630,7 +3630,7 @@ EndSearch:
     End Sub
 
     Private Function GetVScrollMinimum() As Integer
-        If Not SyncSplitterScroll Then Return VScrollMinimum
+        If Not SyncSplitViewScroll Then Return VScrollMinimum
 
         Dim xLowestValue As Integer = Integer.MinValue
         Dim xHighestValue As Integer = Integer.MaxValue
@@ -3696,7 +3696,7 @@ EndSearch:
             SyncingPanelScroll = False
         End Try
 
-        If SyncSplitterScroll Then UpdateVScrollMinimums()
+        If SyncSplitViewScroll Then UpdateVScrollMinimums()
     End Sub
 
     Private Sub HSGotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles HS.GotFocus, HSL.GotFocus, HSR.GotFocus
@@ -6579,17 +6579,17 @@ Jump2:
     Private Sub mnSStatus_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSStatus.CheckedChanged
         pStatus.Visible = mnSStatus.Checked
     End Sub
-    Private Sub AddSplitter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSAddSplitter.Click, TBAddSplitter.Click
+    Private Sub AddSplitView_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSAddSplitView.Click, TBAddSplitView.Click
         AddRightSplitPane()
     End Sub
 
-    Private Sub RemoveSplitter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSRemoveSplitter.Click, TBRemoveSplitter.Click
+    Private Sub RemoveSplitView_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSRemoveSplitView.Click, TBRemoveSplitView.Click
         RemoveRightSplitPane()
     End Sub
 
-    Private Sub SyncSplitterScroll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSyncSplitterScroll.CheckedChanged, TBSyncSplitterScroll.CheckedChanged
-        If UpdatingSplitterControls Then Return
-        SetSplitterScrollSync(sender.Checked)
+    Private Sub SyncSplitViewScroll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSyncSplitViewScroll.CheckedChanged, TBSyncSplitViewScroll.CheckedChanged
+        If UpdatingSplitViewControls Then Return
+        SetSplitViewScrollSync(sender.Checked)
     End Sub
 
     Private Sub InitializeSplitPanes()
@@ -6638,7 +6638,7 @@ Jump2:
         VScrollMinimum = xMainVScroll.Minimum
         RebuildPanelArrays()
         UpdateHorizontalScrollMetrics()
-        RefreshSplitterControls()
+        RefreshSplitViewControls()
     End Sub
 
     Private Function RightSplitPaneCount() As Integer
@@ -6649,7 +6649,7 @@ Jump2:
         Return panelIndex >= 0 AndAlso panelIndex < SplitPanes.Count
     End Function
 
-    Private Function GetSplitterWidth() As Integer
+    Private Function GetSplitViewWidth() As Integer
         If SpR IsNot Nothing AndAlso SpR.Width > 0 Then Return SpR.Width
         Return 5
     End Function
@@ -6660,10 +6660,10 @@ Jump2:
     End Function
 
     Private Sub AddRightSplitPane(Optional ByVal ratio As Single = DefaultSplitPanelRatio, Optional ByVal limitOnShow As Boolean = True)
-        If UpdatingSplitterControls Then Return
+        If UpdatingSplitViewControls Then Return
         If Not CanAddRightSplitPane() Then Return
 
-        UpdatingSplitterControls = True
+        UpdatingSplitViewControls = True
         Try
             Dim xIndex As Integer = SplitPanes.Count
             Dim xPane As SplitPane = CreateRightSplitPane(xIndex, ratio)
@@ -6673,9 +6673,9 @@ Jump2:
             xPane.Container.Width = GetSplitPanelWidth(xIndex, limitOnShow)
             SetPanelVScroll(xIndex, PanelVScroll(MainPanelIndex))
             UpdateHorizontalScrollMetrics()
-            RefreshSplitterControls()
+            RefreshSplitViewControls()
         Finally
-            UpdatingSplitterControls = False
+            UpdatingSplitViewControls = False
         End Try
 
         If Me.Created Then RefreshPanelAll()
@@ -6717,36 +6717,36 @@ Jump2:
             .Tag = panelIndex
         }
         Dim xHScrollStrip As Panel = CreateHorizontalScrollStrip("HSRightStrip" & panelIndex.ToString(), xHScroll, panelIndex)
-        Dim xSplitter As New TransparentSplitterGrip With {
+        Dim xSplitView As New TransparentSplitViewGrip With {
             .Name = "SpRight" & panelIndex.ToString(),
-            .Size = New Size(GetSplitterWidth(), 0),
+            .Size = New Size(GetSplitViewWidth(), 0),
             .Tag = panelIndex
         }
-        If SplitterResizeCursor IsNot Nothing Then xSplitter.Cursor = SplitterResizeCursor
+        If SplitViewResizeCursor IsNot Nothing Then xSplitView.Cursor = SplitViewResizeCursor
 
         xView.Controls.Add(xCanvas)
         xView.Controls.Add(xVScroll)
         xContainer.Controls.Add(xView)
         xContainer.Controls.Add(xHScrollStrip)
-        xContainer.Controls.Add(xSplitter)
-        PositionSplitterGrip(xSplitter, xContainer)
-        xSplitter.BringToFront()
+        xContainer.Controls.Add(xSplitView)
+        PositionSplitViewGrip(xSplitView, xContainer)
+        xSplitView.BringToFront()
         ToolStripContainer1.ContentPanel.Controls.Add(xContainer)
         KeepOptionsPanelDockedRight()
 
         AddPanelHandlers(xCanvas, xVScroll, xHScroll)
         AddHandler xContainer.Resize, AddressOf SplitPaneContainer_Resize
-        AddHandler xSplitter.MouseDown, AddressOf HorizontalResizer_MouseDown
-        AddHandler xSplitter.MouseMove, AddressOf Splitter_MouseMove
-        AddHandler xSplitter.MouseUp, AddressOf Splitter_MouseUp
-        AddHandler xSplitter.MouseCaptureChanged, AddressOf Splitter_MouseCaptureChanged
+        AddHandler xSplitView.MouseDown, AddressOf HorizontalResizer_MouseDown
+        AddHandler xSplitView.MouseMove, AddressOf SplitView_MouseMove
+        AddHandler xSplitView.MouseUp, AddressOf SplitView_MouseUp
+        AddHandler xSplitView.MouseCaptureChanged, AddressOf SplitView_MouseCaptureChanged
 
         Return New SplitPane With {
             .Container = xContainer,
             .Canvas = xCanvas,
             .VScroll = xVScroll,
             .HScroll = xHScroll,
-            .Splitter = xSplitter,
+            .SplitViewGrip = xSplitView,
             .Ratio = If(ratio <= 0.0!, DefaultSplitPanelRatio, ClampSplitPanelRatio(ratio))
         }
     End Function
@@ -6790,15 +6790,15 @@ Jump2:
         Return xStrip
     End Function
 
-    Private Sub PositionSplitterGrip(ByVal xSplitter As Control, ByVal xContainer As Control)
-        xSplitter.Bounds = New Rectangle(0, 0, GetSplitterWidth(), Math.Max(0, xContainer.Height - EditorScrollBarThickness))
+    Private Sub PositionSplitViewGrip(ByVal xSplitView As Control, ByVal xContainer As Control)
+        xSplitView.Bounds = New Rectangle(0, 0, GetSplitViewWidth(), Math.Max(0, xContainer.Height - EditorScrollBarThickness))
     End Sub
 
     Private Sub SplitPaneContainer_Resize(ByVal sender As Object, ByVal e As EventArgs)
         Dim xContainer As Control = DirectCast(sender, Control)
         For Each xControl As Control In xContainer.Controls
-            If TypeOf xControl Is TransparentSplitterGrip Then
-                PositionSplitterGrip(xControl, xContainer)
+            If TypeOf xControl Is TransparentSplitViewGrip Then
+                PositionSplitViewGrip(xControl, xContainer)
                 xControl.BringToFront()
                 Exit For
             End If
@@ -6842,20 +6842,20 @@ Jump2:
         RemoveHandler xPane.VScroll.ValueChanged, AddressOf VSValueChanged
         RemoveHandler xPane.HScroll.GotFocus, AddressOf HSGotFocus
         RemoveHandler xPane.HScroll.ValueChanged, AddressOf HSValueChanged
-        If xPane.Splitter IsNot Nothing Then
-            RemoveHandler xPane.Splitter.MouseDown, AddressOf HorizontalResizer_MouseDown
-            RemoveHandler xPane.Splitter.MouseMove, AddressOf Splitter_MouseMove
-            RemoveHandler xPane.Splitter.MouseUp, AddressOf Splitter_MouseUp
-            RemoveHandler xPane.Splitter.MouseCaptureChanged, AddressOf Splitter_MouseCaptureChanged
+        If xPane.SplitViewGrip IsNot Nothing Then
+            RemoveHandler xPane.SplitViewGrip.MouseDown, AddressOf HorizontalResizer_MouseDown
+            RemoveHandler xPane.SplitViewGrip.MouseMove, AddressOf SplitView_MouseMove
+            RemoveHandler xPane.SplitViewGrip.MouseUp, AddressOf SplitView_MouseUp
+            RemoveHandler xPane.SplitViewGrip.MouseCaptureChanged, AddressOf SplitView_MouseCaptureChanged
         End If
     End Sub
 
     Private Sub RemoveRightSplitPane(Optional ByVal panelIndex As Integer = -1)
-        If UpdatingSplitterControls OrElse RightSplitPaneCount() = 0 Then Return
+        If UpdatingSplitViewControls OrElse RightSplitPaneCount() = 0 Then Return
         If panelIndex = -1 Then panelIndex = SplitPanes.Count - 1
         If panelIndex <= MainPanelIndex OrElse panelIndex >= SplitPanes.Count Then Return
 
-        UpdatingSplitterControls = True
+        UpdatingSplitViewControls = True
         Try
             Dim xIndex As Integer = panelIndex
             Dim xPane As SplitPane = SplitPanes(xIndex)
@@ -6880,9 +6880,9 @@ Jump2:
             RebuildPanelArrays()
             ClearPanelBuffers()
             UpdateHorizontalScrollMetrics()
-            RefreshSplitterControls()
+            RefreshSplitViewControls()
         Finally
-            UpdatingSplitterControls = False
+            UpdatingSplitViewControls = False
         End Try
 
         If Me.Created Then RefreshPanelAll()
@@ -6900,7 +6900,7 @@ Jump2:
             xPane.Canvas.Tag = i
             xPane.VScroll.Tag = i
             xPane.HScroll.Tag = i
-            If xPane.Splitter IsNot Nothing Then xPane.Splitter.Tag = i
+            If xPane.SplitViewGrip IsNot Nothing Then xPane.SplitViewGrip.Tag = i
 
             spMain(i) = xPane.Canvas
             PanelWidth(i) = xPane.Container.Width
@@ -6911,14 +6911,14 @@ Jump2:
         UpdateVScrollMinimums()
     End Sub
 
-    Private Sub RefreshSplitterControls()
+    Private Sub RefreshSplitViewControls()
         Dim xCanRemove As Boolean = RightSplitPaneCount() > 0
         Dim xCanAdd As Boolean = CanAddRightSplitPane()
 
-        If TBAddSplitter IsNot Nothing Then TBAddSplitter.Enabled = xCanAdd
-        If mnSAddSplitter IsNot Nothing Then mnSAddSplitter.Enabled = xCanAdd
-        If TBRemoveSplitter IsNot Nothing Then TBRemoveSplitter.Enabled = xCanRemove
-        If mnSRemoveSplitter IsNot Nothing Then mnSRemoveSplitter.Enabled = xCanRemove
+        If TBAddSplitView IsNot Nothing Then TBAddSplitView.Enabled = xCanAdd
+        If mnSAddSplitView IsNot Nothing Then mnSAddSplitView.Enabled = xCanAdd
+        If TBRemoveSplitView IsNot Nothing Then TBRemoveSplitView.Enabled = xCanRemove
+        If mnSRemoveSplitView IsNot Nothing Then mnSRemoveSplitView.Enabled = xCanRemove
     End Sub
 
     Private Sub ApplySplitPaneFont(ByVal xFont As Font)
@@ -6999,14 +6999,14 @@ Jump2:
         Return Math.Max(0.0!, xRatio)
     End Function
 
-    Private Sub StoreVisibleSplitterRatios()
+    Private Sub StoreVisibleSplitViewRatios()
         For i As Integer = 1 To SplitPanes.Count - 1
             StoreSplitPanelRatio(i)
         Next
     End Sub
 
     Private Function GetSplitPanelRatiosSetting() As String
-        StoreVisibleSplitterRatios()
+        StoreVisibleSplitViewRatios()
 
         Dim xRatios As New List(Of String)
         For i As Integer = 1 To SplitPanes.Count - 1
@@ -7022,7 +7022,7 @@ Jump2:
         Loop
 
         If ratiosText.Length = 0 Then
-            RefreshSplitterControls()
+            RefreshSplitViewControls()
             Return
         End If
 
@@ -7038,35 +7038,35 @@ Jump2:
             AddRightSplitPane(xRatio, False)
         Next
 
-        RefreshSplitterControls()
+        RefreshSplitViewControls()
     End Sub
 
     Private Sub ResizeSplitPanelsByRatio() Handles ToolStripContainer1.ContentPanel.Resize
-        If UpdatingSplitterControls OrElse Not Me.Created Then Return
+        If UpdatingSplitViewControls OrElse Not Me.Created Then Return
         If GetSplitLayoutWidth() <= 0 Then Return
 
-        UpdatingSplitterControls = True
+        UpdatingSplitViewControls = True
         Try
             For i As Integer = 1 To SplitPanes.Count - 1
                 SplitPanes(i).Container.Width = GetSplitPanelWidth(i)
             Next
             RebuildPanelArrays()
             UpdateHorizontalScrollMetrics()
-            RefreshSplitterControls()
+            RefreshSplitViewControls()
         Finally
-            UpdatingSplitterControls = False
+            UpdatingSplitViewControls = False
         End Try
     End Sub
 
-    Private Sub SetSplitterScrollSync(ByVal enabled As Boolean)
-        UpdatingSplitterControls = True
+    Private Sub SetSplitViewScrollSync(ByVal enabled As Boolean)
+        UpdatingSplitViewControls = True
         Try
-            SyncSplitterScroll = enabled
-            If mnSyncSplitterScroll IsNot Nothing Then mnSyncSplitterScroll.Checked = enabled
-            If TBSyncSplitterScroll IsNot Nothing Then TBSyncSplitterScroll.Checked = enabled
+            SyncSplitViewScroll = enabled
+            If mnSyncSplitViewScroll IsNot Nothing Then mnSyncSplitViewScroll.Checked = enabled
+            If TBSyncSplitViewScroll IsNot Nothing Then TBSyncSplitViewScroll.Checked = enabled
             UpdateVScrollMinimums()
         Finally
-            UpdatingSplitterControls = False
+            UpdatingSplitViewControls = False
         End Try
 
     End Sub
@@ -7473,22 +7473,22 @@ case2:              Dim xI0 As Integer
 
     Private Sub HorizontalResizer_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles POptionsResizer.MouseDown, SpL.MouseDown, SpR.MouseDown
         tempResize = e.X
-        BeginSplitterDrag(TryCast(sender, Control), e)
+        BeginSplitViewDrag(TryCast(sender, Control), e)
     End Sub
 
-    Private Sub BeginSplitterDrag(ByVal xSplitter As Control, ByVal e As System.Windows.Forms.MouseEventArgs)
-        SplitterDrag = Nothing
+    Private Sub BeginSplitViewDrag(ByVal xSplitView As Control, ByVal e As System.Windows.Forms.MouseEventArgs)
+        SplitViewDrag = Nothing
 
         If e.Button <> Windows.Forms.MouseButtons.Left Then Return
-        If xSplitter Is Nothing OrElse Not TypeOf xSplitter Is TransparentSplitterGrip Then Return
+        If xSplitView Is Nothing OrElse Not TypeOf xSplitView Is TransparentSplitViewGrip Then Return
 
-        Dim panelIndex As Integer = CInt(xSplitter.Tag)
+        Dim panelIndex As Integer = CInt(xSplitView.Tag)
         If panelIndex <= MainPanelIndex OrElse panelIndex >= SplitPanes.Count Then Return
 
         Dim xPane As SplitPane = SplitPanes(panelIndex)
-        Dim xDrag As New SplitterDragInfo With {
+        Dim xDrag As New SplitViewDragInfo With {
             .PanelIndex = panelIndex,
-            .StartScreenX = xSplitter.PointToScreen(e.Location).X,
+            .StartScreenX = xSplitView.PointToScreen(e.Location).X,
             .StartWidth = xPane.Container.Width
         }
 
@@ -7497,19 +7497,19 @@ case2:              Dim xI0 As Integer
             xDrag.PairWidth = xLeftPane.Container.Width + xDrag.StartWidth
         End If
 
-        SplitterDrag = xDrag
-        xSplitter.Capture = True
+        SplitViewDrag = xDrag
+        xSplitView.Capture = True
     End Sub
 
-    Private Sub FinishSplitterDrag(ByVal xSplitter As Control)
-        Dim xWasDragging As Boolean = SplitterDrag IsNot Nothing
-        SplitterDrag = Nothing
+    Private Sub FinishSplitViewDrag(ByVal xSplitView As Control)
+        Dim xWasDragging As Boolean = SplitViewDrag IsNot Nothing
+        SplitViewDrag = Nothing
 
-        If xSplitter IsNot Nothing AndAlso xSplitter.Capture Then
-            xSplitter.Capture = False
+        If xSplitView IsNot Nothing AndAlso xSplitView.Capture Then
+            xSplitView.Capture = False
         End If
 
-        If xWasDragging Then RefreshSplitterControls()
+        If xWasDragging Then RefreshSplitViewControls()
     End Sub
 
     Private Sub POptionsResizer_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles POptionsResizer.MouseMove
@@ -7528,29 +7528,29 @@ case2:              Dim xI0 As Integer
         End Try
     End Sub
 
-    Private Sub Splitter_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
-        Dim xSplitter As Control = DirectCast(sender, Control)
+    Private Sub SplitView_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+        Dim xSplitView As Control = DirectCast(sender, Control)
         If e.Button <> Windows.Forms.MouseButtons.Left Then
-            FinishSplitterDrag(xSplitter)
+            FinishSplitViewDrag(xSplitView)
             Exit Sub
         End If
 
         Try
-            Dim panelIndex As Integer = CInt(xSplitter.Tag)
+            Dim panelIndex As Integer = CInt(xSplitView.Tag)
             If panelIndex <= MainPanelIndex OrElse panelIndex >= SplitPanes.Count Then Return
-            If SplitterDrag Is Nothing OrElse SplitterDrag.PanelIndex <> panelIndex Then BeginSplitterDrag(xSplitter, e)
-            If SplitterDrag Is Nothing Then Return
+            If SplitViewDrag Is Nothing OrElse SplitViewDrag.PanelIndex <> panelIndex Then BeginSplitViewDrag(xSplitView, e)
+            If SplitViewDrag Is Nothing Then Return
 
             Dim xPane As SplitPane = SplitPanes(panelIndex)
-            Dim xDelta As Integer = xSplitter.PointToScreen(e.Location).X - SplitterDrag.StartScreenX
-            Dim xWidth As Integer = SplitterDrag.StartWidth - xDelta
+            Dim xDelta As Integer = xSplitView.PointToScreen(e.Location).X - SplitViewDrag.StartScreenX
+            Dim xWidth As Integer = SplitViewDrag.StartWidth - xDelta
             Dim xChanged As Boolean = False
 
             ToolStripContainer1.ContentPanel.SuspendLayout()
             Try
                 If panelIndex > MainPanelIndex + 1 Then
                     Dim xLeftPane As SplitPane = SplitPanes(panelIndex - 1)
-                    Dim xPairWidth As Integer = SplitterDrag.PairWidth
+                    Dim xPairWidth As Integer = SplitViewDrag.PairWidth
                     Dim xMaxWidth As Integer = Math.Max(MinSplitPanelWidth, xPairWidth - MinSplitPanelWidth)
                     If xWidth < MinSplitPanelWidth Then xWidth = MinSplitPanelWidth
                     If xWidth > xMaxWidth Then xWidth = xMaxWidth
@@ -7584,15 +7584,15 @@ case2:              Dim xI0 As Integer
         End Try
     End Sub
 
-    Private Sub Splitter_MouseUp(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+    Private Sub SplitView_MouseUp(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         If e.Button <> Windows.Forms.MouseButtons.Left Then Return
 
-        FinishSplitterDrag(TryCast(sender, Control))
+        FinishSplitViewDrag(TryCast(sender, Control))
     End Sub
 
-    Private Sub Splitter_MouseCaptureChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Dim xSplitter As Control = TryCast(sender, Control)
-        If xSplitter IsNot Nothing AndAlso Not xSplitter.Capture Then FinishSplitterDrag(xSplitter)
+    Private Sub SplitView_MouseCaptureChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim xSplitView As Control = TryCast(sender, Control)
+        If xSplitView IsNot Nothing AndAlso Not xSplitView.Capture Then FinishSplitViewDrag(xSplitView)
     End Sub
 
     Private Sub SpR_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles SpR.MouseMove

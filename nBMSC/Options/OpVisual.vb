@@ -67,7 +67,7 @@ Public Class OpVisual
         cButtonChange(Me.cAdjustLengthBorder, vo.kMouseOverE.Color)
         cButtonChange(Me.cSelectionBox, vo.SelBox.Color)
         cButtonChange(Me.cTSCursor, vo.PECursor.Color)
-        cButtonChange(Me.cTSSplitter, vo.PEHalf.Color)
+        cButtonChange(Me.cTSSplitView, vo.PEHalf.Color)
         cButtonChange(Me.cTSMouseOver, vo.PEMouseOver.Color)
         cButtonChange(Me.cTSSelectionFill, vo.PESel.Color)
         cButtonChange(Me.cTSBPM, vo.PEBPM.Color)
@@ -276,7 +276,7 @@ Public Class OpVisual
         vo.kMouseOverE.Color = Me.cAdjustLengthBorder.BackColor
         vo.SelBox.Color = Me.cSelectionBox.BackColor
         vo.PECursor.Color = Me.cTSCursor.BackColor
-        vo.PEHalf.Color = Me.cTSSplitter.BackColor
+        vo.PEHalf.Color = Me.cTSSplitView.BackColor
         vo.PEMouseOver.Color = Me.cTSMouseOver.BackColor
         vo.PESel.Color = Me.cTSSelectionFill.BackColor
         vo.PEBPM.Color = Me.cTSBPM.BackColor
@@ -394,7 +394,7 @@ Public Class OpVisual
         Label23.Text = Strings.fopVisual.NoteBorderOnAdjustingLength
         Label31.Text = Strings.fopVisual.SelectionBoxBorder
         Label98.Text = Strings.fopVisual.TSCursor
-        Label97.Text = Strings.fopVisual.TSSplitter
+        Label97.Text = Strings.fopVisual.TSSplitView
         Label96.Text = Strings.fopVisual.TSCursorSensitivity
         Label91.Text = Strings.fopVisual.TSMouseOverBorder
         Label86.Text = Strings.fopVisual.TSFill
@@ -630,7 +630,7 @@ Public Class OpVisual
             cAdjustLengthBorder.Click, _
             cSelectionBox.Click, _
             cTSCursor.Click, _
-            cTSSplitter.Click, _
+            cTSSplitView.Click, _
             cTSMouseOver.Click, _
             cTSSelectionFill.Click, _
             cTSBPM.Click

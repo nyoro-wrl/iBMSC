@@ -55,7 +55,7 @@
 			<PreviewOnClick>クリック時に音声プレビュー</PreviewOnClick>
 			<ShowFileName>ファイル名を表示</ShowFileName>
 			<ChangePlaySide>スクラッチ位置の変更</ChangePlaySide>
-			<SyncSplitterScroll>スプリッタ間のスクロールを同期</SyncSplitterScroll>
+			<SyncSplitViewScroll>画面分割のスクロールを同期</SyncSplitViewScroll>
 			<SlashGrid>スラッシュキーのGrid値</SlashGrid>
 			<GeneralOptions>一般オプション</GeneralOptions>
 			<VisualOptions>表示オプション</VisualOptions>
@@ -86,16 +86,16 @@
 		<Paste>貼り付け (Ctrl+V)</Paste>
 		<Find>検索 / 削除 / 置換 (Ctrl+F)</Find>
 		<Stat>統計 (Ctrl+T)</Stat>
-		<Conversion>オブジェ変換</Conversion>
+		<Conversion>ノート変換</Conversion>
 		<ErrorCheck>エラーチェック</ErrorCheck>
 		<PreviewOnClick>クリックしたものを音声プレビュー</PreviewOnClick>
 		<ShowFileName>ファイル名を表示</ShowFileName>
 		<ChangePlaySide>スクラッチ位置の変更</ChangePlaySide>
-		<LeftSplitter>左スプリッタ</LeftSplitter>
-		<RightSplitter>右スプリッタ</RightSplitter>
-		<AddSplitter>スプリッタを追加</AddSplitter>
-		<RemoveSplitter>スプリッタを削除</RemoveSplitter>
-		<SyncSplitterScroll>スプリッタ間のスクロールを同期</SyncSplitterScroll>
+		<LeftSplitView>左側の画面分割</LeftSplitView>
+		<RightSplitView>右側の画面分割</RightSplitView>
+		<AddSplitView>画面分割を追加</AddSplitView>
+		<RemoveSplitView>画面分割を削除</RemoveSplitView>
+		<SyncSplitViewScroll>画面分割のスクロールを同期</SyncSplitViewScroll>
 		<Undo>元に戻す (Ctrl+Z)</Undo>
 		<Redo>やり直し (Ctrl+Y)</Redo>
 		<NT>LN 入力モード - NoteTool/BMSE</NT>
@@ -114,7 +114,7 @@
 	</ToolBar>
 	<StatusBar>
 		<ColumnCaption>列の見出し</ColumnCaption>
-		<NoteIndex>オブジェのラベル</NoteIndex>
+		<NoteIndex>ノートのラベル</NoteIndex>
 		<MeasureIndex>小節番号</MeasureIndex>
 		<GridResolution>Grid 上の位置</GridResolution>
 		<ReducedResolution>Grid 上の位置（簡約化）</ReducedResolution>
@@ -122,12 +122,12 @@
 		<AbsolutePosition>絶対的な位置</AbsolutePosition>
 		<Length>長さ</Length>
 		<LongNote>ロングノート</LongNote>
-		<Hidden>不可視オブジェ</Hidden>
-		<LandMine>地雷オブジェ</LandMine>
+		<Hidden>不可視ノート</Hidden>
+		<LandMine>地雷ノート</LandMine>
 		<Error>エラー</Error>
 		<SelStart>開始位置</SelStart>
 		<SelLength>範囲の長さ</SelLength>
-		<SelSplit>スプリッタの位置</SelSplit>
+		<SelSplit>選択範囲の分割位置</SelSplit>
 		<Reverse>選択を逆転</Reverse>
 		<ByMultiple>倍</ByMultiple>
 		<ByValue>BPM</ByValue>
@@ -139,11 +139,11 @@
 			<ToolBar>ツールバー</ToolBar>
 			<OptionsPanel>オプションパネル</OptionsPanel>
 			<StatusBar>ステータスバー</StatusBar>
-			<LSplit>スプリッタ（左側）</LSplit>
-			<RSplit>スプリッタ（右側）</RSplit>
-			<AddSplitter>スプリッタを追加</AddSplitter>
-			<RemoveSplitter>スプリッタを削除</RemoveSplitter>
-			<CloseSplitter>スプリッタを閉じる</CloseSplitter>
+			<LSplitView>画面分割（左側）</LSplitView>
+			<RSplitView>画面分割（右側）</RSplitView>
+			<AddSplitView>画面分割を追加</AddSplitView>
+			<RemoveSplitView>画面分割を削除</RemoveSplitView>
+			<CloseSplitView>画面分割を閉じる</CloseSplitView>
 			<Grid>Grid</Grid>
 			<Sub>補助</Sub>
 			<BG>背景</BG>
@@ -171,20 +171,20 @@
 		</Theme>
 		<Convert>
 			<Long>→ ロングノート</Long>
-			<Short>→ ノーマルオブジェ</Short>
-			<LongShort>ロングノート ←→ ノーマルオブジェ</LongShort>
-			<Hidden>→ 不可視オブジェ</Hidden>
-			<Landmine>→ 地雷オブジェ</Landmine>
-			<Visible>→ 通常オブジェ</Visible>
-			<HiddenVisible>通常オブジェ ←→ 不可視オブジェ</HiddenVisible>
-			<NormalLandmine>通常オブジェ ←→ 地雷オブジェ</NormalLandmine>
-			<Relabel>オブジェ番号変更</Relabel>
+			<Short>→ 通常ノート</Short>
+			<LongShort>通常ノート ←→ ロングノート</LongShort>
+			<Hidden>→ 不可視ノート</Hidden>
+			<Landmine>→ 地雷ノート</Landmine>
+			<Visible>→ 通常ノート</Visible>
+			<HiddenVisible>通常ノート ←→ 不可視ノート</HiddenVisible>
+			<NormalLandmine>通常ノート ←→ 地雷ノート</NormalLandmine>
+			<Relabel>ノート番号変更</Relabel>
 			<Mirror>ミラー</Mirror>
 		</Convert>
 		<WAV>
 			<Base62>62進数に拡張</Base62>
 			<MultiSelection>複数選択する</MultiSelection>
-			<Synchronize>配置オブジェの定義を維持</Synchronize>
+			<Synchronize>配置ノートの定義を維持</Synchronize>
 			<Emptyfill>空定義を優先して埋める</Emptyfill>
 		</WAV>
 		<Beat>
@@ -237,7 +237,7 @@
 			<Title>Grid</Title>
 			<Snap>グリッドスナップ</Snap>
 			<BCols>BGM 列の最小数</BCols>
-			<DisableVertical>オブジェを縦移動させない</DisableVertical>
+			<DisableVertical>ノートを縦移動させない</DisableVertical>
 		</Grid>
 		<WaveForm>
 			<Title>BGM波形</Title>
@@ -280,9 +280,9 @@
 		<NegativeFactorError>因数は 0 より大きくなければなりません。</NegativeFactorError>
 		<NegativeDivisorError>除数は 0 より大きくなければなりません。</NegativeDivisorError>
 		<PreferencePostpone>設定は次回起動時から有効になります。</PreferencePostpone>
-		<EraserObsolete>削除ツールはオブジェ上を右クリックする方法に変更しました。</EraserObsolete>
+		<EraserObsolete>削除ツールはノート上を右クリックする方法に変更しました。</EraserObsolete>
 		<SaveWarning>警告：</SaveWarning>
-		<NoteOverlapError>オブジェの重なりがあります。最大 Grid を大きくすると解決するかもしれません。</NoteOverlapError>
+		<NoteOverlapError>ノートの重なりがあります。最大 Grid を大きくすると解決するかもしれません。</NoteOverlapError>
 		<BPMOverflowError>拡張 BPM の数が使用できる最大値を超えています。：</BPMOverflowError>
 		<STOPOverflowError>STOP の数が使用できる最大値を超えています。：</STOPOverflowError>
 		<SCROLLOverflowError>SCROLL の数が使用できる最大値を超えています。：</SCROLLOverflowError>
@@ -374,7 +374,7 @@ Release ページを開きますか？</UpdateVersionUnsupported>
 		<Title>表示オプション</Title>
 		<Width>幅</Width>
 		<Caption>見出し</Caption>
-		<Note>オブジェ</Note>
+		<Note>ノート</Note>
 		<Label>定義番号</Label>
 		<LongNote>ロングノート</LongNote>
 		<LongNoteLabel>ロングノートのラベル</LongNoteLabel>
@@ -387,19 +387,19 @@ Release ページを開きますか？</UpdateVersionUnsupported>
 		<VerticalLine>縦線</VerticalLine>
 		<MeasureBarLine>小節線</MeasureBarLine>
 		<BGMWaveform>BGM波形</BGMWaveform>
-		<NoteHeight>通常オブジェの高さ</NoteHeight>
-		<NoteLabel>通常オブジェのフォント</NoteLabel>
+		<NoteHeight>通常ノートの高さ</NoteHeight>
+		<NoteLabel>通常ノートのフォント</NoteLabel>
 		<MeasureLabel>小節番号のフォント</MeasureLabel>
 		<LabelVerticalShift>ラベルの垂直位置</LabelVerticalShift>
 		<LabelHorizontalShift>ラベルの水平位置</LabelHorizontalShift>
 		<LongNoteLabelHorizontalShift>ロングノートのラベルの水平位置</LongNoteLabelHorizontalShift>
-		<HiddenNoteOpacity>不可視オブジェの透明度</HiddenNoteOpacity>
-		<NoteBorderOnMouseOver>オブジェの枠（マウスオーバー時）</NoteBorderOnMouseOver>
-		<NoteBorderOnSelection>オブジェの枠（選択時）</NoteBorderOnSelection>
-		<NoteBorderOnAdjustingLength>オブジェの枠（長さ変更時）</NoteBorderOnAdjustingLength>
+		<HiddenNoteOpacity>不可視ノートの透明度</HiddenNoteOpacity>
+		<NoteBorderOnMouseOver>ノートの枠（マウスオーバー時）</NoteBorderOnMouseOver>
+		<NoteBorderOnSelection>ノートの枠（選択時）</NoteBorderOnSelection>
+		<NoteBorderOnAdjustingLength>ノートの枠（長さ変更時）</NoteBorderOnAdjustingLength>
 		<SelectionBoxBorder>選択編集の枠</SelectionBoxBorder>
 		<TSCursor>時間編集のカーソル</TSCursor>
-		<TSSplitter>時間編集のスプリッタ</TSSplitter>
+		<TSSplitView>時間編集の画面分割</TSSplitView>
 		<TSCursorSensitivity>時間編集のカーソルの感度</TSCursorSensitivity>
 		<TSMouseOverBorder>時間編集の枠（マウスオーバー）</TSMouseOverBorder>
 		<TSFill>時間編集の枠</TSFill>
@@ -435,7 +435,7 @@ Release ページを開きますか？</UpdateVersionUnsupported>
 		<UndoRedoMemoryLimit>Undo/Redo履歴メモリ上限</UndoRedoMemoryLimit>
 	</GeneralOptions>
 	<Find>
-		<NoteRange>対象オブジェ</NoteRange>
+		<NoteRange>対象ノート</NoteRange>
 		<MeasureRange>小節の範囲</MeasureRange>
 		<LabelRange>定義番号の範囲</LabelRange>
 		<ValueRange>値の範囲</ValueRange>

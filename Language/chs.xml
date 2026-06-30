@@ -52,7 +52,7 @@
 			<ErrorCheck>错误检查</ErrorCheck>
 			<PreviewOnClick>单击播放Key音</PreviewOnClick>
 			<ShowFileName>Note上显示文件名</ShowFileName>
-			<SyncSplitterScroll>同步分割器间滚动</SyncSplitterScroll>
+			<SyncSplitViewScroll>同步分屏间滚动</SyncSplitViewScroll>
 			<SlashGrid>斜杠键 Grid 值</SlashGrid>
 			<GeneralOptions>常规设置</GeneralOptions>
 			<VisualOptions>外观设置</VisualOptions>
@@ -87,11 +87,11 @@
 		<ErrorCheck>错误检查</ErrorCheck>
 		<PreviewOnClick>单击播放Key音</PreviewOnClick>
 		<ShowFileName>Note上显示文件名</ShowFileName>
-		<LeftSplitter>左分割器</LeftSplitter>
-		<RightSplitter>右分割器</RightSplitter>
-		<AddSplitter>添加分割器</AddSplitter>
-		<RemoveSplitter>删除分割器</RemoveSplitter>
-		<SyncSplitterScroll>同步分割器间滚动</SyncSplitterScroll>
+		<LeftSplitView>左侧分屏</LeftSplitView>
+		<RightSplitView>右侧分屏</RightSplitView>
+		<AddSplitView>添加分屏</AddSplitView>
+		<RemoveSplitView>删除分屏</RemoveSplitView>
+		<SyncSplitViewScroll>同步分屏间滚动</SyncSplitViewScroll>
 		<Undo>撤销 (Ctrl+Z)</Undo>
 		<Redo>重做 (Ctrl+Y)</Redo>
 		<NT>面条输入模式 - NoteTool/BMSE</NT>
@@ -134,10 +134,10 @@
 			<ToolBar>工具栏</ToolBar>
 			<OptionsPanel>设置面板</OptionsPanel>
 			<StatusBar>状态栏</StatusBar>
-			<LSplit>左分割器</LSplit>
-			<RSplit>右分割器</RSplit>
-			<AddSplitter>添加分割器</AddSplitter>
-			<RemoveSplitter>删除分割器</RemoveSplitter>
+			<LSplitView>左侧分屏</LSplitView>
+			<RSplitView>右侧分屏</RSplitView>
+			<AddSplitView>添加分屏</AddSplitView>
+			<RemoveSplitView>删除分屏</RemoveSplitView>
 			<Grid>格线</Grid>
 			<Sub>格线加粗</Sub>
 			<BG>背景</BG>
@@ -165,7 +165,7 @@
 		<Convert>
 			<Long>→ 面条</Long>
 			<Short>→ 小米</Short>
-			<LongShort>面条 ↔ 小米</LongShort>
+			<LongShort>小米 ↔ 面条</LongShort>
 			<Hidden>→ 隐藏Note</Hidden>
 			<Landmine>→ 地雷Note</Landmine>
 			<Visible>→ 普通Note</Visible>
@@ -371,7 +371,7 @@
 		<NoteBorderOnAdjustingLength>调整Note长度时边框颜色</NoteBorderOnAdjustingLength>
 		<SelectionBoxBorder>选框</SelectionBoxBorder>
 		<TSCursor>（时间选择模式）光标</TSCursor>
-		<TSSplitter>（时间选择模式）分割</TSSplitter>
+		<TSSplitView>（时间选择模式）分屏</TSSplitView>
 		<TSCursorSensitivity>（时间选择模式）光标灵敏度</TSCursorSensitivity>
 		<TSMouseOverBorder>（时间选择模式）鼠标经过时边框</TSMouseOverBorder>
 		<TSFill>（时间选择模式）选区颜色</TSFill>

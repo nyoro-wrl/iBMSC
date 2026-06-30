@@ -230,8 +230,8 @@ Partial Class MainWindow
         Me.mnSTB = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSOP = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSStatus = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnSLSplitter = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnSRSplitter = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnSLSplitView = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnSRSplitView = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator21 = New System.Windows.Forms.ToolStripSeparator()
         Me.CGShow = New System.Windows.Forms.ToolStripMenuItem()
         Me.CGShowS = New System.Windows.Forms.ToolStripMenuItem()
@@ -2875,7 +2875,7 @@ Partial Class MainWindow
         '
         'mnSys
         '
-        Me.mnSys.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnSMenu, Me.mnSTB, Me.mnSOP, Me.mnSStatus, Me.mnSLSplitter, Me.mnSRSplitter, Me.ToolStripSeparator21, Me.CGShow, Me.CGShowS, Me.CGShowBG, Me.CGShowM, Me.CGShowMB, Me.CGShowV, Me.CGShowC, Me.ToolStripSeparator22, Me.CGBPM, Me.CGSTOP, Me.CGSCROLL, Me.CGBLP})
+        Me.mnSys.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnSMenu, Me.mnSTB, Me.mnSOP, Me.mnSStatus, Me.mnSLSplitView, Me.mnSRSplitView, Me.ToolStripSeparator21, Me.CGShow, Me.CGShowS, Me.CGShowBG, Me.CGShowM, Me.CGShowMB, Me.CGShowV, Me.CGShowC, Me.ToolStripSeparator22, Me.CGBPM, Me.CGSTOP, Me.CGSCROLL, Me.CGBLP})
         Me.mnSys.Name = "mnSys"
         Me.mnSys.Size = New System.Drawing.Size(44, 19)
         Me.mnSys.Text = "&View"
@@ -2917,19 +2917,19 @@ Partial Class MainWindow
         Me.mnSStatus.Size = New System.Drawing.Size(172, 22)
         Me.mnSStatus.Text = "&Status Bar"
         '
-        'mnSLSplitter
+        'mnSLSplitView
         '
-        Me.mnSLSplitter.CheckOnClick = True
-        Me.mnSLSplitter.Name = "mnSLSplitter"
-        Me.mnSLSplitter.Size = New System.Drawing.Size(172, 22)
-        Me.mnSLSplitter.Text = "&Left Splitter"
+        Me.mnSLSplitView.CheckOnClick = True
+        Me.mnSLSplitView.Name = "mnSLSplitView"
+        Me.mnSLSplitView.Size = New System.Drawing.Size(172, 22)
+        Me.mnSLSplitView.Text = "&Left Splitter"
         '
-        'mnSRSplitter
+        'mnSRSplitView
         '
-        Me.mnSRSplitter.CheckOnClick = True
-        Me.mnSRSplitter.Name = "mnSRSplitter"
-        Me.mnSRSplitter.Size = New System.Drawing.Size(172, 22)
-        Me.mnSRSplitter.Text = "&Right Splitter"
+        Me.mnSRSplitView.CheckOnClick = True
+        Me.mnSRSplitView.Name = "mnSRSplitView"
+        Me.mnSRSplitView.Size = New System.Drawing.Size(172, 22)
+        Me.mnSRSplitView.Text = "&Right Splitter"
         '
         'ToolStripSeparator21
         '
@@ -4338,8 +4338,8 @@ Partial Class MainWindow
     Friend WithEvents mnSTB As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnSOP As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnSStatus As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnSLSplitter As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnSRSplitter As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnSLSplitView As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnSRSplitView As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnNTInput As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TBLangRefresh As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CGSub As System.Windows.Forms.NumericUpDown

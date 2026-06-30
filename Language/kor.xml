@@ -55,7 +55,7 @@
 			<PreviewOnClick>노트 클릭하여 음원 미리듣기</PreviewOnClick>
 			<ShowFileName>파일명 표시</ShowFileName>
 			<ChangePlaySide>스크래치를 오른쪽에 표시</ChangePlaySide>
-			<SyncSplitterScroll>분할 화면 간 스크롤 동기화</SyncSplitterScroll>
+			<SyncSplitViewScroll>분할 화면 간 스크롤 동기화</SyncSplitViewScroll>
 			<SlashGrid>슬래시 키 Grid 값</SlashGrid>
 			<GeneralOptions>일반 옵션</GeneralOptions>
 			<VisualOptions>표시 옵션</VisualOptions>
@@ -91,11 +91,11 @@
 		<PreviewOnClick>노트를 클릭하여 음원 미리듣기</PreviewOnClick>
 		<ShowFileName>파일명 표시</ShowFileName>
 		<ChangePlaySide>스크래치를 오른쪽에 표시</ChangePlaySide>
-		<LeftSplitter>좌측 영역</LeftSplitter>
-		<RightSplitter>우측 영역</RightSplitter>
-		<AddSplitter>분할 화면 추가</AddSplitter>
-		<RemoveSplitter>분할 화면 삭제</RemoveSplitter>
-		<SyncSplitterScroll>분할 화면 간 스크롤 동기화</SyncSplitterScroll>
+		<LeftSplitView>좌측 분할 화면</LeftSplitView>
+		<RightSplitView>우측 분할 화면</RightSplitView>
+		<AddSplitView>분할 화면 추가</AddSplitView>
+		<RemoveSplitView>분할 화면 삭제</RemoveSplitView>
+		<SyncSplitViewScroll>분할 화면 간 스크롤 동기화</SyncSplitViewScroll>
 		<Undo>실행취소 (Ctrl+Z)</Undo>
 		<Redo>다시실행 (Ctrl+Y)</Redo>
 		<NT>롱노트 입력모드 - NoteTool/BMSE</NT>
@@ -138,10 +138,10 @@
 			<ToolBar>툴바</ToolBar>
 			<OptionsPanel>옵션 영역</OptionsPanel>
 			<StatusBar>상황 표시줄</StatusBar>
-			<LSplit>좌측 영역</LSplit>
-			<RSplit>우측 영역 </RSplit>
-			<AddSplitter>분할 화면 추가</AddSplitter>
-			<RemoveSplitter>분할 화면 삭제</RemoveSplitter>
+			<LSplitView>좌측 분할 화면</LSplitView>
+			<RSplitView>우측 분할 화면</RSplitView>
+			<AddSplitView>분할 화면 추가</AddSplitView>
+			<RemoveSplitView>분할 화면 삭제</RemoveSplitView>
 			<Grid>격자</Grid>
 			<Sub>보조격자</Sub>
 			<BG>배경</BG>
@@ -169,7 +169,7 @@
 		<Convert>
 			<Long>롱노트화</Long>
 			<Short>일반노트화</Short>
-			<LongShort>롱노트↔일반노트</LongShort>
+			<LongShort>일반노트↔롱노트</LongShort>
 			<Hidden>노트숨기기</Hidden>
 			<Landmine>지뢰노트</Landmine>
 			<Visible>일반노트</Visible>
@@ -393,7 +393,7 @@ Release 페이지를 여시겠습니까?</UpdateVersionUnsupported>
 		<NoteBorderOnAdjustingLength>조정중</NoteBorderOnAdjustingLength>
 		<SelectionBoxBorder>선택 편집 창</SelectionBoxBorder>
 		<TSCursor>시간편집 커서</TSCursor>
-		<TSSplitter>시간편집 영역</TSSplitter>
+		<TSSplitView>시간편집 분할 화면</TSSplitView>
 		<TSCursorSensitivity>시간편집 커서 감도</TSCursorSensitivity>
 		<TSMouseOverBorder>시간노트 테두리 (마우스 위)</TSMouseOverBorder>
 		<TSFill>시간 편집 창</TSFill>
