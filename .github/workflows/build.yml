@@ -1,0 +1,60 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find MSBuild
+        id: msbuild
+        shell: pwsh
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find 'MSBuild\**\Bin\MSBuild.exe' | Select-Object -First 1
+          if (-not $msbuild) {
+            throw 'MSBuild was not found.'
+          }
+
+          "path=$msbuild" >> $env:GITHUB_OUTPUT
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        shell: pwsh
+        run: |
+          nuget restore nBMSC.sln
+
+      - name: Build Release
+        shell: pwsh
+        run: |
+          & '${{ steps.msbuild.outputs.path }}' nBMSC.sln /t:Rebuild /p:Configuration=Release
+
+      - name: Verify Release output
+        shell: pwsh
+        run: |
+          $exePath = 'src/bin/Release/nBMSC.exe'
+          if (-not (Test-Path $exePath)) {
+            throw "Release executable was not found: $exePath"
+          }
+
+          $themePath = 'src/bin/Release/Theme'
+          if (-not (Test-Path $themePath)) {
+            throw "Theme directory was not found: $themePath"
+          }
+
+      - name: Run tests
+        shell: pwsh
+        run: |
+          & 'tests/nBMSC.Tests/bin/Release/nBMSC.Tests.exe'

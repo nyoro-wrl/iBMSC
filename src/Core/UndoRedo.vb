@@ -132,7 +132,7 @@ Public Class UndoRedo
             Dim bw As New BinaryWriter(ms)
             WriteBinWriter(bw)
 
-            Return ms.GetBuffer()
+            Return ms.ToArray()
         End Function
 
         Public Overrides Function EstimateBytes() As Long
@@ -176,11 +176,11 @@ Public Class UndoRedo
         Public NNote As Note
 
         Public Overrides Function toBytes() As Byte()
-            Dim ms = New MemoryStream(MyBase.toBytes)
+            Dim ms = New MemoryStream()
             Dim bw = New BinaryWriter(ms)
             WriteBinWriter(bw)
             NNote.WriteBinWriter(bw)
-            Return ms.GetBuffer()
+            Return ms.ToArray()
         End Function
 
         Public Overrides Function EstimateBytes() As Long
@@ -216,7 +216,7 @@ Public Class UndoRedo
             bw.Write(NColumnIndex)
             bw.Write(NVPosition)
 
-            Return ms.GetBuffer()
+            Return ms.ToArray()
         End Function
 
         Public Overrides Function EstimateBytes() As Long
@@ -254,7 +254,7 @@ Public Class UndoRedo
             bw.Write(NVPosition)
             bw.Write(NLongNote)
 
-            Return ms.GetBuffer()
+            Return ms.ToArray()
         End Function
 
         Public Overrides Function EstimateBytes() As Long
@@ -264,8 +264,8 @@ Public Class UndoRedo
         Public Sub New(ByVal b() As Byte)
             Dim br = New BinaryReader(New MemoryStream(b))
             FromBinaryReader(br)
-            NLongNote = br.ReadDouble()
             NVPosition = br.ReadDouble()
+            NLongNote = br.ReadDouble()
         End Sub
 
         Public Sub New(_note As Note, ByVal xNVPosition As Double, ByVal xNLongNote As Double)
@@ -289,7 +289,7 @@ Public Class UndoRedo
             Dim bw = New BinaryWriter(MS)
             WriteBinWriter(bw)
             bw.Write(NHidden)
-            Return MS.GetBuffer()
+            Return MS.ToArray()
         End Function
 
         Public Overrides Function EstimateBytes() As Long
@@ -322,7 +322,7 @@ Public Class UndoRedo
             Dim bw = New BinaryWriter(MS)
             WriteBinWriter(bw)
             bw.Write(NLandmine)
-            Return MS.GetBuffer()
+            Return MS.ToArray()
         End Function
 
         Public Overrides Function EstimateBytes() As Long
@@ -358,7 +358,7 @@ Public Class UndoRedo
             WriteBinWriter(bw)
             bw.Write(NValue)
 
-            Return ms.GetBuffer()
+            Return ms.ToArray()
         End Function
 
         Public Overrides Function EstimateBytes() As Long
@@ -434,8 +434,8 @@ Public Class UndoRedo
             Value = BitConverter.ToDouble(b, 1)
             Dim xUbound As Integer = BitConverter.ToInt32(b, 9)
             ReDim Preserve Indices(xUbound)
-            For xI1 As Integer = 13 To xUbound Step 4
-                Indices((xI1 - 13) \ 4) = BitConverter.ToInt32(b, xI1)
+            For xI1 As Integer = 0 To xUbound
+                Indices(xI1) = BitConverter.ToInt32(b, 13 + xI1 * 4)
             Next
         End Sub
 
@@ -461,7 +461,7 @@ Public Class UndoRedo
         Public Overrides Function toBytes() As Byte()
             Dim xSta() As Byte = BitConverter.GetBytes(SelStart)
             Dim xLen() As Byte = BitConverter.GetBytes(SelLength)
-            Dim xHalf() As Byte = BitConverter.GetBytes(SelLength)
+            Dim xHalf() As Byte = BitConverter.GetBytes(SelHalf)
             toBytes = New Byte() {opChangeTimeSelection,
                                   xSta(0), xSta(1), xSta(2), xSta(3), xSta(4), xSta(5), xSta(6), xSta(7),
                                   xLen(0), xLen(1), xLen(2), xLen(3), xLen(4), xLen(5), xLen(6), xLen(7),
@@ -576,7 +576,7 @@ Public Class UndoRedo
             bw.Write(Index)
             bw.Write(Value)
 
-            Return ms.GetBuffer()
+            Return ms.ToArray()
         End Function
 
         Public Overrides Function EstimateBytes() As Long

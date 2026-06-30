@@ -55,7 +55,7 @@
             Dim bw As New BinaryWriter(MS)
             WriteBinWriter(bw)
 
-            Return MS.GetBuffer()
+            Return MS.ToArray()
         End Function
 
         Friend Sub WriteBinWriter(ByRef bw As BinaryWriter)
