@@ -1,0 +1,1187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Encoding.Auto" xml:space="preserve">
+    <value>자동 판정</value>
+  </data>
+  <data name="Encoding.ReloadWithEncoding" xml:space="preserve">
+    <value>문자코드를 지정해서 다시 읽기</value>
+  </data>
+  <data name="Encoding.SystemDefault" xml:space="preserve">
+    <value>시스템 기본값</value>
+  </data>
+  <data name="FileAssociation.BME" xml:space="preserve">
+    <value>Be-Music Extended Format</value>
+  </data>
+  <data name="FileAssociation.BML" xml:space="preserve">
+    <value>Be-Music Longnote Format</value>
+  </data>
+  <data name="FileAssociation.BMS" xml:space="preserve">
+    <value>Be-Music Source</value>
+  </data>
+  <data name="FileAssociation.NBMSC" xml:space="preserve">
+    <value>nBMSC Format</value>
+  </data>
+  <data name="FileAssociation.Open" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="FileAssociation.PMS" xml:space="preserve">
+    <value>Po-Mu Script</value>
+  </data>
+  <data name="FileAssociation.Preview" xml:space="preserve">
+    <value>재생</value>
+  </data>
+  <data name="FileAssociation.ViewCode" xml:space="preserve">
+    <value>스크립트 보기</value>
+  </data>
+  <data name="FileType._all" xml:space="preserve">
+    <value>모든 파일 (*.*)</value>
+  </data>
+  <data name="FileType._audio" xml:space="preserve">
+    <value>사용 가능한 오디오파일(*.wav, *.ogg, *.mp3, *.mid)</value>
+  </data>
+  <data name="FileType._bms" xml:space="preserve">
+    <value>BMS 파일(*.bms, *.bme, *.bml, *.pms, *.txt)</value>
+  </data>
+  <data name="FileType._image" xml:space="preserve">
+    <value>사용 가능한 그림 파일 (*.png, *.bmp, *.jpg, *.gif)</value>
+  </data>
+  <data name="FileType._movie" xml:space="preserve">
+    <value>사용 가능한 동영상 파일 (*.mpg, *.avi, *.mp4, *.wmv, *.webm)</value>
+  </data>
+  <data name="FileType._wave" xml:space="preserve">
+    <value>사용 가능한 음원 파일(*.wav, *.ogg, *.mp3)</value>
+  </data>
+  <data name="FileType.AVI" xml:space="preserve">
+    <value>Audio Video Interleave (*.avi)</value>
+  </data>
+  <data name="FileType.BME" xml:space="preserve">
+    <value>Be-Music Extended Format (*.bme)</value>
+  </data>
+  <data name="FileType.BML" xml:space="preserve">
+    <value>Be-Music Longnote Format (*.bml)</value>
+  </data>
+  <data name="FileType.BMP" xml:space="preserve">
+    <value>Windows bitmap image (*.bmp)</value>
+  </data>
+  <data name="FileType.BMS" xml:space="preserve">
+    <value>Be-Music Source (*.bms)</value>
+  </data>
+  <data name="FileType.EXE" xml:space="preserve">
+    <value>실행 파일 (*.exe)</value>
+  </data>
+  <data name="FileType.FLAC" xml:space="preserve">
+    <value>Free Lossless Audio (*.flac)</value>
+  </data>
+  <data name="FileType.GIF" xml:space="preserve">
+    <value>Graphics Interchange Format (*.gif)</value>
+  </data>
+  <data name="FileType.JPG" xml:space="preserve">
+    <value>Joint Photographic Experts Group (*.jpg)</value>
+  </data>
+  <data name="FileType.MID" xml:space="preserve">
+    <value>MIDI files (*.mid)</value>
+  </data>
+  <data name="FileType.MP3" xml:space="preserve">
+    <value>MPEG Layer-3 Audio (*.mp3)</value>
+  </data>
+  <data name="FileType.MP4" xml:space="preserve">
+    <value>MPEG phase 4 (*.mp4)</value>
+  </data>
+  <data name="FileType.MPG" xml:space="preserve">
+    <value>Moving Picture Experts Group (*.mpg)</value>
+  </data>
+  <data name="FileType.NBMSC" xml:space="preserve">
+    <value>nBMSC 바이너리 포맷 (*.nbmsc)</value>
+  </data>
+  <data name="FileType.OGG" xml:space="preserve">
+    <value>Ogg Vorbis Audio (*.ogg)</value>
+  </data>
+  <data name="FileType.PMS" xml:space="preserve">
+    <value>Po-Mu Script (*.pms)</value>
+  </data>
+  <data name="FileType.PNG" xml:space="preserve">
+    <value>Portable Network Graphic (*.png)</value>
+  </data>
+  <data name="FileType.THEME_XML" xml:space="preserve">
+    <value>nBMSC 테마 (*.xml)</value>
+  </data>
+  <data name="FileType.TXT" xml:space="preserve">
+    <value>텍스트 파일 (*.txt)</value>
+  </data>
+  <data name="FileType.WAV" xml:space="preserve">
+    <value>Waveform Audio (*.wav)</value>
+  </data>
+  <data name="FileType.WEBM" xml:space="preserve">
+    <value>WebM (*.webm)</value>
+  </data>
+  <data name="FileType.WMV" xml:space="preserve">
+    <value>Windows Media Video (*.wmv)</value>
+  </data>
+  <data name="FileType.XML" xml:space="preserve">
+    <value>XML files (*.xml)</value>
+  </data>
+  <data name="Find.Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Find.Column" xml:space="preserve">
+    <value>열</value>
+  </data>
+  <data name="Find.Delete" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Find.Hidden" xml:space="preserve">
+    <value>숨기기</value>
+  </data>
+  <data name="Find.LabelRange" xml:space="preserve">
+    <value>번호 범위</value>
+  </data>
+  <data name="Find.LongNote" xml:space="preserve">
+    <value>롱</value>
+  </data>
+  <data name="Find.MeasureRange" xml:space="preserve">
+    <value>마디 범위</value>
+  </data>
+  <data name="Find.NoteRange" xml:space="preserve">
+    <value>대상 노트</value>
+  </data>
+  <data name="Find.Operation" xml:space="preserve">
+    <value>작업</value>
+  </data>
+  <data name="Find.ReplaceWithLabel" xml:space="preserve">
+    <value>번호 바꾸기 : </value>
+  </data>
+  <data name="Find.ReplaceWithValue" xml:space="preserve">
+    <value>찾아 바꾸기 : </value>
+  </data>
+  <data name="Find.Select" xml:space="preserve">
+    <value>선택</value>
+  </data>
+  <data name="Find.SelectAll" xml:space="preserve">
+    <value>모두 선택</value>
+  </data>
+  <data name="Find.Selected" xml:space="preserve">
+    <value>선택</value>
+  </data>
+  <data name="Find.SelectInverse" xml:space="preserve">
+    <value>선택 전환</value>
+  </data>
+  <data name="Find.ShortNote" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Find.to" xml:space="preserve">
+    <value>~</value>
+  </data>
+  <data name="Find.Unselect" xml:space="preserve">
+    <value>선택 취소</value>
+  </data>
+  <data name="Find.UnselectAll" xml:space="preserve">
+    <value>모두 선택 취소</value>
+  </data>
+  <data name="Find.UnSelected" xml:space="preserve">
+    <value>미선택</value>
+  </data>
+  <data name="Find.ValueRange" xml:space="preserve">
+    <value>값 범위</value>
+  </data>
+  <data name="Find.Visible" xml:space="preserve">
+    <value>보이기</value>
+  </data>
+  <data name="GeneralOptions.AssociateFileType" xml:space="preserve">
+    <value>파일 확장자</value>
+  </data>
+  <data name="GeneralOptions.AutoFocusOnMouseEnter" xml:space="preserve">
+    <value>마우스가 편집영역에 들어가면 자동으로 포커스</value>
+  </data>
+  <data name="GeneralOptions.AutoSave" xml:space="preserve">
+    <value>자동저장</value>
+  </data>
+  <data name="GeneralOptions.BeepWhileSaved" xml:space="preserve">
+    <value>저장할 때 효과음 출력</value>
+  </data>
+  <data name="GeneralOptions.BPMDefinitionMode" xml:space="preserve">
+    <value>BPM 정의 수</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeBase36" xml:space="preserve">
+    <value>36진수（01～ZZ）</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeBase62" xml:space="preserve">
+    <value>62진수（01～zz）</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeDefault" xml:space="preserve">
+    <value>기본（01～FF）</value>
+  </data>
+  <data name="GeneralOptions.DisableFirstClick" xml:space="preserve">
+    <value>포커스가 없으면 클릭을 비활성화 합니다.</value>
+  </data>
+  <data name="GeneralOptions.InputTextEncoding" xml:space="preserve">
+    <value>읽기 문자코드</value>
+  </data>
+  <data name="GeneralOptions.LaneHighlight" xml:space="preserve">
+    <value>레인 하이라이트 표시</value>
+  </data>
+  <data name="GeneralOptions.MaxGridPartition" xml:space="preserve">
+    <value>BMS의 격자 최대 해상도</value>
+  </data>
+  <data name="GeneralOptions.MiddleButton" xml:space="preserve">
+    <value>휠 버튼 동작</value>
+  </data>
+  <data name="GeneralOptions.MiddleButtonAuto" xml:space="preserve">
+    <value>자동 스크롤</value>
+  </data>
+  <data name="GeneralOptions.MiddleButtonDrag" xml:space="preserve">
+    <value>드래그</value>
+  </data>
+  <data name="GeneralOptions.MinimumBGMLanes" xml:space="preserve">
+    <value>BGM 레인 최소 수</value>
+  </data>
+  <data name="GeneralOptions.minutes" xml:space="preserve">
+    <value>분</value>
+  </data>
+  <data name="GeneralOptions.MouseWheel" xml:space="preserve">
+    <value>마우스 휠 스크롤</value>
+  </data>
+  <data name="GeneralOptions.NewBMSUseBase62" xml:space="preserve">
+    <value>새 BMS에 62진수 사용</value>
+  </data>
+  <data name="GeneralOptions.OutputTextEncoding" xml:space="preserve">
+    <value>저장 문자코드</value>
+  </data>
+  <data name="GeneralOptions.PageUpDown" xml:space="preserve">
+    <value>PageUp / Down 스크롤</value>
+  </data>
+  <data name="GeneralOptions.SkipClippedMeasure" xml:space="preserve">
+    <value>잘려 보이는 마디를 건너뛰고 다음 마디부터 재생</value>
+  </data>
+  <data name="GeneralOptions.STOPDefinitionMode" xml:space="preserve">
+    <value>STOP 정의 수</value>
+  </data>
+  <data name="GeneralOptions.StopPreviewOnClick" xml:space="preserve">
+    <value>편집 패널을 클릭하면 미리보기를 중지</value>
+  </data>
+  <data name="GeneralOptions.Title" xml:space="preserve">
+    <value>일반 옵션</value>
+  </data>
+  <data name="GeneralOptions.UndoRedoMemoryLimit" xml:space="preserve">
+    <value>Undo/Redo 메모리 제한</value>
+  </data>
+  <data name="Menu.Conversion" xml:space="preserve">
+    <value>변환</value>
+  </data>
+  <data name="Menu.Edit.Copy" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="Menu.Edit.Cut" xml:space="preserve">
+    <value>잘라내기</value>
+  </data>
+  <data name="Menu.Edit.Delete" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Menu.Edit.Find" xml:space="preserve">
+    <value>찾기 / 삭제 / 교체</value>
+  </data>
+  <data name="Menu.Edit.GoToMeasure" xml:space="preserve">
+    <value>마디로 이동...</value>
+  </data>
+  <data name="Menu.Edit.Paste" xml:space="preserve">
+    <value>붙여넣기</value>
+  </data>
+  <data name="Menu.Edit.Redo" xml:space="preserve">
+    <value>다시실행</value>
+  </data>
+  <data name="Menu.Edit.SelectAll" xml:space="preserve">
+    <value>모두 선택</value>
+  </data>
+  <data name="Menu.Edit.SelectTool" xml:space="preserve">
+    <value>선택 모드</value>
+  </data>
+  <data name="Menu.Edit.Stat" xml:space="preserve">
+    <value>통계</value>
+  </data>
+  <data name="Menu.Edit.TimeSelectionTool" xml:space="preserve">
+    <value>시간 편집 모드</value>
+  </data>
+  <data name="Menu.Edit.Title" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="Menu.Edit.Undo" xml:space="preserve">
+    <value>실행취소</value>
+  </data>
+  <data name="Menu.Edit.WriteTool" xml:space="preserve">
+    <value>쓰기 모드</value>
+  </data>
+  <data name="Menu.File.ExportBMSON" xml:space="preserve">
+    <value>.BMSON 형식으로 내보내기</value>
+  </data>
+  <data name="Menu.File.ExportNBMSC" xml:space="preserve">
+    <value>.NBMSC 형식으로 내보내기</value>
+  </data>
+  <data name="Menu.File.ImportNBMSC" xml:space="preserve">
+    <value>.NBMSC 에서 가져오기</value>
+  </data>
+  <data name="Menu.File.New" xml:space="preserve">
+    <value>새로 만들기</value>
+  </data>
+  <data name="Menu.File.Open" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="Menu.File.Quit" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="Menu.File.Recent0" xml:space="preserve">
+    <value>최근 사용된 파일 #0</value>
+  </data>
+  <data name="Menu.File.Recent1" xml:space="preserve">
+    <value>최근 사용된 파일 #1</value>
+  </data>
+  <data name="Menu.File.Recent2" xml:space="preserve">
+    <value>최근 사용된 파일 #2</value>
+  </data>
+  <data name="Menu.File.Recent3" xml:space="preserve">
+    <value>최근 사용된 파일 #3</value>
+  </data>
+  <data name="Menu.File.Recent4" xml:space="preserve">
+    <value>최근 사용된 파일 #4</value>
+  </data>
+  <data name="Menu.File.Save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Menu.File.SaveAs" xml:space="preserve">
+    <value>다른 이름으로 저장</value>
+  </data>
+  <data name="Menu.File.Title" xml:space="preserve">
+    <value>파일</value>
+  </data>
+  <data name="Menu.Help.CheckUpdates" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
+  <data name="Menu.Help.CheckUpdatesOnStartup" xml:space="preserve">
+    <value>시작할 때 업데이트 확인</value>
+  </data>
+  <data name="Menu.Help.OpenAppFolder" xml:space="preserve">
+    <value>응용 프로그램 폴더 열기</value>
+  </data>
+  <data name="Menu.Help.Title" xml:space="preserve">
+    <value>도움말</value>
+  </data>
+  <data name="Menu.Options.ChangePlaySide" xml:space="preserve">
+    <value>스크래치를 오른쪽에 표시</value>
+  </data>
+  <data name="Menu.Options.ErrorCheck" xml:space="preserve">
+    <value>오류 검색</value>
+  </data>
+  <data name="Menu.Options.GeneralOptions" xml:space="preserve">
+    <value>일반 옵션</value>
+  </data>
+  <data name="Menu.Options.Language" xml:space="preserve">
+    <value>언어</value>
+  </data>
+  <data name="Menu.Options.NT" xml:space="preserve">
+    <value>롱노트 입력모드 - NT/BMSE</value>
+  </data>
+  <data name="Menu.Options.PlayerOptions" xml:space="preserve">
+    <value>구동기 옵션</value>
+  </data>
+  <data name="Menu.Options.PreviewOnClick" xml:space="preserve">
+    <value>노트 클릭하여 음원 미리듣기</value>
+  </data>
+  <data name="Menu.Options.ShowFileName" xml:space="preserve">
+    <value>파일명 표시</value>
+  </data>
+  <data name="Menu.Options.SlashGrid" xml:space="preserve">
+    <value>슬래시 키 Grid 값</value>
+  </data>
+  <data name="Menu.Options.SyncSplitViewScroll" xml:space="preserve">
+    <value>분할 화면 간 스크롤 동기화</value>
+  </data>
+  <data name="Menu.Options.Theme" xml:space="preserve">
+    <value>테마</value>
+  </data>
+  <data name="Menu.Options.Title" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="Menu.Options.VisualOptions" xml:space="preserve">
+    <value>표시 옵션</value>
+  </data>
+  <data name="Menu.Preview.PlayBegin" xml:space="preserve">
+    <value>처음부터 재생</value>
+  </data>
+  <data name="Menu.Preview.PlayHere" xml:space="preserve">
+    <value>지금부터 재생</value>
+  </data>
+  <data name="Menu.Preview.PlayStop" xml:space="preserve">
+    <value>정지</value>
+  </data>
+  <data name="Menu.Preview.Title" xml:space="preserve">
+    <value>프리뷰</value>
+  </data>
+  <data name="Menu.View.Title" xml:space="preserve">
+    <value>보기</value>
+  </data>
+  <data name="Messages.BPMOverflowError" xml:space="preserve">
+    <value>확장 BPM 값이 너무 큽니다. : </value>
+  </data>
+  <data name="Messages.CannotFind" xml:space="preserve">
+    <value>{}를 찾을 수 없습니다.</value>
+  </data>
+  <data name="Messages.EraserObsolete" xml:space="preserve">
+    <value>삭제도구는 노트를 마우스를 오른쪽 클릭하는 방법으로 변경했습니다.</value>
+  </data>
+  <data name="Messages.Err" xml:space="preserve">
+    <value>에러</value>
+  </data>
+  <data name="Messages.FileAssociationError" xml:space="preserve">
+    <value>관련 변경 오류 : </value>
+  </data>
+  <data name="Messages.FileAssociationPrompt" xml:space="preserve">
+    <value>nBMSC를 {} 파일의 기본 프로그램으로 하시겠습니까?</value>
+  </data>
+  <data name="Messages.GoToMeasureTitle" xml:space="preserve">
+    <value>마디로 이동</value>
+  </data>
+  <data name="Messages.InvalidLabel" xml:space="preserve">
+    <value>잘못된 번호입니다.</value>
+  </data>
+  <data name="Messages.NegativeDivisorError" xml:space="preserve">
+    <value>0으로 나눌 수 없습니다.</value>
+  </data>
+  <data name="Messages.NegativeFactorError" xml:space="preserve">
+    <value>0보다 커야합니다.</value>
+  </data>
+  <data name="Messages.NoteOverlapError" xml:space="preserve">
+    <value>노트가 겹쳐져 있습니다. 격자를 크게 하면 해결할 수 있습니다.</value>
+  </data>
+  <data name="Messages.PlayerNotFound" xml:space="preserve">
+    <value>사용할 소프트웨어를 찾을 수 없습니다.</value>
+  </data>
+  <data name="Messages.PleaseRespecifyPath" xml:space="preserve">
+    <value>프로그램의 위치를 확인해 주세요.</value>
+  </data>
+  <data name="Messages.PreviewDelError" xml:space="preserve">
+    <value>사용할 소프트웨어가 1개 이상 있어야 합니다.</value>
+  </data>
+  <data name="Messages.PromptEnter" xml:space="preserve">
+    <value>설정할 번호를 입력하세요.</value>
+  </data>
+  <data name="Messages.PromptEnterBPM" xml:space="preserve">
+    <value>BPM을 입력하세요.</value>
+  </data>
+  <data name="Messages.PromptEnterMeasure" xml:space="preserve">
+    <value>마디 번호를 입력하세요 (0-999).</value>
+  </data>
+  <data name="Messages.PromptEnterNumeric" xml:space="preserve">
+    <value>값을 입력하세요.</value>
+  </data>
+  <data name="Messages.PromptEnterSTOP" xml:space="preserve">
+    <value>STOP 시간을 입력하세요.</value>
+  </data>
+  <data name="Messages.PromptSlashValue" xml:space="preserve">
+    <value>슬래시키("/")를 누르면 격자를 이렇게 설정합니다.：</value>
+  </data>
+  <data name="Messages.RestoreAutosavedFile" xml:space="preserve">
+    <value>{} 자동으로 저장된 파일이 있습니다. 이걸로 되돌리시겠습니까?</value>
+  </data>
+  <data name="Messages.RestoreDefaultSettings" xml:space="preserve">
+    <value>설정을 초기화 하시겠습니까? : </value>
+  </data>
+  <data name="Messages.SavedFileWillContainErrors" xml:space="preserve">
+    <value>저장할 파일에 오류가 있습니다.</value>
+  </data>
+  <data name="Messages.SaveOnExit" xml:space="preserve">
+    <value>데이터가 변경됩니다. 저장하시겠습니까?</value>
+  </data>
+  <data name="Messages.SaveOnExit1" xml:space="preserve">
+    <value>종료할 때 저장할 것인지 묻기</value>
+  </data>
+  <data name="Messages.SaveOnExit2" xml:space="preserve">
+    <value>작업관리자에서 종료해도 저장할 것인지 묻기</value>
+  </data>
+  <data name="Messages.SaveWarning" xml:space="preserve">
+    <value>경고: </value>
+  </data>
+  <data name="Messages.STOPOverflowError" xml:space="preserve">
+    <value>STOP 노트가 너무 많습니다. : </value>
+  </data>
+  <data name="Messages.UpdateAvailable" xml:space="preserve">
+    <value>새 버전이 있습니다.
+현재: {0}
+최신: {1}</value>
+  </data>
+  <data name="Messages.UpdateCheckFailed" xml:space="preserve">
+    <value>업데이트를 확인할 수 없습니다.
+{0}</value>
+  </data>
+  <data name="Messages.UpdateCheckTitle" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
+  <data name="Messages.UpdateLater" xml:space="preserve">
+    <value>나중에</value>
+  </data>
+  <data name="Messages.UpdateLatest" xml:space="preserve">
+    <value>최신 버전을 사용 중입니다.
+현재: {0}
+최신: {1}</value>
+  </data>
+  <data name="Messages.UpdateOpenRelease" xml:space="preserve">
+    <value>Release 열기</value>
+  </data>
+  <data name="Messages.UpdateSkipVersion" xml:space="preserve">
+    <value>이 버전 건너뛰기</value>
+  </data>
+  <data name="Messages.UpdateVersionUnsupported" xml:space="preserve">
+    <value>버전을 비교할 수 없습니다.
+현재: {0}
+최신 Release: {1}
+Release 페이지를 여시겠습니까?</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="OptionsPanel.Beat" xml:space="preserve">
+    <value>마디</value>
+  </data>
+  <data name="OptionsPanel.Beat.Apply" xml:space="preserve">
+    <value>적용</value>
+  </data>
+  <data name="OptionsPanel.BMP.Title" xml:space="preserve">
+    <value>#BMP</value>
+  </data>
+  <data name="OptionsPanel.Expansion" xml:space="preserve">
+    <value>확장명령</value>
+  </data>
+  <data name="OptionsPanel.Grid.BCols" xml:space="preserve">
+    <value>BGM 최소 수</value>
+  </data>
+  <data name="OptionsPanel.Grid.DisableVertical" xml:space="preserve">
+    <value>수직위치 고정</value>
+  </data>
+  <data name="OptionsPanel.Grid.Snap" xml:space="preserve">
+    <value>격자 스냅</value>
+  </data>
+  <data name="OptionsPanel.Grid.Title" xml:space="preserve">
+    <value>격자</value>
+  </data>
+  <data name="OptionsPanel.Header.Artist" xml:space="preserve">
+    <value>아티스트명</value>
+  </data>
+  <data name="OptionsPanel.Header.BackBMP" xml:space="preserve">
+    <value>Back BMP</value>
+  </data>
+  <data name="OptionsPanel.Header.Banner" xml:space="preserve">
+    <value>배너</value>
+  </data>
+  <data name="OptionsPanel.Header.BPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="OptionsPanel.Header.Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty" xml:space="preserve">
+    <value>난이도</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty0" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OptionsPanel.Header.Difficulty1" xml:space="preserve">
+    <value>1 - EZ / Beginner</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty2" xml:space="preserve">
+    <value>2 - NM / Normal</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty3" xml:space="preserve">
+    <value>3 - HD / Hyper</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty4" xml:space="preserve">
+    <value>4 - MX / Another</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty5" xml:space="preserve">
+    <value>5 - SC / Insane</value>
+  </data>
+  <data name="OptionsPanel.Header.ExRank" xml:space="preserve">
+    <value>DefExRank</value>
+  </data>
+  <data name="OptionsPanel.Header.Genre" xml:space="preserve">
+    <value>장르</value>
+  </data>
+  <data name="OptionsPanel.Header.Header" xml:space="preserve">
+    <value>헤더</value>
+  </data>
+  <data name="OptionsPanel.Header.LandMine" xml:space="preserve">
+    <value>#WAV00</value>
+  </data>
+  <data name="OptionsPanel.Header.LnMode" xml:space="preserve">
+    <value>LN Mode</value>
+  </data>
+  <data name="OptionsPanel.Header.LnObj" xml:space="preserve">
+    <value>LnObj</value>
+  </data>
+  <data name="OptionsPanel.Header.MissBMP" xml:space="preserve">
+    <value>#BMP00</value>
+  </data>
+  <data name="OptionsPanel.Header.Player" xml:space="preserve">
+    <value>PLAYSTYLE</value>
+  </data>
+  <data name="OptionsPanel.Header.Player1" xml:space="preserve">
+    <value>SP</value>
+  </data>
+  <data name="OptionsPanel.Header.Player2" xml:space="preserve">
+    <value>2 Player</value>
+  </data>
+  <data name="OptionsPanel.Header.Player3" xml:space="preserve">
+    <value>DP / PMS</value>
+  </data>
+  <data name="OptionsPanel.Header.PlayLevel" xml:space="preserve">
+    <value>레벨</value>
+  </data>
+  <data name="OptionsPanel.Header.Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank" xml:space="preserve">
+    <value>판정 난이도</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank0" xml:space="preserve">
+    <value>0 - 매우 어려움</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank1" xml:space="preserve">
+    <value>1 - 어려움</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank2" xml:space="preserve">
+    <value>2 - 보통</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank3" xml:space="preserve">
+    <value>3 - 쉬움 (추천값)</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank4" xml:space="preserve">
+    <value>4 - 매우 쉬움</value>
+  </data>
+  <data name="OptionsPanel.Header.RecommendedTotal" xml:space="preserve">
+    <value>추천TOTAL</value>
+  </data>
+  <data name="OptionsPanel.Header.StageFile" xml:space="preserve">
+    <value>아이캐치</value>
+  </data>
+  <data name="OptionsPanel.Header.SubArtist" xml:space="preserve">
+    <value>서브 아티스트</value>
+  </data>
+  <data name="OptionsPanel.Header.SubTitle" xml:space="preserve">
+    <value>노래 부제</value>
+  </data>
+  <data name="OptionsPanel.Header.Title" xml:space="preserve">
+    <value>노래 제목</value>
+  </data>
+  <data name="OptionsPanel.Header.Total" xml:space="preserve">
+    <value>토탈값</value>
+  </data>
+  <data name="OptionsPanel.WAV.Browse" xml:space="preserve">
+    <value>가져오기</value>
+  </data>
+  <data name="OptionsPanel.WAV.MoveDown" xml:space="preserve">
+    <value>아래로</value>
+  </data>
+  <data name="OptionsPanel.WAV.MoveUp" xml:space="preserve">
+    <value>위로</value>
+  </data>
+  <data name="OptionsPanel.WAV.Remove" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="OptionsPanel.WAV.Title" xml:space="preserve">
+    <value>음원파일</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Clear" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Load" xml:space="preserve">
+    <value>불러오기</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Lock" xml:space="preserve">
+    <value>BGM 위치 고정</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Title" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="PlayerOptions.Add" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="PlayerOptions.CurrMeasure" xml:space="preserve">
+    <value>지금 마디</value>
+  </data>
+  <data name="PlayerOptions.DirectoryOfApp" xml:space="preserve">
+    <value>프로그램 위치</value>
+  </data>
+  <data name="PlayerOptions.FileName" xml:space="preserve">
+    <value>파일명</value>
+  </data>
+  <data name="PlayerOptions.Path" xml:space="preserve">
+    <value>패스</value>
+  </data>
+  <data name="PlayerOptions.PlayFromBeginning" xml:space="preserve">
+    <value>처음부터 재생</value>
+  </data>
+  <data name="PlayerOptions.PlayFromHere" xml:space="preserve">
+    <value>지금부터 재생</value>
+  </data>
+  <data name="PlayerOptions.References" xml:space="preserve">
+    <value>범례(대소문자구분) : </value>
+  </data>
+  <data name="PlayerOptions.Remove" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="PlayerOptions.RestoreDefault" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="PlayerOptions.StopPlaying" xml:space="preserve">
+    <value>정지</value>
+  </data>
+  <data name="PlayerOptions.Title" xml:space="preserve">
+    <value>재생 소프트웨어 설정</value>
+  </data>
+  <data name="Statistics.lA" xml:space="preserve">
+    <value>1P</value>
+  </data>
+  <data name="Statistics.lBGM" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="Statistics.lBPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="Statistics.lD" xml:space="preserve">
+    <value>2P</value>
+  </data>
+  <data name="Statistics.lErrors" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="Statistics.lHidden" xml:space="preserve">
+    <value>숨김놋</value>
+  </data>
+  <data name="Statistics.lLandMine" xml:space="preserve">
+    <value>지뢰놋</value>
+  </data>
+  <data name="Statistics.lLnObj" xml:space="preserve">
+    <value>롱노트끝</value>
+  </data>
+  <data name="Statistics.lLong" xml:space="preserve">
+    <value>롱노트</value>
+  </data>
+  <data name="Statistics.lSCROLL" xml:space="preserve">
+    <value>SCROLL</value>
+  </data>
+  <data name="Statistics.lShort" xml:space="preserve">
+    <value>노트</value>
+  </data>
+  <data name="Statistics.lSTOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="Statistics.lTotal" xml:space="preserve">
+    <value>합계</value>
+  </data>
+  <data name="Statistics.Title" xml:space="preserve">
+    <value>통계</value>
+  </data>
+  <data name="StatusBar.AbsolutePosition" xml:space="preserve">
+    <value>절대위치</value>
+  </data>
+  <data name="StatusBar.ByMultiple" xml:space="preserve">
+    <value>배</value>
+  </data>
+  <data name="StatusBar.ByValue" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="StatusBar.ColumnCaption" xml:space="preserve">
+    <value>열 머리</value>
+  </data>
+  <data name="StatusBar.Error" xml:space="preserve">
+    <value>에러</value>
+  </data>
+  <data name="StatusBar.GridResolution" xml:space="preserve">
+    <value>격자해상도</value>
+  </data>
+  <data name="StatusBar.Hidden" xml:space="preserve">
+    <value>투명 노트</value>
+  </data>
+  <data name="StatusBar.Length" xml:space="preserve">
+    <value>길이</value>
+  </data>
+  <data name="StatusBar.LongNote" xml:space="preserve">
+    <value>롱노트</value>
+  </data>
+  <data name="StatusBar.MeasureIndex" xml:space="preserve">
+    <value>섹션 지정</value>
+  </data>
+  <data name="StatusBar.MeasureResolution" xml:space="preserve">
+    <value>마디 해상도</value>
+  </data>
+  <data name="StatusBar.NoteIndex" xml:space="preserve">
+    <value>노트 라벨</value>
+  </data>
+  <data name="StatusBar.ReducedResolution" xml:space="preserve">
+    <value>격자해상도2</value>
+  </data>
+  <data name="StatusBar.Reverse" xml:space="preserve">
+    <value>선택 반전</value>
+  </data>
+  <data name="StatusBar.SelLength" xml:space="preserve">
+    <value>범위 길이</value>
+  </data>
+  <data name="StatusBar.SelSplit" xml:space="preserve">
+    <value>영역 위치</value>
+  </data>
+  <data name="StatusBar.SelStart" xml:space="preserve">
+    <value>시작점</value>
+  </data>
+  <data name="SubMenu.Beat.Absolute" xml:space="preserve">
+    <value>노트 위치 유지</value>
+  </data>
+  <data name="SubMenu.Beat.Cut" xml:space="preserve">
+    <value>다음 마디 잘라내기</value>
+  </data>
+  <data name="SubMenu.Beat.Measure" xml:space="preserve">
+    <value>다음 마디 유지</value>
+  </data>
+  <data name="SubMenu.Beat.Scale" xml:space="preserve">
+    <value>길이에 비례하여 배열</value>
+  </data>
+  <data name="SubMenu.Convert.Hidden" xml:space="preserve">
+    <value>노트숨기기</value>
+  </data>
+  <data name="SubMenu.Convert.HiddenVisible" xml:space="preserve">
+    <value>일반노트 ↔ 노트숨기기</value>
+  </data>
+  <data name="SubMenu.Convert.Landmine" xml:space="preserve">
+    <value>지뢰노트</value>
+  </data>
+  <data name="SubMenu.Convert.Long" xml:space="preserve">
+    <value>롱노트화</value>
+  </data>
+  <data name="SubMenu.Convert.LongShort" xml:space="preserve">
+    <value>일반노트↔롱노트</value>
+  </data>
+  <data name="SubMenu.Convert.Mirror" xml:space="preserve">
+    <value>좌우반전</value>
+  </data>
+  <data name="SubMenu.Convert.NormalLandmine" xml:space="preserve">
+    <value>일반노트 ↔ 지뢰노트</value>
+  </data>
+  <data name="SubMenu.Convert.Relabel" xml:space="preserve">
+    <value>노트번호 변경</value>
+  </data>
+  <data name="SubMenu.Convert.Short" xml:space="preserve">
+    <value>일반노트화</value>
+  </data>
+  <data name="SubMenu.Convert.Visible" xml:space="preserve">
+    <value>일반노트</value>
+  </data>
+  <data name="SubMenu.InsertMeasure.Insert" xml:space="preserve">
+    <value>1소절 삽입</value>
+  </data>
+  <data name="SubMenu.InsertMeasure.Remove" xml:space="preserve">
+    <value>소절 삭제</value>
+  </data>
+  <data name="SubMenu.ShowHide.AddSplitView" xml:space="preserve">
+    <value>분할 화면 추가</value>
+  </data>
+  <data name="SubMenu.ShowHide.BG" xml:space="preserve">
+    <value>배경</value>
+  </data>
+  <data name="SubMenu.ShowHide.BLP" xml:space="preserve">
+    <value>BGA / Layer / Poor</value>
+  </data>
+  <data name="SubMenu.ShowHide.BPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="SubMenu.ShowHide.ColumnCaption" xml:space="preserve">
+    <value>열 머리</value>
+  </data>
+  <data name="SubMenu.ShowHide.Grid" xml:space="preserve">
+    <value>격자</value>
+  </data>
+  <data name="SubMenu.ShowHide.LSplitView" xml:space="preserve">
+    <value>좌측 분할 화면</value>
+  </data>
+  <data name="SubMenu.ShowHide.MeasureIndex" xml:space="preserve">
+    <value>마디번호</value>
+  </data>
+  <data name="SubMenu.ShowHide.MeasureLine" xml:space="preserve">
+    <value>마디선</value>
+  </data>
+  <data name="SubMenu.ShowHide.Menu" xml:space="preserve">
+    <value>메인메뉴</value>
+  </data>
+  <data name="SubMenu.ShowHide.OptionsPanel" xml:space="preserve">
+    <value>옵션 영역</value>
+  </data>
+  <data name="SubMenu.ShowHide.RemoveSplitView" xml:space="preserve">
+    <value>분할 화면 삭제</value>
+  </data>
+  <data name="SubMenu.ShowHide.RSplitView" xml:space="preserve">
+    <value>우측 분할 화면</value>
+  </data>
+  <data name="SubMenu.ShowHide.StatusBar" xml:space="preserve">
+    <value>상황 표시줄</value>
+  </data>
+  <data name="SubMenu.ShowHide.STOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="SubMenu.ShowHide.Sub" xml:space="preserve">
+    <value>보조격자</value>
+  </data>
+  <data name="SubMenu.ShowHide.ToolBar" xml:space="preserve">
+    <value>툴바</value>
+  </data>
+  <data name="SubMenu.ShowHide.ToolTip" xml:space="preserve">
+    <value>표시/숨기기</value>
+  </data>
+  <data name="SubMenu.ShowHide.Vertical" xml:space="preserve">
+    <value>수직선</value>
+  </data>
+  <data name="SubMenu.Theme.Default" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="SubMenu.Theme.Refresh" xml:space="preserve">
+    <value>목록 새로고침</value>
+  </data>
+  <data name="SubMenu.Theme.Save" xml:space="preserve">
+    <value>테마 저장</value>
+  </data>
+  <data name="SubMenu.WAV.Base62" xml:space="preserve">
+    <value>62진수로 확장</value>
+  </data>
+  <data name="SubMenu.WAV.MultiSelection" xml:space="preserve">
+    <value>다중선택</value>
+  </data>
+  <data name="SubMenu.WAV.Synchronize" xml:space="preserve">
+    <value>노트정보 유지</value>
+  </data>
+  <data name="ToolBar.AddSplitView" xml:space="preserve">
+    <value>분할 화면 추가</value>
+  </data>
+  <data name="ToolBar.ChangePlaySide" xml:space="preserve">
+    <value>스크래치를 오른쪽에 표시</value>
+  </data>
+  <data name="ToolBar.Conversion" xml:space="preserve">
+    <value>오브젝트 변환 </value>
+  </data>
+  <data name="ToolBar.Copy" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="ToolBar.Cut" xml:space="preserve">
+    <value>잘라내기</value>
+  </data>
+  <data name="ToolBar.ErrorCheck" xml:space="preserve">
+    <value>오류 검색</value>
+  </data>
+  <data name="ToolBar.Find" xml:space="preserve">
+    <value>검색/삭제/교체</value>
+  </data>
+  <data name="ToolBar.GeneralOptions" xml:space="preserve">
+    <value>일반 옵션</value>
+  </data>
+  <data name="ToolBar.Grid" xml:space="preserve">
+    <value>격자</value>
+  </data>
+  <data name="ToolBar.GridHeight" xml:space="preserve">
+    <value>높이</value>
+  </data>
+  <data name="ToolBar.GridSub" xml:space="preserve">
+    <value>보조격자</value>
+  </data>
+  <data name="ToolBar.GridWidth" xml:space="preserve">
+    <value>폭</value>
+  </data>
+  <data name="ToolBar.Language" xml:space="preserve">
+    <value>언어</value>
+  </data>
+  <data name="ToolBar.LeftSplitView" xml:space="preserve">
+    <value>좌측 분할 화면</value>
+  </data>
+  <data name="ToolBar.New" xml:space="preserve">
+    <value>새로 만들기</value>
+  </data>
+  <data name="ToolBar.NT" xml:space="preserve">
+    <value>롱노트 입력모드 - NoteTool/BMSE</value>
+  </data>
+  <data name="ToolBar.Open" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="ToolBar.Paste" xml:space="preserve">
+    <value>붙여넣기</value>
+  </data>
+  <data name="ToolBar.PlayBegin" xml:space="preserve">
+    <value>처음부터 재생</value>
+  </data>
+  <data name="ToolBar.PlayerOptions" xml:space="preserve">
+    <value>재생 프로그램 </value>
+  </data>
+  <data name="ToolBar.PlayHere" xml:space="preserve">
+    <value>지금부터 재생</value>
+  </data>
+  <data name="ToolBar.PlayStop" xml:space="preserve">
+    <value>정지</value>
+  </data>
+  <data name="ToolBar.PreviewOnClick" xml:space="preserve">
+    <value>노트를 클릭하여 음원 미리듣기</value>
+  </data>
+  <data name="ToolBar.Redo" xml:space="preserve">
+    <value>다시실행</value>
+  </data>
+  <data name="ToolBar.RemoveSplitView" xml:space="preserve">
+    <value>분할 화면 삭제</value>
+  </data>
+  <data name="ToolBar.RightSplitView" xml:space="preserve">
+    <value>우측 분할 화면</value>
+  </data>
+  <data name="ToolBar.Save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="ToolBar.SelectTool" xml:space="preserve">
+    <value>편집모드</value>
+  </data>
+  <data name="ToolBar.ShowFileName" xml:space="preserve">
+    <value>파일명 표시</value>
+  </data>
+  <data name="ToolBar.Stat" xml:space="preserve">
+    <value>통계</value>
+  </data>
+  <data name="ToolBar.SyncSplitViewScroll" xml:space="preserve">
+    <value>분할 화면 간 스크롤 동기화</value>
+  </data>
+  <data name="ToolBar.Theme" xml:space="preserve">
+    <value>테마</value>
+  </data>
+  <data name="ToolBar.TimeSelectionTool" xml:space="preserve">
+    <value>시간편집모드</value>
+  </data>
+  <data name="ToolBar.Undo" xml:space="preserve">
+    <value>실행취소</value>
+  </data>
+  <data name="ToolBar.VisualOptions" xml:space="preserve">
+    <value>표시 옵션</value>
+  </data>
+  <data name="ToolBar.WavIncrease" xml:space="preserve">
+    <value>WAV 번호를 자동으로 다음으로 이동</value>
+  </data>
+  <data name="ToolBar.WriteTool" xml:space="preserve">
+    <value>쓰기모드</value>
+  </data>
+  <data name="VisualOptions.Background" xml:space="preserve">
+    <value>배경</value>
+  </data>
+  <data name="VisualOptions.Bg" xml:space="preserve">
+    <value>배경</value>
+  </data>
+  <data name="VisualOptions.BGMWaveform" xml:space="preserve">
+    <value>BGM 파형</value>
+  </data>
+  <data name="VisualOptions.Caption" xml:space="preserve">
+    <value>캡션</value>
+  </data>
+  <data name="VisualOptions.ColumnCaption" xml:space="preserve">
+    <value>열 머리</value>
+  </data>
+  <data name="VisualOptions.ColumnCaptionFont" xml:space="preserve">
+    <value>보기 폰트</value>
+  </data>
+  <data name="VisualOptions.Grid" xml:space="preserve">
+    <value>격자</value>
+  </data>
+  <data name="VisualOptions.HiddenNoteOpacity" xml:space="preserve">
+    <value>투명노트 투명도</value>
+  </data>
+  <data name="VisualOptions.Label" xml:space="preserve">
+    <value>채널</value>
+  </data>
+  <data name="VisualOptions.LabelHorizontalShift" xml:space="preserve">
+    <value>라벨 수평위치</value>
+  </data>
+  <data name="VisualOptions.LabelVerticalShift" xml:space="preserve">
+    <value>라벨 수직위치</value>
+  </data>
+  <data name="VisualOptions.LongNote" xml:space="preserve">
+    <value>롱노트</value>
+  </data>
+  <data name="VisualOptions.LongNoteLabel" xml:space="preserve">
+    <value>롱노트채널</value>
+  </data>
+  <data name="VisualOptions.LongNoteLabelHorizontalShift" xml:space="preserve">
+    <value>롱노트 라벨 수평위치</value>
+  </data>
+  <data name="VisualOptions.MeasureBarLine" xml:space="preserve">
+    <value>마디선</value>
+  </data>
+  <data name="VisualOptions.MeasureLabel" xml:space="preserve">
+    <value>마디번호 글꼴</value>
+  </data>
+  <data name="VisualOptions.MiddleSensitivity" xml:space="preserve">
+    <value>휠버튼 (KeyUp) 수준</value>
+  </data>
+  <data name="VisualOptions.Note" xml:space="preserve">
+    <value>노트</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnAdjustingLength" xml:space="preserve">
+    <value>조정중</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnMouseOver" xml:space="preserve">
+    <value>노트 테두리 - 마우스 위 </value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnSelection" xml:space="preserve">
+    <value>선택</value>
+  </data>
+  <data name="VisualOptions.NoteHeight" xml:space="preserve">
+    <value>일반노트 높이</value>
+  </data>
+  <data name="VisualOptions.NoteLabel" xml:space="preserve">
+    <value>일반노트 글꼴</value>
+  </data>
+  <data name="VisualOptions.SelectionBoxBorder" xml:space="preserve">
+    <value>선택 편집 창</value>
+  </data>
+  <data name="VisualOptions.SubGrid" xml:space="preserve">
+    <value>보조격자</value>
+  </data>
+  <data name="VisualOptions.Title" xml:space="preserve">
+    <value>표시 옵션</value>
+  </data>
+  <data name="VisualOptions.TSBPM" xml:space="preserve">
+    <value>시간 편집 BPM</value>
+  </data>
+  <data name="VisualOptions.TSBPMFont" xml:space="preserve">
+    <value>시간 편집 BPM 글꼴</value>
+  </data>
+  <data name="VisualOptions.TSCursor" xml:space="preserve">
+    <value>시간편집 커서</value>
+  </data>
+  <data name="VisualOptions.TSCursorSensitivity" xml:space="preserve">
+    <value>시간편집 커서 감도</value>
+  </data>
+  <data name="VisualOptions.TSFill" xml:space="preserve">
+    <value>시간 편집 창</value>
+  </data>
+  <data name="VisualOptions.TSMouseOverBorder" xml:space="preserve">
+    <value>시간노트 테두리 (마우스 위)</value>
+  </data>
+  <data name="VisualOptions.TSSplitView" xml:space="preserve">
+    <value>시간편집 분할 화면</value>
+  </data>
+  <data name="VisualOptions.VerticalLine" xml:space="preserve">
+    <value>수직선</value>
+  </data>
+  <data name="VisualOptions.Width" xml:space="preserve">
+    <value>폭</value>
+  </data>
+</root>

@@ -1,0 +1,1208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Encoding.Auto" xml:space="preserve">
+    <value>自動判定</value>
+  </data>
+  <data name="Encoding.ReloadWithEncoding" xml:space="preserve">
+    <value>文字コードを指定して再読み込み</value>
+  </data>
+  <data name="Encoding.SystemDefault" xml:space="preserve">
+    <value>System ANSI</value>
+  </data>
+  <data name="FileAssociation.BME" xml:space="preserve">
+    <value>Be-Music Extended Format</value>
+  </data>
+  <data name="FileAssociation.BML" xml:space="preserve">
+    <value>Be-Music Longnote Format</value>
+  </data>
+  <data name="FileAssociation.BMS" xml:space="preserve">
+    <value>Be-Music Source</value>
+  </data>
+  <data name="FileAssociation.NBMSC" xml:space="preserve">
+    <value>nBMSC Format</value>
+  </data>
+  <data name="FileAssociation.Open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="FileAssociation.PMS" xml:space="preserve">
+    <value>Po-Mu Script</value>
+  </data>
+  <data name="FileAssociation.Preview" xml:space="preserve">
+    <value>再生</value>
+  </data>
+  <data name="FileAssociation.ViewCode" xml:space="preserve">
+    <value>コードを見る</value>
+  </data>
+  <data name="FileType._all" xml:space="preserve">
+    <value>すべてのファイル (*.*)</value>
+  </data>
+  <data name="FileType._audio" xml:space="preserve">
+    <value>使用可能な音楽ファイル (*.wav, *.ogg, *.mp3, *.flac, *.mid)</value>
+  </data>
+  <data name="FileType._bms" xml:space="preserve">
+    <value>使用可能な BMS Format (*.bms, *.bme, *.bml, *.pms, *.txt)</value>
+  </data>
+  <data name="FileType._image" xml:space="preserve">
+    <value>使用可能な画像ファイル (*.png, *.bmp, *.jpg, *.gif)</value>
+  </data>
+  <data name="FileType._movie" xml:space="preserve">
+    <value>使用可能な映像ファイル (*.mpg, *.avi, *.mp4, *.wmv, *.webm)</value>
+  </data>
+  <data name="FileType._wave" xml:space="preserve">
+    <value>使用可能な Wave ファイル (*.wav, *.ogg, *.mp3, *.flac)</value>
+  </data>
+  <data name="FileType.AVI" xml:space="preserve">
+    <value>Audio Video Interleave (*.avi)</value>
+  </data>
+  <data name="FileType.BME" xml:space="preserve">
+    <value>Be-Music Extended Format (*.bme)</value>
+  </data>
+  <data name="FileType.BML" xml:space="preserve">
+    <value>Be-Music Longnote Format (*.bml)</value>
+  </data>
+  <data name="FileType.BMP" xml:space="preserve">
+    <value>Windows bitmap image (*.bmp)</value>
+  </data>
+  <data name="FileType.BMS" xml:space="preserve">
+    <value>Be-Music Source (*.bms)</value>
+  </data>
+  <data name="FileType.EXE" xml:space="preserve">
+    <value>実行ファイル (*.exe)</value>
+  </data>
+  <data name="FileType.FLAC" xml:space="preserve">
+    <value>FLAC 形式サウンド (*.flac)</value>
+  </data>
+  <data name="FileType.GIF" xml:space="preserve">
+    <value>Graphics Interchange Format (*.gif)</value>
+  </data>
+  <data name="FileType.JPG" xml:space="preserve">
+    <value>Joint Photographic Experts Group (*.jpg)</value>
+  </data>
+  <data name="FileType.MID" xml:space="preserve">
+    <value>MIDI files (*.mid)</value>
+  </data>
+  <data name="FileType.MP3" xml:space="preserve">
+    <value>MP3 形式サウンド (*.mp3)</value>
+  </data>
+  <data name="FileType.MP4" xml:space="preserve">
+    <value>MPEG phase 4 (*.mp4)</value>
+  </data>
+  <data name="FileType.MPG" xml:space="preserve">
+    <value>Moving Picture Experts Group (*.mpg)</value>
+  </data>
+  <data name="FileType.NBMSC" xml:space="preserve">
+    <value>nBMSC files (*.nbmsc)</value>
+  </data>
+  <data name="FileType.OGG" xml:space="preserve">
+    <value>Ogg Vorbis サウンド (*.ogg)</value>
+  </data>
+  <data name="FileType.PMS" xml:space="preserve">
+    <value>Po-Mu Script (*.pms)</value>
+  </data>
+  <data name="FileType.PNG" xml:space="preserve">
+    <value>Portable Network Graphic (*.png)</value>
+  </data>
+  <data name="FileType.THEME_XML" xml:space="preserve">
+    <value>nBMSC テーマ (*.xml)</value>
+  </data>
+  <data name="FileType.TXT" xml:space="preserve">
+    <value>テキストドキュメント (*.txt)</value>
+  </data>
+  <data name="FileType.WAV" xml:space="preserve">
+    <value>Wave サウンド (*.wav)</value>
+  </data>
+  <data name="FileType.WEBM" xml:space="preserve">
+    <value>WebM (*.webm)</value>
+  </data>
+  <data name="FileType.WMV" xml:space="preserve">
+    <value>Windows Media Video (*.wmv)</value>
+  </data>
+  <data name="FileType.XML" xml:space="preserve">
+    <value>XML files (*.xml)</value>
+  </data>
+  <data name="Find.Close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="Find.Column" xml:space="preserve">
+    <value>レーン</value>
+  </data>
+  <data name="Find.Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="Find.Hidden" xml:space="preserve">
+    <value>不可視</value>
+  </data>
+  <data name="Find.LabelRange" xml:space="preserve">
+    <value>定義番号の範囲</value>
+  </data>
+  <data name="Find.LandMine" xml:space="preserve">
+    <value>地雷</value>
+  </data>
+  <data name="Find.LongNote" xml:space="preserve">
+    <value>ロング</value>
+  </data>
+  <data name="Find.MeasureRange" xml:space="preserve">
+    <value>小節の範囲</value>
+  </data>
+  <data name="Find.NoteRange" xml:space="preserve">
+    <value>対象ノート</value>
+  </data>
+  <data name="Find.Operation" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="Find.ReplaceWithLabel" xml:space="preserve">
+    <value>定義番号を置換：</value>
+  </data>
+  <data name="Find.ReplaceWithValue" xml:space="preserve">
+    <value>値を置換：</value>
+  </data>
+  <data name="Find.Select" xml:space="preserve">
+    <value>選択</value>
+  </data>
+  <data name="Find.SelectAll" xml:space="preserve">
+    <value>すべて選択</value>
+  </data>
+  <data name="Find.Selected" xml:space="preserve">
+    <value>選択</value>
+  </data>
+  <data name="Find.SelectInverse" xml:space="preserve">
+    <value>選択の切り替え</value>
+  </data>
+  <data name="Find.ShortNote" xml:space="preserve">
+    <value>通常</value>
+  </data>
+  <data name="Find.to" xml:space="preserve">
+    <value>～</value>
+  </data>
+  <data name="Find.Unselect" xml:space="preserve">
+    <value>選択解除</value>
+  </data>
+  <data name="Find.UnselectAll" xml:space="preserve">
+    <value>すべてを選択解除</value>
+  </data>
+  <data name="Find.UnSelected" xml:space="preserve">
+    <value>未選択</value>
+  </data>
+  <data name="Find.ValueRange" xml:space="preserve">
+    <value>値の範囲</value>
+  </data>
+  <data name="Find.Visible" xml:space="preserve">
+    <value>可視</value>
+  </data>
+  <data name="GeneralOptions.AssociateFileType" xml:space="preserve">
+    <value>関連づける拡張子</value>
+  </data>
+  <data name="GeneralOptions.AutoFocusOnMouseEnter" xml:space="preserve">
+    <value>マウスがエディットパネルに入ると自動でフォーカス。</value>
+  </data>
+  <data name="GeneralOptions.AutoSave" xml:space="preserve">
+    <value>自動保存</value>
+  </data>
+  <data name="GeneralOptions.BeepWhileSaved" xml:space="preserve">
+    <value>保存時に音を鳴らす。</value>
+  </data>
+  <data name="GeneralOptions.BPMDefinitionMode" xml:space="preserve">
+    <value>拡張BPMの最大使用数</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeBase36" xml:space="preserve">
+    <value>36進数（01～ZZ）</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeBase62" xml:space="preserve">
+    <value>62進数（01～zz）</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeDefault" xml:space="preserve">
+    <value>標準（01～FF）</value>
+  </data>
+  <data name="GeneralOptions.DisableFirstClick" xml:space="preserve">
+    <value>エディットパネルがフォーカスされていない場合、1クリック目を無効化。</value>
+  </data>
+  <data name="GeneralOptions.InputTextEncoding" xml:space="preserve">
+    <value>読み込み文字コード</value>
+  </data>
+  <data name="GeneralOptions.LaneHighlight" xml:space="preserve">
+    <value>レーンのハイライト表示</value>
+  </data>
+  <data name="GeneralOptions.MaxGridPartition" xml:space="preserve">
+    <value>BMS の Grid 最大分解能</value>
+  </data>
+  <data name="GeneralOptions.MiddleButton" xml:space="preserve">
+    <value>中クリックの動作</value>
+  </data>
+  <data name="GeneralOptions.MiddleButtonAuto" xml:space="preserve">
+    <value>オートスクロール</value>
+  </data>
+  <data name="GeneralOptions.MiddleButtonDrag" xml:space="preserve">
+    <value>ドラッグ（つかんでスクロール）</value>
+  </data>
+  <data name="GeneralOptions.MinimumBGMLanes" xml:space="preserve">
+    <value>BGMレーンの最小数</value>
+  </data>
+  <data name="GeneralOptions.minutes" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="GeneralOptions.MouseWheel" xml:space="preserve">
+    <value>マウスホイール</value>
+  </data>
+  <data name="GeneralOptions.NewBMSUseBase62" xml:space="preserve">
+    <value>新規BMSに62進数を使用する</value>
+  </data>
+  <data name="GeneralOptions.OutputTextEncoding" xml:space="preserve">
+    <value>保存文字コード</value>
+  </data>
+  <data name="GeneralOptions.PageUpDown" xml:space="preserve">
+    <value>PageUp / PageDown</value>
+  </data>
+  <data name="GeneralOptions.SkipClippedMeasure" xml:space="preserve">
+    <value>見切れている小節を飛ばして次の小節から再生する</value>
+  </data>
+  <data name="GeneralOptions.STOPDefinitionMode" xml:space="preserve">
+    <value>STOPの最大使用数</value>
+  </data>
+  <data name="GeneralOptions.StopPreviewOnClick" xml:space="preserve">
+    <value>エディットパネル上をクリックするとプレビュー再生をストップ</value>
+  </data>
+  <data name="GeneralOptions.Title" xml:space="preserve">
+    <value>一般オプション</value>
+  </data>
+  <data name="GeneralOptions.UndoRedoMemoryLimit" xml:space="preserve">
+    <value>Undo/Redo履歴メモリ上限</value>
+  </data>
+  <data name="Menu.Conversion" xml:space="preserve">
+    <value>置換</value>
+  </data>
+  <data name="Menu.Edit.Copy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="Menu.Edit.Cut" xml:space="preserve">
+    <value>切り取り</value>
+  </data>
+  <data name="Menu.Edit.Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="Menu.Edit.Find" xml:space="preserve">
+    <value>検索 / 削除 / 置換</value>
+  </data>
+  <data name="Menu.Edit.GoToMeasure" xml:space="preserve">
+    <value>指定小節へ移動...</value>
+  </data>
+  <data name="Menu.Edit.Paste" xml:space="preserve">
+    <value>貼り付け</value>
+  </data>
+  <data name="Menu.Edit.Redo" xml:space="preserve">
+    <value>やり直し</value>
+  </data>
+  <data name="Menu.Edit.SelectAll" xml:space="preserve">
+    <value>すべて選択</value>
+  </data>
+  <data name="Menu.Edit.SelectTool" xml:space="preserve">
+    <value>選択モード</value>
+  </data>
+  <data name="Menu.Edit.Stat" xml:space="preserve">
+    <value>統計</value>
+  </data>
+  <data name="Menu.Edit.TimeSelectionTool" xml:space="preserve">
+    <value>時間選択モード</value>
+  </data>
+  <data name="Menu.Edit.Title" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="Menu.Edit.Undo" xml:space="preserve">
+    <value>元に戻す</value>
+  </data>
+  <data name="Menu.Edit.WriteTool" xml:space="preserve">
+    <value>書込モード</value>
+  </data>
+  <data name="Menu.File.ExportBMSON" xml:space="preserve">
+    <value>.BMSON 形式にエクスポート</value>
+  </data>
+  <data name="Menu.File.ExportNBMSC" xml:space="preserve">
+    <value>.NBMSC 形式にエクスポート</value>
+  </data>
+  <data name="Menu.File.ImportNBMSC" xml:space="preserve">
+    <value>.NBMSC ファイルからインポート</value>
+  </data>
+  <data name="Menu.File.New" xml:space="preserve">
+    <value>新規</value>
+  </data>
+  <data name="Menu.File.Open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="Menu.File.Quit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="Menu.File.Recent0" xml:space="preserve">
+    <value>最近使ったファイル #0</value>
+  </data>
+  <data name="Menu.File.Recent1" xml:space="preserve">
+    <value>最近使ったファイル #1</value>
+  </data>
+  <data name="Menu.File.Recent2" xml:space="preserve">
+    <value>最近使ったファイル #2</value>
+  </data>
+  <data name="Menu.File.Recent3" xml:space="preserve">
+    <value>最近使ったファイル #3</value>
+  </data>
+  <data name="Menu.File.Recent4" xml:space="preserve">
+    <value>最近使ったファイル #4</value>
+  </data>
+  <data name="Menu.File.Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Menu.File.SaveAs" xml:space="preserve">
+    <value>名前をつけて保存</value>
+  </data>
+  <data name="Menu.File.Title" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="Menu.Help.CheckUpdates" xml:space="preserve">
+    <value>更新を確認</value>
+  </data>
+  <data name="Menu.Help.CheckUpdatesOnStartup" xml:space="preserve">
+    <value>起動時に更新を確認</value>
+  </data>
+  <data name="Menu.Help.OpenAppFolder" xml:space="preserve">
+    <value>アプリケーションフォルダを開く</value>
+  </data>
+  <data name="Menu.Help.Title" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
+  <data name="Menu.Options.ChangePlaySide" xml:space="preserve">
+    <value>スクラッチ位置の変更</value>
+  </data>
+  <data name="Menu.Options.ErrorCheck" xml:space="preserve">
+    <value>エラーチェック</value>
+  </data>
+  <data name="Menu.Options.GeneralOptions" xml:space="preserve">
+    <value>一般オプション</value>
+  </data>
+  <data name="Menu.Options.Language" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="Menu.Options.NT" xml:space="preserve">
+    <value>LN 入力モード - NT/BMSE</value>
+  </data>
+  <data name="Menu.Options.PlayerOptions" xml:space="preserve">
+    <value>再生ソフトの設定</value>
+  </data>
+  <data name="Menu.Options.PreviewOnClick" xml:space="preserve">
+    <value>クリック時に音声プレビュー</value>
+  </data>
+  <data name="Menu.Options.ShowFileName" xml:space="preserve">
+    <value>ファイル名を表示</value>
+  </data>
+  <data name="Menu.Options.SlashGrid" xml:space="preserve">
+    <value>スラッシュキーのGrid値</value>
+  </data>
+  <data name="Menu.Options.SyncSplitViewScroll" xml:space="preserve">
+    <value>画面分割のスクロールを同期</value>
+  </data>
+  <data name="Menu.Options.Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="Menu.Options.Title" xml:space="preserve">
+    <value>オプション</value>
+  </data>
+  <data name="Menu.Options.VisualOptions" xml:space="preserve">
+    <value>表示オプション</value>
+  </data>
+  <data name="Menu.Preview.PlayBegin" xml:space="preserve">
+    <value>最初から再生</value>
+  </data>
+  <data name="Menu.Preview.PlayHere" xml:space="preserve">
+    <value>現在位置から再生</value>
+  </data>
+  <data name="Menu.Preview.PlayStop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="Menu.Preview.Title" xml:space="preserve">
+    <value>プレビュー</value>
+  </data>
+  <data name="Menu.View.Title" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="Messages.BPMOverflowError" xml:space="preserve">
+    <value>拡張 BPM の数が使用できる最大値を超えています。：</value>
+  </data>
+  <data name="Messages.CannotFind" xml:space="preserve">
+    <value>{} が見つかりません。</value>
+  </data>
+  <data name="Messages.EraserObsolete" xml:space="preserve">
+    <value>削除ツールはノート上を右クリックする方法に変更しました。</value>
+  </data>
+  <data name="Messages.Err" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="Messages.FileAssociationError" xml:space="preserve">
+    <value>関連づけ変更エラー：</value>
+  </data>
+  <data name="Messages.FileAssociationPrompt" xml:space="preserve">
+    <value>nBMSC を {} ファイルの既定プログラムにしますか。</value>
+  </data>
+  <data name="Messages.GoToMeasureTitle" xml:space="preserve">
+    <value>小節へ移動</value>
+  </data>
+  <data name="Messages.InvalidLabel" xml:space="preserve">
+    <value>無効な定義番号です。</value>
+  </data>
+  <data name="Messages.NegativeDivisorError" xml:space="preserve">
+    <value>除数は 0 より大きくなければなりません。</value>
+  </data>
+  <data name="Messages.NegativeFactorError" xml:space="preserve">
+    <value>因数は 0 より大きくなければなりません。</value>
+  </data>
+  <data name="Messages.NoteOverlapError" xml:space="preserve">
+    <value>ノートの重なりがあります。最大 Grid を大きくすると解決するかもしれません。</value>
+  </data>
+  <data name="Messages.PlayerNotFound" xml:space="preserve">
+    <value>再生ソフトが見つかりません。</value>
+  </data>
+  <data name="Messages.PleaseRespecifyPath" xml:space="preserve">
+    <value>プログラムの場所を確認してください。</value>
+  </data>
+  <data name="Messages.PreviewDelError" xml:space="preserve">
+    <value>再生ソフトは最低1つ必要です。</value>
+  </data>
+  <data name="Messages.PromptEnter" xml:space="preserve">
+    <value>定義番号を入力してください。</value>
+  </data>
+  <data name="Messages.PromptEnterBPM" xml:space="preserve">
+    <value>曲のテンポを入力してください。</value>
+  </data>
+  <data name="Messages.PromptEnterMeasure" xml:space="preserve">
+    <value>小節番号を入力してください (0-999)。</value>
+  </data>
+  <data name="Messages.PromptEnterNumeric" xml:space="preserve">
+    <value>値を入力してください。</value>
+  </data>
+  <data name="Messages.PromptEnterSCROLL" xml:space="preserve">
+    <value>スクロール速度を入力してください。</value>
+  </data>
+  <data name="Messages.PromptEnterSTOP" xml:space="preserve">
+    <value>停止時間を入力してください。</value>
+  </data>
+  <data name="Messages.PromptSlashValue" xml:space="preserve">
+    <value>スラッシュキー ("/") が押されたら、Grid を以下の値に変更する。：</value>
+  </data>
+  <data name="Messages.RestoreAutosavedFile" xml:space="preserve">
+    <value>{} 自動保存のファイルが見つかりました。復元しますか？</value>
+  </data>
+  <data name="Messages.RestoreDefaultSettings" xml:space="preserve">
+    <value>設定を初期化しますか？</value>
+  </data>
+  <data name="Messages.SavedFileWillContainErrors" xml:space="preserve">
+    <value>保存するファイルにエラーがあります。</value>
+  </data>
+  <data name="Messages.SaveOnExit" xml:space="preserve">
+    <value>データは変更されています。保存しますか。</value>
+  </data>
+  <data name="Messages.SaveOnExit1" xml:space="preserve">
+    <value>シャットダウン時、保存するか確認する。</value>
+  </data>
+  <data name="Messages.SaveOnExit2" xml:space="preserve">
+    <value>タスクマネージャーから終了する場合も、保存するか確認する。</value>
+  </data>
+  <data name="Messages.SaveWarning" xml:space="preserve">
+    <value>警告：</value>
+  </data>
+  <data name="Messages.SCROLLOverflowError" xml:space="preserve">
+    <value>SCROLL の数が使用できる最大値を超えています。：</value>
+  </data>
+  <data name="Messages.STOPOverflowError" xml:space="preserve">
+    <value>STOP の数が使用できる最大値を超えています。：</value>
+  </data>
+  <data name="Messages.UpdateAvailable" xml:space="preserve">
+    <value>新しいバージョンがあります。
+現在: {0}
+最新: {1}</value>
+  </data>
+  <data name="Messages.UpdateCheckFailed" xml:space="preserve">
+    <value>更新を確認できませんでした。
+{0}</value>
+  </data>
+  <data name="Messages.UpdateCheckTitle" xml:space="preserve">
+    <value>更新を確認</value>
+  </data>
+  <data name="Messages.UpdateLater" xml:space="preserve">
+    <value>後で</value>
+  </data>
+  <data name="Messages.UpdateLatest" xml:space="preserve">
+    <value>最新版を使用しています。
+現在: {0}
+最新: {1}</value>
+  </data>
+  <data name="Messages.UpdateOpenRelease" xml:space="preserve">
+    <value>ダウンロード</value>
+  </data>
+  <data name="Messages.UpdateSkipVersion" xml:space="preserve">
+    <value>スキップ</value>
+  </data>
+  <data name="Messages.UpdateVersionUnsupported" xml:space="preserve">
+    <value>バージョンを比較できませんでした。
+現在: {0}
+最新 Release: {1}
+Release ページを開きますか？</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OptionsPanel.Beat" xml:space="preserve">
+    <value>拍子</value>
+  </data>
+  <data name="OptionsPanel.Beat.Apply" xml:space="preserve">
+    <value>適用</value>
+  </data>
+  <data name="OptionsPanel.BMP.Title" xml:space="preserve">
+    <value>#BMP</value>
+  </data>
+  <data name="OptionsPanel.Expansion" xml:space="preserve">
+    <value>拡張命令</value>
+  </data>
+  <data name="OptionsPanel.Grid.BCols" xml:space="preserve">
+    <value>BGM 列の最小数</value>
+  </data>
+  <data name="OptionsPanel.Grid.DisableVertical" xml:space="preserve">
+    <value>ノートを縦移動させない</value>
+  </data>
+  <data name="OptionsPanel.Grid.Snap" xml:space="preserve">
+    <value>グリッドスナップ</value>
+  </data>
+  <data name="OptionsPanel.Grid.Title" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="OptionsPanel.Header.Artist" xml:space="preserve">
+    <value>ARTIST</value>
+  </data>
+  <data name="OptionsPanel.Header.BackBMP" xml:space="preserve">
+    <value>BACKBMP</value>
+  </data>
+  <data name="OptionsPanel.Header.Banner" xml:space="preserve">
+    <value>BANNER</value>
+  </data>
+  <data name="OptionsPanel.Header.BPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="OptionsPanel.Header.Comment" xml:space="preserve">
+    <value>COMMENT</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty" xml:space="preserve">
+    <value>DIFFICULTY</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty0" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OptionsPanel.Header.Difficulty1" xml:space="preserve">
+    <value>1 - Beginner / EZ</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty2" xml:space="preserve">
+    <value>2 - Normal / NM</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty3" xml:space="preserve">
+    <value>3 - Hyper / HD</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty4" xml:space="preserve">
+    <value>4 - Another / MX</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty5" xml:space="preserve">
+    <value>5 - Insane / SC</value>
+  </data>
+  <data name="OptionsPanel.Header.ExRank" xml:space="preserve">
+    <value>DEFEXRANK</value>
+  </data>
+  <data name="OptionsPanel.Header.Genre" xml:space="preserve">
+    <value>GENRE</value>
+  </data>
+  <data name="OptionsPanel.Header.Header" xml:space="preserve">
+    <value>ヘッダ</value>
+  </data>
+  <data name="OptionsPanel.Header.LandMine" xml:space="preserve">
+    <value>#WAV00</value>
+  </data>
+  <data name="OptionsPanel.Header.LnMode" xml:space="preserve">
+    <value>LNMODE</value>
+  </data>
+  <data name="OptionsPanel.Header.LnObj" xml:space="preserve">
+    <value>LNOBJ</value>
+  </data>
+  <data name="OptionsPanel.Header.MissBMP" xml:space="preserve">
+    <value>#BMP00</value>
+  </data>
+  <data name="OptionsPanel.Header.Player" xml:space="preserve">
+    <value>PLAYSTYLE</value>
+  </data>
+  <data name="OptionsPanel.Header.Player1" xml:space="preserve">
+    <value>SP</value>
+  </data>
+  <data name="OptionsPanel.Header.Player2" xml:space="preserve">
+    <value>2 Player</value>
+  </data>
+  <data name="OptionsPanel.Header.Player3" xml:space="preserve">
+    <value>DP / PMS</value>
+  </data>
+  <data name="OptionsPanel.Header.PlayLevel" xml:space="preserve">
+    <value>LEVEL</value>
+  </data>
+  <data name="OptionsPanel.Header.Preview" xml:space="preserve">
+    <value>PREVIEW</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank" xml:space="preserve">
+    <value>RANK</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank0" xml:space="preserve">
+    <value>0 - Very Hard</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank1" xml:space="preserve">
+    <value>1 - Hard</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank2" xml:space="preserve">
+    <value>2 - Normal</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank3" xml:space="preserve">
+    <value>3 - Easy</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank4" xml:space="preserve">
+    <value>4 - Very Easy</value>
+  </data>
+  <data name="OptionsPanel.Header.RecommendedTotal" xml:space="preserve">
+    <value>推奨TOTAL</value>
+  </data>
+  <data name="OptionsPanel.Header.StageFile" xml:space="preserve">
+    <value>STAGEFILE</value>
+  </data>
+  <data name="OptionsPanel.Header.SubArtist" xml:space="preserve">
+    <value>SUBARTIST</value>
+  </data>
+  <data name="OptionsPanel.Header.SubTitle" xml:space="preserve">
+    <value>SUBTITLE</value>
+  </data>
+  <data name="OptionsPanel.Header.Title" xml:space="preserve">
+    <value>TITLE</value>
+  </data>
+  <data name="OptionsPanel.Header.Total" xml:space="preserve">
+    <value>TOTAL</value>
+  </data>
+  <data name="OptionsPanel.WAV.Browse" xml:space="preserve">
+    <value>指定</value>
+  </data>
+  <data name="OptionsPanel.WAV.MoveDown" xml:space="preserve">
+    <value>下へ</value>
+  </data>
+  <data name="OptionsPanel.WAV.MoveUp" xml:space="preserve">
+    <value>上へ</value>
+  </data>
+  <data name="OptionsPanel.WAV.Remove" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="OptionsPanel.WAV.Title" xml:space="preserve">
+    <value>#WAV</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Clear" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Load" xml:space="preserve">
+    <value>選択</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Lock" xml:space="preserve">
+    <value>BGM の位置をロック</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Title" xml:space="preserve">
+    <value>BGM波形</value>
+  </data>
+  <data name="PlayerOptions.Add" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="PlayerOptions.CurrMeasure" xml:space="preserve">
+    <value>現在の小節番号</value>
+  </data>
+  <data name="PlayerOptions.DirectoryOfApp" xml:space="preserve">
+    <value>このプログラムの場所</value>
+  </data>
+  <data name="PlayerOptions.FileName" xml:space="preserve">
+    <value>ファイル名</value>
+  </data>
+  <data name="PlayerOptions.Path" xml:space="preserve">
+    <value>パス</value>
+  </data>
+  <data name="PlayerOptions.PlayFromBeginning" xml:space="preserve">
+    <value>最初から再生</value>
+  </data>
+  <data name="PlayerOptions.PlayFromHere" xml:space="preserve">
+    <value>現在位置から再生</value>
+  </data>
+  <data name="PlayerOptions.References" xml:space="preserve">
+    <value>凡例（大文字・小文字区別あり）：</value>
+  </data>
+  <data name="PlayerOptions.Remove" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="PlayerOptions.RestoreDefault" xml:space="preserve">
+    <value>初期化</value>
+  </data>
+  <data name="PlayerOptions.StopPlaying" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="PlayerOptions.Title" xml:space="preserve">
+    <value>再生ソフトの設定</value>
+  </data>
+  <data name="Statistics.lA" xml:space="preserve">
+    <value>1P側</value>
+  </data>
+  <data name="Statistics.lBGM" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="Statistics.lBPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="Statistics.lD" xml:space="preserve">
+    <value>2P側</value>
+  </data>
+  <data name="Statistics.lErrors" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="Statistics.lHidden" xml:space="preserve">
+    <value>不可視</value>
+  </data>
+  <data name="Statistics.lLandMine" xml:space="preserve">
+    <value>地雷</value>
+  </data>
+  <data name="Statistics.lLnObj" xml:space="preserve">
+    <value>LnObj</value>
+  </data>
+  <data name="Statistics.lLong" xml:space="preserve">
+    <value>ロング</value>
+  </data>
+  <data name="Statistics.lSCROLL" xml:space="preserve">
+    <value>SCROLL</value>
+  </data>
+  <data name="Statistics.lShort" xml:space="preserve">
+    <value>通常</value>
+  </data>
+  <data name="Statistics.lSTOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="Statistics.lTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Statistics.Title" xml:space="preserve">
+    <value>統計</value>
+  </data>
+  <data name="StatusBar.AbsolutePosition" xml:space="preserve">
+    <value>絶対的な位置</value>
+  </data>
+  <data name="StatusBar.ByMultiple" xml:space="preserve">
+    <value>倍</value>
+  </data>
+  <data name="StatusBar.ByValue" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="StatusBar.ColumnCaption" xml:space="preserve">
+    <value>列の見出し</value>
+  </data>
+  <data name="StatusBar.Error" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="StatusBar.GridResolution" xml:space="preserve">
+    <value>Grid 上の位置</value>
+  </data>
+  <data name="StatusBar.Hidden" xml:space="preserve">
+    <value>不可視ノート</value>
+  </data>
+  <data name="StatusBar.LandMine" xml:space="preserve">
+    <value>地雷ノート</value>
+  </data>
+  <data name="StatusBar.Length" xml:space="preserve">
+    <value>長さ</value>
+  </data>
+  <data name="StatusBar.LongNote" xml:space="preserve">
+    <value>ロングノート</value>
+  </data>
+  <data name="StatusBar.MeasureIndex" xml:space="preserve">
+    <value>小節番号</value>
+  </data>
+  <data name="StatusBar.MeasureResolution" xml:space="preserve">
+    <value>小節内での位置</value>
+  </data>
+  <data name="StatusBar.NoteIndex" xml:space="preserve">
+    <value>ノートのラベル</value>
+  </data>
+  <data name="StatusBar.ReducedResolution" xml:space="preserve">
+    <value>Grid 上の位置（簡約化）</value>
+  </data>
+  <data name="StatusBar.Reverse" xml:space="preserve">
+    <value>選択を逆転</value>
+  </data>
+  <data name="StatusBar.SelLength" xml:space="preserve">
+    <value>範囲の長さ</value>
+  </data>
+  <data name="StatusBar.SelSplit" xml:space="preserve">
+    <value>選択範囲の分割位置</value>
+  </data>
+  <data name="StatusBar.SelStart" xml:space="preserve">
+    <value>開始位置</value>
+  </data>
+  <data name="SubMenu.Beat.Absolute" xml:space="preserve">
+    <value>絶対的な位置を保つ</value>
+  </data>
+  <data name="SubMenu.Beat.Cut" xml:space="preserve">
+    <value>以降の小節を保ち、余りは切り捨てる</value>
+  </data>
+  <data name="SubMenu.Beat.Measure" xml:space="preserve">
+    <value>以降の小節を保つ</value>
+  </data>
+  <data name="SubMenu.Beat.Scale" xml:space="preserve">
+    <value>小節の長さに合わせて位置を変化させる</value>
+  </data>
+  <data name="SubMenu.Convert.Hidden" xml:space="preserve">
+    <value>→ 不可視ノート</value>
+  </data>
+  <data name="SubMenu.Convert.HiddenVisible" xml:space="preserve">
+    <value>通常ノート ←→ 不可視ノート</value>
+  </data>
+  <data name="SubMenu.Convert.Landmine" xml:space="preserve">
+    <value>→ 地雷ノート</value>
+  </data>
+  <data name="SubMenu.Convert.Long" xml:space="preserve">
+    <value>→ ロングノート</value>
+  </data>
+  <data name="SubMenu.Convert.LongShort" xml:space="preserve">
+    <value>通常ノート ←→ ロングノート</value>
+  </data>
+  <data name="SubMenu.Convert.Mirror" xml:space="preserve">
+    <value>ミラー</value>
+  </data>
+  <data name="SubMenu.Convert.NormalLandmine" xml:space="preserve">
+    <value>通常ノート ←→ 地雷ノート</value>
+  </data>
+  <data name="SubMenu.Convert.Relabel" xml:space="preserve">
+    <value>ノート番号変更</value>
+  </data>
+  <data name="SubMenu.Convert.Short" xml:space="preserve">
+    <value>→ 通常ノート</value>
+  </data>
+  <data name="SubMenu.Convert.Visible" xml:space="preserve">
+    <value>→ 通常ノート</value>
+  </data>
+  <data name="SubMenu.InsertMeasure.Insert" xml:space="preserve">
+    <value>ここに1小節挿入</value>
+  </data>
+  <data name="SubMenu.InsertMeasure.Remove" xml:space="preserve">
+    <value>この小節を削除</value>
+  </data>
+  <data name="SubMenu.ShowHide.AddSplitView" xml:space="preserve">
+    <value>画面分割を追加</value>
+  </data>
+  <data name="SubMenu.ShowHide.BG" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="SubMenu.ShowHide.BLP" xml:space="preserve">
+    <value>BGA / Layer / Poor</value>
+  </data>
+  <data name="SubMenu.ShowHide.BPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="SubMenu.ShowHide.CloseSplitView" xml:space="preserve">
+    <value>画面分割を閉じる</value>
+  </data>
+  <data name="SubMenu.ShowHide.ColumnCaption" xml:space="preserve">
+    <value>列の見出し</value>
+  </data>
+  <data name="SubMenu.ShowHide.Grid" xml:space="preserve">
+    <value>グリッド</value>
+  </data>
+  <data name="SubMenu.ShowHide.LSplitView" xml:space="preserve">
+    <value>画面分割（左側）</value>
+  </data>
+  <data name="SubMenu.ShowHide.MeasureIndex" xml:space="preserve">
+    <value>小節番号</value>
+  </data>
+  <data name="SubMenu.ShowHide.MeasureLine" xml:space="preserve">
+    <value>小節線</value>
+  </data>
+  <data name="SubMenu.ShowHide.Menu" xml:space="preserve">
+    <value>メインメニュー</value>
+  </data>
+  <data name="SubMenu.ShowHide.OptionsPanel" xml:space="preserve">
+    <value>オプションパネル</value>
+  </data>
+  <data name="SubMenu.ShowHide.RemoveSplitView" xml:space="preserve">
+    <value>画面分割を削除</value>
+  </data>
+  <data name="SubMenu.ShowHide.RSplitView" xml:space="preserve">
+    <value>画面分割（右側）</value>
+  </data>
+  <data name="SubMenu.ShowHide.SCROLL" xml:space="preserve">
+    <value>SCROLL</value>
+  </data>
+  <data name="SubMenu.ShowHide.StatusBar" xml:space="preserve">
+    <value>ステータスバー</value>
+  </data>
+  <data name="SubMenu.ShowHide.STOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="SubMenu.ShowHide.Sub" xml:space="preserve">
+    <value>補助</value>
+  </data>
+  <data name="SubMenu.ShowHide.ToolBar" xml:space="preserve">
+    <value>ツールバー</value>
+  </data>
+  <data name="SubMenu.ShowHide.ToolTip" xml:space="preserve">
+    <value>表示 / 隠す</value>
+  </data>
+  <data name="SubMenu.ShowHide.Vertical" xml:space="preserve">
+    <value>縦線</value>
+  </data>
+  <data name="SubMenu.Theme.Default" xml:space="preserve">
+    <value>初期化</value>
+  </data>
+  <data name="SubMenu.Theme.Refresh" xml:space="preserve">
+    <value>リストの再読み込み</value>
+  </data>
+  <data name="SubMenu.Theme.Save" xml:space="preserve">
+    <value>テーマを保存</value>
+  </data>
+  <data name="SubMenu.WAV.Base62" xml:space="preserve">
+    <value>62進数に拡張</value>
+  </data>
+  <data name="SubMenu.WAV.Emptyfill" xml:space="preserve">
+    <value>空定義を優先して埋める</value>
+  </data>
+  <data name="SubMenu.WAV.MultiSelection" xml:space="preserve">
+    <value>複数選択する</value>
+  </data>
+  <data name="SubMenu.WAV.Synchronize" xml:space="preserve">
+    <value>配置ノートの定義を維持</value>
+  </data>
+  <data name="ToolBar.AddSplitView" xml:space="preserve">
+    <value>画面分割を追加</value>
+  </data>
+  <data name="ToolBar.ChangePlaySide" xml:space="preserve">
+    <value>スクラッチ位置の変更</value>
+  </data>
+  <data name="ToolBar.Conversion" xml:space="preserve">
+    <value>ノート変換</value>
+  </data>
+  <data name="ToolBar.Copy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="ToolBar.Cut" xml:space="preserve">
+    <value>切り取り</value>
+  </data>
+  <data name="ToolBar.ErrorCheck" xml:space="preserve">
+    <value>エラーチェック</value>
+  </data>
+  <data name="ToolBar.Find" xml:space="preserve">
+    <value>検索 / 削除 / 置換</value>
+  </data>
+  <data name="ToolBar.GeneralOptions" xml:space="preserve">
+    <value>一般オプション</value>
+  </data>
+  <data name="ToolBar.Grid" xml:space="preserve">
+    <value>グリッド</value>
+  </data>
+  <data name="ToolBar.GridHeight" xml:space="preserve">
+    <value>高さ</value>
+  </data>
+  <data name="ToolBar.GridSub" xml:space="preserve">
+    <value>補助</value>
+  </data>
+  <data name="ToolBar.GridWidth" xml:space="preserve">
+    <value>幅</value>
+  </data>
+  <data name="ToolBar.Language" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="ToolBar.LeftSplitView" xml:space="preserve">
+    <value>左側の画面分割</value>
+  </data>
+  <data name="ToolBar.New" xml:space="preserve">
+    <value>新規</value>
+  </data>
+  <data name="ToolBar.NT" xml:space="preserve">
+    <value>LN 入力モード - NoteTool/BMSE</value>
+  </data>
+  <data name="ToolBar.Open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="ToolBar.Paste" xml:space="preserve">
+    <value>貼り付け</value>
+  </data>
+  <data name="ToolBar.PlayBegin" xml:space="preserve">
+    <value>最初から再生</value>
+  </data>
+  <data name="ToolBar.PlayerOptions" xml:space="preserve">
+    <value>再生ソフト</value>
+  </data>
+  <data name="ToolBar.PlayHere" xml:space="preserve">
+    <value>現在位置から再生</value>
+  </data>
+  <data name="ToolBar.PlayStop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="ToolBar.PreviewOnClick" xml:space="preserve">
+    <value>クリックしたものを音声プレビュー</value>
+  </data>
+  <data name="ToolBar.Redo" xml:space="preserve">
+    <value>やり直し</value>
+  </data>
+  <data name="ToolBar.RemoveSplitView" xml:space="preserve">
+    <value>画面分割を削除</value>
+  </data>
+  <data name="ToolBar.RightSplitView" xml:space="preserve">
+    <value>右側の画面分割</value>
+  </data>
+  <data name="ToolBar.Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="ToolBar.SelectTool" xml:space="preserve">
+    <value>編集モード</value>
+  </data>
+  <data name="ToolBar.ShowFileName" xml:space="preserve">
+    <value>ファイル名を表示</value>
+  </data>
+  <data name="ToolBar.Stat" xml:space="preserve">
+    <value>統計</value>
+  </data>
+  <data name="ToolBar.SyncSplitViewScroll" xml:space="preserve">
+    <value>画面分割のスクロールを同期</value>
+  </data>
+  <data name="ToolBar.Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="ToolBar.TimeSelectionTool" xml:space="preserve">
+    <value>時間編集モード</value>
+  </data>
+  <data name="ToolBar.Undo" xml:space="preserve">
+    <value>元に戻す</value>
+  </data>
+  <data name="ToolBar.VisualOptions" xml:space="preserve">
+    <value>表示オプション</value>
+  </data>
+  <data name="ToolBar.WavIncrease" xml:space="preserve">
+    <value>WAV番号を自動で進める</value>
+  </data>
+  <data name="ToolBar.WriteTool" xml:space="preserve">
+    <value>書込モード</value>
+  </data>
+  <data name="VisualOptions.Background" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="VisualOptions.Bg" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="VisualOptions.BGMWaveform" xml:space="preserve">
+    <value>BGM波形</value>
+  </data>
+  <data name="VisualOptions.Caption" xml:space="preserve">
+    <value>見出し</value>
+  </data>
+  <data name="VisualOptions.ColumnCaption" xml:space="preserve">
+    <value>見出し</value>
+  </data>
+  <data name="VisualOptions.ColumnCaptionFont" xml:space="preserve">
+    <value>見出しのフォント</value>
+  </data>
+  <data name="VisualOptions.Grid" xml:space="preserve">
+    <value>グリッド</value>
+  </data>
+  <data name="VisualOptions.HiddenNoteOpacity" xml:space="preserve">
+    <value>不可視ノートの透明度</value>
+  </data>
+  <data name="VisualOptions.Label" xml:space="preserve">
+    <value>定義番号</value>
+  </data>
+  <data name="VisualOptions.LabelHorizontalShift" xml:space="preserve">
+    <value>ラベルの水平位置</value>
+  </data>
+  <data name="VisualOptions.LabelVerticalShift" xml:space="preserve">
+    <value>ラベルの垂直位置</value>
+  </data>
+  <data name="VisualOptions.LongNote" xml:space="preserve">
+    <value>ロングノート</value>
+  </data>
+  <data name="VisualOptions.LongNoteLabel" xml:space="preserve">
+    <value>ロングノートのラベル</value>
+  </data>
+  <data name="VisualOptions.LongNoteLabelHorizontalShift" xml:space="preserve">
+    <value>ロングノートのラベルの水平位置</value>
+  </data>
+  <data name="VisualOptions.MeasureBarLine" xml:space="preserve">
+    <value>小節線</value>
+  </data>
+  <data name="VisualOptions.MeasureLabel" xml:space="preserve">
+    <value>小節番号のフォント</value>
+  </data>
+  <data name="VisualOptions.MiddleSensitivity" xml:space="preserve">
+    <value>中クリック (KeyUp) の鈍さ</value>
+  </data>
+  <data name="VisualOptions.Note" xml:space="preserve">
+    <value>ノート</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnAdjustingLength" xml:space="preserve">
+    <value>ノートの枠（長さ変更時）</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnMouseOver" xml:space="preserve">
+    <value>ノートの枠（マウスオーバー時）</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnSelection" xml:space="preserve">
+    <value>ノートの枠（選択時）</value>
+  </data>
+  <data name="VisualOptions.NoteHeight" xml:space="preserve">
+    <value>通常ノートの高さ</value>
+  </data>
+  <data name="VisualOptions.NoteLabel" xml:space="preserve">
+    <value>通常ノートのフォント</value>
+  </data>
+  <data name="VisualOptions.SelectionBoxBorder" xml:space="preserve">
+    <value>選択編集の枠</value>
+  </data>
+  <data name="VisualOptions.SubGrid" xml:space="preserve">
+    <value>補助</value>
+  </data>
+  <data name="VisualOptions.Title" xml:space="preserve">
+    <value>表示オプション</value>
+  </data>
+  <data name="VisualOptions.TSBPM" xml:space="preserve">
+    <value>時間編集の BPM</value>
+  </data>
+  <data name="VisualOptions.TSBPMFont" xml:space="preserve">
+    <value>時間編集の BPM のフォント</value>
+  </data>
+  <data name="VisualOptions.TSCursor" xml:space="preserve">
+    <value>時間編集のカーソル</value>
+  </data>
+  <data name="VisualOptions.TSCursorSensitivity" xml:space="preserve">
+    <value>時間編集のカーソルの感度</value>
+  </data>
+  <data name="VisualOptions.TSFill" xml:space="preserve">
+    <value>時間編集の枠</value>
+  </data>
+  <data name="VisualOptions.TSMouseOverBorder" xml:space="preserve">
+    <value>時間編集の枠（マウスオーバー）</value>
+  </data>
+  <data name="VisualOptions.TSSplitView" xml:space="preserve">
+    <value>時間編集の画面分割</value>
+  </data>
+  <data name="VisualOptions.VerticalLine" xml:space="preserve">
+    <value>縦線</value>
+  </data>
+  <data name="VisualOptions.Width" xml:space="preserve">
+    <value>幅</value>
+  </data>
+</root>

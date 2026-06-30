@@ -1,4 +1,6 @@
+Imports System.Globalization
 Imports System.Linq
+Imports System.Threading
 Imports System.Collections.Generic
 Imports nBMSC.Editor
 
@@ -71,10 +73,28 @@ Public Class MainWindow
     Dim InputTextEncoding As TextEncodingMode = TextEncodingMode.Auto
     Dim OutputTextEncoding As TextEncodingMode = TextEncodingMode.SystemDefault
     Dim ChartTextEncoding As System.Text.Encoding = System.Text.Encoding.GetEncoding(932)
-    Dim DispLang As String = ""     'Display Language
+    Dim UiCulture As String = ""
+    Dim CurrentUiCulture As String = ""
     Dim Recent() As String = {"", "", "", "", ""}
     Dim NTInput As Boolean = True
     Dim ShowFileName As Boolean = False
+
+    Private Structure LanguageMenuEntry
+        Public ReadOnly Text As String
+        Public ReadOnly CultureName As String
+
+        Public Sub New(ByVal text As String, ByVal cultureName As String)
+            Me.Text = text
+            Me.CultureName = cultureName
+        End Sub
+    End Structure
+
+    Private Shared ReadOnly LanguageMenuEntries() As LanguageMenuEntry = {
+        New LanguageMenuEntry("English", "en"),
+        New LanguageMenuEntry("日本語", "ja"),
+        New LanguageMenuEntry("한국어", "ko"),
+        New LanguageMenuEntry("简体中文", "zh-Hans")
+    }
 
     Dim BeepWhileSaved As Boolean = True
     Const DefinitionModeLegacy As Integer = 0
@@ -1065,10 +1085,370 @@ Public Class MainWindow
         If TBAddSplitView IsNot Nothing Then TBAddSplitView.ToolTipText = TBAddSplitView.Text & " (Ctrl++)"
         If TBRemoveSplitView IsNot Nothing Then TBRemoveSplitView.ToolTipText = TBRemoveSplitView.Text & " (Ctrl+-)"
         If TBSyncSplitViewScroll IsNot Nothing Then TBSyncSplitViewScroll.ToolTipText = TBSyncSplitViewScroll.Text & " (Ctrl+\)"
+        SetToolbarShortcutText(TBNew, "Ctrl+N")
+        SetToolbarShortcutText(TBOpen, "Ctrl+O")
+        SetToolbarShortcutText(TBSave, "Ctrl+S")
+        SetToolbarShortcutText(TBCut, "Ctrl+X")
+        SetToolbarShortcutText(TBCopy, "Ctrl+C")
+        SetToolbarShortcutText(TBPaste, "Ctrl+V")
+        SetToolbarShortcutText(TBFind, "Ctrl+F")
+        SetToolbarShortcutText(TBStatistics, "Ctrl+T")
+        SetToolbarShortcutText(TBUndo, "Ctrl+Z")
+        SetToolbarShortcutText(TBRedo, "Ctrl+Y")
+        SetToolbarShortcutText(TBTimeSelect, "F1")
+        SetToolbarShortcutText(TBSelect, "F2")
+        SetToolbarShortcutText(TBWrite, "F3")
+        SetToolbarShortcutText(TBPlayB, "F5")
+        SetToolbarShortcutText(TBPlay, "F6")
+        SetToolbarShortcutText(TBStop, "F7")
         If CGSnap IsNot Nothing Then CGSnap.Text = AppendShortcutText(CGSnap.Text, "G")
         If CGDisableVertical IsNot Nothing Then CGDisableVertical.Text = AppendShortcutText(CGDisableVertical.Text, "D")
         RefreshGridSnapToolbar()
         RefreshDisableVerticalToolbar()
+    End Sub
+
+    Private Sub SetToolbarShortcutText(ByVal xItem As ToolStripItem, ByVal shortcutText As String)
+        If xItem Is Nothing Then Return
+        xItem.ToolTipText = AppendShortcutText(xItem.Text, shortcutText)
+    End Sub
+
+    Private Sub RefreshLanguageMenu()
+        cmnLanguage.Items.Clear()
+
+        For Each xLang As LanguageMenuEntry In LanguageMenuEntries
+            Dim xItem As New ToolStripMenuItem(xLang.Text, Nothing, AddressOf LoadLang)
+            xItem.Tag = xLang.CultureName
+            cmnLanguage.Items.Add(xItem)
+        Next
+
+        RefreshLanguageMenuChecks()
+    End Sub
+
+    Private Sub RefreshLanguageMenuChecks()
+        Dim xCurrentCulture As String = NormalizeUiCulture(CurrentUiCulture)
+
+        For Each xItem As ToolStripItem In cmnLanguage.Items
+            Dim xMenuItem As ToolStripMenuItem = TryCast(xItem, ToolStripMenuItem)
+            If xMenuItem Is Nothing Then Continue For
+
+            Dim xCultureName As String = TryCast(xMenuItem.Tag, String)
+            xMenuItem.Checked = xCurrentCulture.Equals(NormalizeUiCulture(xCultureName), StringComparison.OrdinalIgnoreCase)
+        Next
+    End Sub
+
+    Private Function NormalizeUiCulture(ByVal value As String) As String
+        If value Is Nothing Then Return "en"
+
+        Dim xValue As String = value.Trim()
+        If xValue = "" Then Return "en"
+
+        Dim xLower As String = xValue.ToLowerInvariant()
+
+        If xLower = "ja" OrElse xLower.StartsWith("ja-") Then Return "ja"
+        If xLower = "ko" OrElse xLower.StartsWith("ko-") Then Return "ko"
+        If xLower = "zh-hans" OrElse xLower = "zh-cn" OrElse xLower = "zh-sg" Then Return "zh-Hans"
+        If xLower = "en" OrElse xLower.StartsWith("en-") Then Return "en"
+
+        Return "en"
+    End Function
+
+    Private Function AutomaticUiCulture() As String
+        Return NormalizeUiCulture(CultureInfo.CurrentUICulture.Name)
+    End Function
+
+    Private Sub SetUiCulture(ByVal cultureName As String, ByVal saveSelection As Boolean)
+        Dim xCultureName As String = NormalizeUiCulture(cultureName)
+        Dim xCulture As CultureInfo = CultureInfo.GetCultureInfo(xCultureName)
+
+        Thread.CurrentThread.CurrentUICulture = xCulture
+        Thread.CurrentThread.CurrentCulture = xCulture
+        CultureInfo.DefaultThreadCurrentUICulture = xCulture
+        CultureInfo.DefaultThreadCurrentCulture = xCulture
+
+        CurrentUiCulture = xCultureName
+        If saveSelection Then UiCulture = xCultureName
+    End Sub
+
+    Private Sub SetConfiguredUiCulture(ByVal cultureName As String)
+        If cultureName Is Nothing OrElse cultureName.Trim() = "" Then
+            UiCulture = ""
+            SetUiCulture(AutomaticUiCulture(), False)
+
+            Return
+        End If
+
+        UiCulture = NormalizeUiCulture(cultureName)
+        SetUiCulture(UiCulture, True)
+    End Sub
+
+    Private Sub ApplyUiCultureFonts()
+        Dim xFamilies() As String = {"Segoe UI", "Tahoma"}
+        Dim xMonoFamilies() As String = {"Consolas", "Courier New"}
+
+        Select Case NormalizeUiCulture(CurrentUiCulture)
+            Case "ja"
+                xFamilies = New String() {"Meiryo UI", "MS UI Gothic"}
+                xMonoFamilies = New String() {"MS Gothic", "MS UI Gothic"}
+            Case "ko"
+                xFamilies = New String() {"Malgun Gothic", "Gulim"}
+                xMonoFamilies = New String() {"Gulim", "Malgun Gothic"}
+            Case "zh-Hans"
+                xFamilies = New String() {"Microsoft YaHei UI", "Microsoft YaHei", "SimSun"}
+                xMonoFamilies = New String() {"SimSun", "Microsoft YaHei UI"}
+        End Select
+
+        Dim fRegular As Font = CreateUiFont(xFamilies, 9.0F, FontStyle.Regular, Me.Font)
+        Dim rList() As Object = {Me, mnSys, Menu1, mnMain, cmnLanguage, cmnTheme, cmnConversion, TBMain, FStatus, FStatus2}
+        For Each c As Object In rList
+            Try
+                c.Font = fRegular
+            Catch ex As Exception
+            End Try
+        Next
+
+        Dim fBold As New Font(fRegular, FontStyle.Bold)
+        Dim bList() As Object = {TBStatistics, FSSS, FSSL, FSSH, TVCM, TVCD, TVCBPM, FSP1, FSP3, FSP2, PMain, PMainIn, PMainR, PMainInR, PMainL, PMainInL}
+        For Each c As Object In bList
+            Try
+                c.Font = fBold
+            Catch ex As Exception
+            End Try
+        Next
+        ApplySplitPaneFont(fBold)
+        ApplyGridToolbarLabelFont()
+
+        Dim fMono As Font = CreateUiFont(xMonoFamilies, 9.0F, FontStyle.Regular, POWAVInner.Font)
+        Dim mList() As Object = {LWAV, LBMP, LBeat, TExpansion}
+        For Each c As Object In mList
+            Try
+                c.Font = fMono
+            Catch ex As Exception
+            End Try
+        Next
+    End Sub
+
+    Private Function CreateUiFont(ByVal families() As String, ByVal size As Single, ByVal style As FontStyle, ByVal fallback As Font) As Font
+        For Each xFamily As String In families
+            If isFontInstalled(xFamily) Then Return New Font(xFamily, size, style)
+        Next
+
+        Return New Font(fallback.FontFamily, size, style)
+    End Function
+
+    Private Sub ApplyLanguage()
+        ApplyUiCultureFonts()
+
+        SetText("Menu.File.Title", mnFile.Text)
+        SetText("Menu.File.New", mnNew.Text)
+        SetText("Menu.File.Open", mnOpen.Text)
+        SetText("Menu.File.ImportNBMSC", mnImportNBMSC.Text)
+        SetText("Menu.File.Save", mnSave.Text)
+        SetText("Menu.File.SaveAs", mnSaveAs.Text)
+        SetText("Menu.File.ExportNBMSC", mnExportNBMSC.Text)
+        SetText("Menu.File.ExportBMSON", mnExportBMSON.Text)
+        SetText("Menu.File.Quit", mnQuit.Text)
+
+        SetText("Menu.Edit.Title", mnEdit.Text)
+        SetText("Menu.Edit.Undo", mnUndo.Text)
+        SetText("Menu.Edit.Redo", mnRedo.Text)
+        SetText("Menu.Edit.Cut", mnCut.Text)
+        SetText("Menu.Edit.Copy", mnCopy.Text)
+        SetText("Menu.Edit.Paste", mnPaste.Text)
+        SetText("Menu.Edit.Delete", mnDelete.Text)
+        SetText("Menu.Edit.SelectAll", mnSelectAll.Text)
+        SetText("Menu.Edit.GoToMeasure", mnGotoMeasure.Text)
+        SetText("Menu.Edit.Find", mnFind.Text)
+        SetText("Menu.Edit.Stat", mnStatistics.Text)
+        SetText("Menu.Edit.TimeSelectionTool", mnTimeSelect.Text)
+        SetText("Menu.Edit.SelectTool", mnSelect.Text)
+        SetText("Menu.Edit.WriteTool", mnWrite.Text)
+
+        SetText("Menu.View.Title", mnSys.Text)
+        SetText("Menu.Options.Title", mnOptions.Text)
+        SetText("Menu.Options.NT", mnNTInput.Text)
+        SetText("Menu.Options.ErrorCheck", mnErrorCheck.Text)
+        SetText("Menu.Options.PreviewOnClick", mnPreviewOnClick.Text)
+        SetText("Menu.Options.ShowFileName", mnShowFileName.Text)
+        SetText("Menu.Options.ChangePlaySide", mnChangePlaySide.Text)
+        SetText("Menu.Options.WavIncrease", mnWavIncrease.Text)
+        SetText("Menu.Options.SyncSplitViewScroll", mnSyncSplitViewScroll.Text)
+        SetText("Menu.Options.SlashGrid", mnSlashGrid.Text)
+        SetText("Menu.Options.GeneralOptions", mnGOptions.Text)
+        SetText("Menu.Options.PlayerOptions", mnPOptions.Text)
+        SetText("Menu.Options.Language", mnLanguage.Text)
+        SetText("Menu.Options.Theme", mnTheme.Text)
+        SetText("Menu.Conversion", mnConversion.Text)
+
+        SetText("Menu.Preview.Title", mnPreview.Text)
+        SetText("Menu.Preview.PlayBegin", mnPlayB.Text)
+        SetText("Menu.Preview.PlayHere", mnPlay.Text)
+        SetText("Menu.Preview.PlayStop", mnStop.Text)
+        SetText("Menu.Help.Title", mnHelp.Text)
+        SetText("Menu.Help.OpenAppFolder", mnOpenAppFolder.Text)
+        SetText("Menu.Help.CheckUpdates", mnUpdate.Text)
+        SetText("Menu.Help.CheckUpdatesOnStartup", mnUpdateStartup.Text)
+
+        SetText("ToolBar.New", TBNew.Text)
+        SetText("ToolBar.Open", TBOpen.Text)
+        SetText("ToolBar.Save", TBSave.Text)
+        SetText("ToolBar.Cut", TBCut.Text)
+        SetText("ToolBar.Copy", TBCopy.Text)
+        SetText("ToolBar.Paste", TBPaste.Text)
+        SetText("ToolBar.Find", TBFind.Text)
+        SetText("ToolBar.Stat", TBStatistics.Text)
+        SetText("ToolBar.Conversion", POConvert.Text)
+        SetText("ToolBar.ErrorCheck", TBErrorCheck.Text)
+        SetText("ToolBar.PreviewOnClick", TBPreviewOnClick.Text)
+        SetText("ToolBar.ShowFileName", TBShowFileName.Text)
+        SetText("ToolBar.ChangePlaySide", TBChangePlaySide.Text)
+        SetText("ToolBar.AddSplitView", TBAddSplitView.Text)
+        SetText("ToolBar.RemoveSplitView", TBRemoveSplitView.Text)
+        SetText("ToolBar.SyncSplitViewScroll", TBSyncSplitViewScroll.Text)
+        SetText("ToolBar.Undo", TBUndo.Text)
+        SetText("ToolBar.Redo", TBRedo.Text)
+        SetText("ToolBar.NT", TBNTInput.Text)
+        SetText("ToolBar.WavIncrease", TBWavIncrease.Text)
+        SetText("ToolBar.WavIncrease", mnWavIncrease.Text)
+        SetText("ToolBar.TimeSelectionTool", TBTimeSelect.Text)
+        SetText("ToolBar.SelectTool", TBSelect.Text)
+        SetText("ToolBar.WriteTool", TBWrite.Text)
+        SetText("ToolBar.PlayBegin", TBPlayB.Text)
+        SetText("ToolBar.PlayHere", TBPlay.Text)
+        SetText("ToolBar.PlayStop", TBStop.Text)
+        SetText("ToolBar.Language", TBLanguage.Text)
+        SetText("ToolBar.Theme", TBTheme.Text)
+        SetToolStripText("ToolBar.Grid", TBMain.Items("TBGridDivideLabel"))
+        SetToolStripText("ToolBar.GridSub", TBMain.Items("TBGridSubLabel"))
+        SetToolStripText("ToolBar.GridHeight", TBMain.Items("TBGridHeightLabel"))
+        SetToolStripText("ToolBar.GridWidth", TBMain.Items("TBGridWidthLabel"))
+
+        FSC.ToolTipText = Strings.Get("StatusBar.ColumnCaption")
+        FSW.ToolTipText = Strings.Get("StatusBar.NoteIndex")
+        FSM.ToolTipText = Strings.Get("StatusBar.MeasureIndex")
+        FSP1.ToolTipText = Strings.Get("StatusBar.GridResolution")
+        FSP3.ToolTipText = Strings.Get("StatusBar.ReducedResolution")
+        FSP2.ToolTipText = Strings.Get("StatusBar.MeasureResolution")
+        FSP4.ToolTipText = Strings.Get("StatusBar.AbsolutePosition")
+        FSSS.ToolTipText = Strings.Get("StatusBar.SelStart")
+        FSSL.ToolTipText = Strings.Get("StatusBar.SelLength")
+        FSSH.ToolTipText = Strings.Get("StatusBar.SelSplit")
+        SetText("StatusBar.Reverse", BVCReverse.Text)
+        SetText("StatusBar.ByMultiple", BVCApply.Text)
+        SetText("StatusBar.ByValue", BVCCalculate.Text)
+
+        SetText("SubMenu.ShowHide.Menu", mnSMenu.Text)
+        SetText("SubMenu.ShowHide.ToolBar", mnSTB.Text)
+        SetText("SubMenu.ShowHide.OptionsPanel", mnSOP.Text)
+        SetText("SubMenu.ShowHide.StatusBar", mnSStatus.Text)
+        SetText("SubMenu.ShowHide.AddSplitView", mnSAddSplitView.Text)
+        SetText("SubMenu.ShowHide.RemoveSplitView", mnSRemoveSplitView.Text)
+        SetText("SubMenu.ShowHide.CloseSplitView", EditorContextCloseSplitView.Text)
+        SetText("SubMenu.ShowHide.Grid", CGShow.Text)
+        SetText("SubMenu.ShowHide.Sub", CGShowS.Text)
+        SetText("SubMenu.ShowHide.BG", CGShowBG.Text)
+        SetText("SubMenu.ShowHide.MeasureIndex", CGShowM.Text)
+        SetText("SubMenu.ShowHide.MeasureLine", CGShowMB.Text)
+        SetText("SubMenu.ShowHide.Vertical", CGShowV.Text)
+        SetText("SubMenu.ShowHide.ColumnCaption", CGShowC.Text)
+        SetText("SubMenu.ShowHide.BPM", CGBPM.Text)
+        SetText("SubMenu.ShowHide.STOP", CGSTOP.Text)
+        SetText("SubMenu.ShowHide.SCROLL", CGSCROLL.Text)
+        SetText("SubMenu.ShowHide.BLP", CGBLP.Text)
+        SetText("SubMenu.InsertMeasure.Insert", MInsert.Text)
+        SetText("SubMenu.InsertMeasure.Remove", MRemove.Text)
+        SetText("SubMenu.Theme.Default", TBThemeDef.Text)
+        SetText("SubMenu.Theme.Save", TBThemeSave.Text)
+        SetText("SubMenu.Theme.Refresh", TBThemeRefresh.Text)
+        SetText("SubMenu.Convert.Long", POBLong.Text)
+        SetText("SubMenu.Convert.Short", POBShort.Text)
+        SetText("SubMenu.Convert.LongShort", POBLongShort.Text)
+        SetText("SubMenu.Convert.Hidden", POBHidden.Text)
+        SetText("SubMenu.Convert.Visible", POBVisible.Text)
+        SetText("SubMenu.Convert.HiddenVisible", POBHiddenVisible.Text)
+        SetText("SubMenu.Convert.Landmine", POBLandmine.Text)
+        SetText("SubMenu.Convert.NormalLandmine", POBNormalLandmine.Text)
+        SetText("SubMenu.Convert.Relabel", POBModify.Text)
+        SetText("SubMenu.Convert.Mirror", POBMirror.Text)
+        SetText("SubMenu.WAV.Base62", CWAVBase62.Text)
+        SetText("SubMenu.WAV.Base62", CBMPBase62.Text)
+        SetText("SubMenu.WAV.MultiSelection", CWAVMultiSelect.Text)
+        SetText("SubMenu.WAV.Synchronize", CWAVChangeLabel.Text)
+        SetText("SubMenu.WAV.Emptyfill", CWAVEmptyfill.Text)
+        SetText("SubMenu.Beat.Absolute", CBeatPreserve.Text)
+        SetText("SubMenu.Beat.Measure", CBeatMeasure.Text)
+        SetText("SubMenu.Beat.Cut", CBeatCut.Text)
+        SetText("SubMenu.Beat.Scale", CBeatScale.Text)
+
+        SetText("OptionsPanel.Header.Header", POHeaderTabButton.Text)
+        SetText("OptionsPanel.Header.Title", Label3.Text)
+        SetText("OptionsPanel.Header.Artist", Label4.Text)
+        SetText("OptionsPanel.Header.Genre", Label2.Text)
+        SetText("OptionsPanel.Header.BPM", Label9.Text)
+        SetText("OptionsPanel.Header.Player", Label8.Text)
+        SetText("OptionsPanel.Header.Rank", Label10.Text)
+        SetText("OptionsPanel.Header.PlayLevel", Label6.Text)
+        SetText("OptionsPanel.Header.SubTitle", Label15.Text)
+        SetText("OptionsPanel.Header.SubArtist", Label17.Text)
+        SetText("OptionsPanel.Header.StageFile", Label16.Text)
+        SetText("OptionsPanel.Header.Banner", Label12.Text)
+        SetText("OptionsPanel.Header.BackBMP", Label11.Text)
+        SetText("OptionsPanel.Header.Difficulty", Label21.Text)
+        SetText("OptionsPanel.Header.ExRank", Label23.Text)
+        SetText("OptionsPanel.Header.Total", Label20.Text)
+        SetText("OptionsPanel.Header.RecommendedTotal", LRecommendedTotalCaption.Text)
+        SetText("OptionsPanel.Header.Comment", Label19.Text)
+        SetText("OptionsPanel.Header.LnObj", Label24.Text)
+        SetText("OptionsPanel.Header.LandMine", Label26.Text)
+        SetText("OptionsPanel.Header.MissBMP", Label27.Text)
+        SetText("OptionsPanel.Header.Preview", Label28.Text)
+        SetText("OptionsPanel.Header.LnMode", Label29.Text)
+        CHPlayer.Items.Item(0) = Strings.Get("OptionsPanel.Header.Player1")
+        CHPlayer.Items.Item(1) = Strings.Get("OptionsPanel.Header.Player3")
+        CHPlayer.Items.Item(2) = Strings.Get("OptionsPanel.Header.Player2")
+        CHRank.Items.Item(0) = Strings.Get("OptionsPanel.Header.Rank0")
+        CHRank.Items.Item(1) = Strings.Get("OptionsPanel.Header.Rank1")
+        CHRank.Items.Item(2) = Strings.Get("OptionsPanel.Header.Rank2")
+        CHRank.Items.Item(3) = Strings.Get("OptionsPanel.Header.Rank3")
+        CHRank.Items.Item(4) = Strings.Get("OptionsPanel.Header.Rank4")
+        CHDifficulty.Items.Item(0) = Strings.Get("OptionsPanel.Header.Difficulty0")
+        CHDifficulty.Items.Item(1) = Strings.Get("OptionsPanel.Header.Difficulty1")
+        CHDifficulty.Items.Item(2) = Strings.Get("OptionsPanel.Header.Difficulty2")
+        CHDifficulty.Items.Item(3) = Strings.Get("OptionsPanel.Header.Difficulty3")
+        CHDifficulty.Items.Item(4) = Strings.Get("OptionsPanel.Header.Difficulty4")
+        CHDifficulty.Items.Item(5) = Strings.Get("OptionsPanel.Header.Difficulty5")
+
+        SetText("OptionsPanel.Grid.Title", POGridSwitch.Text)
+        SetText("OptionsPanel.Grid.Snap", CGSnap.Text)
+        SetText("OptionsPanel.Grid.BCols", Label1.Text)
+        SetText("OptionsPanel.Grid.DisableVertical", CGDisableVertical.Text)
+        SetText("OptionsPanel.WaveForm.Title", POWaveFormTabButton.Text)
+        ToolTipUniversal.SetToolTip(BWLoad, Strings.Get("OptionsPanel.WaveForm.Load"))
+        ToolTipUniversal.SetToolTip(BWClear, Strings.Get("OptionsPanel.WaveForm.Clear"))
+        ToolTipUniversal.SetToolTip(BWLock, Strings.Get("OptionsPanel.WaveForm.Lock"))
+        SetText("OptionsPanel.WAV.Title", POWAVTabButton.Text)
+        SetText("OptionsPanel.BMP.Title", POBMPTabButton.Text)
+        SetText("OptionsPanel.Beat", POBeatTabButton.Text)
+        SetText("OptionsPanel.Beat.Apply", BBeatApply.Text)
+        SetText("OptionsPanel.Beat.Apply", BBeatApplyV.Text)
+        SetText("OptionsPanel.Expansion", POHeaderExpansionSeparatorLabel.Text)
+
+        SyncEncodingMenuText()
+        SyncOptionsTabTitles()
+        RefreshLanguageMenuChecks()
+        RefreshMenuShortcutDisplay()
+        For i As Integer = 0 To UBound(Recent)
+            SetRecent(i, Recent(i))
+        Next
+        POStatusRefresh()
+    End Sub
+
+    Private Sub SetText(ByVal key As String, ByRef target As String)
+        target = Strings.Get(key)
+    End Sub
+
+    Private Sub SetToolStripText(ByVal key As String, ByVal target As ToolStripItem)
+        If target Is Nothing Then Return
+        target.Text = Strings.Get(key)
     End Sub
 
     Private Function AppendShortcutText(ByVal text As String, ByVal shortcutText As String) As String
@@ -1492,12 +1872,12 @@ Public Class MainWindow
             New ToolStripSeparator With {.Name = "ToolStripSeparatorGridStart"},
             New ToolStripLabel With {.Name = "TBGridDivideLabel", .Text = "Grid"},
             TBGridDivide,
-            New ToolStripLabel With {.Name = "TBGridSubLabel", .Text = "補助"},
+            New ToolStripLabel With {.Name = "TBGridSubLabel", .Text = "Sub"},
             TBGridSub,
             New ToolStripSeparator With {.Name = "ToolStripSeparatorGridScale"},
-            New ToolStripLabel With {.Name = "TBGridHeightLabel", .Text = "高さ"},
+            New ToolStripLabel With {.Name = "TBGridHeightLabel", .Text = "Height"},
             TBGridHeight,
-            New ToolStripLabel With {.Name = "TBGridWidthLabel", .Text = "幅"},
+            New ToolStripLabel With {.Name = "TBGridWidthLabel", .Text = "Width"},
             TBGridWidth,
             New ToolStripSeparator With {.Name = "ToolStripSeparatorDisableVertical"},
             TBDisableVertical,
@@ -1505,10 +1885,21 @@ Public Class MainWindow
         }
 
         TBMain.Items.AddRange(gridItems)
+        ApplyGridToolbarLabelFont()
 
         RefreshGridToolbar()
         RefreshDisableVerticalToolbar()
         RefreshGridSnapToolbar()
+    End Sub
+
+    Private Sub ApplyGridToolbarLabelFont()
+        Dim xFont As New Font(TBMain.Font.FontFamily, Math.Max(6.0F, TBMain.Font.Size - 2.0F), TBMain.Font.Style)
+        Dim xNames() As String = {"TBGridDivideLabel", "TBGridSubLabel", "TBGridHeightLabel", "TBGridWidthLabel"}
+
+        For Each xName As String In xNames
+            Dim xLabel As ToolStripLabel = TryCast(TBMain.Items(xName), ToolStripLabel)
+            If xLabel IsNot Nothing Then xLabel.Font = xFont
+        Next
     End Sub
 
     Private Function CreateGridCombo(ByVal name As String, ByVal width As Integer, ByVal values() As String) As ToolStripComboBox
@@ -3232,7 +3623,7 @@ Public Class MainWindow
         CHPlayer.SelectedIndex = 0
 
         CalculateGreatestVPosition()
-        TBLangRefresh_Click(TBLangRefresh, Nothing)
+        RefreshLanguageMenu()
         TBThemeRefresh_Click(TBThemeRefresh, Nothing)
 
         If My.Computer.FileSystem.FileExists(My.Application.Info.DirectoryPath & "\nBMSC.Settings.xml") Then
@@ -3292,7 +3683,8 @@ Public Class MainWindow
     End Sub
 
     Private Sub LoadInitialPreferences()
-        LoadAutomaticLocale()
+        SetConfiguredUiCulture("")
+        ApplyLanguage()
         If LoadThemeOrDefault("") Then ChangePlaySideSkin(False)
     End Sub
 
@@ -5694,29 +6086,6 @@ StartCount:     If Not NTInput Then
     Private Sub TWSaturation2_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TWSaturation2.Scroll
         TWSaturation.Value = TWSaturation2.Value
     End Sub
-
-    Private Sub TBLangDef_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBLangDef.Click
-        DispLang = ""
-        MsgBox(Strings.Messages.PreferencePostpone, MsgBoxStyle.Information)
-    End Sub
-
-    Private Sub TBLangRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBLangRefresh.Click
-        For xI1 As Integer = cmnLanguage.Items.Count - 1 To 3 Step -1
-            Try
-                cmnLanguage.Items.RemoveAt(xI1)
-            Catch ex As Exception
-            End Try
-        Next
-
-        Dim xLangPath As String = My.Application.Info.DirectoryPath & "\Language"
-        If Not Directory.Exists(xLangPath) Then My.Computer.FileSystem.CreateDirectory(xLangPath)
-        Dim xFileNames() As FileInfo = My.Computer.FileSystem.GetDirectoryInfo(xLangPath).GetFiles("*.xml")
-
-        For Each xStr As FileInfo In xFileNames
-            LoadLocaleXML(xStr)
-        Next
-    End Sub
-
 
     Private Sub UpdateColumnLefts()
         Dim xLeft As Integer = 0

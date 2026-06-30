@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Encoding.Auto" xml:space="preserve">
+    <value>自动检测</value>
+  </data>
+  <data name="Encoding.ReloadWithEncoding" xml:space="preserve">
+    <value>指定编码重新读取</value>
+  </data>
+  <data name="Encoding.SystemDefault" xml:space="preserve">
+    <value>系统默认</value>
+  </data>
+  <data name="FileAssociation.BME" xml:space="preserve">
+    <value>BME 谱面文件</value>
+  </data>
+  <data name="FileAssociation.BML" xml:space="preserve">
+    <value>BML 谱面文件</value>
+  </data>
+  <data name="FileAssociation.BMS" xml:space="preserve">
+    <value>BMS 谱面文件</value>
+  </data>
+  <data name="FileAssociation.NBMSC" xml:space="preserve">
+    <value>nBMSC 文件</value>
+  </data>
+  <data name="FileAssociation.Open" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="FileAssociation.PMS" xml:space="preserve">
+    <value>PMS 谱面文件</value>
+  </data>
+  <data name="FileAssociation.Preview" xml:space="preserve">
+    <value>预览</value>
+  </data>
+  <data name="FileAssociation.ViewCode" xml:space="preserve">
+    <value>查看源码</value>
+  </data>
+  <data name="FileType._all" xml:space="preserve">
+    <value>所有文件 (*.*)</value>
+  </data>
+  <data name="FileType._audio" xml:space="preserve">
+    <value>所有支持的音乐文件 (*.wav, *.ogg, *.mp3, *.mid)</value>
+  </data>
+  <data name="FileType._bms" xml:space="preserve">
+    <value>所有支持的谱面文件 (*.bms, *.bme, *.bml, *.pms, *.txt)</value>
+  </data>
+  <data name="FileType._image" xml:space="preserve">
+    <value>所有支持的图像文件 (*.png, *.bmp, *.jpg, *.gif)</value>
+  </data>
+  <data name="FileType._wave" xml:space="preserve">
+    <value>所有支持的音频文件 (*.wav, *.ogg, *.mp3)</value>
+  </data>
+  <data name="FileType.BME" xml:space="preserve">
+    <value>BME谱面文件 (*.bme)</value>
+  </data>
+  <data name="FileType.BML" xml:space="preserve">
+    <value>BML谱面文件 (*.bml)</value>
+  </data>
+  <data name="FileType.BMS" xml:space="preserve">
+    <value>BMS谱面文件 (*.bms)</value>
+  </data>
+  <data name="FileType.EXE" xml:space="preserve">
+    <value>可执行文件 (*.exe)</value>
+  </data>
+  <data name="FileType.MID" xml:space="preserve">
+    <value>MIDI 格式文件 (*.mid)</value>
+  </data>
+  <data name="FileType.MP3" xml:space="preserve">
+    <value>MP3 格式文件 (*.mp3)</value>
+  </data>
+  <data name="FileType.NBMSC" xml:space="preserve">
+    <value>nBMSC二进制文件 (*.nbmsc)</value>
+  </data>
+  <data name="FileType.OGG" xml:space="preserve">
+    <value>Vorbis 声音 (*.ogg)</value>
+  </data>
+  <data name="FileType.PMS" xml:space="preserve">
+    <value>PMS谱面文件 (*.pms)</value>
+  </data>
+  <data name="FileType.THEME_XML" xml:space="preserve">
+    <value>nBMSC 皮肤文件 (*.xml)</value>
+  </data>
+  <data name="FileType.TXT" xml:space="preserve">
+    <value>文本文档 (*.txt)</value>
+  </data>
+  <data name="FileType.WAV" xml:space="preserve">
+    <value>波形声音 (*.wav)</value>
+  </data>
+  <data name="FileType.XML" xml:space="preserve">
+    <value>可扩展标记语言 (*.xml)</value>
+  </data>
+  <data name="Find.Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Find.Column" xml:space="preserve">
+    <value>列</value>
+  </data>
+  <data name="Find.Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Find.Hidden" xml:space="preserve">
+    <value>隐藏Note</value>
+  </data>
+  <data name="Find.LabelRange" xml:space="preserve">
+    <value>标签范围</value>
+  </data>
+  <data name="Find.LongNote" xml:space="preserve">
+    <value>面条</value>
+  </data>
+  <data name="Find.MeasureRange" xml:space="preserve">
+    <value>小节范围</value>
+  </data>
+  <data name="Find.NoteRange" xml:space="preserve">
+    <value>Note 范围</value>
+  </data>
+  <data name="Find.Operation" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="Find.ReplaceWithLabel" xml:space="preserve">
+    <value>替换为标签：</value>
+  </data>
+  <data name="Find.ReplaceWithValue" xml:space="preserve">
+    <value>替换为值</value>
+  </data>
+  <data name="Find.Select" xml:space="preserve">
+    <value>选择</value>
+  </data>
+  <data name="Find.SelectAll" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="Find.Selected" xml:space="preserve">
+    <value>选中的Note</value>
+  </data>
+  <data name="Find.SelectInverse" xml:space="preserve">
+    <value>反选</value>
+  </data>
+  <data name="Find.ShortNote" xml:space="preserve">
+    <value>小米</value>
+  </data>
+  <data name="Find.to" xml:space="preserve">
+    <value>至</value>
+  </data>
+  <data name="Find.Unselect" xml:space="preserve">
+    <value>取消选择</value>
+  </data>
+  <data name="Find.UnselectAll" xml:space="preserve">
+    <value>全不选</value>
+  </data>
+  <data name="Find.UnSelected" xml:space="preserve">
+    <value>未选中的Note</value>
+  </data>
+  <data name="Find.ValueRange" xml:space="preserve">
+    <value>数值范围</value>
+  </data>
+  <data name="Find.Visible" xml:space="preserve">
+    <value>可见Note</value>
+  </data>
+  <data name="GeneralOptions.AssociateFileType" xml:space="preserve">
+    <value>设置文件关联</value>
+  </data>
+  <data name="GeneralOptions.AutoFocusOnMouseEnter" xml:space="preserve">
+    <value>鼠标进入编辑区域时自动设置焦点</value>
+  </data>
+  <data name="GeneralOptions.AutoSave" xml:space="preserve">
+    <value>自动保存</value>
+  </data>
+  <data name="GeneralOptions.BeepWhileSaved" xml:space="preserve">
+    <value>保存后播放提示音</value>
+  </data>
+  <data name="GeneralOptions.BPMDefinitionMode" xml:space="preserve">
+    <value>BPM 定义数</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeBase36" xml:space="preserve">
+    <value>36 进制（01～ZZ）</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeBase62" xml:space="preserve">
+    <value>62 进制（01～zz）</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeDefault" xml:space="preserve">
+    <value>默认（01～FF）</value>
+  </data>
+  <data name="GeneralOptions.DisableFirstClick" xml:space="preserve">
+    <value>编辑区域无焦点时首次单击无操作</value>
+  </data>
+  <data name="GeneralOptions.InputTextEncoding" xml:space="preserve">
+    <value>读取编码</value>
+  </data>
+  <data name="GeneralOptions.LaneHighlight" xml:space="preserve">
+    <value>轨道高亮显示</value>
+  </data>
+  <data name="GeneralOptions.MaxGridPartition" xml:space="preserve">
+    <value>BMS 最大格线</value>
+  </data>
+  <data name="GeneralOptions.MiddleButton" xml:space="preserve">
+    <value>鼠标中键</value>
+  </data>
+  <data name="GeneralOptions.MiddleButtonAuto" xml:space="preserve">
+    <value>单击滚动</value>
+  </data>
+  <data name="GeneralOptions.MiddleButtonDrag" xml:space="preserve">
+    <value>单击拖拽</value>
+  </data>
+  <data name="GeneralOptions.MinimumBGMLanes" xml:space="preserve">
+    <value>BGM 轨道最小数量</value>
+  </data>
+  <data name="GeneralOptions.minutes" xml:space="preserve">
+    <value>分钟</value>
+  </data>
+  <data name="GeneralOptions.MouseWheel" xml:space="preserve">
+    <value>鼠标滚轮翻页</value>
+  </data>
+  <data name="GeneralOptions.NewBMSUseBase62" xml:space="preserve">
+    <value>新建 BMS 使用 62 进制</value>
+  </data>
+  <data name="GeneralOptions.OutputTextEncoding" xml:space="preserve">
+    <value>保存编码</value>
+  </data>
+  <data name="GeneralOptions.PageUpDown" xml:space="preserve">
+    <value>PageUp / PageDown</value>
+  </data>
+  <data name="GeneralOptions.SkipClippedMeasure" xml:space="preserve">
+    <value>跳过显示不完整的小节，从下一小节开始播放</value>
+  </data>
+  <data name="GeneralOptions.STOPDefinitionMode" xml:space="preserve">
+    <value>STOP 定义数</value>
+  </data>
+  <data name="GeneralOptions.StopPreviewOnClick" xml:space="preserve">
+    <value>鼠标单击编辑区域时停止播放预览</value>
+  </data>
+  <data name="GeneralOptions.Title" xml:space="preserve">
+    <value>常规设置</value>
+  </data>
+  <data name="GeneralOptions.UndoRedoMemoryLimit" xml:space="preserve">
+    <value>撤销/重做历史内存上限</value>
+  </data>
+  <data name="Menu.Conversion" xml:space="preserve">
+    <value>转换</value>
+  </data>
+  <data name="Menu.Edit.Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Menu.Edit.Cut" xml:space="preserve">
+    <value>剪切</value>
+  </data>
+  <data name="Menu.Edit.Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Menu.Edit.Find" xml:space="preserve">
+    <value>查找 / 删除 / 替换</value>
+  </data>
+  <data name="Menu.Edit.GoToMeasure" xml:space="preserve">
+    <value>跳转到小节...</value>
+  </data>
+  <data name="Menu.Edit.Paste" xml:space="preserve">
+    <value>粘贴</value>
+  </data>
+  <data name="Menu.Edit.Redo" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="Menu.Edit.SelectAll" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="Menu.Edit.SelectTool" xml:space="preserve">
+    <value>选择工具</value>
+  </data>
+  <data name="Menu.Edit.Stat" xml:space="preserve">
+    <value>统计</value>
+  </data>
+  <data name="Menu.Edit.TimeSelectionTool" xml:space="preserve">
+    <value>时间选择工具</value>
+  </data>
+  <data name="Menu.Edit.Title" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Menu.Edit.Undo" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="Menu.Edit.WriteTool" xml:space="preserve">
+    <value>写入工具</value>
+  </data>
+  <data name="Menu.File.ExportNBMSC" xml:space="preserve">
+    <value>导出 .NBMSC 文件</value>
+  </data>
+  <data name="Menu.File.ImportNBMSC" xml:space="preserve">
+    <value>导入 .NBMSC 文件</value>
+  </data>
+  <data name="Menu.File.New" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="Menu.File.Open" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="Menu.File.Quit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Menu.File.Recent0" xml:space="preserve">
+    <value>Recent #0</value>
+  </data>
+  <data name="Menu.File.Recent1" xml:space="preserve">
+    <value>Recent #1</value>
+  </data>
+  <data name="Menu.File.Recent2" xml:space="preserve">
+    <value>Recent #2</value>
+  </data>
+  <data name="Menu.File.Recent3" xml:space="preserve">
+    <value>Recent #3</value>
+  </data>
+  <data name="Menu.File.Recent4" xml:space="preserve">
+    <value>Recent #4</value>
+  </data>
+  <data name="Menu.File.Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Menu.File.SaveAs" xml:space="preserve">
+    <value>另存为 ...</value>
+  </data>
+  <data name="Menu.File.Title" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="Menu.Help.CheckUpdates" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="Menu.Help.CheckUpdatesOnStartup" xml:space="preserve">
+    <value>启动时检查更新</value>
+  </data>
+  <data name="Menu.Help.OpenAppFolder" xml:space="preserve">
+    <value>打开应用程序文件夹</value>
+  </data>
+  <data name="Menu.Help.Title" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Menu.Options.ErrorCheck" xml:space="preserve">
+    <value>错误检查</value>
+  </data>
+  <data name="Menu.Options.GeneralOptions" xml:space="preserve">
+    <value>常规设置</value>
+  </data>
+  <data name="Menu.Options.Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Menu.Options.NT" xml:space="preserve">
+    <value>面条输入方式 - NT/BMSE</value>
+  </data>
+  <data name="Menu.Options.PlayerOptions" xml:space="preserve">
+    <value>播放器设置</value>
+  </data>
+  <data name="Menu.Options.PreviewOnClick" xml:space="preserve">
+    <value>单击播放Key音</value>
+  </data>
+  <data name="Menu.Options.ShowFileName" xml:space="preserve">
+    <value>Note上显示文件名</value>
+  </data>
+  <data name="Menu.Options.SlashGrid" xml:space="preserve">
+    <value>斜杠键 Grid 值</value>
+  </data>
+  <data name="Menu.Options.SyncSplitViewScroll" xml:space="preserve">
+    <value>同步分屏间滚动</value>
+  </data>
+  <data name="Menu.Options.Theme" xml:space="preserve">
+    <value>皮肤</value>
+  </data>
+  <data name="Menu.Options.Title" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="Menu.Options.VisualOptions" xml:space="preserve">
+    <value>外观设置</value>
+  </data>
+  <data name="Menu.Preview.PlayBegin" xml:space="preserve">
+    <value>从开始处播放</value>
+  </data>
+  <data name="Menu.Preview.PlayHere" xml:space="preserve">
+    <value>从当前小节播放</value>
+  </data>
+  <data name="Menu.Preview.PlayStop" xml:space="preserve">
+    <value>停止播放</value>
+  </data>
+  <data name="Menu.Preview.Title" xml:space="preserve">
+    <value>预览</value>
+  </data>
+  <data name="Messages.BPMOverflowError" xml:space="preserve">
+    <value>多字节 BPM 数量已经超过上限：</value>
+  </data>
+  <data name="Messages.CannotFind" xml:space="preserve">
+    <value>找不到文件 {}。</value>
+  </data>
+  <data name="Messages.EraserObsolete" xml:space="preserve">
+    <value>删除模式已取消，请鼠标右键单击删除Note.</value>
+  </data>
+  <data name="Messages.Err" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Messages.FileAssociationError" xml:space="preserve">
+    <value>文件关联设置失败：</value>
+  </data>
+  <data name="Messages.FileAssociationPrompt" xml:space="preserve">
+    <value>是否将 nBMSC 设置为打开所有 {} 文件的默认程序？</value>
+  </data>
+  <data name="Messages.GoToMeasureTitle" xml:space="preserve">
+    <value>跳转到小节</value>
+  </data>
+  <data name="Messages.InvalidLabel" xml:space="preserve">
+    <value>标签无效。</value>
+  </data>
+  <data name="Messages.NegativeDivisorError" xml:space="preserve">
+    <value>除数必须大于0。</value>
+  </data>
+  <data name="Messages.NegativeFactorError" xml:space="preserve">
+    <value>乘数必须大于0。</value>
+  </data>
+  <data name="Messages.NoteOverlapError" xml:space="preserve">
+    <value>检测到Note重叠。请增加BMS最大格线设置。</value>
+  </data>
+  <data name="Messages.PlayerNotFound" xml:space="preserve">
+    <value>找不到播放器</value>
+  </data>
+  <data name="Messages.PleaseRespecifyPath" xml:space="preserve">
+    <value>请重新设置路径。</value>
+  </data>
+  <data name="Messages.PreviewDelError" xml:space="preserve">
+    <value>请至少保留一个播放器。</value>
+  </data>
+  <data name="Messages.PromptEnter" xml:space="preserve">
+    <value>请输入一个标签。</value>
+  </data>
+  <data name="Messages.PromptEnterBPM" xml:space="preserve">
+    <value>请输入变速值。</value>
+  </data>
+  <data name="Messages.PromptEnterMeasure" xml:space="preserve">
+    <value>请输入小节号 (0-999)。</value>
+  </data>
+  <data name="Messages.PromptEnterNumeric" xml:space="preserve">
+    <value>请输入一个值。</value>
+  </data>
+  <data name="Messages.PromptEnterSTOP" xml:space="preserve">
+    <value>请输入STOP值。</value>
+  </data>
+  <data name="Messages.PromptSlashValue" xml:space="preserve">
+    <value>当按下“/”键时，更改格线为：</value>
+  </data>
+  <data name="Messages.RestoreAutosavedFile" xml:space="preserve">
+    <value>找到 {} 个自动保存文件。是否恢复这些文件？</value>
+  </data>
+  <data name="Messages.RestoreDefaultSettings" xml:space="preserve">
+    <value>恢复默认设置？</value>
+  </data>
+  <data name="Messages.SavedFileWillContainErrors" xml:space="preserve">
+    <value>文件将无法正确保存。</value>
+  </data>
+  <data name="Messages.SaveOnExit" xml:space="preserve">
+    <value>是否保存更改？</value>
+  </data>
+  <data name="Messages.SaveOnExit1" xml:space="preserve">
+    <value>关机之前你得告诉我你要保存不 -_,-</value>
+  </data>
+  <data name="Messages.SaveOnExit2" xml:space="preserve">
+    <value>就算你用任务管理器你还是得告诉我你要保存不 -_,-</value>
+  </data>
+  <data name="Messages.SaveWarning" xml:space="preserve">
+    <value>警告：</value>
+  </data>
+  <data name="Messages.STOPOverflowError" xml:space="preserve">
+    <value>多字节 STOP 数量已经超过上限：</value>
+  </data>
+  <data name="Messages.UpdateAvailable" xml:space="preserve">
+    <value>有新版本可用。
+当前: {0}
+最新: {1}</value>
+  </data>
+  <data name="Messages.UpdateCheckFailed" xml:space="preserve">
+    <value>无法检查更新。
+{0}</value>
+  </data>
+  <data name="Messages.UpdateCheckTitle" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="Messages.UpdateLater" xml:space="preserve">
+    <value>稍后</value>
+  </data>
+  <data name="Messages.UpdateLatest" xml:space="preserve">
+    <value>正在使用最新版本。
+当前: {0}
+最新: {1}</value>
+  </data>
+  <data name="Messages.UpdateOpenRelease" xml:space="preserve">
+    <value>打开 Release</value>
+  </data>
+  <data name="Messages.UpdateSkipVersion" xml:space="preserve">
+    <value>跳过此版本</value>
+  </data>
+  <data name="Messages.UpdateVersionUnsupported" xml:space="preserve">
+    <value>无法比较版本。
+当前: {0}
+最新 Release: {1}
+是否打开 Release 页面？</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="OptionsPanel.Beat" xml:space="preserve">
+    <value>节拍</value>
+  </data>
+  <data name="OptionsPanel.Beat.Apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="OptionsPanel.Expansion" xml:space="preserve">
+    <value>扩展代码</value>
+  </data>
+  <data name="OptionsPanel.Grid.BCols" xml:space="preserve">
+    <value>BGM 列最小数量</value>
+  </data>
+  <data name="OptionsPanel.Grid.DisableVertical" xml:space="preserve">
+    <value>禁用垂直移动</value>
+  </data>
+  <data name="OptionsPanel.Grid.Snap" xml:space="preserve">
+    <value>网格吸附</value>
+  </data>
+  <data name="OptionsPanel.Grid.Title" xml:space="preserve">
+    <value>格线</value>
+  </data>
+  <data name="OptionsPanel.Header.Artist" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="OptionsPanel.Header.BackBMP" xml:space="preserve">
+    <value>Back BMP</value>
+  </data>
+  <data name="OptionsPanel.Header.Banner" xml:space="preserve">
+    <value>Banner</value>
+  </data>
+  <data name="OptionsPanel.Header.BPM" xml:space="preserve">
+    <value>初始BPM</value>
+  </data>
+  <data name="OptionsPanel.Header.Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty" xml:space="preserve">
+    <value>Difficulty</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty0" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OptionsPanel.Header.Difficulty1" xml:space="preserve">
+    <value>1 - EZ / Beginner</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty2" xml:space="preserve">
+    <value>2 - NM / Normal</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty3" xml:space="preserve">
+    <value>3 - HD / Hyper</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty4" xml:space="preserve">
+    <value>4 - MX / Another</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty5" xml:space="preserve">
+    <value>5 - SC / Insane</value>
+  </data>
+  <data name="OptionsPanel.Header.ExRank" xml:space="preserve">
+    <value>DefExRank</value>
+  </data>
+  <data name="OptionsPanel.Header.Genre" xml:space="preserve">
+    <value>曲风</value>
+  </data>
+  <data name="OptionsPanel.Header.Header" xml:space="preserve">
+    <value>文件头</value>
+  </data>
+  <data name="OptionsPanel.Header.LnMode" xml:space="preserve">
+    <value>LN Mode</value>
+  </data>
+  <data name="OptionsPanel.Header.LnObj" xml:space="preserve">
+    <value>LnObj</value>
+  </data>
+  <data name="OptionsPanel.Header.Player" xml:space="preserve">
+    <value>PLAYSTYLE</value>
+  </data>
+  <data name="OptionsPanel.Header.Player1" xml:space="preserve">
+    <value>SP</value>
+  </data>
+  <data name="OptionsPanel.Header.Player2" xml:space="preserve">
+    <value>2 Player</value>
+  </data>
+  <data name="OptionsPanel.Header.Player3" xml:space="preserve">
+    <value>DP / PMS</value>
+  </data>
+  <data name="OptionsPanel.Header.PlayLevel" xml:space="preserve">
+    <value>等级</value>
+  </data>
+  <data name="OptionsPanel.Header.Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank" xml:space="preserve">
+    <value>判定</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank0" xml:space="preserve">
+    <value>0 - Very Hard</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank1" xml:space="preserve">
+    <value>1 - Hard</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank2" xml:space="preserve">
+    <value>2 - Normal</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank3" xml:space="preserve">
+    <value>3 - Easy</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank4" xml:space="preserve">
+    <value>4 - Very Easy</value>
+  </data>
+  <data name="OptionsPanel.Header.RecommendedTotal" xml:space="preserve">
+    <value>推荐TOTAL</value>
+  </data>
+  <data name="OptionsPanel.Header.StageFile" xml:space="preserve">
+    <value>Stage File</value>
+  </data>
+  <data name="OptionsPanel.Header.SubArtist" xml:space="preserve">
+    <value>SubArtist</value>
+  </data>
+  <data name="OptionsPanel.Header.SubTitle" xml:space="preserve">
+    <value>SubTitle</value>
+  </data>
+  <data name="OptionsPanel.Header.Title" xml:space="preserve">
+    <value>标题</value>
+  </data>
+  <data name="OptionsPanel.Header.Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="OptionsPanel.WAV.Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="OptionsPanel.WAV.MoveDown" xml:space="preserve">
+    <value>下移</value>
+  </data>
+  <data name="OptionsPanel.WAV.MoveUp" xml:space="preserve">
+    <value>上移</value>
+  </data>
+  <data name="OptionsPanel.WAV.Remove" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="OptionsPanel.WAV.Title" xml:space="preserve">
+    <value>#WAV</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Clear" xml:space="preserve">
+    <value>清除波形</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Load" xml:space="preserve">
+    <value>载入波形</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Lock" xml:space="preserve">
+    <value>锁定至BGM</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Title" xml:space="preserve">
+    <value>波形</value>
+  </data>
+  <data name="PlayerOptions.Add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="PlayerOptions.CurrMeasure" xml:space="preserve">
+    <value>当前小节</value>
+  </data>
+  <data name="PlayerOptions.DirectoryOfApp" xml:space="preserve">
+    <value>程序所在文件夹</value>
+  </data>
+  <data name="PlayerOptions.FileName" xml:space="preserve">
+    <value>文件名</value>
+  </data>
+  <data name="PlayerOptions.Path" xml:space="preserve">
+    <value>路径</value>
+  </data>
+  <data name="PlayerOptions.PlayFromBeginning" xml:space="preserve">
+    <value>从开始处播放</value>
+  </data>
+  <data name="PlayerOptions.PlayFromHere" xml:space="preserve">
+    <value>从当前小节播放</value>
+  </data>
+  <data name="PlayerOptions.References" xml:space="preserve">
+    <value>注释（区分大小写）：</value>
+  </data>
+  <data name="PlayerOptions.Remove" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="PlayerOptions.RestoreDefault" xml:space="preserve">
+    <value>恢复默认</value>
+  </data>
+  <data name="PlayerOptions.StopPlaying" xml:space="preserve">
+    <value>停止播放</value>
+  </data>
+  <data name="PlayerOptions.Title" xml:space="preserve">
+    <value>播放器参数设置</value>
+  </data>
+  <data name="Statistics.lA" xml:space="preserve">
+    <value>A1-A8</value>
+  </data>
+  <data name="Statistics.lBGM" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="Statistics.lBPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="Statistics.lD" xml:space="preserve">
+    <value>D1-D8</value>
+  </data>
+  <data name="Statistics.lErrors" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Statistics.lHidden" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="Statistics.lLnObj" xml:space="preserve">
+    <value>LnObj</value>
+  </data>
+  <data name="Statistics.lLong" xml:space="preserve">
+    <value>面条</value>
+  </data>
+  <data name="Statistics.lShort" xml:space="preserve">
+    <value>小米</value>
+  </data>
+  <data name="Statistics.lSTOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="Statistics.lTotal" xml:space="preserve">
+    <value>总计</value>
+  </data>
+  <data name="Statistics.Title" xml:space="preserve">
+    <value>统计</value>
+  </data>
+  <data name="StatusBar.AbsolutePosition" xml:space="preserve">
+    <value>绝对位置</value>
+  </data>
+  <data name="StatusBar.ByMultiple" xml:space="preserve">
+    <value>按倍数变速</value>
+  </data>
+  <data name="StatusBar.ByValue" xml:space="preserve">
+    <value>按值变速</value>
+  </data>
+  <data name="StatusBar.ColumnCaption" xml:space="preserve">
+    <value>列标签</value>
+  </data>
+  <data name="StatusBar.Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="StatusBar.GridResolution" xml:space="preserve">
+    <value>格线位置</value>
+  </data>
+  <data name="StatusBar.Hidden" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="StatusBar.Length" xml:space="preserve">
+    <value>长度</value>
+  </data>
+  <data name="StatusBar.LongNote" xml:space="preserve">
+    <value>面条</value>
+  </data>
+  <data name="StatusBar.MeasureIndex" xml:space="preserve">
+    <value>小节号</value>
+  </data>
+  <data name="StatusBar.MeasureResolution" xml:space="preserve">
+    <value>小节位置</value>
+  </data>
+  <data name="StatusBar.NoteIndex" xml:space="preserve">
+    <value>Note标签</value>
+  </data>
+  <data name="StatusBar.ReducedResolution" xml:space="preserve">
+    <value>保存位置</value>
+  </data>
+  <data name="StatusBar.Reverse" xml:space="preserve">
+    <value>翻转选区</value>
+  </data>
+  <data name="StatusBar.SelLength" xml:space="preserve">
+    <value>选区长度</value>
+  </data>
+  <data name="StatusBar.SelSplit" xml:space="preserve">
+    <value>选区分割位置</value>
+  </data>
+  <data name="StatusBar.SelStart" xml:space="preserve">
+    <value>选区开始位置</value>
+  </data>
+  <data name="SubMenu.Beat.Absolute" xml:space="preserve">
+    <value>保留绝对高度</value>
+  </data>
+  <data name="SubMenu.Beat.Cut" xml:space="preserve">
+    <value>保留小节相对高度并删除多出的部分</value>
+  </data>
+  <data name="SubMenu.Beat.Measure" xml:space="preserve">
+    <value>保留小节相对高度</value>
+  </data>
+  <data name="SubMenu.Beat.Scale" xml:space="preserve">
+    <value>缩放至小节高度</value>
+  </data>
+  <data name="SubMenu.Convert.Hidden" xml:space="preserve">
+    <value>→ 隐藏Note</value>
+  </data>
+  <data name="SubMenu.Convert.HiddenVisible" xml:space="preserve">
+    <value>普通Note ↔ 隐藏Note</value>
+  </data>
+  <data name="SubMenu.Convert.Landmine" xml:space="preserve">
+    <value>→ 地雷Note</value>
+  </data>
+  <data name="SubMenu.Convert.Long" xml:space="preserve">
+    <value>→ 面条</value>
+  </data>
+  <data name="SubMenu.Convert.LongShort" xml:space="preserve">
+    <value>小米 ↔ 面条</value>
+  </data>
+  <data name="SubMenu.Convert.Mirror" xml:space="preserve">
+    <value>镜像</value>
+  </data>
+  <data name="SubMenu.Convert.NormalLandmine" xml:space="preserve">
+    <value>普通Note ↔ 地雷Note</value>
+  </data>
+  <data name="SubMenu.Convert.Relabel" xml:space="preserve">
+    <value>修改标签</value>
+  </data>
+  <data name="SubMenu.Convert.Short" xml:space="preserve">
+    <value>→ 小米</value>
+  </data>
+  <data name="SubMenu.Convert.Visible" xml:space="preserve">
+    <value>→ 普通Note</value>
+  </data>
+  <data name="SubMenu.InsertMeasure.Insert" xml:space="preserve">
+    <value>插入小节</value>
+  </data>
+  <data name="SubMenu.InsertMeasure.Remove" xml:space="preserve">
+    <value>删除小节</value>
+  </data>
+  <data name="SubMenu.ShowHide.AddSplitView" xml:space="preserve">
+    <value>添加分屏</value>
+  </data>
+  <data name="SubMenu.ShowHide.BG" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="SubMenu.ShowHide.BLP" xml:space="preserve">
+    <value>BGA / Layer / Poor</value>
+  </data>
+  <data name="SubMenu.ShowHide.BPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="SubMenu.ShowHide.ColumnCaption" xml:space="preserve">
+    <value>列标签</value>
+  </data>
+  <data name="SubMenu.ShowHide.Grid" xml:space="preserve">
+    <value>格线</value>
+  </data>
+  <data name="SubMenu.ShowHide.LSplitView" xml:space="preserve">
+    <value>左侧分屏</value>
+  </data>
+  <data name="SubMenu.ShowHide.MeasureIndex" xml:space="preserve">
+    <value>小节号</value>
+  </data>
+  <data name="SubMenu.ShowHide.MeasureLine" xml:space="preserve">
+    <value>小节线</value>
+  </data>
+  <data name="SubMenu.ShowHide.Menu" xml:space="preserve">
+    <value>主菜单</value>
+  </data>
+  <data name="SubMenu.ShowHide.OptionsPanel" xml:space="preserve">
+    <value>设置面板</value>
+  </data>
+  <data name="SubMenu.ShowHide.RemoveSplitView" xml:space="preserve">
+    <value>删除分屏</value>
+  </data>
+  <data name="SubMenu.ShowHide.RSplitView" xml:space="preserve">
+    <value>右侧分屏</value>
+  </data>
+  <data name="SubMenu.ShowHide.StatusBar" xml:space="preserve">
+    <value>状态栏</value>
+  </data>
+  <data name="SubMenu.ShowHide.STOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="SubMenu.ShowHide.Sub" xml:space="preserve">
+    <value>格线加粗</value>
+  </data>
+  <data name="SubMenu.ShowHide.ToolBar" xml:space="preserve">
+    <value>工具栏</value>
+  </data>
+  <data name="SubMenu.ShowHide.ToolTip" xml:space="preserve">
+    <value>显示 / 隐藏</value>
+  </data>
+  <data name="SubMenu.ShowHide.Vertical" xml:space="preserve">
+    <value>垂直线</value>
+  </data>
+  <data name="SubMenu.Theme.Default" xml:space="preserve">
+    <value>(默认)</value>
+  </data>
+  <data name="SubMenu.Theme.Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="SubMenu.Theme.Save" xml:space="preserve">
+    <value>保存皮肤</value>
+  </data>
+  <data name="SubMenu.WAV.Base62" xml:space="preserve">
+    <value>扩展至 62 进制</value>
+  </data>
+  <data name="SubMenu.WAV.MultiSelection" xml:space="preserve">
+    <value>允许多选</value>
+  </data>
+  <data name="SubMenu.WAV.Synchronize" xml:space="preserve">
+    <value>同步修改Note标签</value>
+  </data>
+  <data name="ToolBar.AddSplitView" xml:space="preserve">
+    <value>添加分屏</value>
+  </data>
+  <data name="ToolBar.Conversion" xml:space="preserve">
+    <value>Note转换</value>
+  </data>
+  <data name="ToolBar.Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="ToolBar.Cut" xml:space="preserve">
+    <value>剪切</value>
+  </data>
+  <data name="ToolBar.ErrorCheck" xml:space="preserve">
+    <value>错误检查</value>
+  </data>
+  <data name="ToolBar.Find" xml:space="preserve">
+    <value>查找 / 删除 / 替换</value>
+  </data>
+  <data name="ToolBar.GeneralOptions" xml:space="preserve">
+    <value>常规设置</value>
+  </data>
+  <data name="ToolBar.Grid" xml:space="preserve">
+    <value>格线</value>
+  </data>
+  <data name="ToolBar.GridHeight" xml:space="preserve">
+    <value>高度</value>
+  </data>
+  <data name="ToolBar.GridSub" xml:space="preserve">
+    <value>格线加粗</value>
+  </data>
+  <data name="ToolBar.GridWidth" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+  <data name="ToolBar.Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="ToolBar.LeftSplitView" xml:space="preserve">
+    <value>左侧分屏</value>
+  </data>
+  <data name="ToolBar.New" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="ToolBar.NT" xml:space="preserve">
+    <value>面条输入模式 - NoteTool/BMSE</value>
+  </data>
+  <data name="ToolBar.Open" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="ToolBar.Paste" xml:space="preserve">
+    <value>粘贴</value>
+  </data>
+  <data name="ToolBar.PlayBegin" xml:space="preserve">
+    <value>从开始处播放</value>
+  </data>
+  <data name="ToolBar.PlayerOptions" xml:space="preserve">
+    <value>播放器设置</value>
+  </data>
+  <data name="ToolBar.PlayHere" xml:space="preserve">
+    <value>从当前小节播放</value>
+  </data>
+  <data name="ToolBar.PlayStop" xml:space="preserve">
+    <value>停止播放</value>
+  </data>
+  <data name="ToolBar.PreviewOnClick" xml:space="preserve">
+    <value>单击播放Key音</value>
+  </data>
+  <data name="ToolBar.Redo" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="ToolBar.RemoveSplitView" xml:space="preserve">
+    <value>删除分屏</value>
+  </data>
+  <data name="ToolBar.RightSplitView" xml:space="preserve">
+    <value>右侧分屏</value>
+  </data>
+  <data name="ToolBar.Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="ToolBar.SelectTool" xml:space="preserve">
+    <value>选择工具</value>
+  </data>
+  <data name="ToolBar.ShowFileName" xml:space="preserve">
+    <value>Note上显示文件名</value>
+  </data>
+  <data name="ToolBar.Stat" xml:space="preserve">
+    <value>统计</value>
+  </data>
+  <data name="ToolBar.SyncSplitViewScroll" xml:space="preserve">
+    <value>同步分屏间滚动</value>
+  </data>
+  <data name="ToolBar.Theme" xml:space="preserve">
+    <value>皮肤</value>
+  </data>
+  <data name="ToolBar.TimeSelectionTool" xml:space="preserve">
+    <value>时间选择工具</value>
+  </data>
+  <data name="ToolBar.Undo" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="ToolBar.VisualOptions" xml:space="preserve">
+    <value>外观设置</value>
+  </data>
+  <data name="ToolBar.WavIncrease" xml:space="preserve">
+    <value>自动切换到下一个 WAV 编号</value>
+  </data>
+  <data name="ToolBar.WriteTool" xml:space="preserve">
+    <value>写入工具</value>
+  </data>
+  <data name="VisualOptions.Background" xml:space="preserve">
+    <value>背景色</value>
+  </data>
+  <data name="VisualOptions.Bg" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="VisualOptions.BGMWaveform" xml:space="preserve">
+    <value>WAVE波形显示</value>
+  </data>
+  <data name="VisualOptions.Caption" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="VisualOptions.ColumnCaption" xml:space="preserve">
+    <value>列标签</value>
+  </data>
+  <data name="VisualOptions.ColumnCaptionFont" xml:space="preserve">
+    <value>列标签字体</value>
+  </data>
+  <data name="VisualOptions.Grid" xml:space="preserve">
+    <value>格线</value>
+  </data>
+  <data name="VisualOptions.HiddenNoteOpacity" xml:space="preserve">
+    <value>隐藏Note透明度</value>
+  </data>
+  <data name="VisualOptions.Label" xml:space="preserve">
+    <value>小米标签</value>
+  </data>
+  <data name="VisualOptions.LabelHorizontalShift" xml:space="preserve">
+    <value>小米标签横向偏移</value>
+  </data>
+  <data name="VisualOptions.LabelVerticalShift" xml:space="preserve">
+    <value>Note标签纵向偏移</value>
+  </data>
+  <data name="VisualOptions.LongNote" xml:space="preserve">
+    <value>面条颜色</value>
+  </data>
+  <data name="VisualOptions.LongNoteLabel" xml:space="preserve">
+    <value>面条标签</value>
+  </data>
+  <data name="VisualOptions.LongNoteLabelHorizontalShift" xml:space="preserve">
+    <value>面条标签横向偏移</value>
+  </data>
+  <data name="VisualOptions.MeasureBarLine" xml:space="preserve">
+    <value>小节线</value>
+  </data>
+  <data name="VisualOptions.MeasureLabel" xml:space="preserve">
+    <value>小节号</value>
+  </data>
+  <data name="VisualOptions.MiddleSensitivity" xml:space="preserve">
+    <value>鼠标中键释放灵敏度</value>
+  </data>
+  <data name="VisualOptions.Note" xml:space="preserve">
+    <value>小米颜色</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnAdjustingLength" xml:space="preserve">
+    <value>调整Note长度时边框颜色</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnMouseOver" xml:space="preserve">
+    <value>鼠标经过Note时边框颜色</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnSelection" xml:space="preserve">
+    <value>选中Note时边框颜色</value>
+  </data>
+  <data name="VisualOptions.NoteHeight" xml:space="preserve">
+    <value>Note高度</value>
+  </data>
+  <data name="VisualOptions.NoteLabel" xml:space="preserve">
+    <value>Note标签</value>
+  </data>
+  <data name="VisualOptions.SelectionBoxBorder" xml:space="preserve">
+    <value>选框</value>
+  </data>
+  <data name="VisualOptions.SubGrid" xml:space="preserve">
+    <value>格线加粗</value>
+  </data>
+  <data name="VisualOptions.Title" xml:space="preserve">
+    <value>外观设置</value>
+  </data>
+  <data name="VisualOptions.TSBPM" xml:space="preserve">
+    <value>（时间选择模式）BPM</value>
+  </data>
+  <data name="VisualOptions.TSBPMFont" xml:space="preserve">
+    <value>（时间选择模式）BPM 字体</value>
+  </data>
+  <data name="VisualOptions.TSCursor" xml:space="preserve">
+    <value>（时间选择模式）光标</value>
+  </data>
+  <data name="VisualOptions.TSCursorSensitivity" xml:space="preserve">
+    <value>（时间选择模式）光标灵敏度</value>
+  </data>
+  <data name="VisualOptions.TSFill" xml:space="preserve">
+    <value>（时间选择模式）选区颜色</value>
+  </data>
+  <data name="VisualOptions.TSMouseOverBorder" xml:space="preserve">
+    <value>（时间选择模式）鼠标经过时边框</value>
+  </data>
+  <data name="VisualOptions.TSSplitView" xml:space="preserve">
+    <value>（时间选择模式）分屏</value>
+  </data>
+  <data name="VisualOptions.VerticalLine" xml:space="preserve">
+    <value>垂直线</value>
+  </data>
+  <data name="VisualOptions.Width" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+</root>

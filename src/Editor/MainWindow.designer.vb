@@ -22,9 +22,6 @@ Partial Class MainWindow
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainWindow))
         Me.cmnLanguage = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.TBLangDef = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TBLangRefresh = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
         Me.TBLanguage = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnTheme = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -451,28 +448,8 @@ Partial Class MainWindow
         '
         'cmnLanguage
         '
-        Me.cmnLanguage.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TBLangDef, Me.TBLangRefresh, Me.ToolStripSeparator9})
         Me.cmnLanguage.Name = "cmnLanguage"
         Me.cmnLanguage.OwnerItem = Me.mnLanguage
-        Me.cmnLanguage.Size = New System.Drawing.Size(121, 54)
-        '
-        'TBLangDef
-        '
-        Me.TBLangDef.Name = "TBLangDef"
-        Me.TBLangDef.Size = New System.Drawing.Size(120, 22)
-        Me.TBLangDef.Text = "(Default)"
-        '
-        'TBLangRefresh
-        '
-        Me.TBLangRefresh.Image = Global.nBMSC.My.Resources.Resources.x16Refresh
-        Me.TBLangRefresh.Name = "TBLangRefresh"
-        Me.TBLangRefresh.Size = New System.Drawing.Size(120, 22)
-        Me.TBLangRefresh.Text = "Refresh"
-        '
-        'ToolStripSeparator9
-        '
-        Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(117, 6)
         '
         'TBLanguage
         '
@@ -4327,8 +4304,6 @@ Partial Class MainWindow
     Friend WithEvents mnLanguage As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnTheme As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnLanguage As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents TBLangDef As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator9 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnTheme As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents TBThemeDef As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TBThemeSave As System.Windows.Forms.ToolStripMenuItem
@@ -4355,7 +4330,6 @@ Partial Class MainWindow
     Friend WithEvents mnSLSplitView As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnSRSplitView As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnNTInput As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TBLangRefresh As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CGSub As System.Windows.Forms.NumericUpDown
     Friend WithEvents CGDivide As System.Windows.Forms.NumericUpDown
     Friend WithEvents PictureBox7 As System.Windows.Forms.PictureBox

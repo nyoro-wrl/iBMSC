@@ -260,6 +260,24 @@
     <EmbeddedResource Include="Editor\MainWindow.resx">
       <DependentUpon>MainWindow.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Strings.resx">
+      <LogicalName>nBMSC.Strings.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.ja.resx">
+      <DependentUpon>Strings.resx</DependentUpon>
+      <LogicalName>nBMSC.Strings.ja.resources</LogicalName>
+      <WithCulture>false</WithCulture>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.ko.resx">
+      <DependentUpon>Strings.resx</DependentUpon>
+      <LogicalName>nBMSC.Strings.ko.resources</LogicalName>
+      <WithCulture>false</WithCulture>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.zh-Hans.resx">
+      <DependentUpon>Strings.resx</DependentUpon>
+      <LogicalName>nBMSC.Strings.zh-Hans.resources</LogicalName>
+      <WithCulture>false</WithCulture>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -308,7 +326,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <ItemGroup>
     <ThemeFiles Include="..\Theme\**\*.*" />
-    <LanguageFiles Include="..\Language\**\*.*" />
   </ItemGroup>
   <Target Name="EmbedReleaseAssemblies" AfterTargets="ResolveReferences" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <ItemGroup>
@@ -321,9 +338,7 @@
   <Target Name="CopySupportFiles" AfterTargets="Build">
     <RemoveDir Directories="$(TargetDir)Data" Condition="Exists('$(TargetDir)Data')" />
     <MakeDir Directories="$(TargetDir)Theme" />
-    <MakeDir Directories="$(TargetDir)Language" />
     <Copy SourceFiles="@(ThemeFiles)" DestinationFiles="@(ThemeFiles->'$(TargetDir)Theme\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(LanguageFiles)" DestinationFiles="@(LanguageFiles->'$(TargetDir)Language\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
   </Target>
   <Target Name="CleanReleaseFiles" AfterTargets="CopySupportFiles" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <ItemGroup>

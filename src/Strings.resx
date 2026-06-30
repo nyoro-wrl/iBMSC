@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Encoding.Auto" xml:space="preserve">
+    <value>Auto Detection</value>
+  </data>
+  <data name="Encoding.ReloadWithEncoding" xml:space="preserve">
+    <value>Reload with Encoding</value>
+  </data>
+  <data name="Encoding.SystemDefault" xml:space="preserve">
+    <value>System Default</value>
+  </data>
+  <data name="FileAssociation.BME" xml:space="preserve">
+    <value>Be-Music Extended Format</value>
+  </data>
+  <data name="FileAssociation.BML" xml:space="preserve">
+    <value>Be-Music Longnote Format</value>
+  </data>
+  <data name="FileAssociation.BMS" xml:space="preserve">
+    <value>Be-Music Script</value>
+  </data>
+  <data name="FileAssociation.NBMSC" xml:space="preserve">
+    <value>nBMSC Binary Format</value>
+  </data>
+  <data name="FileAssociation.Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="FileAssociation.PMS" xml:space="preserve">
+    <value>Po-Mu Script</value>
+  </data>
+  <data name="FileAssociation.Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="FileAssociation.ViewCode" xml:space="preserve">
+    <value>View Code</value>
+  </data>
+  <data name="FileType._all" xml:space="preserve">
+    <value>All files (*.*)</value>
+  </data>
+  <data name="FileType._audio" xml:space="preserve">
+    <value>Supported Audio Format (*.wav, *.ogg, *.mp3, *.flac, *.mid)</value>
+  </data>
+  <data name="FileType._bms" xml:space="preserve">
+    <value>Supported BMS Format (*.bms, *.bme, *.bml, *.pms, *.txt)</value>
+  </data>
+  <data name="FileType._image" xml:space="preserve">
+    <value>Supported Image Format (*.png, *.bmp, *.jpg, *.gif)</value>
+  </data>
+  <data name="FileType._movie" xml:space="preserve">
+    <value>Supported Movie Format (*.mpg, *.avi, *.mp4, *.wmv, *.webm)</value>
+  </data>
+  <data name="FileType._wave" xml:space="preserve">
+    <value>Supported Wave Audio Format (*.wav, *.ogg, *.mp3, *.flac)</value>
+  </data>
+  <data name="FileType.AVI" xml:space="preserve">
+    <value>Audio Video Interleave (*.avi)</value>
+  </data>
+  <data name="FileType.BME" xml:space="preserve">
+    <value>Be-Music Extended Format (*.bme)</value>
+  </data>
+  <data name="FileType.BML" xml:space="preserve">
+    <value>Be-Music Longnote Format (*.bml)</value>
+  </data>
+  <data name="FileType.BMP" xml:space="preserve">
+    <value>Windows bitmap image (*.bmp)</value>
+  </data>
+  <data name="FileType.BMS" xml:space="preserve">
+    <value>Be-Music Script (*.bms)</value>
+  </data>
+  <data name="FileType.BMSON" xml:space="preserve">
+    <value>BMS JSON Format (*.bmson)</value>
+  </data>
+  <data name="FileType.EXE" xml:space="preserve">
+    <value>Executable file (*.exe)</value>
+  </data>
+  <data name="FileType.FLAC" xml:space="preserve">
+    <value>Free Lossless Audio (*.flac)</value>
+  </data>
+  <data name="FileType.GIF" xml:space="preserve">
+    <value>Graphics Interchange Format (*.gif)</value>
+  </data>
+  <data name="FileType.JPG" xml:space="preserve">
+    <value>Joint Photographic Experts Group (*.jpg)</value>
+  </data>
+  <data name="FileType.MID" xml:space="preserve">
+    <value>MIDI (*.mid)</value>
+  </data>
+  <data name="FileType.MP3" xml:space="preserve">
+    <value>MPEG Layer-3 Audio (*.mp3)</value>
+  </data>
+  <data name="FileType.MP4" xml:space="preserve">
+    <value>MPEG phase 4 (*.mp4)</value>
+  </data>
+  <data name="FileType.MPG" xml:space="preserve">
+    <value>Moving Picture Experts Group (*.mpg)</value>
+  </data>
+  <data name="FileType.NBMSC" xml:space="preserve">
+    <value>nBMSC Binary Format (*.nbmsc)</value>
+  </data>
+  <data name="FileType.OGG" xml:space="preserve">
+    <value>Ogg Vorbis Audio (*.ogg)</value>
+  </data>
+  <data name="FileType.PMS" xml:space="preserve">
+    <value>Po-Mu Script (*.pms)</value>
+  </data>
+  <data name="FileType.PNG" xml:space="preserve">
+    <value>Portable Network Graphic (*.png)</value>
+  </data>
+  <data name="FileType.THEME_XML" xml:space="preserve">
+    <value>nBMSC Theme File (*.xml)</value>
+  </data>
+  <data name="FileType.TXT" xml:space="preserve">
+    <value>Text document (*.txt)</value>
+  </data>
+  <data name="FileType.WAV" xml:space="preserve">
+    <value>Waveform Audio (*.wav)</value>
+  </data>
+  <data name="FileType.WEBM" xml:space="preserve">
+    <value>WebM (*.webm)</value>
+  </data>
+  <data name="FileType.WMV" xml:space="preserve">
+    <value>Windows Media Video (*.wmv)</value>
+  </data>
+  <data name="FileType.XML" xml:space="preserve">
+    <value>Extensible Markup Language (*.xml)</value>
+  </data>
+  <data name="Find.Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Find.Column" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="Find.Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Find.Hidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="Find.LabelRange" xml:space="preserve">
+    <value>Label Range</value>
+  </data>
+  <data name="Find.LandMine" xml:space="preserve">
+    <value>LandMine</value>
+  </data>
+  <data name="Find.LongNote" xml:space="preserve">
+    <value>Long</value>
+  </data>
+  <data name="Find.MeasureRange" xml:space="preserve">
+    <value>Measure Range</value>
+  </data>
+  <data name="Find.NoteRange" xml:space="preserve">
+    <value>Note Range</value>
+  </data>
+  <data name="Find.Operation" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="Find.ReplaceWithLabel" xml:space="preserve">
+    <value>Replace with Label:</value>
+  </data>
+  <data name="Find.ReplaceWithValue" xml:space="preserve">
+    <value>Replace with Value:</value>
+  </data>
+  <data name="Find.Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Find.SelectAll" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="Find.Selected" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="Find.SelectInverse" xml:space="preserve">
+    <value>Select Inverse</value>
+  </data>
+  <data name="Find.ShortNote" xml:space="preserve">
+    <value>Short</value>
+  </data>
+  <data name="Find.to" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="Find.Unselect" xml:space="preserve">
+    <value>Unselect</value>
+  </data>
+  <data name="Find.UnselectAll" xml:space="preserve">
+    <value>Unselect All</value>
+  </data>
+  <data name="Find.UnSelected" xml:space="preserve">
+    <value>Unselected</value>
+  </data>
+  <data name="Find.ValueRange" xml:space="preserve">
+    <value>Value Range</value>
+  </data>
+  <data name="Find.Visible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="GeneralOptions.AssociateFileType" xml:space="preserve">
+    <value>Associate Filetype</value>
+  </data>
+  <data name="GeneralOptions.AutoFocusOnMouseEnter" xml:space="preserve">
+    <value>Automatically set focus to editing panel on mouse enter</value>
+  </data>
+  <data name="GeneralOptions.AutoSave" xml:space="preserve">
+    <value>AutoSave</value>
+  </data>
+  <data name="GeneralOptions.BeepWhileSaved" xml:space="preserve">
+    <value>Beep while saved</value>
+  </data>
+  <data name="GeneralOptions.BPMDefinitionMode" xml:space="preserve">
+    <value>BPM definitions</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeBase36" xml:space="preserve">
+    <value>36 base (01-ZZ)</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeBase62" xml:space="preserve">
+    <value>62 base (01-zz)</value>
+  </data>
+  <data name="GeneralOptions.DefinitionModeDefault" xml:space="preserve">
+    <value>Default (01-FF)</value>
+  </data>
+  <data name="GeneralOptions.DisableFirstClick" xml:space="preserve">
+    <value>Disable first click if the editing panel is not focused</value>
+  </data>
+  <data name="GeneralOptions.InputTextEncoding" xml:space="preserve">
+    <value>Input Encoding</value>
+  </data>
+  <data name="GeneralOptions.LaneHighlight" xml:space="preserve">
+    <value>Lane highlight</value>
+  </data>
+  <data name="GeneralOptions.MaxGridPartition" xml:space="preserve">
+    <value>Max Grid Partition in BMS</value>
+  </data>
+  <data name="GeneralOptions.MiddleButton" xml:space="preserve">
+    <value>Mouse Middle Button</value>
+  </data>
+  <data name="GeneralOptions.MiddleButtonAuto" xml:space="preserve">
+    <value>Click and Auto Scroll</value>
+  </data>
+  <data name="GeneralOptions.MiddleButtonDrag" xml:space="preserve">
+    <value>Click and Drag</value>
+  </data>
+  <data name="GeneralOptions.MinimumBGMLanes" xml:space="preserve">
+    <value>Minimum BGM lanes</value>
+  </data>
+  <data name="GeneralOptions.minutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="GeneralOptions.MouseWheel" xml:space="preserve">
+    <value>Mouse Wheel</value>
+  </data>
+  <data name="GeneralOptions.NewBMSUseBase62" xml:space="preserve">
+    <value>Use base62 for new BMS</value>
+  </data>
+  <data name="GeneralOptions.OutputTextEncoding" xml:space="preserve">
+    <value>Output Encoding</value>
+  </data>
+  <data name="GeneralOptions.PageUpDown" xml:space="preserve">
+    <value>PageUp / PageDown</value>
+  </data>
+  <data name="GeneralOptions.SkipClippedMeasure" xml:space="preserve">
+    <value>Skip clipped measure and play from next measure</value>
+  </data>
+  <data name="GeneralOptions.STOPDefinitionMode" xml:space="preserve">
+    <value>STOP definitions</value>
+  </data>
+  <data name="GeneralOptions.StopPreviewOnClick" xml:space="preserve">
+    <value>Stop preview if clicked on the editing panel</value>
+  </data>
+  <data name="GeneralOptions.Title" xml:space="preserve">
+    <value>General Options</value>
+  </data>
+  <data name="GeneralOptions.UndoRedoMemoryLimit" xml:space="preserve">
+    <value>Undo/Redo memory limit</value>
+  </data>
+  <data name="ImportBMSON.Message" xml:space="preserve">
+    <value>BMSON Format is write only.</value>
+  </data>
+  <data name="Menu.Conversion" xml:space="preserve">
+    <value>Conversions</value>
+  </data>
+  <data name="Menu.Edit.Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Menu.Edit.Cut" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="Menu.Edit.Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Menu.Edit.Find" xml:space="preserve">
+    <value>Find / Delete / Replace</value>
+  </data>
+  <data name="Menu.Edit.GoToMeasure" xml:space="preserve">
+    <value>Go To Measure...</value>
+  </data>
+  <data name="Menu.Edit.Paste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="Menu.Edit.Redo" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="Menu.Edit.SelectAll" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="Menu.Edit.SelectTool" xml:space="preserve">
+    <value>Select Tool</value>
+  </data>
+  <data name="Menu.Edit.Stat" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="Menu.Edit.TimeSelectionTool" xml:space="preserve">
+    <value>Time Selection Tool</value>
+  </data>
+  <data name="Menu.Edit.Title" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Menu.Edit.Undo" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="Menu.Edit.WriteTool" xml:space="preserve">
+    <value>Write Tool</value>
+  </data>
+  <data name="Menu.File.ExportBMSON" xml:space="preserve">
+    <value>Export .BMSON file</value>
+  </data>
+  <data name="Menu.File.ExportNBMSC" xml:space="preserve">
+    <value>Export .NBMSC file</value>
+  </data>
+  <data name="Menu.File.ImportNBMSC" xml:space="preserve">
+    <value>Import from .NBMSC file</value>
+  </data>
+  <data name="Menu.File.New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Menu.File.Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Menu.File.Quit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="Menu.File.Recent0" xml:space="preserve">
+    <value>Recent #0</value>
+  </data>
+  <data name="Menu.File.Recent1" xml:space="preserve">
+    <value>Recent #1</value>
+  </data>
+  <data name="Menu.File.Recent2" xml:space="preserve">
+    <value>Recent #2</value>
+  </data>
+  <data name="Menu.File.Recent3" xml:space="preserve">
+    <value>Recent #3</value>
+  </data>
+  <data name="Menu.File.Recent4" xml:space="preserve">
+    <value>Recent #4</value>
+  </data>
+  <data name="Menu.File.Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Menu.File.SaveAs" xml:space="preserve">
+    <value>Save As...</value>
+  </data>
+  <data name="Menu.File.Title" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Menu.Help.CheckUpdates" xml:space="preserve">
+    <value>Check Updates</value>
+  </data>
+  <data name="Menu.Help.CheckUpdatesOnStartup" xml:space="preserve">
+    <value>Check Updates on Startup</value>
+  </data>
+  <data name="Menu.Help.OpenAppFolder" xml:space="preserve">
+    <value>Open Application Folder</value>
+  </data>
+  <data name="Menu.Help.Title" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Menu.Options.ChangePlaySide" xml:space="preserve">
+    <value>RightScratch Mode</value>
+  </data>
+  <data name="Menu.Options.ErrorCheck" xml:space="preserve">
+    <value>Error Check</value>
+  </data>
+  <data name="Menu.Options.GeneralOptions" xml:space="preserve">
+    <value>General Options</value>
+  </data>
+  <data name="Menu.Options.Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Menu.Options.NT" xml:space="preserve">
+    <value>LN Input Style - NT/BMSE</value>
+  </data>
+  <data name="Menu.Options.PlayerOptions" xml:space="preserve">
+    <value>Player Options</value>
+  </data>
+  <data name="Menu.Options.PreviewOnClick" xml:space="preserve">
+    <value>Preview on Click</value>
+  </data>
+  <data name="Menu.Options.ShowFileName" xml:space="preserve">
+    <value>Show File Name on Notes</value>
+  </data>
+  <data name="Menu.Options.SlashGrid" xml:space="preserve">
+    <value>Slash key grid value</value>
+  </data>
+  <data name="Menu.Options.SyncSplitViewScroll" xml:space="preserve">
+    <value>Sync Scroll between Splitters</value>
+  </data>
+  <data name="Menu.Options.Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Menu.Options.Title" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Menu.Options.VisualOptions" xml:space="preserve">
+    <value>Visual Options</value>
+  </data>
+  <data name="Menu.Preview.PlayBegin" xml:space="preserve">
+    <value>Play from beginning</value>
+  </data>
+  <data name="Menu.Preview.PlayHere" xml:space="preserve">
+    <value>Play from here</value>
+  </data>
+  <data name="Menu.Preview.PlayStop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Menu.Preview.Title" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Menu.View.Title" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Messages.BPMOverflowError" xml:space="preserve">
+    <value>Numbers of multi-byte BPMs has exceeded supported maximum:</value>
+  </data>
+  <data name="Messages.CannotFind" xml:space="preserve">
+    <value>Cannot find file {}.</value>
+  </data>
+  <data name="Messages.EraserObsolete" xml:space="preserve">
+    <value>The eraser tool has been replaced by right-clicking on the note.</value>
+  </data>
+  <data name="Messages.Err" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Messages.FileAssociationError" xml:space="preserve">
+    <value>Error changing file type association:</value>
+  </data>
+  <data name="Messages.FileAssociationPrompt" xml:space="preserve">
+    <value>Do you want to set nBMSC as default program to all {} files?</value>
+  </data>
+  <data name="Messages.GoToMeasureTitle" xml:space="preserve">
+    <value>Enter Measure</value>
+  </data>
+  <data name="Messages.InvalidLabel" xml:space="preserve">
+    <value>Invalid label.</value>
+  </data>
+  <data name="Messages.NegativeDivisorError" xml:space="preserve">
+    <value>Divisor must be greater than zero.</value>
+  </data>
+  <data name="Messages.NegativeFactorError" xml:space="preserve">
+    <value>Factor must be greater than zero.</value>
+  </data>
+  <data name="Messages.NoteOverlapError" xml:space="preserve">
+    <value>Note overlapping detected. Increasing Maximum Grid Partition will resolve this.</value>
+  </data>
+  <data name="Messages.PlayerNotFound" xml:space="preserve">
+    <value>Player not found</value>
+  </data>
+  <data name="Messages.PleaseRespecifyPath" xml:space="preserve">
+    <value>Please respecify path.</value>
+  </data>
+  <data name="Messages.PreviewDelError" xml:space="preserve">
+    <value>There must exist at least one player.</value>
+  </data>
+  <data name="Messages.PromptEnter" xml:space="preserve">
+    <value>Please enter a label.</value>
+  </data>
+  <data name="Messages.PromptEnterBPM" xml:space="preserve">
+    <value>Please enter a BPM value.</value>
+  </data>
+  <data name="Messages.PromptEnterMeasure" xml:space="preserve">
+    <value>Please enter a measure (0-999).</value>
+  </data>
+  <data name="Messages.PromptEnterNumeric" xml:space="preserve">
+    <value>Please enter a value.</value>
+  </data>
+  <data name="Messages.PromptEnterSCROLL" xml:space="preserve">
+    <value>Please enter a SCROLL value.</value>
+  </data>
+  <data name="Messages.PromptEnterSTOP" xml:space="preserve">
+    <value>Please enter a SCROLL value.</value>
+  </data>
+  <data name="Messages.PromptSlashValue" xml:space="preserve">
+    <value>When the slash key ("/") is pressed, change grid division to:</value>
+  </data>
+  <data name="Messages.RestoreAutosavedFile" xml:space="preserve">
+    <value>{} autosaved file(s) have been found. Do you want to recover these files?</value>
+  </data>
+  <data name="Messages.RestoreDefaultSettings" xml:space="preserve">
+    <value>Restore default settings?</value>
+  </data>
+  <data name="Messages.SavedFileWillContainErrors" xml:space="preserve">
+    <value>The saved file will contain errors.</value>
+  </data>
+  <data name="Messages.SaveOnExit" xml:space="preserve">
+    <value>Do you want to save changes?</value>
+  </data>
+  <data name="Messages.SaveOnExit1" xml:space="preserve">
+    <value>You should tell me if you want to save changes before closing the computer. -_,-</value>
+  </data>
+  <data name="Messages.SaveOnExit2" xml:space="preserve">
+    <value>You still need to tell me if you want to save changes even though you are closing the application with task manager. -_,-</value>
+  </data>
+  <data name="Messages.SaveWarning" xml:space="preserve">
+    <value>Warning:</value>
+  </data>
+  <data name="Messages.SCROLLOverflowError" xml:space="preserve">
+    <value>Numbers of SCROLLs has exceeded supported maximum:</value>
+  </data>
+  <data name="Messages.STOPOverflowError" xml:space="preserve">
+    <value>Numbers of STOPs has exceeded supported maximum:</value>
+  </data>
+  <data name="Messages.UpdateAvailable" xml:space="preserve">
+    <value>A new version is available.
+Current: {0}
+Latest: {1}</value>
+  </data>
+  <data name="Messages.UpdateCheckFailed" xml:space="preserve">
+    <value>Failed to check updates.
+{0}</value>
+  </data>
+  <data name="Messages.UpdateCheckTitle" xml:space="preserve">
+    <value>Check Updates</value>
+  </data>
+  <data name="Messages.UpdateLater" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="Messages.UpdateLatest" xml:space="preserve">
+    <value>You are using the latest version.
+Current: {0}
+Latest: {1}</value>
+  </data>
+  <data name="Messages.UpdateOpenRelease" xml:space="preserve">
+    <value>Open Release</value>
+  </data>
+  <data name="Messages.UpdateSkipVersion" xml:space="preserve">
+    <value>Skip This Version</value>
+  </data>
+  <data name="Messages.UpdateVersionUnsupported" xml:space="preserve">
+    <value>Could not compare versions.
+Current: {0}
+Latest release: {1}
+Open the release page?</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OptionsPanel.Beat" xml:space="preserve">
+    <value>Beat</value>
+  </data>
+  <data name="OptionsPanel.Beat.Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="OptionsPanel.BMP.Title" xml:space="preserve">
+    <value>#BMP</value>
+  </data>
+  <data name="OptionsPanel.Expansion" xml:space="preserve">
+    <value>Expansion Code</value>
+  </data>
+  <data name="OptionsPanel.Grid.BCols" xml:space="preserve">
+    <value>Minimum BGM Columns</value>
+  </data>
+  <data name="OptionsPanel.Grid.DisableVertical" xml:space="preserve">
+    <value>Disable vertical moves</value>
+  </data>
+  <data name="OptionsPanel.Grid.Snap" xml:space="preserve">
+    <value>Grid Snap</value>
+  </data>
+  <data name="OptionsPanel.Grid.Title" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="OptionsPanel.Header.Artist" xml:space="preserve">
+    <value>Artist</value>
+  </data>
+  <data name="OptionsPanel.Header.BackBMP" xml:space="preserve">
+    <value>Back BMP</value>
+  </data>
+  <data name="OptionsPanel.Header.Banner" xml:space="preserve">
+    <value>Banner</value>
+  </data>
+  <data name="OptionsPanel.Header.BPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="OptionsPanel.Header.Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty" xml:space="preserve">
+    <value>Difficulty</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty0" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OptionsPanel.Header.Difficulty1" xml:space="preserve">
+    <value>1 - EZ / Beginner</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty2" xml:space="preserve">
+    <value>2 - NM / Normal</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty3" xml:space="preserve">
+    <value>3 - HD / Hyper</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty4" xml:space="preserve">
+    <value>4 - MX / Another</value>
+  </data>
+  <data name="OptionsPanel.Header.Difficulty5" xml:space="preserve">
+    <value>5 - SC / Insane</value>
+  </data>
+  <data name="OptionsPanel.Header.ExRank" xml:space="preserve">
+    <value>DefExRank</value>
+  </data>
+  <data name="OptionsPanel.Header.Genre" xml:space="preserve">
+    <value>Genre</value>
+  </data>
+  <data name="OptionsPanel.Header.Header" xml:space="preserve">
+    <value>Header</value>
+  </data>
+  <data name="OptionsPanel.Header.LandMine" xml:space="preserve">
+    <value>#WAV00</value>
+  </data>
+  <data name="OptionsPanel.Header.LnMode" xml:space="preserve">
+    <value>LN Mode</value>
+  </data>
+  <data name="OptionsPanel.Header.LnObj" xml:space="preserve">
+    <value>LnObj</value>
+  </data>
+  <data name="OptionsPanel.Header.MissBMP" xml:space="preserve">
+    <value>#BMP00</value>
+  </data>
+  <data name="OptionsPanel.Header.Player" xml:space="preserve">
+    <value>PLAYSTYLE</value>
+  </data>
+  <data name="OptionsPanel.Header.Player1" xml:space="preserve">
+    <value>SP</value>
+  </data>
+  <data name="OptionsPanel.Header.Player2" xml:space="preserve">
+    <value>2 Player</value>
+  </data>
+  <data name="OptionsPanel.Header.Player3" xml:space="preserve">
+    <value>DP / PMS</value>
+  </data>
+  <data name="OptionsPanel.Header.PlayLevel" xml:space="preserve">
+    <value>Play Level</value>
+  </data>
+  <data name="OptionsPanel.Header.Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank" xml:space="preserve">
+    <value>Rank</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank0" xml:space="preserve">
+    <value>0 - Very Hard</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank1" xml:space="preserve">
+    <value>1 - Hard</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank2" xml:space="preserve">
+    <value>2 - Normal</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank3" xml:space="preserve">
+    <value>3 - Easy</value>
+  </data>
+  <data name="OptionsPanel.Header.Rank4" xml:space="preserve">
+    <value>4 - Very Easy</value>
+  </data>
+  <data name="OptionsPanel.Header.RecommendedTotal" xml:space="preserve">
+    <value>Calc. Total</value>
+  </data>
+  <data name="OptionsPanel.Header.StageFile" xml:space="preserve">
+    <value>Stage File</value>
+  </data>
+  <data name="OptionsPanel.Header.SubArtist" xml:space="preserve">
+    <value>SubArtist</value>
+  </data>
+  <data name="OptionsPanel.Header.SubTitle" xml:space="preserve">
+    <value>SubTitle</value>
+  </data>
+  <data name="OptionsPanel.Header.Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="OptionsPanel.Header.Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="OptionsPanel.WAV.Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="OptionsPanel.WAV.MoveDown" xml:space="preserve">
+    <value>Move Down</value>
+  </data>
+  <data name="OptionsPanel.WAV.MoveUp" xml:space="preserve">
+    <value>Move Up</value>
+  </data>
+  <data name="OptionsPanel.WAV.Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="OptionsPanel.WAV.Title" xml:space="preserve">
+    <value>#WAV</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Clear" xml:space="preserve">
+    <value>Clear WaveForm</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Load" xml:space="preserve">
+    <value>Load WaveForm</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Lock" xml:space="preserve">
+    <value>Lock to BGM</value>
+  </data>
+  <data name="OptionsPanel.WaveForm.Title" xml:space="preserve">
+    <value>WaveForm</value>
+  </data>
+  <data name="PlayerOptions.Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="PlayerOptions.CurrMeasure" xml:space="preserve">
+    <value>Current measure</value>
+  </data>
+  <data name="PlayerOptions.DirectoryOfApp" xml:space="preserve">
+    <value>Directory of the application</value>
+  </data>
+  <data name="PlayerOptions.FileName" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="PlayerOptions.Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="PlayerOptions.PlayFromBeginning" xml:space="preserve">
+    <value>Play from beginning</value>
+  </data>
+  <data name="PlayerOptions.PlayFromHere" xml:space="preserve">
+    <value>Play from current measure</value>
+  </data>
+  <data name="PlayerOptions.References" xml:space="preserve">
+    <value>References (case-sensitive):</value>
+  </data>
+  <data name="PlayerOptions.Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="PlayerOptions.RestoreDefault" xml:space="preserve">
+    <value>Restore Default</value>
+  </data>
+  <data name="PlayerOptions.StopPlaying" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="PlayerOptions.Title" xml:space="preserve">
+    <value>Player Arguments Options</value>
+  </data>
+  <data name="Statistics.lA" xml:space="preserve">
+    <value>A1-A8</value>
+  </data>
+  <data name="Statistics.lBGM" xml:space="preserve">
+    <value>BGM</value>
+  </data>
+  <data name="Statistics.lBPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="Statistics.lD" xml:space="preserve">
+    <value>D1-D8</value>
+  </data>
+  <data name="Statistics.lErrors" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="Statistics.lHidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="Statistics.lLandMine" xml:space="preserve">
+    <value>LandMine</value>
+  </data>
+  <data name="Statistics.lLnObj" xml:space="preserve">
+    <value>LnObj</value>
+  </data>
+  <data name="Statistics.lLong" xml:space="preserve">
+    <value>Long</value>
+  </data>
+  <data name="Statistics.lSCROLL" xml:space="preserve">
+    <value>SCROLL</value>
+  </data>
+  <data name="Statistics.lShort" xml:space="preserve">
+    <value>Short</value>
+  </data>
+  <data name="Statistics.lSTOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="Statistics.lTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Statistics.Title" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="StatusBar.AbsolutePosition" xml:space="preserve">
+    <value>Absolute Position</value>
+  </data>
+  <data name="StatusBar.ByMultiple" xml:space="preserve">
+    <value>By Multiple</value>
+  </data>
+  <data name="StatusBar.ByValue" xml:space="preserve">
+    <value>By Value</value>
+  </data>
+  <data name="StatusBar.ColumnCaption" xml:space="preserve">
+    <value>Column Caption</value>
+  </data>
+  <data name="StatusBar.Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="StatusBar.GridResolution" xml:space="preserve">
+    <value>Grid Resolution</value>
+  </data>
+  <data name="StatusBar.Hidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="StatusBar.LandMine" xml:space="preserve">
+    <value>LandMine</value>
+  </data>
+  <data name="StatusBar.Length" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="StatusBar.LongNote" xml:space="preserve">
+    <value>LongNote</value>
+  </data>
+  <data name="StatusBar.MeasureIndex" xml:space="preserve">
+    <value>Measure Index</value>
+  </data>
+  <data name="StatusBar.MeasureResolution" xml:space="preserve">
+    <value>Measure Resolution</value>
+  </data>
+  <data name="StatusBar.NoteIndex" xml:space="preserve">
+    <value>Note Index</value>
+  </data>
+  <data name="StatusBar.ReducedResolution" xml:space="preserve">
+    <value>Reduced Resolution</value>
+  </data>
+  <data name="StatusBar.Reverse" xml:space="preserve">
+    <value>Reverse Selection</value>
+  </data>
+  <data name="StatusBar.SelLength" xml:space="preserve">
+    <value>Selection Length</value>
+  </data>
+  <data name="StatusBar.SelSplit" xml:space="preserve">
+    <value>Selection Split Position</value>
+  </data>
+  <data name="StatusBar.SelStart" xml:space="preserve">
+    <value>Selection Start Position</value>
+  </data>
+  <data name="SubMenu.Beat.Absolute" xml:space="preserve">
+    <value>Preserve absolute position</value>
+  </data>
+  <data name="SubMenu.Beat.Cut" xml:space="preserve">
+    <value>Preserve measure position and cut overflow</value>
+  </data>
+  <data name="SubMenu.Beat.Measure" xml:space="preserve">
+    <value>Preserve measure position</value>
+  </data>
+  <data name="SubMenu.Beat.Scale" xml:space="preserve">
+    <value>Scale to measure length</value>
+  </data>
+  <data name="SubMenu.Convert.Hidden" xml:space="preserve">
+    <value>→ Hidden Note</value>
+  </data>
+  <data name="SubMenu.Convert.HiddenVisible" xml:space="preserve">
+    <value>Normal Note ↔ Hidden Note</value>
+  </data>
+  <data name="SubMenu.Convert.Landmine" xml:space="preserve">
+    <value>→ LandMine Note</value>
+  </data>
+  <data name="SubMenu.Convert.Long" xml:space="preserve">
+    <value>→ Long Note</value>
+  </data>
+  <data name="SubMenu.Convert.LongShort" xml:space="preserve">
+    <value>Short Note ↔ Long Note</value>
+  </data>
+  <data name="SubMenu.Convert.Mirror" xml:space="preserve">
+    <value>Mirror</value>
+  </data>
+  <data name="SubMenu.Convert.NormalLandmine" xml:space="preserve">
+    <value>Normal Note ↔ LandMine Note</value>
+  </data>
+  <data name="SubMenu.Convert.Relabel" xml:space="preserve">
+    <value>Modify Labels</value>
+  </data>
+  <data name="SubMenu.Convert.Short" xml:space="preserve">
+    <value>→ Short Note</value>
+  </data>
+  <data name="SubMenu.Convert.Visible" xml:space="preserve">
+    <value>→ Normal Note</value>
+  </data>
+  <data name="SubMenu.InsertMeasure.Insert" xml:space="preserve">
+    <value>Insert Measure</value>
+  </data>
+  <data name="SubMenu.InsertMeasure.Remove" xml:space="preserve">
+    <value>Remove Measure</value>
+  </data>
+  <data name="SubMenu.ShowHide.AddSplitView" xml:space="preserve">
+    <value>Add Splitter</value>
+  </data>
+  <data name="SubMenu.ShowHide.BG" xml:space="preserve">
+    <value>BackGround</value>
+  </data>
+  <data name="SubMenu.ShowHide.BLP" xml:space="preserve">
+    <value>BGA / Layer / Poor</value>
+  </data>
+  <data name="SubMenu.ShowHide.BPM" xml:space="preserve">
+    <value>BPM</value>
+  </data>
+  <data name="SubMenu.ShowHide.CloseSplitView" xml:space="preserve">
+    <value>Close Splitter</value>
+  </data>
+  <data name="SubMenu.ShowHide.ColumnCaption" xml:space="preserve">
+    <value>Column Caption</value>
+  </data>
+  <data name="SubMenu.ShowHide.Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="SubMenu.ShowHide.LSplitView" xml:space="preserve">
+    <value>Left Splitter</value>
+  </data>
+  <data name="SubMenu.ShowHide.MeasureIndex" xml:space="preserve">
+    <value>Measure Index</value>
+  </data>
+  <data name="SubMenu.ShowHide.MeasureLine" xml:space="preserve">
+    <value>Measure Line</value>
+  </data>
+  <data name="SubMenu.ShowHide.Menu" xml:space="preserve">
+    <value>Main Menu</value>
+  </data>
+  <data name="SubMenu.ShowHide.OptionsPanel" xml:space="preserve">
+    <value>Options Panel</value>
+  </data>
+  <data name="SubMenu.ShowHide.RemoveSplitView" xml:space="preserve">
+    <value>Remove Splitter</value>
+  </data>
+  <data name="SubMenu.ShowHide.RSplitView" xml:space="preserve">
+    <value>Right Splitter</value>
+  </data>
+  <data name="SubMenu.ShowHide.SCROLL" xml:space="preserve">
+    <value>SCROLL</value>
+  </data>
+  <data name="SubMenu.ShowHide.StatusBar" xml:space="preserve">
+    <value>Status Bar</value>
+  </data>
+  <data name="SubMenu.ShowHide.STOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="SubMenu.ShowHide.Sub" xml:space="preserve">
+    <value>Sub</value>
+  </data>
+  <data name="SubMenu.ShowHide.ToolBar" xml:space="preserve">
+    <value>ToolBar</value>
+  </data>
+  <data name="SubMenu.ShowHide.ToolTip" xml:space="preserve">
+    <value>Show / Hide</value>
+  </data>
+  <data name="SubMenu.ShowHide.Vertical" xml:space="preserve">
+    <value>Vertical Line</value>
+  </data>
+  <data name="SubMenu.Theme.Default" xml:space="preserve">
+    <value>(Default)</value>
+  </data>
+  <data name="SubMenu.Theme.Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="SubMenu.Theme.Save" xml:space="preserve">
+    <value>Save Theme</value>
+  </data>
+  <data name="SubMenu.WAV.Base62" xml:space="preserve">
+    <value>Extend to base62</value>
+  </data>
+  <data name="SubMenu.WAV.Emptyfill" xml:space="preserve">
+    <value>Fill Empty Definition First</value>
+  </data>
+  <data name="SubMenu.WAV.MultiSelection" xml:space="preserve">
+    <value>Allow Multiple Selection</value>
+  </data>
+  <data name="SubMenu.WAV.Synchronize" xml:space="preserve">
+    <value>Synchronize Note Labels</value>
+  </data>
+  <data name="ToolBar.AddSplitView" xml:space="preserve">
+    <value>Add Splitter</value>
+  </data>
+  <data name="ToolBar.ChangePlaySide" xml:space="preserve">
+    <value>RightScratch Mode</value>
+  </data>
+  <data name="ToolBar.Conversion" xml:space="preserve">
+    <value>Convert Notes</value>
+  </data>
+  <data name="ToolBar.Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="ToolBar.Cut" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="ToolBar.ErrorCheck" xml:space="preserve">
+    <value>Error Check</value>
+  </data>
+  <data name="ToolBar.Find" xml:space="preserve">
+    <value>Find / Delete / Replace</value>
+  </data>
+  <data name="ToolBar.GeneralOptions" xml:space="preserve">
+    <value>General Options</value>
+  </data>
+  <data name="ToolBar.Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="ToolBar.GridHeight" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="ToolBar.GridSub" xml:space="preserve">
+    <value>Sub</value>
+  </data>
+  <data name="ToolBar.GridWidth" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="ToolBar.Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ToolBar.LeftSplitView" xml:space="preserve">
+    <value>Left Splitter</value>
+  </data>
+  <data name="ToolBar.New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ToolBar.NT" xml:space="preserve">
+    <value>LongNote Input Style - NoteTool/BMSE</value>
+  </data>
+  <data name="ToolBar.Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="ToolBar.Paste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="ToolBar.PlayBegin" xml:space="preserve">
+    <value>Play from beginning</value>
+  </data>
+  <data name="ToolBar.PlayerOptions" xml:space="preserve">
+    <value>Player Options</value>
+  </data>
+  <data name="ToolBar.PlayHere" xml:space="preserve">
+    <value>Play from here</value>
+  </data>
+  <data name="ToolBar.PlayStop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="ToolBar.PreviewOnClick" xml:space="preserve">
+    <value>Preview On Click</value>
+  </data>
+  <data name="ToolBar.Redo" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="ToolBar.RemoveSplitView" xml:space="preserve">
+    <value>Remove Splitter</value>
+  </data>
+  <data name="ToolBar.RightSplitView" xml:space="preserve">
+    <value>Right Splitter</value>
+  </data>
+  <data name="ToolBar.Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ToolBar.SelectTool" xml:space="preserve">
+    <value>Select Tool</value>
+  </data>
+  <data name="ToolBar.ShowFileName" xml:space="preserve">
+    <value>Show File Name on Notes</value>
+  </data>
+  <data name="ToolBar.Stat" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="ToolBar.SyncSplitViewScroll" xml:space="preserve">
+    <value>Sync Scroll between Splitters</value>
+  </data>
+  <data name="ToolBar.Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ToolBar.TimeSelectionTool" xml:space="preserve">
+    <value>Time Selection Tool</value>
+  </data>
+  <data name="ToolBar.Undo" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="ToolBar.VisualOptions" xml:space="preserve">
+    <value>Visual Options</value>
+  </data>
+  <data name="ToolBar.WavIncrease" xml:space="preserve">
+    <value>Auto advance WAV number</value>
+  </data>
+  <data name="ToolBar.WriteTool" xml:space="preserve">
+    <value>Write Tool</value>
+  </data>
+  <data name="VisualOptions.Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="VisualOptions.Bg" xml:space="preserve">
+    <value>Bg</value>
+  </data>
+  <data name="VisualOptions.BGMWaveform" xml:space="preserve">
+    <value>BGM Waveform</value>
+  </data>
+  <data name="VisualOptions.Caption" xml:space="preserve">
+    <value>Caption</value>
+  </data>
+  <data name="VisualOptions.ColumnCaption" xml:space="preserve">
+    <value>Column Caption</value>
+  </data>
+  <data name="VisualOptions.ColumnCaptionFont" xml:space="preserve">
+    <value>Column Caption Font</value>
+  </data>
+  <data name="VisualOptions.Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="VisualOptions.HiddenNoteOpacity" xml:space="preserve">
+    <value>Hidden Note Opacity</value>
+  </data>
+  <data name="VisualOptions.Label" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="VisualOptions.LabelHorizontalShift" xml:space="preserve">
+    <value>Note Label Horizontal Shift</value>
+  </data>
+  <data name="VisualOptions.LabelVerticalShift" xml:space="preserve">
+    <value>Note Label Vertical Shift</value>
+  </data>
+  <data name="VisualOptions.LongNote" xml:space="preserve">
+    <value>Long Note</value>
+  </data>
+  <data name="VisualOptions.LongNoteLabel" xml:space="preserve">
+    <value>Long Note Label</value>
+  </data>
+  <data name="VisualOptions.LongNoteLabelHorizontalShift" xml:space="preserve">
+    <value>LongNote Label Horizontal Shift</value>
+  </data>
+  <data name="VisualOptions.MeasureBarLine" xml:space="preserve">
+    <value>Measure BarLine</value>
+  </data>
+  <data name="VisualOptions.MeasureLabel" xml:space="preserve">
+    <value>Measure Label</value>
+  </data>
+  <data name="VisualOptions.MiddleSensitivity" xml:space="preserve">
+    <value>Middle Button Release Sensitivity</value>
+  </data>
+  <data name="VisualOptions.Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnAdjustingLength" xml:space="preserve">
+    <value>Note Border on Adjusting Length</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnMouseOver" xml:space="preserve">
+    <value>Note Border on MouseOver</value>
+  </data>
+  <data name="VisualOptions.NoteBorderOnSelection" xml:space="preserve">
+    <value>Note Border on Selection</value>
+  </data>
+  <data name="VisualOptions.NoteHeight" xml:space="preserve">
+    <value>Note Height</value>
+  </data>
+  <data name="VisualOptions.NoteLabel" xml:space="preserve">
+    <value>Note Label</value>
+  </data>
+  <data name="VisualOptions.SelectionBoxBorder" xml:space="preserve">
+    <value>Selection Box Border</value>
+  </data>
+  <data name="VisualOptions.SubGrid" xml:space="preserve">
+    <value>Sub</value>
+  </data>
+  <data name="VisualOptions.Title" xml:space="preserve">
+    <value>Visual Options</value>
+  </data>
+  <data name="VisualOptions.TSBPM" xml:space="preserve">
+    <value>Time Selection BPM</value>
+  </data>
+  <data name="VisualOptions.TSBPMFont" xml:space="preserve">
+    <value>Time Selection BPM Font</value>
+  </data>
+  <data name="VisualOptions.TSCursor" xml:space="preserve">
+    <value>Time Selection Cursor</value>
+  </data>
+  <data name="VisualOptions.TSCursorSensitivity" xml:space="preserve">
+    <value>Time Selection Cursor Sensitivity</value>
+  </data>
+  <data name="VisualOptions.TSFill" xml:space="preserve">
+    <value>Time Selection Fill</value>
+  </data>
+  <data name="VisualOptions.TSMouseOverBorder" xml:space="preserve">
+    <value>Time Selection MouseOver Border</value>
+  </data>
+  <data name="VisualOptions.TSSplitView" xml:space="preserve">
+    <value>Time Selection Splitter</value>
+  </data>
+  <data name="VisualOptions.VerticalLine" xml:space="preserve">
+    <value>Vertical Line</value>
+  </data>
+  <data name="VisualOptions.Width" xml:space="preserve">
+    <value>Width</value>
+  </data>
+</root>

@@ -1,246 +1,1098 @@
-Public Class Strings
+Imports System.Collections
+Imports System.Collections.Generic
+Imports System.Globalization
+Imports System.Reflection
+Imports System.Resources
 
-    Public Shared OK As String = "OK"
-    Public Shared Cancel As String = "Cancel"
-    Public Shared None As String = "None"
+Public Class Strings
+    Private Shared ReadOnly ResourceAssembly As Assembly = GetType(Strings).Assembly
+    Private Shared ReadOnly ResourceValues As New Dictionary(Of String, Dictionary(Of String, String))(StringComparer.OrdinalIgnoreCase)
+
+    Public Shared Function [Get](ByVal key As String) As String
+        Dim value As String = Nothing
+        Dim xCultureName As String = SupportedCultureName(CultureInfo.CurrentUICulture)
+        If xCultureName <> "" AndAlso TryGetValue(xCultureName, key, value) Then Return value
+        If TryGetValue("", key, value) Then Return value
+
+        Return key
+    End Function
+
+    Private Shared Function SupportedCultureName(ByVal culture As CultureInfo) As String
+        If culture Is Nothing Then Return ""
+
+        Dim xName As String = culture.Name.ToLowerInvariant()
+        If xName = "ja" OrElse xName.StartsWith("ja-") Then Return "ja"
+        If xName = "ko" OrElse xName.StartsWith("ko-") Then Return "ko"
+        If xName = "zh-hans" OrElse xName = "zh-cn" OrElse xName = "zh-sg" Then Return "zh-Hans"
+
+        Return ""
+    End Function
+
+    Private Shared Function TryGetValue(ByVal cultureName As String, ByVal key As String, ByRef value As String) As Boolean
+        Dim xValues As Dictionary(Of String, String) = GetResourceValues(cultureName)
+        Return xValues.TryGetValue(key, value)
+    End Function
+
+    Private Shared Function GetResourceValues(ByVal cultureName As String) As Dictionary(Of String, String)
+        SyncLock ResourceValues
+            If ResourceValues.ContainsKey(cultureName) Then Return ResourceValues(cultureName)
+
+            Dim xValues As Dictionary(Of String, String) = LoadResourceValues(cultureName)
+            ResourceValues(cultureName) = xValues
+            Return xValues
+        End SyncLock
+    End Function
+
+    Private Shared Function LoadResourceValues(ByVal cultureName As String) As Dictionary(Of String, String)
+        Dim xValues As New Dictionary(Of String, String)
+        Dim xResourceName As String = "nBMSC.Strings" & If(cultureName = "", "", "." & cultureName) & ".resources"
+        Dim xStream As IO.Stream = ResourceAssembly.GetManifestResourceStream(xResourceName)
+        If xStream Is Nothing Then Return xValues
+
+        Using xStream
+            Using xReader As New ResourceReader(xStream)
+                For Each xEntry As DictionaryEntry In xReader
+                    If TypeOf xEntry.Value Is String Then xValues(CStr(xEntry.Key)) = CStr(xEntry.Value)
+                Next
+            End Using
+        End Using
+
+        Return xValues
+    End Function
+
+
+    Public Shared ReadOnly Property OK As String
+        Get
+            Return Strings.Get("OK")
+        End Get
+    End Property
+    Public Shared ReadOnly Property Cancel As String
+        Get
+            Return Strings.Get("Cancel")
+        End Get
+    End Property
+    Public Shared ReadOnly Property None As String
+        Get
+            Return Strings.Get("None")
+        End Get
+    End Property
 
     Public Class StatusBar
-        Public Shared Length As String = "Length"
-        Public Shared LongNote As String = "LongNote"
-        Public Shared Hidden As String = "Hidden"
-        Public Shared LandMine As String = "LandMine"
-        Public Shared Err As String = "Error"
+        Public Shared ReadOnly Property Length As String
+            Get
+                Return Strings.Get("StatusBar.Length")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LongNote As String
+            Get
+                Return Strings.Get("StatusBar.LongNote")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Hidden As String
+            Get
+                Return Strings.Get("StatusBar.Hidden")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LandMine As String
+            Get
+                Return Strings.Get("StatusBar.LandMine")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Err As String
+            Get
+                Return Strings.Get("StatusBar.Error")
+            End Get
+        End Property
     End Class
 
     Public Class Messages
-        Public Shared Err As String = "Error"
-        Public Shared SaveOnExit As String = "Do you want to save changes?"
-        Public Shared SaveOnExit1 As String = "You should tell me if you want to save changes before closing the computer. -_,-"
-        Public Shared SaveOnExit2 As String = "You still need to tell me if you want to save changes even though you are closing the application with task manager. -_,-"
-        Public Shared PromptEnter As String = "Please enter a label."
-        Public Shared PromptEnterNumeric As String = "Please enter a value."
-        Public Shared PromptEnterMeasure As String = "Please enter a measure (0-999)."
-        Public Shared GoToMeasureTitle As String = "Enter Measure"
-        Public Shared PromptEnterBPM As String = "Please enter a BPM value."
-        Public Shared PromptEnterSTOP As String = "Please enter a STOP value."
-        Public Shared PromptEnterSCROLL As String = "Please enter a SCROLL value."
-        Public Shared PromptSlashValue As String = "When the slash key (""/"") is pressed, change grid division to:"
-        Public Shared InvalidLabel As String = "Invalid label."
-        Public Shared CannotFind As String = "Cannot find file {}."
-        Public Shared PleaseRespecifyPath As String = "Please respecify path."
-        Public Shared PlayerNotFound As String = "Player not found"
-        Public Shared PreviewDelError As String = "There must exist at least one player."
-        Public Shared NegativeFactorError As String = "Factor must be greater than zero."
-        Public Shared NegativeDivisorError As String = "Divisor must be greater than zero."
-        Public Shared PreferencePostpone As String = "The preference will take effect on the next start-up of the program."
-        Public Shared EraserObsolete As String = "The eraser tool has been replaced by right-clicking on the note."
-        Public Shared SaveWarning As String = "Warning: "
-        Public Shared NoteOverlapError As String = "Note operlapping detected. Increasing Maximum Grid Partition will resolve this."
-        Public Shared BPMOverflowError As String = "Numbers of multi-byte BPMs has exceeded supported maximum: "
-        Public Shared STOPOverflowError As String = "Numbers of STOPs has exceeded supported maximum: "
-        Public Shared SCROLLOverflowError As String = "Numbers of multi-byte SCROLLs has exceeded supported maximum: "
-        Public Shared SavedFileWillContainErrors As String = "The saved file will contain errors."
-        Public Shared FileAssociationPrompt As String = "Do you want to set nBMSC as default program to all {} files?"
-        Public Shared FileAssociationError As String = "Error changing file type association:"
-        Public Shared RestoreDefaultSettings As String = "Restore default settings?"
-        Public Shared RestoreAutosavedFile As String = "{} autosaved file(s) have been found. Do you want to recover these files?"
-        Public Shared UpdateCheckTitle As String = "Check Updates"
-        Public Shared UpdateAvailable As String = "A new version is available." & vbCrLf & "Current: {0}" & vbCrLf & "Latest: {1}"
-        Public Shared UpdateLatest As String = "You are using the latest version." & vbCrLf & "Current: {0}" & vbCrLf & "Latest: {1}"
-        Public Shared UpdateCheckFailed As String = "Failed to check updates." & vbCrLf & "{0}"
-        Public Shared UpdateVersionUnsupported As String = "Could not compare versions." & vbCrLf & "Current: {0}" & vbCrLf & "Latest release: {1}" & vbCrLf & "Open the release page?"
-        Public Shared UpdateOpenRelease As String = "Open Release"
-        Public Shared UpdateLater As String = "Later"
-        Public Shared UpdateSkipVersion As String = "Skip This Version"
+        Public Shared ReadOnly Property Err As String
+            Get
+                Return Strings.Get("Messages.Err")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SaveOnExit As String
+            Get
+                Return Strings.Get("Messages.SaveOnExit")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SaveOnExit1 As String
+            Get
+                Return Strings.Get("Messages.SaveOnExit1")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SaveOnExit2 As String
+            Get
+                Return Strings.Get("Messages.SaveOnExit2")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PromptEnter As String
+            Get
+                Return Strings.Get("Messages.PromptEnter")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PromptEnterNumeric As String
+            Get
+                Return Strings.Get("Messages.PromptEnterNumeric")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PromptEnterMeasure As String
+            Get
+                Return Strings.Get("Messages.PromptEnterMeasure")
+            End Get
+        End Property
+        Public Shared ReadOnly Property GoToMeasureTitle As String
+            Get
+                Return Strings.Get("Messages.GoToMeasureTitle")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PromptEnterBPM As String
+            Get
+                Return Strings.Get("Messages.PromptEnterBPM")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PromptEnterSTOP As String
+            Get
+                Return Strings.Get("Messages.PromptEnterSTOP")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PromptEnterSCROLL As String
+            Get
+                Return Strings.Get("Messages.PromptEnterSCROLL")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PromptSlashValue As String
+            Get
+                Return Strings.Get("Messages.PromptSlashValue")
+            End Get
+        End Property
+        Public Shared ReadOnly Property InvalidLabel As String
+            Get
+                Return Strings.Get("Messages.InvalidLabel")
+            End Get
+        End Property
+        Public Shared ReadOnly Property CannotFind As String
+            Get
+                Return Strings.Get("Messages.CannotFind")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PleaseRespecifyPath As String
+            Get
+                Return Strings.Get("Messages.PleaseRespecifyPath")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PlayerNotFound As String
+            Get
+                Return Strings.Get("Messages.PlayerNotFound")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PreviewDelError As String
+            Get
+                Return Strings.Get("Messages.PreviewDelError")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NegativeFactorError As String
+            Get
+                Return Strings.Get("Messages.NegativeFactorError")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NegativeDivisorError As String
+            Get
+                Return Strings.Get("Messages.NegativeDivisorError")
+            End Get
+        End Property
+        Public Shared ReadOnly Property EraserObsolete As String
+            Get
+                Return Strings.Get("Messages.EraserObsolete")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SaveWarning As String
+            Get
+                Return Strings.Get("Messages.SaveWarning")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NoteOverlapError As String
+            Get
+                Return Strings.Get("Messages.NoteOverlapError")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BPMOverflowError As String
+            Get
+                Return Strings.Get("Messages.BPMOverflowError")
+            End Get
+        End Property
+        Public Shared ReadOnly Property STOPOverflowError As String
+            Get
+                Return Strings.Get("Messages.STOPOverflowError")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SCROLLOverflowError As String
+            Get
+                Return Strings.Get("Messages.SCROLLOverflowError")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SavedFileWillContainErrors As String
+            Get
+                Return Strings.Get("Messages.SavedFileWillContainErrors")
+            End Get
+        End Property
+        Public Shared ReadOnly Property FileAssociationPrompt As String
+            Get
+                Return Strings.Get("Messages.FileAssociationPrompt")
+            End Get
+        End Property
+        Public Shared ReadOnly Property FileAssociationError As String
+            Get
+                Return Strings.Get("Messages.FileAssociationError")
+            End Get
+        End Property
+        Public Shared ReadOnly Property RestoreDefaultSettings As String
+            Get
+                Return Strings.Get("Messages.RestoreDefaultSettings")
+            End Get
+        End Property
+        Public Shared ReadOnly Property RestoreAutosavedFile As String
+            Get
+                Return Strings.Get("Messages.RestoreAutosavedFile")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UpdateCheckTitle As String
+            Get
+                Return Strings.Get("Messages.UpdateCheckTitle")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UpdateAvailable As String
+            Get
+                Return Strings.Get("Messages.UpdateAvailable")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UpdateLatest As String
+            Get
+                Return Strings.Get("Messages.UpdateLatest")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UpdateCheckFailed As String
+            Get
+                Return Strings.Get("Messages.UpdateCheckFailed")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UpdateVersionUnsupported As String
+            Get
+                Return Strings.Get("Messages.UpdateVersionUnsupported")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UpdateOpenRelease As String
+            Get
+                Return Strings.Get("Messages.UpdateOpenRelease")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UpdateLater As String
+            Get
+                Return Strings.Get("Messages.UpdateLater")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UpdateSkipVersion As String
+            Get
+                Return Strings.Get("Messages.UpdateSkipVersion")
+            End Get
+        End Property
     End Class
 
     Public Class FileType
-        Public Shared _all As String = "All files (*.*)"
+        Public Shared ReadOnly Property _all As String
+            Get
+                Return Strings.Get("FileType._all")
+            End Get
+        End Property
 
-        Public Shared _bms As String = "Supported BMS Format (*.bms, *.bme, *.bml, *.pms, *.txt)"
-        Public Shared BMS As String = "Be-Music Script (*.bms)"
-        Public Shared BME As String = "Be-Music Extended Format (*.bme)"
-        Public Shared BML As String = "Be-Music Longnote Format (*.bml)"
-        Public Shared PMS As String = "Po-Mu Script (*.pms)"
-        Public Shared TXT As String = "Text document (*.txt)"
+        Public Shared ReadOnly Property _bms As String
+            Get
+                Return Strings.Get("FileType._bms")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BMS As String
+            Get
+                Return Strings.Get("FileType.BMS")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BME As String
+            Get
+                Return Strings.Get("FileType.BME")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BML As String
+            Get
+                Return Strings.Get("FileType.BML")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PMS As String
+            Get
+                Return Strings.Get("FileType.PMS")
+            End Get
+        End Property
+        Public Shared ReadOnly Property TXT As String
+            Get
+                Return Strings.Get("FileType.TXT")
+            End Get
+        End Property
 
-        Public Shared NBMSC As String = "nBMSC Binary Format (*.nbmsc)"
-        Public Shared BMSON As String = "BMS JSON Format (*.bmson)"
-        Public Shared XML As String = "Extensible Markup Language (*.xml)"
-        Public Shared THEME_XML As String = "nBMSC Theme File (*.xml)"
+        Public Shared ReadOnly Property NBMSC As String
+            Get
+                Return Strings.Get("FileType.NBMSC")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BMSON As String
+            Get
+                Return Strings.Get("FileType.BMSON")
+            End Get
+        End Property
+        Public Shared ReadOnly Property XML As String
+            Get
+                Return Strings.Get("FileType.XML")
+            End Get
+        End Property
+        Public Shared ReadOnly Property THEME_XML As String
+            Get
+                Return Strings.Get("FileType.THEME_XML")
+            End Get
+        End Property
 
-        Public Shared _audio As String = "Supported Audio Format (*.wav, *.ogg, *.mp3, *.flac, *.mid)"
-        Public Shared _wave As String = "Supported Wave Audio Format (*.wav, *.ogg, *.mp3, *.flac)"
-        Public Shared WAV As String = "Waveform Audio (*.wav)"
-        Public Shared OGG As String = "Ogg Vorbis Audio (*.ogg)"
-        Public Shared MP3 As String = "MPEG Layer-3 Audio (*.mp3)"
-        Public Shared FLAC As String = "Free Lossless Audio (*.flac)"
-        Public Shared MID As String = "MIDI (*.mid)"
+        Public Shared ReadOnly Property _audio As String
+            Get
+                Return Strings.Get("FileType._audio")
+            End Get
+        End Property
+        Public Shared ReadOnly Property _wave As String
+            Get
+                Return Strings.Get("FileType._wave")
+            End Get
+        End Property
+        Public Shared ReadOnly Property WAV As String
+            Get
+                Return Strings.Get("FileType.WAV")
+            End Get
+        End Property
+        Public Shared ReadOnly Property OGG As String
+            Get
+                Return Strings.Get("FileType.OGG")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MP3 As String
+            Get
+                Return Strings.Get("FileType.MP3")
+            End Get
+        End Property
+        Public Shared ReadOnly Property FLAC As String
+            Get
+                Return Strings.Get("FileType.FLAC")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MID As String
+            Get
+                Return Strings.Get("FileType.MID")
+            End Get
+        End Property
 
-        Public Shared _image As String = "Supported Image Format (*.png, *.bmp, *.jpg, *.gif)"
-        Public Shared _movie As String = "Supported Movie Format (*.mpg, *.avi, *.mp4, *.wmv, *.webm)"
-        Public Shared BMP As String = "Windows bitmap image (*.bmp)"
-        Public Shared PNG As String = "Portable Network Graphic (*.png)"
-        Public Shared JPG As String = "Joint Photographic Experts Group (*.jpg)"
-        Public Shared GIF As String = "Graphics Interchange Format (*.gif)"
-        Public Shared MPG As String = "Moving Picture Experts Group (*.mpg)"
-        Public Shared AVI As String = "Audio Video Interleave (*.avi)"
-        Public Shared MP4 As String = "MPEG phase 4 (*.mp4)"
-        Public Shared WMV As String = "Windows Media Video (*.wmv)"
-        Public Shared WEBM As String = "WebM (*.webm)"
+        Public Shared ReadOnly Property _image As String
+            Get
+                Return Strings.Get("FileType._image")
+            End Get
+        End Property
+        Public Shared ReadOnly Property _movie As String
+            Get
+                Return Strings.Get("FileType._movie")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BMP As String
+            Get
+                Return Strings.Get("FileType.BMP")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PNG As String
+            Get
+                Return Strings.Get("FileType.PNG")
+            End Get
+        End Property
+        Public Shared ReadOnly Property JPG As String
+            Get
+                Return Strings.Get("FileType.JPG")
+            End Get
+        End Property
+        Public Shared ReadOnly Property GIF As String
+            Get
+                Return Strings.Get("FileType.GIF")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MPG As String
+            Get
+                Return Strings.Get("FileType.MPG")
+            End Get
+        End Property
+        Public Shared ReadOnly Property AVI As String
+            Get
+                Return Strings.Get("FileType.AVI")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MP4 As String
+            Get
+                Return Strings.Get("FileType.MP4")
+            End Get
+        End Property
+        Public Shared ReadOnly Property WMV As String
+            Get
+                Return Strings.Get("FileType.WMV")
+            End Get
+        End Property
+        Public Shared ReadOnly Property WEBM As String
+            Get
+                Return Strings.Get("FileType.WEBM")
+            End Get
+        End Property
 
-        Public Shared EXE As String = "Executable file (*.exe)"
+        Public Shared ReadOnly Property EXE As String
+            Get
+                Return Strings.Get("FileType.EXE")
+            End Get
+        End Property
     End Class
 
     Public Class fStatistics
-        Public Shared Title As String = "Statistics"
-        Public Shared lBPM As String = "BPM"
-        Public Shared lSTOP As String = "STOP"
-        Public Shared lSCROLL As String = "SCROLL"
-        Public Shared lA As String = "A1-A8"
-        Public Shared lD As String = "D1-D8"
-        Public Shared lBGM As String = "BGM"
-        Public Shared lTotal As String = "Total"
-        Public Shared lShort As String = "Short"
-        Public Shared lLong As String = "Long"
-        Public Shared lLnObj As String = "LnObj"
-        Public Shared lHidden As String = "Hidden"
-        Public Shared lLandMine As String = "LandMine"
-        Public Shared lErrors As String = "Errors"
+        Public Shared ReadOnly Property Title As String
+            Get
+                Return Strings.Get("Statistics.Title")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lBPM As String
+            Get
+                Return Strings.Get("Statistics.lBPM")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lSTOP As String
+            Get
+                Return Strings.Get("Statistics.lSTOP")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lSCROLL As String
+            Get
+                Return Strings.Get("Statistics.lSCROLL")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lA As String
+            Get
+                Return Strings.Get("Statistics.lA")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lD As String
+            Get
+                Return Strings.Get("Statistics.lD")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lBGM As String
+            Get
+                Return Strings.Get("Statistics.lBGM")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lTotal As String
+            Get
+                Return Strings.Get("Statistics.lTotal")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lShort As String
+            Get
+                Return Strings.Get("Statistics.lShort")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lLong As String
+            Get
+                Return Strings.Get("Statistics.lLong")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lLnObj As String
+            Get
+                Return Strings.Get("Statistics.lLnObj")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lHidden As String
+            Get
+                Return Strings.Get("Statistics.lHidden")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lLandMine As String
+            Get
+                Return Strings.Get("Statistics.lLandMine")
+            End Get
+        End Property
+        Public Shared ReadOnly Property lErrors As String
+            Get
+                Return Strings.Get("Statistics.lErrors")
+            End Get
+        End Property
     End Class
 
     Public Class fopPlayer
-        Public Shared Title As String = "Player Arguments Options"
-        Public Shared Add As String = "Add"
-        Public Shared Remove As String = "Remove"
-        Public Shared Path As String = "Path"
-        Public Shared PlayFromBeginning As String = "Play from beginning"
-        Public Shared PlayFromHere As String = "Play from current measure"
-        Public Shared StopPlaying As String = "Stop"
-        Public Shared References As String = "References (case-sensitive):"
-        Public Shared DirectoryOfApp As String = "Directory of the application"
-        Public Shared CurrMeasure As String = "Current measure"
-        Public Shared FileName As String = "File Name"
-        Public Shared RestoreDefault As String = "Restore Default"
+        Public Shared ReadOnly Property Title As String
+            Get
+                Return Strings.Get("PlayerOptions.Title")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Add As String
+            Get
+                Return Strings.Get("PlayerOptions.Add")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Remove As String
+            Get
+                Return Strings.Get("PlayerOptions.Remove")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Path As String
+            Get
+                Return Strings.Get("PlayerOptions.Path")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PlayFromBeginning As String
+            Get
+                Return Strings.Get("PlayerOptions.PlayFromBeginning")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PlayFromHere As String
+            Get
+                Return Strings.Get("PlayerOptions.PlayFromHere")
+            End Get
+        End Property
+        Public Shared ReadOnly Property StopPlaying As String
+            Get
+                Return Strings.Get("PlayerOptions.StopPlaying")
+            End Get
+        End Property
+        Public Shared ReadOnly Property References As String
+            Get
+                Return Strings.Get("PlayerOptions.References")
+            End Get
+        End Property
+        Public Shared ReadOnly Property DirectoryOfApp As String
+            Get
+                Return Strings.Get("PlayerOptions.DirectoryOfApp")
+            End Get
+        End Property
+        Public Shared ReadOnly Property CurrMeasure As String
+            Get
+                Return Strings.Get("PlayerOptions.CurrMeasure")
+            End Get
+        End Property
+        Public Shared ReadOnly Property FileName As String
+            Get
+                Return Strings.Get("PlayerOptions.FileName")
+            End Get
+        End Property
+        Public Shared ReadOnly Property RestoreDefault As String
+            Get
+                Return Strings.Get("PlayerOptions.RestoreDefault")
+            End Get
+        End Property
     End Class
 
     Public Class fopVisual
-        Public Shared Title As String = "Visual Options"
-        Public Shared Width As String = "Width"
-        Public Shared Caption As String = "Caption"
-        Public Shared Note As String = "Note"
-        Public Shared Label As String = "Label"
-        Public Shared LongNote As String = "Long Note"
-        Public Shared LongNoteLabel As String = "Long Note Label"
-        Public Shared Bg As String = "Bg"
-        Public Shared ColumnCaption As String = "Column Caption"
-        Public Shared ColumnCaptionFont As String = "Column Caption Font"
-        Public Shared Background As String = "Background"
-        Public Shared Grid As String = "Grid"
-        Public Shared SubGrid As String = "Sub"
-        Public Shared VerticalLine As String = "Vertical Line"
-        Public Shared MeasureBarLine As String = "Measure BarLine"
-        Public Shared BGMWaveform As String = "BGM Waveform"
-        Public Shared NoteHeight As String = "Note Height"
-        Public Shared NoteLabel As String = "Note Label"
-        Public Shared MeasureLabel As String = "Measure Label"
-        Public Shared LabelVerticalShift As String = "Note Label Vertical Shift"
-        Public Shared LabelHorizontalShift As String = "Note Label Horizontal Shift"
-        Public Shared LongNoteLabelHorizontalShift As String = "LongNote Label Horizontal Shift"
-        Public Shared HiddenNoteOpacity As String = "Hidden Note Opacity"
-        Public Shared NoteBorderOnMouseOver As String = "Note Border on MouseOver"
-        Public Shared NoteBorderOnSelection As String = "Note Border on Selection"
-        Public Shared NoteBorderOnAdjustingLength As String = "Note Border on Adjusting Length"
-        Public Shared SelectionBoxBorder As String = "Selection Box Border"
-        Public Shared TSCursor As String = "Time Selection Cursor"
-        Public Shared TSSplitView As String = "Time Selection Splitter"
-        Public Shared TSCursorSensitivity As String = "Time Selection Cursor Sensitivity"
-        Public Shared TSMouseOverBorder As String = "Time Selection MouseOver Border"
-        Public Shared TSFill As String = "Time Selection Fill"
-        Public Shared TSBPM As String = "Time Selection BPM"
-        Public Shared TSBPMFont As String = "Time Selection BPM Font"
-        Public Shared MiddleSensitivity As String = "Middle Button Release Sensitivity"
+        Public Shared ReadOnly Property Title As String
+            Get
+                Return Strings.Get("VisualOptions.Title")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Width As String
+            Get
+                Return Strings.Get("VisualOptions.Width")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Caption As String
+            Get
+                Return Strings.Get("VisualOptions.Caption")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Note As String
+            Get
+                Return Strings.Get("VisualOptions.Note")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Label As String
+            Get
+                Return Strings.Get("VisualOptions.Label")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LongNote As String
+            Get
+                Return Strings.Get("VisualOptions.LongNote")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LongNoteLabel As String
+            Get
+                Return Strings.Get("VisualOptions.LongNoteLabel")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Bg As String
+            Get
+                Return Strings.Get("VisualOptions.Bg")
+            End Get
+        End Property
+        Public Shared ReadOnly Property ColumnCaption As String
+            Get
+                Return Strings.Get("VisualOptions.ColumnCaption")
+            End Get
+        End Property
+        Public Shared ReadOnly Property ColumnCaptionFont As String
+            Get
+                Return Strings.Get("VisualOptions.ColumnCaptionFont")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Background As String
+            Get
+                Return Strings.Get("VisualOptions.Background")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Grid As String
+            Get
+                Return Strings.Get("VisualOptions.Grid")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SubGrid As String
+            Get
+                Return Strings.Get("VisualOptions.SubGrid")
+            End Get
+        End Property
+        Public Shared ReadOnly Property VerticalLine As String
+            Get
+                Return Strings.Get("VisualOptions.VerticalLine")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MeasureBarLine As String
+            Get
+                Return Strings.Get("VisualOptions.MeasureBarLine")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BGMWaveform As String
+            Get
+                Return Strings.Get("VisualOptions.BGMWaveform")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NoteHeight As String
+            Get
+                Return Strings.Get("VisualOptions.NoteHeight")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NoteLabel As String
+            Get
+                Return Strings.Get("VisualOptions.NoteLabel")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MeasureLabel As String
+            Get
+                Return Strings.Get("VisualOptions.MeasureLabel")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LabelVerticalShift As String
+            Get
+                Return Strings.Get("VisualOptions.LabelVerticalShift")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LabelHorizontalShift As String
+            Get
+                Return Strings.Get("VisualOptions.LabelHorizontalShift")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LongNoteLabelHorizontalShift As String
+            Get
+                Return Strings.Get("VisualOptions.LongNoteLabelHorizontalShift")
+            End Get
+        End Property
+        Public Shared ReadOnly Property HiddenNoteOpacity As String
+            Get
+                Return Strings.Get("VisualOptions.HiddenNoteOpacity")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NoteBorderOnMouseOver As String
+            Get
+                Return Strings.Get("VisualOptions.NoteBorderOnMouseOver")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NoteBorderOnSelection As String
+            Get
+                Return Strings.Get("VisualOptions.NoteBorderOnSelection")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NoteBorderOnAdjustingLength As String
+            Get
+                Return Strings.Get("VisualOptions.NoteBorderOnAdjustingLength")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SelectionBoxBorder As String
+            Get
+                Return Strings.Get("VisualOptions.SelectionBoxBorder")
+            End Get
+        End Property
+        Public Shared ReadOnly Property TSCursor As String
+            Get
+                Return Strings.Get("VisualOptions.TSCursor")
+            End Get
+        End Property
+        Public Shared ReadOnly Property TSSplitView As String
+            Get
+                Return Strings.Get("VisualOptions.TSSplitView")
+            End Get
+        End Property
+        Public Shared ReadOnly Property TSCursorSensitivity As String
+            Get
+                Return Strings.Get("VisualOptions.TSCursorSensitivity")
+            End Get
+        End Property
+        Public Shared ReadOnly Property TSMouseOverBorder As String
+            Get
+                Return Strings.Get("VisualOptions.TSMouseOverBorder")
+            End Get
+        End Property
+        Public Shared ReadOnly Property TSFill As String
+            Get
+                Return Strings.Get("VisualOptions.TSFill")
+            End Get
+        End Property
+        Public Shared ReadOnly Property TSBPM As String
+            Get
+                Return Strings.Get("VisualOptions.TSBPM")
+            End Get
+        End Property
+        Public Shared ReadOnly Property TSBPMFont As String
+            Get
+                Return Strings.Get("VisualOptions.TSBPMFont")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MiddleSensitivity As String
+            Get
+                Return Strings.Get("VisualOptions.MiddleSensitivity")
+            End Get
+        End Property
     End Class
 
     Public Class fopGeneral
-        Public Shared Title As String = "General Options"
-        Public Shared MouseWheel As String = "Mouse Wheel"
-        Public Shared InputTextEncoding As String = "Input Encoding"
-        Public Shared OutputTextEncoding As String = "Output Encoding"
+        Public Shared ReadOnly Property Title As String
+            Get
+                Return Strings.Get("GeneralOptions.Title")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MouseWheel As String
+            Get
+                Return Strings.Get("GeneralOptions.MouseWheel")
+            End Get
+        End Property
+        Public Shared ReadOnly Property InputTextEncoding As String
+            Get
+                Return Strings.Get("GeneralOptions.InputTextEncoding")
+            End Get
+        End Property
+        Public Shared ReadOnly Property OutputTextEncoding As String
+            Get
+                Return Strings.Get("GeneralOptions.OutputTextEncoding")
+            End Get
+        End Property
         'Public Shared SortingMethod As String = "Sorting Method"
         'Public Shared sortBubble As String = "One-directional Bubble Sort"
         'Public Shared sortInsertion As String = "Insertion Sort"
         'Public Shared sortQuick As String = "Quick Sort"
         'Public Shared sortQuickD3 As String = "Quick Sort d3"
         'Public Shared sortHeap As String = "Heap Sort"
-        Public Shared PageUpDown As String = "PageUp / PageDown"
-        Public Shared MiddleButton As String = "Mouse Middle Button"
-        Public Shared MiddleButtonAuto As String = "Click and Auto Scroll"
-        Public Shared MiddleButtonDrag As String = "Click and Drag"
-        Public Shared AssociateFileType As String = "Associate Filetype"
-        Public Shared MaxGridPartition As String = "Max Grid Partition in BMS"
-        Public Shared BeepWhileSaved As String = "Beep while saved"
-        Public Shared NewBMSUseBase62 As String = "Use base62 for new BMS"
-        Public Shared BPMDefinitionMode As String = "BPM definitions"
-        Public Shared STOPDefinitionMode As String = "STOP definitions"
-        Public Shared DefinitionModeDefault As String = "Default (01-FF)"
-        Public Shared DefinitionModeBase36 As String = "36 base (01-ZZ)"
-        Public Shared DefinitionModeBase62 As String = "62 base (01-zz)"
-        Public Shared AutoFocusOnMouseEnter As String = "Automatically set focus to editing panel on mouse enter"
-        Public Shared DisableFirstClick As String = "Disable first click if the editing panel is not focused"
-        Public Shared AutoSave As String = "AutoSave"
-        Public Shared minutes As String = "minutes"
-        Public Shared StopPreviewOnClick As String = "Stop preview if clicked on the editing panel"
-        Public Shared SkipClippedMeasure As String = "Skip clipped measure and play from next measure"
-        Public Shared LaneHighlight As String = "Lane Highlight"
-        Public Shared MinimumBGMLanes As String = "Minimum BGM lanes"
-        Public Shared UndoRedoMemoryLimit As String = "Undo/Redo memory limit"
+        Public Shared ReadOnly Property PageUpDown As String
+            Get
+                Return Strings.Get("GeneralOptions.PageUpDown")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MiddleButton As String
+            Get
+                Return Strings.Get("GeneralOptions.MiddleButton")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MiddleButtonAuto As String
+            Get
+                Return Strings.Get("GeneralOptions.MiddleButtonAuto")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MiddleButtonDrag As String
+            Get
+                Return Strings.Get("GeneralOptions.MiddleButtonDrag")
+            End Get
+        End Property
+        Public Shared ReadOnly Property AssociateFileType As String
+            Get
+                Return Strings.Get("GeneralOptions.AssociateFileType")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MaxGridPartition As String
+            Get
+                Return Strings.Get("GeneralOptions.MaxGridPartition")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BeepWhileSaved As String
+            Get
+                Return Strings.Get("GeneralOptions.BeepWhileSaved")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NewBMSUseBase62 As String
+            Get
+                Return Strings.Get("GeneralOptions.NewBMSUseBase62")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BPMDefinitionMode As String
+            Get
+                Return Strings.Get("GeneralOptions.BPMDefinitionMode")
+            End Get
+        End Property
+        Public Shared ReadOnly Property STOPDefinitionMode As String
+            Get
+                Return Strings.Get("GeneralOptions.STOPDefinitionMode")
+            End Get
+        End Property
+        Public Shared ReadOnly Property DefinitionModeDefault As String
+            Get
+                Return Strings.Get("GeneralOptions.DefinitionModeDefault")
+            End Get
+        End Property
+        Public Shared ReadOnly Property DefinitionModeBase36 As String
+            Get
+                Return Strings.Get("GeneralOptions.DefinitionModeBase36")
+            End Get
+        End Property
+        Public Shared ReadOnly Property DefinitionModeBase62 As String
+            Get
+                Return Strings.Get("GeneralOptions.DefinitionModeBase62")
+            End Get
+        End Property
+        Public Shared ReadOnly Property AutoFocusOnMouseEnter As String
+            Get
+                Return Strings.Get("GeneralOptions.AutoFocusOnMouseEnter")
+            End Get
+        End Property
+        Public Shared ReadOnly Property DisableFirstClick As String
+            Get
+                Return Strings.Get("GeneralOptions.DisableFirstClick")
+            End Get
+        End Property
+        Public Shared ReadOnly Property AutoSave As String
+            Get
+                Return Strings.Get("GeneralOptions.AutoSave")
+            End Get
+        End Property
+        Public Shared ReadOnly Property minutes As String
+            Get
+                Return Strings.Get("GeneralOptions.minutes")
+            End Get
+        End Property
+        Public Shared ReadOnly Property StopPreviewOnClick As String
+            Get
+                Return Strings.Get("GeneralOptions.StopPreviewOnClick")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SkipClippedMeasure As String
+            Get
+                Return Strings.Get("GeneralOptions.SkipClippedMeasure")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LaneHighlight As String
+            Get
+                Return Strings.Get("GeneralOptions.LaneHighlight")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MinimumBGMLanes As String
+            Get
+                Return Strings.Get("GeneralOptions.MinimumBGMLanes")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UndoRedoMemoryLimit As String
+            Get
+                Return Strings.Get("GeneralOptions.UndoRedoMemoryLimit")
+            End Get
+        End Property
     End Class
 
     Public Class Encoding
-        Public Shared Auto As String = "Auto"
-        Public Shared SystemDefault As String = "System Default"
-        Public Shared ReloadWithEncoding As String = "Reload with Encoding"
+        Public Shared ReadOnly Property Auto As String
+            Get
+                Return Strings.Get("Encoding.Auto")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SystemDefault As String
+            Get
+                Return Strings.Get("Encoding.SystemDefault")
+            End Get
+        End Property
+        Public Shared ReadOnly Property ReloadWithEncoding As String
+            Get
+                Return Strings.Get("Encoding.ReloadWithEncoding")
+            End Get
+        End Property
     End Class
 
     Public Class fFind
-        Public Shared NoteRange As String = "Note Range"
-        Public Shared MeasureRange As String = "Measure Range"
-        Public Shared LabelRange As String = "Label Range"
-        Public Shared ValueRange As String = "Value Range"
-        Public Shared to_ As String = "to"
-        Public Shared Selected As String = "Selected"
-        Public Shared UnSelected As String = "Unselected"
-        Public Shared ShortNote As String = "Short"
-        Public Shared LongNote As String = "Long"
-        Public Shared Hidden As String = "Hidden"
-        Public Shared LandMine As String = "LandMine"
-        Public Shared Visible As String = "Visible"
-        Public Shared Column As String = "Column"
-        Public Shared SelectAll As String = "Select All"
-        Public Shared SelectInverse As String = "Select Inverse"
-        Public Shared UnselectAll As String = "Unselect All"
-        Public Shared Operation As String = "Operation"
-        Public Shared ReplaceWithLabel As String = "Replace with Label:"
-        Public Shared ReplaceWithValue As String = "Replace with Value:"
-        Public Shared Select_ As String = "Select"
-        Public Shared Unselect_ As String = "Unselect"
-        Public Shared Delete_ As String = "Delete"
-        Public Shared Close_ As String = "Close"
+        Public Shared ReadOnly Property NoteRange As String
+            Get
+                Return Strings.Get("Find.NoteRange")
+            End Get
+        End Property
+        Public Shared ReadOnly Property MeasureRange As String
+            Get
+                Return Strings.Get("Find.MeasureRange")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LabelRange As String
+            Get
+                Return Strings.Get("Find.LabelRange")
+            End Get
+        End Property
+        Public Shared ReadOnly Property ValueRange As String
+            Get
+                Return Strings.Get("Find.ValueRange")
+            End Get
+        End Property
+        Public Shared ReadOnly Property to_ As String
+            Get
+                Return Strings.Get("Find.to")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Selected As String
+            Get
+                Return Strings.Get("Find.Selected")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UnSelected As String
+            Get
+                Return Strings.Get("Find.UnSelected")
+            End Get
+        End Property
+        Public Shared ReadOnly Property ShortNote As String
+            Get
+                Return Strings.Get("Find.ShortNote")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LongNote As String
+            Get
+                Return Strings.Get("Find.LongNote")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Hidden As String
+            Get
+                Return Strings.Get("Find.Hidden")
+            End Get
+        End Property
+        Public Shared ReadOnly Property LandMine As String
+            Get
+                Return Strings.Get("Find.LandMine")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Visible As String
+            Get
+                Return Strings.Get("Find.Visible")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Column As String
+            Get
+                Return Strings.Get("Find.Column")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SelectAll As String
+            Get
+                Return Strings.Get("Find.SelectAll")
+            End Get
+        End Property
+        Public Shared ReadOnly Property SelectInverse As String
+            Get
+                Return Strings.Get("Find.SelectInverse")
+            End Get
+        End Property
+        Public Shared ReadOnly Property UnselectAll As String
+            Get
+                Return Strings.Get("Find.UnselectAll")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Operation As String
+            Get
+                Return Strings.Get("Find.Operation")
+            End Get
+        End Property
+        Public Shared ReadOnly Property ReplaceWithLabel As String
+            Get
+                Return Strings.Get("Find.ReplaceWithLabel")
+            End Get
+        End Property
+        Public Shared ReadOnly Property ReplaceWithValue As String
+            Get
+                Return Strings.Get("Find.ReplaceWithValue")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Select_ As String
+            Get
+                Return Strings.Get("Find.Select")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Unselect_ As String
+            Get
+                Return Strings.Get("Find.Unselect")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Delete_ As String
+            Get
+                Return Strings.Get("Find.Delete")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Close_ As String
+            Get
+                Return Strings.Get("Find.Close")
+            End Get
+        End Property
     End Class
 
     Public Class fImportBMSON
-        Public Shared Message As String = "BMSON Format is write only."
+        Public Shared ReadOnly Property Message As String
+            Get
+                Return Strings.Get("ImportBMSON.Message")
+            End Get
+        End Property
     End Class
 
     Public Class FileAssociation
-        Public Shared BMS As String = "Be-Music Script"
-        Public Shared BME As String = "Be-Music Extended Format"
-        Public Shared BML As String = "Be-Music Longnote Format"
-        Public Shared PMS As String = "Po-Mu Script"
-        Public Shared NBMSC As String = "nBMSC Binary Format"
-        Public Shared Open As String = "Open"
-        Public Shared Preview As String = "Preview"
-        Public Shared ViewCode As String = "View Code"
+        Public Shared ReadOnly Property BMS As String
+            Get
+                Return Strings.Get("FileAssociation.BMS")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BME As String
+            Get
+                Return Strings.Get("FileAssociation.BME")
+            End Get
+        End Property
+        Public Shared ReadOnly Property BML As String
+            Get
+                Return Strings.Get("FileAssociation.BML")
+            End Get
+        End Property
+        Public Shared ReadOnly Property PMS As String
+            Get
+                Return Strings.Get("FileAssociation.PMS")
+            End Get
+        End Property
+        Public Shared ReadOnly Property NBMSC As String
+            Get
+                Return Strings.Get("FileAssociation.NBMSC")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Open As String
+            Get
+                Return Strings.Get("FileAssociation.Open")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Preview As String
+            Get
+                Return Strings.Get("FileAssociation.Preview")
+            End Get
+        End Property
+        Public Shared ReadOnly Property ViewCode As String
+            Get
+                Return Strings.Get("FileAssociation.ViewCode")
+            End Get
+        End Property
     End Class
 End Class
