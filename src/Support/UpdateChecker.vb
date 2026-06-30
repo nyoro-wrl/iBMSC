@@ -1,5 +1,5 @@
 Imports System.Net
-Imports System.Text
+Imports System.Net.Http
 Imports System.Text.Json
 
 Public Class UpdateCheckResult
@@ -14,6 +14,7 @@ End Class
 
 Public NotInheritable Class UpdateChecker
     Private Const LatestReleaseApiUrl As String = "https://api.github.com/repos/nyoro-wrl/nBMSC/releases/latest"
+    Private Shared ReadOnly LatestReleaseHttpClient As HttpClient = CreateLatestReleaseHttpClient()
 
     Private Sub New()
     End Sub
@@ -83,13 +84,19 @@ Public NotInheritable Class UpdateChecker
     Private Shared Function DownloadLatestReleaseJson() As String
         ServicePointManager.SecurityProtocol = ServicePointManager.SecurityProtocol Or SecurityProtocolType.Tls12
 
-        Using xClient As New WebClient()
-            xClient.Encoding = Encoding.UTF8
-            xClient.Headers(HttpRequestHeader.Accept) = "application/vnd.github+json"
-            xClient.Headers(HttpRequestHeader.UserAgent) = "nBMSC"
-            xClient.Headers("X-GitHub-Api-Version") = "2022-11-28"
-            Return xClient.DownloadString(LatestReleaseApiUrl)
+        Using xResponse As HttpResponseMessage = LatestReleaseHttpClient.GetAsync(LatestReleaseApiUrl).GetAwaiter().GetResult()
+            xResponse.EnsureSuccessStatusCode()
+            Return xResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult()
         End Using
+    End Function
+
+    Private Shared Function CreateLatestReleaseHttpClient() As HttpClient
+        Dim xClient As New HttpClient()
+        xClient.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github+json")
+        xClient.DefaultRequestHeaders.UserAgent.ParseAdd("nBMSC")
+        xClient.DefaultRequestHeaders.TryAddWithoutValidation("X-GitHub-Api-Version", "2022-11-28")
+
+        Return xClient
     End Function
 
     Private Shared Function Fail(ByVal message As String) As UpdateCheckResult
