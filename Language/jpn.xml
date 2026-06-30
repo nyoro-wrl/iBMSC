@@ -201,7 +201,7 @@
 			<Artist>ARTIST</Artist>
 			<Genre>GENRE</Genre>
 			<BPM>BPM</BPM>
-			<Player>PLAYER</Player>
+			<Player>PLAYSTYLE</Player>
 			<Rank>RANK</Rank>
 			<PlayLevel>LEVEL</PlayLevel>
 			<SubTitle>SUBTITLE</SubTitle>
@@ -218,15 +218,15 @@
 			<MissBMP>#BMP00</MissBMP>
 			<Preview>PREVIEW</Preview>
 			<LnMode>LNMODE</LnMode>
-			<Player1>1 - Single</Player1>
-			<Player2>2 - Couple</Player2>
-			<Player3>3 - Double / PMS</Player3>
+			<Player1>SP</Player1>
+			<Player2>2 Player</Player2>
+			<Player3>DP / PMS</Player3>
 			<Rank0>0 - Very Hard</Rank0>
 			<Rank1>1 - Hard</Rank1>
 			<Rank2>2 - Normal</Rank2>
 			<Rank3>3 - Easy</Rank3>
 			<Rank4>4 - Very Easy</Rank4>
-			<Difficulty0>None</Difficulty0>
+			<Difficulty0></Difficulty0>
 			<Difficulty1>1 - Beginner / EZ</Difficulty1>
 			<Difficulty2>2 - Normal / NM</Difficulty2>
 			<Difficulty3>3 - Hyper / HD</Difficulty3>

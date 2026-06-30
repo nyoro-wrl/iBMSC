@@ -197,7 +197,7 @@
 			<Artist>아티스트명</Artist>
 			<Genre>장르</Genre>
 			<BPM>BPM</BPM>
-			<Player>플레이어</Player>
+			<Player>PLAYSTYLE</Player>
 			<Rank>판정 난이도</Rank>
 			<PlayLevel>레벨</PlayLevel>
 			<SubTitle>노래 부제</SubTitle>
@@ -214,15 +214,15 @@
 			<MissBMP>#BMP00</MissBMP>
 			<Preview>Preview</Preview>
 			<LnMode>LN Mode</LnMode>
-			<Player1>1 - 솔로</Player1>
-			<Player2>2 - Couple Play</Player2>
-			<Player3>3 - 더블 플레이</Player3>
+			<Player1>SP</Player1>
+			<Player2>2 Player</Player2>
+			<Player3>DP / PMS</Player3>
 			<Rank0>0 - 매우 어려움</Rank0>
 			<Rank1>1 - 어려움</Rank1>
 			<Rank2>2 - 보통</Rank2>
 			<Rank3>3 - 쉬움 (추천값)</Rank3>
 			<Rank4>4 - 매우 쉬움</Rank4>
-			<Difficulty0> 설정 안함 </Difficulty0>
+			<Difficulty0></Difficulty0>
 			<Difficulty1>1 - EZ / Beginner</Difficulty1>
 			<Difficulty2>2 - NM / Normal</Difficulty2>
 			<Difficulty3>3 - HD / Hyper</Difficulty3>

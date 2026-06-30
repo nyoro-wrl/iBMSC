@@ -1377,8 +1377,8 @@ EndOfSub:
 
                     RemoveHandler CHPlayer.SelectedIndexChanged, AddressOf CHPlayer_SelectedIndexChanged
                     XMLLoadLocale(eHeader.Item("Player1"), CHPlayer.Items.Item(0))
-                    XMLLoadLocale(eHeader.Item("Player2"), CHPlayer.Items.Item(1))
-                    XMLLoadLocale(eHeader.Item("Player3"), CHPlayer.Items.Item(2))
+                    XMLLoadLocale(eHeader.Item("Player3"), CHPlayer.Items.Item(1))
+                    XMLLoadLocale(eHeader.Item("Player2"), CHPlayer.Items.Item(2))
                     AddHandler CHPlayer.SelectedIndexChanged, AddressOf CHPlayer_SelectedIndexChanged
 
                     RemoveHandler CHRank.SelectedIndexChanged, AddressOf THGenre_TextChanged

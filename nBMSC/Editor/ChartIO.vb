@@ -5,6 +5,30 @@ Partial Public Class MainWindow
     Private Const NBMSCFileSignature As Integer = &H534D426E
     Private Const NBMSCFileSuffix As Byte = &H43
 
+    Private Function PlayerIndexFromValue(ByVal value As Integer) As Integer
+        Select Case value
+            Case 1
+                Return 0
+            Case 3
+                Return 1
+            Case 2
+                Return 2
+        End Select
+
+        Return -1
+    End Function
+
+    Private Function PlayerValueFromIndex(ByVal index As Integer) As Integer
+        Select Case index
+            Case 1
+                Return 3
+            Case 2
+                Return 2
+        End Select
+
+        Return 1
+    End Function
+
     Private Sub OpenBMS(ByVal xStrAll As String)
         KMouseOver = -1
 
@@ -88,8 +112,10 @@ Partial Public Class MainWindow
 
             ElseIf sLineTrim.StartsWith("#PLAYER", StringComparison.CurrentCultureIgnoreCase) Then
                 Dim xInt As Integer = Val(Mid(sLineTrim, Len("#PLAYER") + 1).Trim)
-                If xInt >= 1 And xInt <= 4 Then _
-                    CHPlayer.SelectedIndex = xInt - 1
+                Dim xIndex As Integer = PlayerIndexFromValue(xInt)
+                If xIndex >= 0 Then
+                    CHPlayer.SelectedIndex = xIndex
+                End If
 
             ElseIf sLineTrim.StartsWith("#RANK", StringComparison.CurrentCultureIgnoreCase) Then
                 Dim xInt As Integer = Val(Mid(sLineTrim, Len("#RANK") + 1).Trim)
@@ -356,7 +382,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
 
     Private Function GenerateHeaderMeta() As String
         Dim xStrHeader As String = vbCrLf & "*---------------------- HEADER FIELD" & vbCrLf & vbCrLf
-        xStrHeader &= "#PLAYER " & (CHPlayer.SelectedIndex + 1) & vbCrLf
+        xStrHeader &= "#PLAYER " & PlayerValueFromIndex(CHPlayer.SelectedIndex) & vbCrLf
         xStrHeader &= "#GENRE " & THGenre.Text & vbCrLf
         xStrHeader &= "#TITLE " & THTitle.Text & vbCrLf
         xStrHeader &= "#ARTIST " & THArtist.Text & vbCrLf
