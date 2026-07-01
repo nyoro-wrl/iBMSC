@@ -87,11 +87,11 @@ Partial Public Class MainWindow
 
             ElseIf sLineTrim.StartsWith("#BPM", StringComparison.CurrentCultureIgnoreCase) And Not Mid(sLineTrim, Len("#BPM") + 1, 1).Trim = "" Then  'If BPM##
                 ' zdr: No limits on BPM editing.. they don't make much sense.
-                hBPM(DefinitionModeIndex(Mid(sLineTrim, Len("#BPM") + 1, 2), BPMDefinitionMode)) = Val(Mid(sLineTrim, Len("#BPM") + 4)) * 10000
+                hBPM(DefinitionIndex(Mid(sLineTrim, Len("#BPM") + 1, 2))) = Val(Mid(sLineTrim, Len("#BPM") + 4)) * 10000
 
                 'No limits on STOPs either.
             ElseIf sLineTrim.StartsWith("#STOP", StringComparison.CurrentCultureIgnoreCase) Then
-                hSTOP(DefinitionModeIndex(Mid(sLineTrim, Len("#STOP") + 1, 2), STOPDefinitionMode)) = Val(Mid(sLineTrim, Len("#STOP") + 4)) * 10000
+                hSTOP(DefinitionIndex(Mid(sLineTrim, Len("#STOP") + 1, 2))) = Val(Mid(sLineTrim, Len("#STOP") + 4)) * 10000
 
             ElseIf sLineTrim.StartsWith("#SCROLL", StringComparison.CurrentCultureIgnoreCase) Then
                 hBMSCROLL(DefinitionIndex(Mid(sLineTrim, Len("#SCROLL") + 1, 2))) = Val(Mid(sLineTrim, Len("#SCROLL") + 4)) * 10000
@@ -240,8 +240,8 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                     .Value = DefinitionIndex(Mid(sLineTrim, xI1, 2)) * 10000
 
                     If Channel = "03" Then .Value = Convert.ToInt32(Mid(sLineTrim, xI1, 2), 16) * 10000
-                    If Channel = "08" Then .Value = hBPM(DefinitionModeIndex(Mid(sLineTrim, xI1, 2), BPMDefinitionMode))
-                    If Channel = "09" Then .Value = hSTOP(DefinitionModeIndex(Mid(sLineTrim, xI1, 2), STOPDefinitionMode))
+                    If Channel = "08" Then .Value = hBPM(DefinitionIndex(Mid(sLineTrim, xI1, 2)))
+                    If Channel = "09" Then .Value = hSTOP(DefinitionIndex(Mid(sLineTrim, xI1, 2)))
                     If Channel = "SC" Then .Value = hBMSCROLL(DefinitionIndex(Mid(sLineTrim, xI1, 2)))
                 End With
 
@@ -350,11 +350,11 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         If hasOverlapping Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
                                                           Strings.Messages.NoteOverlapError & vbCrLf &
                                                 Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
-        If UBound(hBPM) > DefinitionModeMax(BPMDefinitionMode) Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
-                                                          Strings.Messages.BPMOverflowError & UBound(hBPM) & " > " & DefinitionModeMax(BPMDefinitionMode) & vbCrLf &
+        If UBound(hBPM) > DefinitionDisplayMax() Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
+                                                          Strings.Messages.BPMOverflowError & UBound(hBPM) & " > " & DefinitionDisplayMax() & vbCrLf &
                                                 Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
-        If UBound(hSTOP) > DefinitionModeMax(STOPDefinitionMode) Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
-                                                           Strings.Messages.STOPOverflowError & UBound(hSTOP) & " > " & DefinitionModeMax(STOPDefinitionMode) & vbCrLf &
+        If UBound(hSTOP) > DefinitionDisplayMax() Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
+                                                           Strings.Messages.STOPOverflowError & UBound(hSTOP) & " > " & DefinitionDisplayMax() & vbCrLf &
                                                   Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
         If UBound(hBMSCROLL) > MaxDefinition Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
                                            Strings.Messages.SCROLLOverflowError & UBound(hBMSCROLL) & " > " & MaxDefinition & vbCrLf &
@@ -422,12 +422,12 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         Next
         For i = 1 To UBound(hBPM)
             xStrHeader &= "#BPM" &
-            DefinitionModeLabel(i, BPMDefinitionMode) &
+            DefinitionLabel(i) &
             " " & WriteDecimalWithDot(hBPM(i) / 10000) & vbCrLf
         Next
         For i = 1 To UBound(hSTOP)
             xStrHeader &= "#STOP" &
-                DefinitionModeLabel(i, STOPDefinitionMode) &
+                DefinitionLabel(i) &
                 " " & WriteDecimalWithDot(hSTOP(i) / 10000) & vbCrLf
         Next
         For i = 1 To UBound(hBMSCROLL)
@@ -494,7 +494,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                             ReDim Preserve hBPM(UBound(hBPM) + 1)
                             hBPM(UBound(hBPM)) = currentNote.Value
                         End If
-                        NoteStrings(UBound(NoteStrings)) = DefinitionModeLabel(BpmIndex, BPMDefinitionMode)
+                        NoteStrings(UBound(NoteStrings)) = DefinitionLabel(BpmIndex)
                     ElseIf CurrentBMSChannel = "09" Then 'If STOP
                         Dim StopIndex
                         For StopIndex = 1 To UBound(hSTOP) ' find STOP value in existing array
@@ -505,7 +505,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                             ReDim Preserve hSTOP(UBound(hSTOP) + 1)
                             hSTOP(UBound(hSTOP)) = currentNote.Value
                         End If
-                        NoteStrings(UBound(NoteStrings)) = DefinitionModeLabel(StopIndex, STOPDefinitionMode)
+                        NoteStrings(UBound(NoteStrings)) = DefinitionLabel(StopIndex)
                     ElseIf CurrentBMSChannel = "SC" Then 'If SCROLL
                         Dim ScrollIndex
                         For ScrollIndex = 1 To UBound(hBMSCROLL) ' find SCROLL value in existing array
@@ -547,9 +547,9 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                         .Value = DefinitionIndex(NoteStrings(i))
                     End With
                     If BMSChannelList(CurrentBMSChannel) = "08" Then _
-                        xprevNotes(UBound(xprevNotes)).Value = hBPM(DefinitionModeIndex(NoteStrings(i), BPMDefinitionMode))
+                        xprevNotes(UBound(xprevNotes)).Value = hBPM(DefinitionIndex(NoteStrings(i)))
                     If BMSChannelList(CurrentBMSChannel) = "09" Then _
-                        xprevNotes(UBound(xprevNotes)).Value = hSTOP(DefinitionModeIndex(NoteStrings(i), STOPDefinitionMode))
+                        xprevNotes(UBound(xprevNotes)).Value = hSTOP(DefinitionIndex(NoteStrings(i)))
                     If BMSChannelList(CurrentBMSChannel) = "SC" Then _
                         xprevNotes(UBound(xprevNotes)).Value = hBMSCROLL(DefinitionIndex(NoteStrings(i)))
                     Continue For

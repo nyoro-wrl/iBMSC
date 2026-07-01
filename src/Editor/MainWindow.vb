@@ -85,11 +85,6 @@ Public Class MainWindow
     }
 
     Dim BeepWhileSaved As Boolean = True
-    Const DefinitionModeLegacy As Integer = BmsDefinitionLabels.ModeLegacy
-    Const DefinitionModeBase36 As Integer = BmsDefinitionLabels.ModeBase36
-    Const DefinitionModeBase62 As Integer = BmsDefinitionLabels.ModeBase62
-    Dim BPMDefinitionMode As Integer = DefinitionModeLegacy
-    Dim STOPDefinitionMode As Integer = DefinitionModeLegacy
     Dim UseBase62Definitions As Boolean = False
     Dim NewBMSUseBase62Definitions As Boolean = False
 
@@ -2420,9 +2415,16 @@ Public Class MainWindow
         'pttl.Refresh()
         'pIsSaved.Visible = Not xBool
         Dim xVersion As String = FormatVersionText(My.Application.Info.Version)
-        Text = IIf(isSaved, "", "*") & GetFileName(FileName) & " - " & My.Application.Info.Title & " " & xVersion & " (" & CurrentEncodingStatusText() & ")"
+        Text = IIf(isSaved, "", "*") & GetFileName(FileName) & " - " & My.Application.Info.Title & " " & xVersion & CurrentTitleStatusText()
         Me.IsSaved = isSaved
     End Sub
+
+    Private Function CurrentTitleStatusText() As String
+        Dim xText As String = " (" & CurrentEncodingStatusText() & ")"
+        If UseBase62Definitions Then xText &= " (" & Strings.Encoding.Base62 & ")"
+
+        Return xText
+    End Function
 
     Private Function FormatVersionText(ByVal xVersion As Version) As String
         If xVersion Is Nothing Then Return ""
@@ -3461,27 +3463,17 @@ EndSearch:
         Return BmsDefinitionLabels.IsLabel(xLabel, UseBase62Definitions)
     End Function
 
-    Private Function DefinitionModeMax(ByVal xMode As Integer) As Integer
-        Return BmsDefinitionLabels.ModeMax(xMode)
-    End Function
-
-    Private Function DefinitionModeLabel(ByVal xValue As Long, ByVal xMode As Integer) As String
-        Return BmsDefinitionLabels.ModeLabel(xValue, xMode)
-    End Function
-
-    Private Function DefinitionModeIndex(ByVal xLabel As String, ByVal xMode As Integer) As Integer
-        Return BmsDefinitionLabels.ModeIndex(xLabel, xMode)
-    End Function
-
     Private Function ContainsBase62Definitions(ByVal xLines() As String) As Boolean
         Return BmsDefinitionLabels.ContainsBase62Definitions(xLines)
     End Function
 
     Private Sub SetUseBase62Definitions(ByVal xValue As Boolean)
+        Dim xChanged As Boolean = UseBase62Definitions <> xValue
         UseBase62Definitions = xValue
 
         If CWAVBase62.Checked <> xValue Then CWAVBase62.Checked = xValue
         If CBMPBase62.Checked <> xValue Then CBMPBase62.Checked = xValue
+        If xChanged Then SetIsSaved(IsSaved)
     End Sub
 
     Private Sub RefreshDefinitionLists()
@@ -5718,7 +5710,7 @@ StartCount:     If Not NTInput Then
 
     Private Sub mnGOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnGOptions.Click
         Dim xDiag As New OpGeneral(gWheel, gPgUpDn, MiddleButtonMoveMethod, CInt(InputTextEncoding), OutputTextEncodingModeToIndex(OutputTextEncoding), 192.0R / BMSGridLimit,
-            AutoSaveInterval, BeepWhileSaved, NewBMSUseBase62Definitions, BPMDefinitionMode, STOPDefinitionMode,
+            AutoSaveInterval, BeepWhileSaved, NewBMSUseBase62Definitions,
             AutoFocusMouseEnter, FirstClickDisabled, ClickStopPreview, SkipClippedMeasure, LaneHighlight, CInt(CGB.Value), UndoRedoMemoryLimitMB)
 
         If xDiag.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -5733,8 +5725,6 @@ StartCount:     If Not NTInput Then
                 BMSGridLimit = 192.0R / .zGridPartition
                 BeepWhileSaved = .cBeep.Checked
                 NewBMSUseBase62Definitions = .cNewBMSUseBase62.Checked
-                BPMDefinitionMode = .cBpm1296.SelectedIndex
-                STOPDefinitionMode = .cStop1296.SelectedIndex
                 AutoFocusMouseEnter = .cMEnterFocus.Checked
                 FirstClickDisabled = .cMClickFocus.Checked
                 ClickStopPreview = .cMStopPreview.Checked

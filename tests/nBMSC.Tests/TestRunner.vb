@@ -84,15 +84,15 @@ Module TestRunner
         AssertFalse(nBMSC.Editor.BmsDefinitionLabels.IsLabel("0a", False), "base36 rejects lowercase")
         AssertTrue(nBMSC.Editor.BmsDefinitionLabels.IsLabel("0a", True), "base62 accepts lowercase")
 
-        AssertEqual(Functions.MaxLegacyDefinition, nBMSC.Editor.BmsDefinitionLabels.ModeMax(nBMSC.Editor.BmsDefinitionLabels.ModeLegacy), "legacy mode max")
-        AssertEqual("FF", nBMSC.Editor.BmsDefinitionLabels.ModeLabel(255, nBMSC.Editor.BmsDefinitionLabels.ModeLegacy), "legacy mode label")
-        AssertEqual(255, nBMSC.Editor.BmsDefinitionLabels.ModeIndex("FF", nBMSC.Editor.BmsDefinitionLabels.ModeLegacy), "legacy mode index")
-        AssertEqual("zz", nBMSC.Editor.BmsDefinitionLabels.ModeLabel(Functions.MaxDefinition, nBMSC.Editor.BmsDefinitionLabels.ModeBase62), "base62 mode label")
-
         AssertFalse(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#WAV0A sound.wav", "#00111:000A"}), "uppercase labels are base36-compatible")
         AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#WAV0a sound.wav"}), "lowercase definition label requires base62")
+        AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#BPM0a 120"}), "lowercase BPM definition requires base62")
+        AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#STOP0a 192"}), "lowercase STOP definition requires base62")
+        AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#SCROLL0a 1"}), "lowercase SCROLL definition requires base62")
         AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#LNOBJ 0a"}), "lowercase LNOBJ requires base62")
         AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#00111:000a"}), "lowercase note label requires base62")
+        AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#00108:000a"}), "lowercase BPM note label requires base62")
+        AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#00109:000a"}), "lowercase STOP note label requires base62")
         AssertFalse(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#00103:000a"}), "BPM hex channel should not force base62")
     End Sub
 

@@ -36,10 +36,6 @@ Partial Class OpGeneral
         Me.cBeep = New System.Windows.Forms.CheckBox()
         Me.cNewBMSUseBase62 = New System.Windows.Forms.CheckBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.LabelBPMDefinitionMode = New System.Windows.Forms.Label()
-        Me.cBpm1296 = New System.Windows.Forms.ComboBox()
-        Me.LabelSTOPDefinitionMode = New System.Windows.Forms.Label()
-        Me.cStop1296 = New System.Windows.Forms.ComboBox()
         Me.cMEnterFocus = New System.Windows.Forms.CheckBox()
         Me.cMClickFocus = New System.Windows.Forms.CheckBox()
         Me.TBAssociatePMS = New System.Windows.Forms.Button()
@@ -85,7 +81,7 @@ Partial Class OpGeneral
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(229, 647)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(229, 591)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -116,7 +112,7 @@ Partial Class OpGeneral
         Me.CWheel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CWheel.FormattingEnabled = True
         Me.CWheel.Items.AddRange(New Object() {"1", "1 / 2", "1 / 3", "1 / 4"})
-        Me.CWheel.Location = New System.Drawing.Point(154, 336)
+        Me.CWheel.Location = New System.Drawing.Point(154, 280)
         Me.CWheel.Name = "CWheel"
         Me.CWheel.Size = New System.Drawing.Size(237, 23)
         Me.CWheel.TabIndex = 11
@@ -143,7 +139,7 @@ Partial Class OpGeneral
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(12, 338)
+        Me.Label1.Location = New System.Drawing.Point(12, 282)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(136, 17)
         Me.Label1.TabIndex = 40
@@ -211,54 +207,16 @@ Partial Class OpGeneral
         'PictureBox1
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.PictureBox1.Location = New System.Drawing.Point(20, 320)
+        Me.PictureBox1.Location = New System.Drawing.Point(20, 264)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(375, 1)
         Me.PictureBox1.TabIndex = 47
         Me.PictureBox1.TabStop = False
         '
-        'LabelBPMDefinitionMode
-        '
-        Me.LabelBPMDefinitionMode.Location = New System.Drawing.Point(12, 258)
-        Me.LabelBPMDefinitionMode.Name = "LabelBPMDefinitionMode"
-        Me.LabelBPMDefinitionMode.Size = New System.Drawing.Size(136, 17)
-        Me.LabelBPMDefinitionMode.TabIndex = 67
-        Me.LabelBPMDefinitionMode.Text = "BPM definitions"
-        Me.LabelBPMDefinitionMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cBpm1296
-        '
-        Me.cBpm1296.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cBpm1296.FormattingEnabled = True
-        Me.cBpm1296.Items.AddRange(New Object() {"Default (01-FF)", "36 base (01-ZZ)", "62 base (01-zz)"})
-        Me.cBpm1296.Location = New System.Drawing.Point(154, 255)
-        Me.cBpm1296.Name = "cBpm1296"
-        Me.cBpm1296.Size = New System.Drawing.Size(237, 23)
-        Me.cBpm1296.TabIndex = 10
-        '
-        'LabelSTOPDefinitionMode
-        '
-        Me.LabelSTOPDefinitionMode.Location = New System.Drawing.Point(12, 286)
-        Me.LabelSTOPDefinitionMode.Name = "LabelSTOPDefinitionMode"
-        Me.LabelSTOPDefinitionMode.Size = New System.Drawing.Size(136, 17)
-        Me.LabelSTOPDefinitionMode.TabIndex = 68
-        Me.LabelSTOPDefinitionMode.Text = "STOP definitions"
-        Me.LabelSTOPDefinitionMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cStop1296
-        '
-        Me.cStop1296.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cStop1296.FormattingEnabled = True
-        Me.cStop1296.Items.AddRange(New Object() {"Default (01-FF)", "36 base (01-ZZ)", "62 base (01-zz)"})
-        Me.cStop1296.Location = New System.Drawing.Point(154, 283)
-        Me.cStop1296.Name = "cStop1296"
-        Me.cStop1296.Size = New System.Drawing.Size(237, 23)
-        Me.cStop1296.TabIndex = 11
-        '
         'cMEnterFocus
         '
         Me.cMEnterFocus.AutoSize = True
-        Me.cMEnterFocus.Location = New System.Drawing.Point(34, 446)
+        Me.cMEnterFocus.Location = New System.Drawing.Point(34, 390)
         Me.cMEnterFocus.Name = "cMEnterFocus"
         Me.cMEnterFocus.Size = New System.Drawing.Size(322, 19)
         Me.cMEnterFocus.TabIndex = 14
@@ -268,7 +226,7 @@ Partial Class OpGeneral
         'cMClickFocus
         '
         Me.cMClickFocus.AutoSize = True
-        Me.cMClickFocus.Location = New System.Drawing.Point(34, 471)
+        Me.cMClickFocus.Location = New System.Drawing.Point(34, 415)
         Me.cMClickFocus.Name = "cMClickFocus"
         Me.cMClickFocus.Size = New System.Drawing.Size(293, 19)
         Me.cMClickFocus.TabIndex = 15
@@ -295,7 +253,7 @@ Partial Class OpGeneral
         '
         'Label5
         '
-        Me.Label5.Location = New System.Drawing.Point(12, 367)
+        Me.Label5.Location = New System.Drawing.Point(12, 311)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(136, 17)
         Me.Label5.TabIndex = 56
@@ -307,7 +265,7 @@ Partial Class OpGeneral
         Me.CPgUpDn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CPgUpDn.FormattingEnabled = True
         Me.CPgUpDn.Items.AddRange(New Object() {"8", "6", "4", "3", "2", "1", "1 / 2"})
-        Me.CPgUpDn.Location = New System.Drawing.Point(154, 365)
+        Me.CPgUpDn.Location = New System.Drawing.Point(154, 309)
         Me.CPgUpDn.Name = "CPgUpDn"
         Me.CPgUpDn.Size = New System.Drawing.Size(237, 23)
         Me.CPgUpDn.TabIndex = 12
@@ -349,7 +307,7 @@ Partial Class OpGeneral
         Me.cMStopPreview.AutoSize = True
         Me.cMStopPreview.Checked = True
         Me.cMStopPreview.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.cMStopPreview.Location = New System.Drawing.Point(34, 496)
+        Me.cMStopPreview.Location = New System.Drawing.Point(34, 440)
         Me.cMStopPreview.Name = "cMStopPreview"
         Me.cMStopPreview.Size = New System.Drawing.Size(253, 19)
         Me.cMStopPreview.TabIndex = 60
@@ -359,7 +317,7 @@ Partial Class OpGeneral
         'cSkipClippedMeasure
         '
         Me.cSkipClippedMeasure.AutoSize = True
-        Me.cSkipClippedMeasure.Location = New System.Drawing.Point(34, 521)
+        Me.cSkipClippedMeasure.Location = New System.Drawing.Point(34, 465)
         Me.cSkipClippedMeasure.Name = "cSkipClippedMeasure"
         Me.cSkipClippedMeasure.Size = New System.Drawing.Size(319, 19)
         Me.cSkipClippedMeasure.TabIndex = 69
@@ -368,7 +326,7 @@ Partial Class OpGeneral
         '
         'nLaneHighlight
         '
-        Me.nLaneHighlight.Location = New System.Drawing.Point(219, 546)
+        Me.nLaneHighlight.Location = New System.Drawing.Point(219, 490)
         Me.nLaneHighlight.Maximum = New Decimal(New Integer() {100, 0, 0, 0})
         Me.nLaneHighlight.Name = "nLaneHighlight"
         Me.nLaneHighlight.Size = New System.Drawing.Size(62, 23)
@@ -376,7 +334,7 @@ Partial Class OpGeneral
         '
         'LabelLaneHighlight
         '
-        Me.LabelLaneHighlight.Location = New System.Drawing.Point(34, 548)
+        Me.LabelLaneHighlight.Location = New System.Drawing.Point(34, 492)
         Me.LabelLaneHighlight.Name = "LabelLaneHighlight"
         Me.LabelLaneHighlight.Size = New System.Drawing.Size(179, 17)
         Me.LabelLaneHighlight.TabIndex = 71
@@ -385,7 +343,7 @@ Partial Class OpGeneral
         '
         'LabelLaneHighlightPercent
         '
-        Me.LabelLaneHighlightPercent.Location = New System.Drawing.Point(287, 548)
+        Me.LabelLaneHighlightPercent.Location = New System.Drawing.Point(287, 492)
         Me.LabelLaneHighlightPercent.Name = "LabelLaneHighlightPercent"
         Me.LabelLaneHighlightPercent.Size = New System.Drawing.Size(28, 17)
         Me.LabelLaneHighlightPercent.TabIndex = 72
@@ -394,7 +352,7 @@ Partial Class OpGeneral
         '
         'nBgmLaneCount
         '
-        Me.nBgmLaneCount.Location = New System.Drawing.Point(219, 575)
+        Me.nBgmLaneCount.Location = New System.Drawing.Point(219, 519)
         Me.nBgmLaneCount.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
         Me.nBgmLaneCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.nBgmLaneCount.Name = "nBgmLaneCount"
@@ -404,7 +362,7 @@ Partial Class OpGeneral
         '
         'LabelBgmLaneCount
         '
-        Me.LabelBgmLaneCount.Location = New System.Drawing.Point(34, 577)
+        Me.LabelBgmLaneCount.Location = New System.Drawing.Point(34, 521)
         Me.LabelBgmLaneCount.Name = "LabelBgmLaneCount"
         Me.LabelBgmLaneCount.Size = New System.Drawing.Size(179, 17)
         Me.LabelBgmLaneCount.TabIndex = 74
@@ -413,7 +371,7 @@ Partial Class OpGeneral
         '
         'nUndoRedoMemoryLimit
         '
-        Me.nUndoRedoMemoryLimit.Location = New System.Drawing.Point(219, 606)
+        Me.nUndoRedoMemoryLimit.Location = New System.Drawing.Point(219, 550)
         Me.nUndoRedoMemoryLimit.Maximum = New Decimal(New Integer() {1024, 0, 0, 0})
         Me.nUndoRedoMemoryLimit.Minimum = New Decimal(New Integer() {16, 0, 0, 0})
         Me.nUndoRedoMemoryLimit.Name = "nUndoRedoMemoryLimit"
@@ -423,7 +381,7 @@ Partial Class OpGeneral
         '
         'LabelUndoRedoMemoryLimit
         '
-        Me.LabelUndoRedoMemoryLimit.Location = New System.Drawing.Point(34, 608)
+        Me.LabelUndoRedoMemoryLimit.Location = New System.Drawing.Point(34, 552)
         Me.LabelUndoRedoMemoryLimit.Name = "LabelUndoRedoMemoryLimit"
         Me.LabelUndoRedoMemoryLimit.Size = New System.Drawing.Size(179, 17)
         Me.LabelUndoRedoMemoryLimit.TabIndex = 76
@@ -432,7 +390,7 @@ Partial Class OpGeneral
         '
         'LabelUndoRedoMemoryLimitMB
         '
-        Me.LabelUndoRedoMemoryLimitMB.Location = New System.Drawing.Point(287, 608)
+        Me.LabelUndoRedoMemoryLimitMB.Location = New System.Drawing.Point(287, 552)
         Me.LabelUndoRedoMemoryLimitMB.Name = "LabelUndoRedoMemoryLimitMB"
         Me.LabelUndoRedoMemoryLimitMB.Size = New System.Drawing.Size(28, 17)
         Me.LabelUndoRedoMemoryLimitMB.TabIndex = 77
@@ -478,7 +436,7 @@ Partial Class OpGeneral
         '
         'Label3
         '
-        Me.Label3.Location = New System.Drawing.Point(12, 395)
+        Me.Label3.Location = New System.Drawing.Point(12, 339)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(136, 17)
         Me.Label3.TabIndex = 65
@@ -492,7 +450,7 @@ Partial Class OpGeneral
         Me.FlowLayoutPanel1.Controls.Add(Me.rMiddleAuto)
         Me.FlowLayoutPanel1.Controls.Add(Me.rMiddleDrag)
         Me.FlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(154, 394)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(154, 338)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(141, 38)
         Me.FlowLayoutPanel1.TabIndex = 66
@@ -527,7 +485,7 @@ Partial Class OpGeneral
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(413, 694)
+        Me.ClientSize = New System.Drawing.Size(413, 638)
         Me.Controls.Add(Me.LabelUndoRedoMemoryLimitMB)
         Me.Controls.Add(Me.LabelUndoRedoMemoryLimit)
         Me.Controls.Add(Me.nUndoRedoMemoryLimit)
@@ -553,10 +511,6 @@ Partial Class OpGeneral
         Me.Controls.Add(Me.TBAssociatePMS)
         Me.Controls.Add(Me.cMClickFocus)
         Me.Controls.Add(Me.cMEnterFocus)
-        Me.Controls.Add(Me.cStop1296)
-        Me.Controls.Add(Me.LabelSTOPDefinitionMode)
-        Me.Controls.Add(Me.cBpm1296)
-        Me.Controls.Add(Me.LabelBPMDefinitionMode)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.cNewBMSUseBase62)
         Me.Controls.Add(Me.cBeep)
@@ -604,10 +558,6 @@ Partial Class OpGeneral
     Friend WithEvents cBeep As System.Windows.Forms.CheckBox
     Friend WithEvents cNewBMSUseBase62 As System.Windows.Forms.CheckBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents LabelBPMDefinitionMode As System.Windows.Forms.Label
-    Friend WithEvents cBpm1296 As System.Windows.Forms.ComboBox
-    Friend WithEvents LabelSTOPDefinitionMode As System.Windows.Forms.Label
-    Friend WithEvents cStop1296 As System.Windows.Forms.ComboBox
     Friend WithEvents cMEnterFocus As System.Windows.Forms.CheckBox
     Friend WithEvents cMClickFocus As System.Windows.Forms.CheckBox
     Friend WithEvents TBAssociatePMS As System.Windows.Forms.Button

@@ -2,10 +2,6 @@ Option Strict On
 
 Namespace Editor
     Public NotInheritable Class BmsDefinitionLabels
-        Public Const ModeLegacy As Integer = 0
-        Public Const ModeBase36 As Integer = 1
-        Public Const ModeBase62 As Integer = 2
-
         Private Sub New()
         End Sub
 
@@ -37,39 +33,6 @@ Namespace Editor
             Return Functions.IsBase36(labelText)
         End Function
 
-        Public Shared Function ModeMax(ByVal mode As Integer) As Integer
-            Select Case mode
-                Case ModeBase62
-                    Return Functions.MaxDefinition
-                Case ModeBase36
-                    Return Functions.MaxBase36Definition
-            End Select
-
-            Return Functions.MaxLegacyDefinition
-        End Function
-
-        Public Shared Function ModeLabel(ByVal value As Long, ByVal mode As Integer) As String
-            Select Case mode
-                Case ModeBase62
-                    Return Functions.C10to36(value)
-                Case ModeBase36
-                    Return Functions.C10toBase36(value)
-            End Select
-
-            Return Mid("0" & Hex(value), Len(Hex(value)))
-        End Function
-
-        Public Shared Function ModeIndex(ByVal labelText As String, ByVal mode As Integer) As Integer
-            Select Case mode
-                Case ModeBase62
-                    Return Functions.C36to10(labelText)
-                Case ModeBase36
-                    Return Functions.CBase36to10(labelText)
-            End Select
-
-            Return Convert.ToInt32(labelText, 16)
-        End Function
-
         Public Shared Function ContainsBase62Definition(ByVal labelText As String) As Boolean
             For Each value As Char In labelText
                 If value >= "a"c AndAlso value <= "z"c Then Return True
@@ -87,7 +50,10 @@ Namespace Editor
                    trimmedLine.StartsWith("#BPM", StringComparison.CurrentCultureIgnoreCase) OrElse
                    trimmedLine.StartsWith("#STOP", StringComparison.CurrentCultureIgnoreCase) OrElse
                    trimmedLine.StartsWith("#SCROLL", StringComparison.CurrentCultureIgnoreCase) Then
-                    If ContainsBase62Definition(Mid(trimmedLine, 5, 2)) Then Return True
+                    Dim labelStart As Integer = 5
+                    If trimmedLine.StartsWith("#STOP", StringComparison.CurrentCultureIgnoreCase) Then labelStart = Len("#STOP") + 1
+                    If trimmedLine.StartsWith("#SCROLL", StringComparison.CurrentCultureIgnoreCase) Then labelStart = Len("#SCROLL") + 1
+                    If ContainsBase62Definition(Mid(trimmedLine, labelStart, 2)) Then Return True
 
                 ElseIf trimmedLine.StartsWith("#LNOBJ", StringComparison.CurrentCultureIgnoreCase) Then
                     If ContainsBase62Definition(Mid(trimmedLine, Len("#LNOBJ") + 1).Trim()) Then Return True

@@ -24,6 +24,9 @@
   <data name="Encoding.SystemDefault" xml:space="preserve">
     <value>시스템 기본값</value>
   </data>
+  <data name="Encoding.Base62" xml:space="preserve">
+    <value>62진수</value>
+  </data>
   <data name="FileAssociation.BME" xml:space="preserve">
     <value>Be-Music Extended Format</value>
   </data>
@@ -213,20 +216,8 @@
   <data name="GeneralOptions.BeepWhileSaved" xml:space="preserve">
     <value>저장할 때 효과음 출력</value>
   </data>
-  <data name="GeneralOptions.BPMDefinitionMode" xml:space="preserve">
-    <value>BPM 정의 수</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeBase36" xml:space="preserve">
-    <value>36진수（01～ZZ）</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeBase62" xml:space="preserve">
-    <value>62진수（01～zz）</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeDefault" xml:space="preserve">
-    <value>기본（01～FF）</value>
-  </data>
   <data name="GeneralOptions.DisableFirstClick" xml:space="preserve">
-    <value>포커스가 없으면 클릭을 비활성화 합니다.</value>
+    <value>포커스가 없으면 클릭을 비활성화 합니다</value>
   </data>
   <data name="GeneralOptions.InputTextEncoding" xml:space="preserve">
     <value>읽기 문자코드</value>
@@ -266,9 +257,6 @@
   </data>
   <data name="GeneralOptions.SkipClippedMeasure" xml:space="preserve">
     <value>잘려 보이는 마디를 건너뛰고 다음 마디부터 재생</value>
-  </data>
-  <data name="GeneralOptions.STOPDefinitionMode" xml:space="preserve">
-    <value>STOP 정의 수</value>
   </data>
   <data name="GeneralOptions.StopPreviewOnClick" xml:space="preserve">
     <value>편집 패널을 클릭하면 미리보기를 중지</value>

@@ -6,7 +6,6 @@ Namespace Editor
         Public Const LastDefinitionListIndex As Integer = MaxDefinition - 1
         Public Const MaxBase36Definition As Integer = 1295
         Public Const LastBase36DefinitionListIndex As Integer = MaxBase36Definition - 1
-        Public Const MaxLegacyDefinition As Integer = 255
 
         Private Const DefinitionRadix As Integer = 62
         Private Const ChannelRadix As Integer = 36

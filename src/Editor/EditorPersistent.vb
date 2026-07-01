@@ -402,8 +402,6 @@ Partial Public Class MainWindow
             .WriteAttributeString("BMSGridLimit", BMSGridLimit)
             .WriteAttributeString("BeepWhileSaved", BeepWhileSaved)
             .WriteAttributeString("NewBMSUseBase62Definitions", NewBMSUseBase62Definitions)
-            .WriteAttributeString("BPMDefinitionMode", BPMDefinitionMode)
-            .WriteAttributeString("STOPDefinitionMode", STOPDefinitionMode)
             .WriteEndElement()
 
             .WriteStartElement("Update")
@@ -897,22 +895,6 @@ Partial Public Class MainWindow
                 XMLLoadAttribute(.GetAttribute("BMSGridLimit"), BMSGridLimit)
                 XMLLoadAttribute(.GetAttribute("BeepWhileSaved"), BeepWhileSaved)
                 XMLLoadAttribute(.GetAttribute("NewBMSUseBase62Definitions"), NewBMSUseBase62Definitions)
-
-                If .GetAttribute("BPMDefinitionMode").Length > 0 Then
-                    XMLLoadAttribute(.GetAttribute("BPMDefinitionMode"), BPMDefinitionMode)
-                Else
-                    Dim xBPMx As Boolean = False
-                    XMLLoadAttribute(.GetAttribute("BPMx1296"), xBPMx)
-                    If xBPMx Then BPMDefinitionMode = DefinitionModeBase36
-                End If
-
-                If .GetAttribute("STOPDefinitionMode").Length > 0 Then
-                    XMLLoadAttribute(.GetAttribute("STOPDefinitionMode"), STOPDefinitionMode)
-                Else
-                    Dim xSTOPx As Boolean = False
-                    XMLLoadAttribute(.GetAttribute("STOPx1296"), xSTOPx)
-                    If xSTOPx Then STOPDefinitionMode = DefinitionModeBase36
-                End If
             End With
         End If
 

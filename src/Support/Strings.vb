@@ -837,31 +837,6 @@ Public Class Strings
                 Return Strings.Get("GeneralOptions.NewBMSUseBase62")
             End Get
         End Property
-        Public Shared ReadOnly Property BPMDefinitionMode As String
-            Get
-                Return Strings.Get("GeneralOptions.BPMDefinitionMode")
-            End Get
-        End Property
-        Public Shared ReadOnly Property STOPDefinitionMode As String
-            Get
-                Return Strings.Get("GeneralOptions.STOPDefinitionMode")
-            End Get
-        End Property
-        Public Shared ReadOnly Property DefinitionModeDefault As String
-            Get
-                Return Strings.Get("GeneralOptions.DefinitionModeDefault")
-            End Get
-        End Property
-        Public Shared ReadOnly Property DefinitionModeBase36 As String
-            Get
-                Return Strings.Get("GeneralOptions.DefinitionModeBase36")
-            End Get
-        End Property
-        Public Shared ReadOnly Property DefinitionModeBase62 As String
-            Get
-                Return Strings.Get("GeneralOptions.DefinitionModeBase62")
-            End Get
-        End Property
         Public Shared ReadOnly Property AutoFocusOnMouseEnter As String
             Get
                 Return Strings.Get("GeneralOptions.AutoFocusOnMouseEnter")
@@ -918,6 +893,11 @@ Public Class Strings
         Public Shared ReadOnly Property SystemDefault As String
             Get
                 Return Strings.Get("Encoding.SystemDefault")
+            End Get
+        End Property
+        Public Shared ReadOnly Property Base62 As String
+            Get
+                Return Strings.Get("Encoding.Base62")
             End Get
         End Property
         Public Shared ReadOnly Property ReloadWithEncoding As String

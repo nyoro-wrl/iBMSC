@@ -24,6 +24,9 @@
   <data name="Encoding.SystemDefault" xml:space="preserve">
     <value>System Default</value>
   </data>
+  <data name="Encoding.Base62" xml:space="preserve">
+    <value>Base62</value>
+  </data>
   <data name="FileAssociation.BME" xml:space="preserve">
     <value>Be-Music Extended Format</value>
   </data>
@@ -219,18 +222,6 @@
   <data name="GeneralOptions.BeepWhileSaved" xml:space="preserve">
     <value>Beep while saved</value>
   </data>
-  <data name="GeneralOptions.BPMDefinitionMode" xml:space="preserve">
-    <value>BPM definitions</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeBase36" xml:space="preserve">
-    <value>36 base (01-ZZ)</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeBase62" xml:space="preserve">
-    <value>62 base (01-zz)</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeDefault" xml:space="preserve">
-    <value>Default (01-FF)</value>
-  </data>
   <data name="GeneralOptions.DisableFirstClick" xml:space="preserve">
     <value>Disable first click if the editing panel is not focused</value>
   </data>
@@ -272,9 +263,6 @@
   </data>
   <data name="GeneralOptions.SkipClippedMeasure" xml:space="preserve">
     <value>Skip clipped measure and play from next measure</value>
-  </data>
-  <data name="GeneralOptions.STOPDefinitionMode" xml:space="preserve">
-    <value>STOP definitions</value>
   </data>
   <data name="GeneralOptions.StopPreviewOnClick" xml:space="preserve">
     <value>Stop preview if clicked on the editing panel</value>

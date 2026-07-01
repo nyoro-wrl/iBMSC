@@ -24,6 +24,9 @@
   <data name="Encoding.SystemDefault" xml:space="preserve">
     <value>系统默认</value>
   </data>
+  <data name="Encoding.Base62" xml:space="preserve">
+    <value>62 进制</value>
+  </data>
   <data name="FileAssociation.BME" xml:space="preserve">
     <value>BME 谱面文件</value>
   </data>
@@ -180,18 +183,6 @@
   <data name="GeneralOptions.BeepWhileSaved" xml:space="preserve">
     <value>保存后播放提示音</value>
   </data>
-  <data name="GeneralOptions.BPMDefinitionMode" xml:space="preserve">
-    <value>BPM 定义数</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeBase36" xml:space="preserve">
-    <value>36 进制（01～ZZ）</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeBase62" xml:space="preserve">
-    <value>62 进制（01～zz）</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeDefault" xml:space="preserve">
-    <value>默认（01～FF）</value>
-  </data>
   <data name="GeneralOptions.DisableFirstClick" xml:space="preserve">
     <value>编辑区域无焦点时首次单击无操作</value>
   </data>
@@ -233,9 +224,6 @@
   </data>
   <data name="GeneralOptions.SkipClippedMeasure" xml:space="preserve">
     <value>跳过显示不完整的小节，从下一小节开始播放</value>
-  </data>
-  <data name="GeneralOptions.STOPDefinitionMode" xml:space="preserve">
-    <value>STOP 定义数</value>
   </data>
   <data name="GeneralOptions.StopPreviewOnClick" xml:space="preserve">
     <value>鼠标单击编辑区域时停止播放预览</value>

@@ -24,6 +24,9 @@
   <data name="Encoding.SystemDefault" xml:space="preserve">
     <value>System ANSI</value>
   </data>
+  <data name="Encoding.Base62" xml:space="preserve">
+    <value>62進数</value>
+  </data>
   <data name="FileAssociation.BME" xml:space="preserve">
     <value>Be-Music Extended Format</value>
   </data>
@@ -208,28 +211,16 @@
     <value>関連づける拡張子</value>
   </data>
   <data name="GeneralOptions.AutoFocusOnMouseEnter" xml:space="preserve">
-    <value>マウスがエディットパネルに入ると自動でフォーカス。</value>
+    <value>マウスがエディットパネルに入ると自動でフォーカス</value>
   </data>
   <data name="GeneralOptions.AutoSave" xml:space="preserve">
     <value>自動保存</value>
   </data>
   <data name="GeneralOptions.BeepWhileSaved" xml:space="preserve">
-    <value>保存時に音を鳴らす。</value>
-  </data>
-  <data name="GeneralOptions.BPMDefinitionMode" xml:space="preserve">
-    <value>拡張BPMの最大使用数</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeBase36" xml:space="preserve">
-    <value>36進数（01～ZZ）</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeBase62" xml:space="preserve">
-    <value>62進数（01～zz）</value>
-  </data>
-  <data name="GeneralOptions.DefinitionModeDefault" xml:space="preserve">
-    <value>標準（01～FF）</value>
+    <value>保存時に音を鳴らす</value>
   </data>
   <data name="GeneralOptions.DisableFirstClick" xml:space="preserve">
-    <value>エディットパネルがフォーカスされていない場合、1クリック目を無効化。</value>
+    <value>エディットパネルがフォーカスされていない場合、1クリック目を無効化</value>
   </data>
   <data name="GeneralOptions.InputTextEncoding" xml:space="preserve">
     <value>読み込み文字コード</value>
@@ -269,9 +260,6 @@
   </data>
   <data name="GeneralOptions.SkipClippedMeasure" xml:space="preserve">
     <value>見切れている小節を飛ばして次の小節から再生する</value>
-  </data>
-  <data name="GeneralOptions.STOPDefinitionMode" xml:space="preserve">
-    <value>STOPの最大使用数</value>
   </data>
   <data name="GeneralOptions.StopPreviewOnClick" xml:space="preserve">
     <value>エディットパネル上をクリックするとプレビュー再生をストップ</value>
