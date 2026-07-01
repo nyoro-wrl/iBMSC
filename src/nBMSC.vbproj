@@ -186,6 +186,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Core\Utilities.vb" />
+    <Compile Include="Core\ChartMode.vb" />
     <Compile Include="Core\ChartCalculations.vb" />
     <Compile Include="Options\Note.vb" />
     <Compile Include="Options\ColumnOptionView.Designer.vb">
@@ -224,6 +225,9 @@
       <DependentUpon>OpPlayer.vb</DependentUpon>
     </Compile>
     <Compile Include="Options\OpPlayer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Options\OpTheme.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Options\OpVisual.designer.vb">

@@ -314,24 +314,68 @@ Partial Public Class MainWindow
         w.WriteEndElement()
     End Sub
 
-    Private Function DefaultThemePath() As String
-        Return IO.Path.Combine(My.Application.Info.DirectoryPath, "Theme\7key.xml")
+    Private Function BuiltInThemePath(ByVal mode As ChartMode) As String
+        Return IO.Path.Combine(My.Application.Info.DirectoryPath, "Theme\" & ChartModes.ThemeFileName(mode))
     End Function
 
-    Private Function ResolveThemePath(ByVal filePath As String) As String
-        If filePath = "" Then Return DefaultThemePath()
+    Private Function DefaultThemePath() As String
+        Return DefaultThemePath(CurrentModeName)
+    End Function
+
+    Private Function DefaultThemePath(ByVal mode As ChartMode) As String
+        Return DefaultThemePath(ChartModes.DisplayName(mode))
+    End Function
+
+    Private Function DefaultThemePath(ByVal modeName As String) As String
+        Dim xBuiltInMode As ChartMode = ChartModes.Parse(modeName, ChartMode.Key7)
+        If IsBuiltInModeName(modeName) Then Return DefaultBuiltInThemePath(xBuiltInMode)
+
+        For Each xMode As ThemeModeSetting In CustomThemeModes
+            If SameModeName(xMode.ModeName, modeName) AndAlso xMode.ThemePath <> "" Then
+                Dim xResolvedThemePath As String = ResolveThemePath(xMode.ThemePath, DefaultBuiltInThemePath(ChartMode.Key7))
+                If My.Computer.FileSystem.FileExists(xResolvedThemePath) Then Return xResolvedThemePath
+            End If
+        Next
+
+        Return DefaultBuiltInThemePath(ChartMode.Key7)
+    End Function
+
+    Private Function DefaultBuiltInThemePath(ByVal mode As ChartMode) As String
+        Dim xIndex As Integer = ChartModes.IndexOf(mode)
+        Dim xThemePath As String = ""
+        If xIndex >= 0 AndAlso xIndex < ModeDefaultThemePaths.Length Then xThemePath = ModeDefaultThemePaths(xIndex)
+        Dim xBuiltInThemePath As String = BuiltInThemePath(mode)
+        If xThemePath <> "" Then
+            Dim xResolvedThemePath As String = ResolveThemePath(xThemePath, xBuiltInThemePath)
+            If My.Computer.FileSystem.FileExists(xResolvedThemePath) Then Return xResolvedThemePath
+        End If
+
+        Return xBuiltInThemePath
+    End Function
+
+    Private Function ResolveThemePath(ByVal filePath As String, Optional ByVal fallbackPath As String = "") As String
+        If filePath = "" Then
+            If fallbackPath <> "" Then Return fallbackPath
+            Return DefaultThemePath()
+        End If
         If IO.Path.IsPathRooted(filePath) Then Return filePath
         Return IO.Path.Combine(My.Application.Info.DirectoryPath, filePath)
     End Function
 
-    Private Function ThemePathForSettings() As String
-        Dim xThemePath As String = If(CurrentThemePath = "", DefaultThemePath(), CurrentThemePath)
+    Private Function ThemePathForSettings(ByVal filePath As String) As String
+        If filePath = "" Then Return ""
+
         Dim xBasePath As String = My.Application.Info.DirectoryPath.TrimEnd("\"c)
-        Dim xFullPath As String = IO.Path.GetFullPath(xThemePath)
+        Dim xFullPath As String = IO.Path.GetFullPath(ResolveThemePath(filePath))
         If xFullPath.StartsWith(xBasePath & "\", StringComparison.OrdinalIgnoreCase) Then
             Return xFullPath.Substring(xBasePath.Length + 1)
         End If
         Return xFullPath
+    End Function
+
+    Private Function CurrentThemePathForSettings() As String
+        Dim xThemePath As String = If(CurrentThemePath = "", DefaultThemePath(), CurrentThemePath)
+        Return ThemePathForSettings(xThemePath)
     End Function
 
     Private Function LoadThemeOrDefault(ByVal filePath As String) As Boolean
@@ -471,7 +515,20 @@ Partial Public Class MainWindow
             .WriteEndElement()
 
             .WriteStartElement("Theme")
-            .WriteAttributeString("Path", ThemePathForSettings())
+            .WriteAttributeString("Path", CurrentThemePathForSettings())
+            .WriteAttributeString("Mode", CurrentModeName)
+            .WriteAttributeString("AutoSelect", ThemeAutoSelect.ToString())
+            .WriteAttributeString("Default7Key", ThemePathForSettings(ModeDefaultThemePaths(ChartModes.IndexOf(ChartMode.Key7))))
+            .WriteAttributeString("Default5Key", ThemePathForSettings(ModeDefaultThemePaths(ChartModes.IndexOf(ChartMode.Key5))))
+            .WriteAttributeString("Default9Key", ThemePathForSettings(ModeDefaultThemePaths(ChartModes.IndexOf(ChartMode.Key9))))
+            .WriteAttributeString("Default24Key", ThemePathForSettings(ModeDefaultThemePaths(ChartModes.IndexOf(ChartMode.Key24))))
+            For Each xMode As ThemeModeSetting In CustomThemeModes
+                If xMode.ModeName = "" OrElse xMode.ThemePath = "" Then Continue For
+                .WriteStartElement("ModeTheme")
+                .WriteAttributeString("Mode", xMode.ModeName)
+                .WriteAttributeString("Path", ThemePathForSettings(xMode.ThemePath))
+                .WriteEndElement()
+            Next
             .WriteEndElement()
 
             .WriteEndElement()
@@ -779,7 +836,7 @@ Partial Public Class MainWindow
         Dim Doc As New XmlDocument
         Dim FileStream As New IO.FileStream(Path, FileMode.Open, FileAccess.Read)
         Doc.Load(FileStream)
-        Dim xThemePath As String = DefaultThemePath()
+        Dim xThemePath As String = ""
 
         Dim Root As XmlElement = Doc.Item("iBMSC")
         If Root Is Nothing Then GoTo EndOfSub
@@ -1004,7 +1061,22 @@ Partial Public Class MainWindow
         End If
 
         Dim eTheme As XmlElement = Root.Item("Theme")
-        If eTheme IsNot Nothing AndAlso eTheme.HasAttribute("Path") Then xThemePath = eTheme.GetAttribute("Path")
+        If eTheme IsNot Nothing Then
+            If eTheme.HasAttribute("Default7Key") Then ModeDefaultThemePaths(ChartModes.IndexOf(ChartMode.Key7)) = eTheme.GetAttribute("Default7Key")
+            If eTheme.HasAttribute("Default5Key") Then ModeDefaultThemePaths(ChartModes.IndexOf(ChartMode.Key5)) = eTheme.GetAttribute("Default5Key")
+            If eTheme.HasAttribute("Default9Key") Then ModeDefaultThemePaths(ChartModes.IndexOf(ChartMode.Key9)) = eTheme.GetAttribute("Default9Key")
+            If eTheme.HasAttribute("Default24Key") Then ModeDefaultThemePaths(ChartModes.IndexOf(ChartMode.Key24)) = eTheme.GetAttribute("Default24Key")
+            If eTheme.HasAttribute("AutoSelect") Then XMLLoadAttribute(eTheme.GetAttribute("AutoSelect"), ThemeAutoSelect)
+            CustomThemeModes.Clear()
+            For Each eMode As XmlElement In eTheme.GetElementsByTagName("ModeTheme")
+                Dim xModeName As String = eMode.GetAttribute("Mode").Trim()
+                Dim xModeThemePath As String = eMode.GetAttribute("Path")
+                If xModeName = "" OrElse xModeThemePath = "" OrElse IsBuiltInModeName(xModeName) Then Continue For
+                CustomThemeModes.Add(New ThemeModeSetting(xModeName, xModeThemePath))
+            Next
+            If eTheme.HasAttribute("Mode") Then SetChartMode(eTheme.GetAttribute("Mode"), False)
+            If eTheme.HasAttribute("Path") Then xThemePath = eTheme.GetAttribute("Path")
+        End If
         If LoadThemeOrDefault(xThemePath) Then ChangePlaySideSkin(False)
 
         Dim eVisualOptions As XmlElement = Root.Item("VisualOptions")

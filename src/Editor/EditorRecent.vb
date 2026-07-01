@@ -64,7 +64,7 @@
                 InitPath = ExcludeFileName(xFileName)
                 SetFileName(xFileName)
                 ClearUndo()
-                OpenBMS(ReadChartText(xFileName, InputTextEncoding))
+                OpenBMS(ReadChartText(xFileName, InputTextEncoding), xFileName)
                 SetFileName(FileName)
                 SetIsSaved(True)
             Case ".NBMSC"

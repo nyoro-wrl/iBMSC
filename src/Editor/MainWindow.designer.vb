@@ -173,6 +173,8 @@ Partial Class MainWindow
         Me.Label4 = New System.Windows.Forms.Label()
         Me.THGenre = New System.Windows.Forms.TextBox()
         Me.THBPM = New System.Windows.Forms.NumericUpDown()
+        Me.LabelMode = New System.Windows.Forms.Label()
+        Me.CHMode = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.THArtist = New System.Windows.Forms.TextBox()
         Me.THTitle = New System.Windows.Forms.TextBox()
@@ -282,6 +284,7 @@ Partial Class MainWindow
         Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnGOptions = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnPOptions = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnThemeOptions = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnConversion = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnConversion = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.POBLong = New System.Windows.Forms.ToolStripMenuItem()
@@ -527,7 +530,7 @@ Partial Class MainWindow
         '
         Me.cmnTheme.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TBThemeDef, Me.TBThemeSave, Me.TBThemeRefresh, Me.ToolStripSeparator6})
         Me.cmnTheme.Name = "cmnLanguage"
-        Me.cmnTheme.OwnerItem = Me.mnTheme
+        Me.cmnTheme.OwnerItem = Me.TBTheme
         Me.cmnTheme.Size = New System.Drawing.Size(246, 76)
         '
         'TBThemeDef
@@ -2018,7 +2021,7 @@ Partial Class MainWindow
         Me.CHDifficulty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CHDifficulty.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.CHDifficulty.Items.AddRange(New Object() {"", "1 - EZ / Beginner", "2 - NM / Normal", "3 - HD / Hyper", "4 - MX / Another", "5 - SC / Insane"})
-        Me.CHDifficulty.Location = New System.Drawing.Point(67, 118)
+        Me.CHDifficulty.Location = New System.Drawing.Point(67, 141)
         Me.CHDifficulty.Margin = New System.Windows.Forms.Padding(0)
         Me.CHDifficulty.Name = "CHDifficulty"
         Me.CHDifficulty.Size = New System.Drawing.Size(116, 23)
@@ -2049,7 +2052,7 @@ Partial Class MainWindow
         '
         Me.Label25.AutoSize = True
         Me.Label25.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Label25.Location = New System.Drawing.Point(158, 164)
+        Me.Label25.Location = New System.Drawing.Point(158, 187)
         Me.Label25.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(25, 23)
@@ -2086,7 +2089,7 @@ Partial Class MainWindow
         '
         Me.Label21.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(9, 122)
+        Me.Label21.Location = New System.Drawing.Point(9, 147)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(55, 15)
         Me.Label21.TabIndex = 25
@@ -2128,7 +2131,7 @@ Partial Class MainWindow
         'THTotal
         '
         Me.THTotal.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.THTotal.Location = New System.Drawing.Point(67, 164)
+        Me.THTotal.Location = New System.Drawing.Point(67, 187)
         Me.THTotal.Margin = New System.Windows.Forms.Padding(0)
         Me.THTotal.Name = "THTotal"
         Me.THTotal.Size = New System.Drawing.Size(88, 23)
@@ -2138,7 +2141,7 @@ Partial Class MainWindow
         '
         Me.Label20.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(30, 168)
+        Me.Label20.Location = New System.Drawing.Point(30, 193)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(34, 15)
         Me.Label20.TabIndex = 5
@@ -2150,7 +2153,7 @@ Partial Class MainWindow
         Me.LRecommendedTotalCaption.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.LRecommendedTotalCaption.AutoSize = True
         Me.LRecommendedTotalCaption.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.LRecommendedTotalCaption.Location = New System.Drawing.Point(5, 193)
+        Me.LRecommendedTotalCaption.Location = New System.Drawing.Point(5, 218)
         Me.LRecommendedTotalCaption.Name = "LRecommendedTotalCaption"
         Me.LRecommendedTotalCaption.Size = New System.Drawing.Size(59, 15)
         Me.LRecommendedTotalCaption.TabIndex = 64
@@ -2163,7 +2166,7 @@ Partial Class MainWindow
         Me.LRecommendedTotal.AutoEllipsis = True
         Me.LRecommendedTotal.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LRecommendedTotal.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.LRecommendedTotal.Location = New System.Drawing.Point(67, 187)
+        Me.LRecommendedTotal.Location = New System.Drawing.Point(67, 212)
         Me.LRecommendedTotal.Margin = New System.Windows.Forms.Padding(0)
         Me.LRecommendedTotal.Name = "LRecommendedTotal"
         Me.LRecommendedTotal.Size = New System.Drawing.Size(116, 25)
@@ -2438,12 +2441,14 @@ Partial Class MainWindow
         Me.POHeaderPart1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.POHeaderPart1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.POHeaderPart1.Controls.Add(Me.Label3, 0, 0)
-        Me.POHeaderPart1.Controls.Add(Me.THPlayLevel, 1, 7)
-        Me.POHeaderPart1.Controls.Add(Me.CHRank, 1, 5)
-        Me.POHeaderPart1.Controls.Add(Me.Label10, 0, 5)
-        Me.POHeaderPart1.Controls.Add(Me.CHDifficulty, 1, 6)
-        Me.POHeaderPart1.Controls.Add(Me.Label21, 0, 6)
-        Me.POHeaderPart1.Controls.Add(Me.CHPlayer, 1, 4)
+        Me.POHeaderPart1.Controls.Add(Me.THPlayLevel, 1, 8)
+        Me.POHeaderPart1.Controls.Add(Me.CHRank, 1, 6)
+        Me.POHeaderPart1.Controls.Add(Me.Label10, 0, 6)
+        Me.POHeaderPart1.Controls.Add(Me.CHDifficulty, 1, 7)
+        Me.POHeaderPart1.Controls.Add(Me.Label21, 0, 7)
+        Me.POHeaderPart1.Controls.Add(Me.CHMode, 1, 4)
+        Me.POHeaderPart1.Controls.Add(Me.LabelMode, 0, 4)
+        Me.POHeaderPart1.Controls.Add(Me.CHPlayer, 1, 5)
         Me.POHeaderPart1.Controls.Add(Me.Label4, 0, 1)
         Me.POHeaderPart1.Controls.Add(Me.THGenre, 1, 2)
         Me.POHeaderPart1.Controls.Add(Me.THBPM, 1, 3)
@@ -2451,17 +2456,17 @@ Partial Class MainWindow
         Me.POHeaderPart1.Controls.Add(Me.THArtist, 1, 1)
         Me.POHeaderPart1.Controls.Add(Me.THTitle, 1, 0)
         Me.POHeaderPart1.Controls.Add(Me.Label9, 0, 3)
-        Me.POHeaderPart1.Controls.Add(Me.Label8, 0, 4)
-        Me.POHeaderPart1.Controls.Add(Me.Label6, 0, 7)
-        Me.POHeaderPart1.Controls.Add(Me.THTotal, 1, 8)
-        Me.POHeaderPart1.Controls.Add(Me.Label20, 0, 8)
-        Me.POHeaderPart1.Controls.Add(Me.Label25, 2, 8)
-        Me.POHeaderPart1.Controls.Add(Me.LRecommendedTotalCaption, 0, 9)
-        Me.POHeaderPart1.Controls.Add(Me.LRecommendedTotal, 1, 9)
+        Me.POHeaderPart1.Controls.Add(Me.Label8, 0, 5)
+        Me.POHeaderPart1.Controls.Add(Me.Label6, 0, 8)
+        Me.POHeaderPart1.Controls.Add(Me.THTotal, 1, 9)
+        Me.POHeaderPart1.Controls.Add(Me.Label20, 0, 9)
+        Me.POHeaderPart1.Controls.Add(Me.Label25, 2, 9)
+        Me.POHeaderPart1.Controls.Add(Me.LRecommendedTotalCaption, 0, 10)
+        Me.POHeaderPart1.Controls.Add(Me.LRecommendedTotal, 1, 10)
         Me.POHeaderPart1.Dock = System.Windows.Forms.DockStyle.Top
         Me.POHeaderPart1.Location = New System.Drawing.Point(0, 0)
         Me.POHeaderPart1.Name = "POHeaderPart1"
-        Me.POHeaderPart1.RowCount = 10
+        Me.POHeaderPart1.RowCount = 11
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
@@ -2472,7 +2477,8 @@ Partial Class MainWindow
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
         Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
-        Me.POHeaderPart1.Size = New System.Drawing.Size(226, 250)
+        Me.POHeaderPart1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25.0!))
+        Me.POHeaderPart1.Size = New System.Drawing.Size(226, 275)
         Me.POHeaderPart1.TabIndex = 25
         '
         'Label3
@@ -2490,7 +2496,7 @@ Partial Class MainWindow
         '
         Me.POHeaderPart1.SetColumnSpan(Me.THPlayLevel, 2)
         Me.THPlayLevel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.THPlayLevel.Location = New System.Drawing.Point(65, 138)
+        Me.THPlayLevel.Location = New System.Drawing.Point(65, 161)
         Me.THPlayLevel.Margin = New System.Windows.Forms.Padding(0)
         Me.THPlayLevel.Name = "THPlayLevel"
         Me.THPlayLevel.Size = New System.Drawing.Size(118, 23)
@@ -2503,7 +2509,7 @@ Partial Class MainWindow
         Me.CHRank.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CHRank.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.CHRank.Items.AddRange(New Object() {"0 - Very Hard", "1 - Hard", "2 - Normal", "3 - Easy", "4 - Very Easy"})
-        Me.CHRank.Location = New System.Drawing.Point(65, 115)
+        Me.CHRank.Location = New System.Drawing.Point(65, 138)
         Me.CHRank.Margin = New System.Windows.Forms.Padding(0)
         Me.CHRank.Name = "CHRank"
         Me.CHRank.Size = New System.Drawing.Size(118, 23)
@@ -2513,7 +2519,7 @@ Partial Class MainWindow
         '
         Me.Label10.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(29, 119)
+        Me.Label10.Location = New System.Drawing.Point(29, 142)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(33, 15)
         Me.Label10.TabIndex = 16
@@ -2527,7 +2533,7 @@ Partial Class MainWindow
         Me.CHPlayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CHPlayer.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.CHPlayer.Items.AddRange(New Object() {"SP", "DP / PMS", "2 Player"})
-        Me.CHPlayer.Location = New System.Drawing.Point(65, 92)
+        Me.CHPlayer.Location = New System.Drawing.Point(65, 115)
         Me.CHPlayer.Margin = New System.Windows.Forms.Padding(0)
         Me.CHPlayer.Name = "CHPlayer"
         Me.CHPlayer.Size = New System.Drawing.Size(118, 23)
@@ -2568,6 +2574,30 @@ Partial Class MainWindow
         Me.THBPM.Size = New System.Drawing.Size(118, 23)
         Me.THBPM.TabIndex = 10
         Me.THBPM.Value = New Decimal(New Integer() {120, 0, 0, 0})
+        '
+        'LabelMode
+        '
+        Me.LabelMode.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.LabelMode.AutoSize = True
+        Me.LabelMode.Location = New System.Drawing.Point(25, 96)
+        Me.LabelMode.Name = "LabelMode"
+        Me.LabelMode.Size = New System.Drawing.Size(37, 15)
+        Me.LabelMode.TabIndex = 66
+        Me.LabelMode.Text = "MODE"
+        Me.LabelMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'CHMode
+        '
+        Me.POHeaderPart1.SetColumnSpan(Me.CHMode, 2)
+        Me.CHMode.Dock = System.Windows.Forms.DockStyle.Top
+        Me.CHMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CHMode.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.CHMode.Items.AddRange(New Object() {"7key", "5key", "9key", "24key"})
+        Me.CHMode.Location = New System.Drawing.Point(65, 92)
+        Me.CHMode.Margin = New System.Windows.Forms.Padding(0)
+        Me.CHMode.Name = "CHMode"
+        Me.CHMode.Size = New System.Drawing.Size(118, 23)
+        Me.CHMode.TabIndex = 67
         '
         'Label2
         '
@@ -2615,7 +2645,7 @@ Partial Class MainWindow
         '
         Me.Label8.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(3, 96)
+        Me.Label8.Location = New System.Drawing.Point(3, 119)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(59, 15)
         Me.Label8.TabIndex = 13
@@ -2626,7 +2656,7 @@ Partial Class MainWindow
         '
         Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(3, 142)
+        Me.Label6.Location = New System.Drawing.Point(3, 165)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(59, 15)
         Me.Label6.TabIndex = 8
@@ -3245,7 +3275,7 @@ Partial Class MainWindow
         '
         'mnOptions
         '
-        Me.mnOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnNTInput, Me.mnErrorCheck, Me.mnPreviewOnClick, Me.mnShowFileName, Me.mnChangePlaySide, Me.mnWavIncrease, Me.mnSlashGrid, Me.ToolStripSeparator20, Me.mnGOptions, Me.mnPOptions, Me.mnLanguage, Me.mnTheme})
+        Me.mnOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnNTInput, Me.mnErrorCheck, Me.mnPreviewOnClick, Me.mnShowFileName, Me.mnChangePlaySide, Me.mnWavIncrease, Me.mnSlashGrid, Me.ToolStripSeparator20, Me.mnGOptions, Me.mnThemeOptions, Me.mnPOptions, Me.mnLanguage})
         Me.mnOptions.Name = "mnOptions"
         Me.mnOptions.Size = New System.Drawing.Size(61, 19)
         Me.mnOptions.Text = "&Options"
@@ -3331,6 +3361,13 @@ Partial Class MainWindow
         Me.mnPOptions.Name = "mnPOptions"
         Me.mnPOptions.Size = New System.Drawing.Size(229, 22)
         Me.mnPOptions.Text = "&Player Options"
+        '
+        'mnThemeOptions
+        '
+        Me.mnThemeOptions.Image = Global.nBMSC.My.Resources.Resources.x16Theme
+        Me.mnThemeOptions.Name = "mnThemeOptions"
+        Me.mnThemeOptions.Size = New System.Drawing.Size(229, 22)
+        Me.mnThemeOptions.Text = "Theme Settings"
         '
         'mnConversion
         '
@@ -4727,6 +4764,7 @@ Partial Class MainWindow
     Friend WithEvents mnWavIncrease As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator20 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents mnGOptions As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnThemeOptions As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnLanguage As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnTheme As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnLanguage As System.Windows.Forms.ContextMenuStrip
@@ -4925,6 +4963,8 @@ Partial Class MainWindow
     Friend WithEvents THPlayLevel As System.Windows.Forms.TextBox
     Friend WithEvents CHRank As System.Windows.Forms.ComboBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents LabelMode As System.Windows.Forms.Label
+    Friend WithEvents CHMode As System.Windows.Forms.ComboBox
     Friend WithEvents CHPlayer As System.Windows.Forms.ComboBox
     Friend WithEvents CHDifficulty As System.Windows.Forms.ComboBox
     Friend WithEvents Label4 As System.Windows.Forms.Label

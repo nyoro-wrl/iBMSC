@@ -17,6 +17,7 @@ Module TestRunner
         Run("BMS definition labels", AddressOf BmsDefinitionLabels)
         Run("chart calculations", AddressOf ChartCalculations)
         Run("chart paths", AddressOf ChartPaths)
+        Run("chart mode detection", AddressOf ChartModeDetection)
         Run("theme metadata", AddressOf ThemeMetadata)
         Run("chart text encoding modes", AddressOf ChartTextEncodingModes)
         Run("chart text encoding detection", AddressOf ChartTextEncodingDetection)
@@ -110,6 +111,43 @@ Module TestRunner
         AssertEqual("..\Shared\sound.wav", nBMSC.Editor.ChartPaths.MakeBmsReferencePath("C:\Charts\Song", "C:\Charts\Shared\sound.wav"), "sibling path should be relative")
         AssertEqual("audio\sound.wav", nBMSC.Editor.ChartPaths.ResolveBmsFilePath("", "audio\sound.wav"), "relative path without base should stay relative")
         AssertEqual("C:\Charts\Song\audio\sound.wav", nBMSC.Editor.ChartPaths.ResolveBmsFilePath("C:\Charts\Song", "audio\sound.wav"), "relative path should resolve against base")
+    End Sub
+
+    Private Sub ChartModeDetection()
+        AssertEqual(ChartMode.Key9, ChartModes.DetectFromBms("C:\Charts\song.pms", False, False, False, False), "pms extension should be 9key")
+        AssertEqual(ChartMode.Key7, ChartModes.DetectFromBms("C:\Charts\song.bms", False, False, False, False), "empty chart should default to 7key")
+
+        Dim hasPlayable As Boolean = False
+        Dim has24 As Boolean = False
+        Dim has7 As Boolean = False
+        Dim has5 As Boolean = False
+        ChartModes.ObserveBmsChannel("11", "01", hasPlayable, has24, has7, has5)
+        AssertTrue(hasPlayable, "5key zone should be playable")
+        AssertFalse(has24, "5key zone should not be 24key")
+        AssertFalse(has7, "5key zone should not be 7key")
+        AssertTrue(has5, "5key zone should be 5key")
+        AssertEqual(ChartMode.Key5, ChartModes.DetectFromBms("C:\Charts\song.bms", hasPlayable, has24, has7, has5), "5key zone should be 5key")
+
+        hasPlayable = False
+        has24 = False
+        has7 = False
+        has5 = False
+        ChartModes.ObserveBmsChannel("18", "01", hasPlayable, has24, has7, has5)
+        AssertEqual(ChartMode.Key7, ChartModes.DetectFromBms("C:\Charts\song.bms", hasPlayable, has24, has7, has5), "7key zone should be 7key")
+
+        hasPlayable = False
+        has24 = False
+        has7 = False
+        has5 = False
+        ChartModes.ObserveBmsChannel("1A", "01", hasPlayable, has24, has7, has5)
+        AssertEqual(ChartMode.Key24, ChartModes.DetectFromBms("C:\Charts\song.bms", hasPlayable, has24, has7, has5), "24key zone should be 24key")
+
+        hasPlayable = False
+        has24 = False
+        has7 = False
+        has5 = False
+        ChartModes.ObserveBmsChannel("D7", "01", hasPlayable, has24, has7, has5)
+        AssertEqual(ChartMode.Key24, ChartModes.DetectFromBms("C:\Charts\song.bms", hasPlayable, has24, has7, has5), "24key landmine zone should be 24key")
     End Sub
 
     Private Sub ThemeMetadata()

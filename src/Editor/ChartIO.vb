@@ -29,7 +29,15 @@ Partial Public Class MainWindow
         Return 1
     End Function
 
-    Private Sub OpenBMS(ByVal xStrAll As String)
+    Private Function PlayerIndexForSave() As Integer
+        If CurrentMode = ChartMode.Key9 Then
+            Return 1
+        End If
+
+        Return CHPlayer.SelectedIndex
+    End Function
+
+    Private Sub OpenBMS(ByVal xStrAll As String, Optional ByVal xPath As String = "")
         KMouseOver = -1
 
         'Line feed validation: will remove some empty lines
@@ -210,6 +218,11 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         UpdateMeasureBottom()
 
         xStack = 0
+        Dim xHasPlayableNotes As Boolean = False
+        Dim xHas24KeyNotes As Boolean = False
+        Dim xHas7KeyNotes As Boolean = False
+        Dim xHas5KeyNotes As Boolean = False
+
         For Each sLine In xStrLine
             Dim sLineTrim As String = sLine.Trim
             If xStack > 0 Then Continue For
@@ -225,7 +238,10 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
 
             If Channel = "01" Then mColumn(xMeasure) += 1 'If the identifier is 01 then add a B column in that measure
             For xI1 = 8 To Len(sLineTrim) - 1 Step 2   'For all Ks within that line ( - 1 can be ommitted )
-                If Mid(sLineTrim, xI1, 2) = "00" Then Continue For 'If the K is not 00
+                Dim xNoteValueText As String = Mid(sLineTrim, xI1, 2)
+                If xNoteValueText = "00" Then Continue For 'If the K is not 00
+
+                ChartModes.ObserveBmsChannel(Channel, xNoteValueText, xHasPlayableNotes, xHas24KeyNotes, xHas7KeyNotes, xHas5KeyNotes)
 
                 ReDim Preserve Notes(Notes.Length)
 
@@ -237,18 +253,19 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                     .Landmine = IsChannelLandmine(Channel)
                     .Selected = False
                     .VPosition = MeasureBottom(xMeasure) + MeasureLength(xMeasure) * (xI1 / 2 - 4) / ((Len(sLineTrim) - 7) / 2)
-                    .Value = DefinitionIndex(Mid(sLineTrim, xI1, 2)) * 10000
+                    .Value = DefinitionIndex(xNoteValueText) * 10000
 
-                    If Channel = "03" Then .Value = Convert.ToInt32(Mid(sLineTrim, xI1, 2), 16) * 10000
-                    If Channel = "08" Then .Value = hBPM(DefinitionIndex(Mid(sLineTrim, xI1, 2)))
-                    If Channel = "09" Then .Value = hSTOP(DefinitionIndex(Mid(sLineTrim, xI1, 2)))
-                    If Channel = "SC" Then .Value = hBMSCROLL(DefinitionIndex(Mid(sLineTrim, xI1, 2)))
+                    If Channel = "03" Then .Value = Convert.ToInt32(xNoteValueText, 16) * 10000
+                    If Channel = "08" Then .Value = hBPM(DefinitionIndex(xNoteValueText))
+                    If Channel = "09" Then .Value = hSTOP(DefinitionIndex(xNoteValueText))
+                    If Channel = "SC" Then .Value = hBMSCROLL(DefinitionIndex(xNoteValueText))
                 End With
 
             Next
         Next
 
         If NTInput Then ConvertBMSE2NT()
+        SetChartMode(ChartModes.DetectFromBms(xPath, xHasPlayableNotes, xHas24KeyNotes, xHas7KeyNotes, xHas5KeyNotes), True)
 
         RefreshDefinitionLists()
         THLandMine.Text = hWAV(0)
@@ -382,7 +399,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
 
     Private Function GenerateHeaderMeta() As String
         Dim xStrHeader As String = vbCrLf & "*---------------------- HEADER FIELD" & vbCrLf & vbCrLf
-        xStrHeader &= "#PLAYER " & PlayerValueFromIndex(CHPlayer.SelectedIndex) & vbCrLf
+        xStrHeader &= "#PLAYER " & PlayerValueFromIndex(PlayerIndexForSave()) & vbCrLf
         xStrHeader &= "#GENRE " & THGenre.Text & vbCrLf
         xStrHeader &= "#TITLE " & THTitle.Text & vbCrLf
         xStrHeader &= "#ARTIST " & THArtist.Text & vbCrLf
@@ -897,7 +914,7 @@ EndOfSub:
             bw.Write(THArtist.Text)
             bw.Write(THGenre.Text)
             bw.Write(Notes(0).Value)
-            Dim xPlayer As Integer = CHPlayer.SelectedIndex
+            Dim xPlayer As Integer = PlayerIndexForSave()
             Dim xRank As Integer = CHRank.SelectedIndex << 4
             bw.Write(CByte(xPlayer Or xRank))
             bw.Write(THPlayLevel.Text)

@@ -227,6 +227,12 @@ Public Class MainWindow
     Dim vo As New visualSettings()
     Private ReadOnly InitialColumns() As Column
     Private CurrentThemePath As String = ""
+    Private CurrentMode As ChartMode = ChartMode.Key7
+    Private CurrentModeName As String = "7key"
+    Private ModeDefaultThemePaths() As String = New String(ChartModes.Count() - 1) {}
+    Private CustomThemeModes As New List(Of ThemeModeSetting)
+    Private ThemeAutoSelect As Boolean = True
+    Private UpdatingModeSelector As Boolean = False
     Private ThemeColumnVisible() As Boolean = Nothing
     Private ThemeColumnGap As Integer = 5
     Private ThemePlayerGap As Boolean = True
@@ -875,6 +881,7 @@ Public Class MainWindow
         InitializeDefinitionContextMenu()
         InitializeFastListScrollers()
         InitializeHeaderWheelBlockers()
+        InitializeModeSelector()
         InitializePlayerSelector()
         InitializeGridToolbar()
         InitializeOptionsTabs()
@@ -1236,6 +1243,7 @@ Public Class MainWindow
         SetText("Menu.Options.SlashGrid", mnSlashGrid.Text)
         SetText("Menu.Options.GeneralOptions", mnGOptions.Text)
         SetText("Menu.Options.PlayerOptions", mnPOptions.Text)
+        SetText("Menu.Options.ThemeSettings", mnThemeOptions.Text)
         SetText("Menu.Options.Language", mnLanguage.Text)
         SetText("Menu.Options.Theme", mnTheme.Text)
         SetText("Menu.Conversion", mnConversion.Text)
@@ -1346,6 +1354,7 @@ Public Class MainWindow
         SetText("OptionsPanel.Header.Artist", Label4.Text)
         SetText("OptionsPanel.Header.Genre", Label2.Text)
         SetText("OptionsPanel.Header.BPM", Label9.Text)
+        SetText("OptionsPanel.Header.Mode", LabelMode.Text)
         SetText("OptionsPanel.Header.Player", Label8.Text)
         SetText("OptionsPanel.Header.Rank", Label10.Text)
         SetText("OptionsPanel.Header.PlayLevel", Label6.Text)
@@ -2090,6 +2099,75 @@ Public Class MainWindow
         RefreshPlayerSelector()
     End Sub
 
+    Private Sub InitializeModeSelector()
+        CHMode.DropDownStyle = ComboBoxStyle.DropDownList
+
+        RefreshModeSelector()
+    End Sub
+
+    Private Function SameModeName(ByVal x As String, ByVal y As String) As Boolean
+        Return String.Equals(If(x, "").Trim(), If(y, "").Trim(), StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    Private Function IsBuiltInModeName(ByVal modeName As String) As Boolean
+        For i As Integer = 0 To ChartModes.Count() - 1
+            If SameModeName(modeName, ChartModes.DisplayName(ChartModes.FromIndex(i))) Then Return True
+        Next
+
+        Return False
+    End Function
+
+    Private Function ModeSelectorIndexOf(ByVal modeName As String) As Integer
+        For i As Integer = 0 To CHMode.Items.Count - 1
+            If SameModeName(CStr(CHMode.Items(i)), modeName) Then Return i
+        Next
+
+        Return -1
+    End Function
+
+    Private Sub RefreshModeSelector()
+        If CHMode Is Nothing Then Return
+
+        UpdatingModeSelector = True
+        CHMode.Items.Clear()
+        For i As Integer = 0 To ChartModes.Count() - 1
+            CHMode.Items.Add(ChartModes.DisplayName(ChartModes.FromIndex(i)))
+        Next
+        For Each xMode As ThemeModeSetting In CustomThemeModes
+            If xMode.ModeName <> "" AndAlso Not IsBuiltInModeName(xMode.ModeName) AndAlso ModeSelectorIndexOf(xMode.ModeName) = -1 Then
+                CHMode.Items.Add(xMode.ModeName)
+            End If
+        Next
+
+        Dim xIndex As Integer = ModeSelectorIndexOf(CurrentModeName)
+        If xIndex = -1 Then
+            CurrentMode = ChartMode.Key7
+            CurrentModeName = ChartModes.DisplayName(CurrentMode)
+            xIndex = ModeSelectorIndexOf(CurrentModeName)
+        End If
+
+        If xIndex <> -1 Then CHMode.SelectedIndex = xIndex
+        UpdatingModeSelector = False
+    End Sub
+
+    Private Sub SetChartMode(ByVal modeName As String, ByVal loadDefaultTheme As Boolean)
+        If modeName Is Nothing OrElse modeName.Trim() = "" Then modeName = ChartModes.DisplayName(ChartMode.Key7)
+
+        CurrentModeName = modeName.Trim()
+        CurrentMode = If(IsBuiltInModeName(CurrentModeName), ChartModes.Parse(CurrentModeName, ChartMode.Key7), ChartMode.Key7)
+        RefreshModeSelector()
+
+        If loadDefaultTheme AndAlso ThemeAutoSelect Then
+            If LoadThemeOrDefault(DefaultThemePath(CurrentModeName)) Then ChangePlaySideSkin(False)
+            CalculateGreatestColumn()
+            RefreshPanelAll()
+        End If
+    End Sub
+
+    Private Sub SetChartMode(ByVal mode As ChartMode, ByVal loadDefaultTheme As Boolean)
+        SetChartMode(ChartModes.DisplayName(mode), loadDefaultTheme)
+    End Sub
+
     Private Function PlayerSelectorWidth() As Integer
         Dim xWidth As Integer = 0
         For Each xArg As PlayerArguments In DefaultPlayerArguments()
@@ -2825,6 +2903,55 @@ Public Class MainWindow
         Return TextEncodingModeDisplayName(EncodingToTextEncodingMode(xEncoding))
     End Function
 
+    Private Function ExistingChartExtension() As String
+        If FileName = "" OrElse Not IO.File.Exists(FileName) Then Return ""
+
+        Dim xExt As String = IO.Path.GetExtension(FileName)
+        If xExt = "" Then Return ""
+
+        Return xExt.TrimStart("."c).ToLowerInvariant()
+    End Function
+
+    Private Function DefaultChartSaveExtension() As String
+        Dim xExt As String = ExistingChartExtension()
+        If xExt <> "" Then Return xExt
+        If CurrentMode = ChartMode.Key9 Then Return "pms"
+
+        Return "bms"
+    End Function
+
+    Private Function ChartSaveFilterIndex(ByVal xExt As String) As Integer
+        Select Case xExt.ToLowerInvariant()
+            Case "bms"
+                Return 2
+            Case "bme"
+                Return 3
+            Case "bml"
+                Return 4
+            Case "pms"
+                Return 5
+            Case "txt"
+                Return 6
+        End Select
+
+        Return 1
+    End Function
+
+    Private Sub ConfigureChartSaveDialog(ByVal xDSave As SaveFileDialog, ByVal initialDirectory As String)
+        Dim xDefaultExt As String = DefaultChartSaveExtension()
+
+        xDSave.Filter = Strings.FileType._bms & "|*.bms;*.bme;*.bml;*.pms;*.txt|" &
+                        Strings.FileType.BMS & "|*.bms|" &
+                        Strings.FileType.BME & "|*.bme|" &
+                        Strings.FileType.BML & "|*.bml|" &
+                        Strings.FileType.PMS & "|*.pms|" &
+                        Strings.FileType.TXT & "|*.txt|" &
+                        Strings.FileType._all & "|*.*"
+        xDSave.DefaultExt = xDefaultExt
+        xDSave.FilterIndex = ChartSaveFilterIndex(xDefaultExt)
+        xDSave.InitialDirectory = initialDirectory
+    End Sub
+
     Private Sub WriteChartText(ByVal xPath As String, ByVal xText As String)
         My.Computer.FileSystem.WriteAllText(xPath, xText, False, CurrentSaveEncoding())
     End Sub
@@ -2849,15 +2976,7 @@ Public Class MainWindow
             If xResult = MsgBoxResult.Yes Then
                 If ExcludeFileName(FileName) = "" Then
                     Dim xDSave As New SaveFileDialog
-                    xDSave.Filter = Strings.FileType._bms & "|*.bms;*.bme;*.bml;*.pms;*.txt|" &
-                                    Strings.FileType.BMS & "|*.bms|" &
-                                    Strings.FileType.BME & "|*.bme|" &
-                                    Strings.FileType.BML & "|*.bml|" &
-                                    Strings.FileType.PMS & "|*.pms|" &
-                                    Strings.FileType.TXT & "|*.txt|" &
-                                    Strings.FileType._all & "|*.*"
-                    xDSave.DefaultExt = "bms"
-                    xDSave.InitialDirectory = InitPath
+                    ConfigureChartSaveDialog(xDSave, InitPath)
 
                     If xDSave.ShowDialog = Windows.Forms.DialogResult.Cancel Then e.Cancel = True : Exit Sub
                     SetFileName(xDSave.FileName)
@@ -2920,6 +3039,7 @@ Public Class MainWindow
         THArtist.Text = ""
         THGenre.Text = ""
         THBPM.Value = 120
+        SetChartMode(ChartMode.Key7, False)
         If CHPlayer.SelectedIndex = -1 Then CHPlayer.SelectedIndex = 0
         CHRank.SelectedIndex = 3
         THPlayLevel.Text = ""
@@ -3118,7 +3238,7 @@ Public Class MainWindow
     Friend Sub ReadFile(ByVal xPath As String)
         Select Case LCase(Path.GetExtension(xPath))
             Case ".bms", ".bme", ".bml", ".pms", ".txt"
-                OpenBMS(ReadChartText(xPath, InputTextEncoding))
+                OpenBMS(ReadChartText(xPath, InputTextEncoding), xPath)
                 ClearUndo()
                 NewRecent(xPath)
                 SetFileName(xPath)
@@ -3567,15 +3687,7 @@ EndSearch:
             If xResult = MsgBoxResult.Yes Then
                 If ExcludeFileName(FileName) = "" Then
                     Dim xDSave As New SaveFileDialog
-                    xDSave.Filter = Strings.FileType._bms & "|*.bms;*.bme;*.bml;*.pms;*.txt|" &
-                                    Strings.FileType.BMS & "|*.bms|" &
-                                    Strings.FileType.BME & "|*.bme|" &
-                                    Strings.FileType.BML & "|*.bml|" &
-                                    Strings.FileType.PMS & "|*.pms|" &
-                                    Strings.FileType.TXT & "|*.txt|" &
-                                    Strings.FileType._all & "|*.*"
-                    xDSave.DefaultExt = "bms"
-                    xDSave.InitialDirectory = InitPath
+                    ConfigureChartSaveDialog(xDSave, InitPath)
 
                     If xDSave.ShowDialog = Windows.Forms.DialogResult.Cancel Then Return True
                     SetFileName(xDSave.FileName)
@@ -3623,6 +3735,7 @@ EndSearch:
             .Value = 1200000
         End With
         THBPM.Value = 120
+        SetChartMode(ChartMode.Key7, True)
 
         RefreshDefinitionLists()
 
@@ -3687,7 +3800,7 @@ EndSearch:
 
         If xDOpen.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
         InitPath = ExcludeFileName(xDOpen.FileName)
-        OpenBMS(ReadChartText(xDOpen.FileName, InputTextEncoding))
+        OpenBMS(ReadChartText(xDOpen.FileName, InputTextEncoding), xDOpen.FileName)
         ClearUndo()
         SetFileName(xDOpen.FileName)
         NewRecent(FileName)
@@ -3709,7 +3822,7 @@ EndSearch:
         If xItem Is Nothing OrElse xItem.Tag Is Nothing Then Return
 
         Dim xMode As TextEncodingMode = DirectCast(xItem.Tag, TextEncodingMode)
-        OpenBMS(ReadChartText(FileName, xMode))
+        OpenBMS(ReadChartText(FileName, xMode), FileName)
         ClearUndo()
         SetIsSaved(True)
     End Sub
@@ -3742,15 +3855,7 @@ EndSearch:
 
         If ExcludeFileName(FileName) = "" Then
             Dim xDSave As New SaveFileDialog
-            xDSave.Filter = Strings.FileType._bms & "|*.bms;*.bme;*.bml;*.pms;*.txt|" &
-                            Strings.FileType.BMS & "|*.bms|" &
-                            Strings.FileType.BME & "|*.bme|" &
-                            Strings.FileType.BML & "|*.bml|" &
-                            Strings.FileType.PMS & "|*.pms|" &
-                            Strings.FileType.TXT & "|*.txt|" &
-                            Strings.FileType._all & "|*.*"
-            xDSave.DefaultExt = "bms"
-            xDSave.InitialDirectory = InitPath
+            ConfigureChartSaveDialog(xDSave, InitPath)
 
             If xDSave.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
             InitPath = ExcludeFileName(xDSave.FileName)
@@ -3771,15 +3876,7 @@ EndSearch:
         KMouseOver = -1
 
         Dim xDSave As New SaveFileDialog
-        xDSave.Filter = Strings.FileType._bms & "|*.bms;*.bme;*.bml;*.pms;*.txt|" &
-                        Strings.FileType.BMS & "|*.bms|" &
-                        Strings.FileType.BME & "|*.bme|" &
-                        Strings.FileType.BML & "|*.bml|" &
-                        Strings.FileType.PMS & "|*.pms|" &
-                        Strings.FileType.TXT & "|*.txt|" &
-                        Strings.FileType._all & "|*.*"
-        xDSave.DefaultExt = "bms"
-        xDSave.InitialDirectory = IIf(ExcludeFileName(FileName) = "", InitPath, ExcludeFileName(FileName))
+        ConfigureChartSaveDialog(xDSave, IIf(ExcludeFileName(FileName) = "", InitPath, ExcludeFileName(FileName)))
 
         If xDSave.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
         InitPath = ExcludeFileName(xDSave.FileName)
@@ -5364,6 +5461,44 @@ StartCount:     If Not NTInput Then
         If xDOp.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then RefreshPlayerSelector()
     End Sub
 
+    Private Sub mnThemeOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnThemeOptions.Click
+        Dim xThemeRoot As String = IO.Path.Combine(My.Application.Info.DirectoryPath, "Theme")
+        If Not IO.Directory.Exists(xThemeRoot) Then My.Computer.FileSystem.CreateDirectory(xThemeRoot)
+
+        Dim xThemeNames As New List(Of String)
+        Dim xThemePaths As New List(Of String)
+        For Each xFile As IO.FileInfo In My.Computer.FileSystem.GetDirectoryInfo(xThemeRoot).GetFiles("*.xml")
+            Dim xThemeName As String = ""
+            If Not TryGetThemeName(xFile, xThemeName) Then Continue For
+
+            xThemeNames.Add(xThemeName)
+            xThemePaths.Add(xFile.FullName)
+        Next
+
+        Dim xDefaults(ChartModes.Count() - 1) As String
+        For i As Integer = 0 To ChartModes.Count() - 1
+            xDefaults(i) = DefaultThemePath(ChartModes.FromIndex(i))
+        Next
+
+        Dim xDiag As New OpTheme(xThemeNames.ToArray(), xThemePaths.ToArray(), xDefaults, CustomThemeModes.ToArray(), ThemeAutoSelect)
+        If xDiag.ShowDialog(Me) <> Windows.Forms.DialogResult.OK Then Return
+
+        For i As Integer = 0 To ChartModes.Count() - 1
+            Dim xMode As ChartMode = ChartModes.FromIndex(i)
+            ModeDefaultThemePaths(i) = ThemePathForSettings(xDiag.ThemePath(xMode))
+        Next
+        CustomThemeModes = New List(Of ThemeModeSetting)(xDiag.CustomModeThemes())
+        ThemeAutoSelect = xDiag.AutoSelectTheme()
+        RefreshModeSelector()
+
+        If ThemeAutoSelect Then
+            If LoadThemeOrDefault(DefaultThemePath()) Then ChangePlaySideSkin(False)
+            RefreshPanelAll()
+        End If
+
+        If Not IsInitializing Then SaveSettings(My.Application.Info.DirectoryPath & "\nBMSC.Settings.xml", False)
+    End Sub
+
     Private Sub THGenre_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
     THGenre.TextChanged, THTitle.TextChanged, THArtist.TextChanged, THPlayLevel.TextChanged, CHRank.SelectedIndexChanged, TExpansion.TextChanged,
     THSubTitle.TextChanged, THSubArtist.TextChanged, THStageFile.TextChanged, THBanner.TextChanged, THBackBMP.TextChanged,
@@ -5700,7 +5835,15 @@ StartCount:     If Not NTInput Then
         CalculateGreatestColumn()
 
         If IsInitializing Then Exit Sub
+        If IsSaved Then SetIsSaved(False)
         RefreshPanelAll()
+    End Sub
+
+    Private Sub CHMode_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CHMode.SelectedIndexChanged
+        If UpdatingModeSelector OrElse CHMode.SelectedIndex < 0 Then Return
+
+        SetChartMode(CStr(CHMode.SelectedItem), True)
+        If IsSaved Then SetIsSaved(False)
     End Sub
 
     Private Sub CGB_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CGB.ValueChanged
@@ -6355,7 +6498,7 @@ Jump2:
     End Sub
 
     Private Sub TBThemeDef_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBThemeDef.Click
-        Dim xThemePath As String = My.Application.Info.DirectoryPath & "\Theme\7key.xml"
+        Dim xThemePath As String = DefaultThemePath()
 
         If Not My.Computer.FileSystem.FileExists(xThemePath) Then Return
 

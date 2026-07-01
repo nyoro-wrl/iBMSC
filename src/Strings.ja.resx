@@ -402,6 +402,9 @@
   <data name="Menu.Options.Theme" xml:space="preserve">
     <value>テーマ</value>
   </data>
+  <data name="Menu.Options.ThemeSettings" xml:space="preserve">
+    <value>テーマ設定</value>
+  </data>
   <data name="Menu.Options.Title" xml:space="preserve">
     <value>オプション</value>
   </data>
@@ -586,6 +589,9 @@ Release ページを開きますか？</value>
   </data>
   <data name="OptionsPanel.Header.BPM" xml:space="preserve">
     <value>BPM</value>
+  </data>
+  <data name="OptionsPanel.Header.Mode" xml:space="preserve">
+    <value>MODE</value>
   </data>
   <data name="OptionsPanel.Header.Comment" xml:space="preserve">
     <value>COMMENT</value>
@@ -964,6 +970,36 @@ Release ページを開きますか？</value>
   </data>
   <data name="SubMenu.Theme.Save" xml:space="preserve">
     <value>テーマを保存</value>
+  </data>
+  <data name="ThemeOptions.DefaultTheme" xml:space="preserve">
+    <value>規定のテーマ</value>
+  </data>
+  <data name="ThemeOptions.Add" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="ThemeOptions.AutoSelect" xml:space="preserve">
+    <value>テーマの自動選択</value>
+  </data>
+  <data name="ThemeOptions.Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="ThemeOptions.Mode" xml:space="preserve">
+    <value>モード</value>
+  </data>
+  <data name="ThemeOptions.ModeDuplicated" xml:space="preserve">
+    <value>そのモードは既に登録されています。</value>
+  </data>
+  <data name="ThemeOptions.ModeRequired" xml:space="preserve">
+    <value>モード名を入力してください。</value>
+  </data>
+  <data name="ThemeOptions.Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="ThemeOptions.ThemeRequired" xml:space="preserve">
+    <value>テーマを選択してください。</value>
+  </data>
+  <data name="ThemeOptions.Title" xml:space="preserve">
+    <value>テーマ設定</value>
   </data>
   <data name="SubMenu.WAV.Base62" xml:space="preserve">
     <value>62進数に拡張</value>

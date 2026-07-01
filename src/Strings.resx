@@ -408,6 +408,9 @@
   <data name="Menu.Options.Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="Menu.Options.ThemeSettings" xml:space="preserve">
+    <value>Theme Settings</value>
+  </data>
   <data name="Menu.Options.Title" xml:space="preserve">
     <value>Options</value>
   </data>
@@ -592,6 +595,9 @@ Open the release page?</value>
   </data>
   <data name="OptionsPanel.Header.BPM" xml:space="preserve">
     <value>BPM</value>
+  </data>
+  <data name="OptionsPanel.Header.Mode" xml:space="preserve">
+    <value>MODE</value>
   </data>
   <data name="OptionsPanel.Header.Comment" xml:space="preserve">
     <value>Comment</value>
@@ -970,6 +976,36 @@ Open the release page?</value>
   </data>
   <data name="SubMenu.Theme.Save" xml:space="preserve">
     <value>Save Theme</value>
+  </data>
+  <data name="ThemeOptions.DefaultTheme" xml:space="preserve">
+    <value>Default Theme</value>
+  </data>
+  <data name="ThemeOptions.Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ThemeOptions.AutoSelect" xml:space="preserve">
+    <value>Auto-select theme</value>
+  </data>
+  <data name="ThemeOptions.Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ThemeOptions.Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="ThemeOptions.ModeDuplicated" xml:space="preserve">
+    <value>The mode is already registered.</value>
+  </data>
+  <data name="ThemeOptions.ModeRequired" xml:space="preserve">
+    <value>Enter a mode name.</value>
+  </data>
+  <data name="ThemeOptions.Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ThemeOptions.ThemeRequired" xml:space="preserve">
+    <value>Select a theme.</value>
+  </data>
+  <data name="ThemeOptions.Title" xml:space="preserve">
+    <value>Theme Settings</value>
   </data>
   <data name="SubMenu.WAV.Base62" xml:space="preserve">
     <value>Extend to base62</value>
