@@ -62,17 +62,10 @@
         Select Case UCase(Path.GetExtension(xFileName))
             Case ".BMS", ".BME", ".BML", ".PMS", ".TXT"
                 InitPath = ExcludeFileName(xFileName)
-                SetFileName(xFileName)
-                ClearUndo()
-                OpenBMS(ReadChartText(xFileName, InputTextEncoding), xFileName)
-                SetFileName(FileName)
-                SetIsSaved(True)
+                ShowLoadFileProgress(New String() {xFileName}, True)
             Case ".NBMSC"
                 InitPath = ExcludeFileName(xFileName)
-                SetFileName("Imported_" & GetFileName(xFileName))
-                ResetChartTextEncoding()
-                OpenNBMSC(xFileName)
-                SetIsSaved(False)
+                ShowLoadFileProgress(New String() {xFileName}, True)
         End Select
     End Sub
 

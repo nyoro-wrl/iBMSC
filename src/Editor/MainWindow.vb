@@ -88,6 +88,7 @@ Public Class MainWindow
     Dim UseBase62Definitions As Boolean = False
     Dim NewBMSUseBase62Definitions As Boolean = False
 
+    Private Const StartupLoadProgressDelayMilliseconds As Integer = 500
     Dim IsInitializing As Boolean = True
     Dim FirstMouseEnter As Boolean = True
 
@@ -3083,6 +3084,58 @@ Public Class MainWindow
         'THLnType.Text = ""
     End Sub
 
+    Private Function ShowLoadFileProgress(ByVal xPaths() As String,
+                                          ByVal xIsSaved As Boolean,
+                                          Optional ByVal xShowDelayMilliseconds As Integer = 0,
+                                          Optional ByVal xShowApplicationName As Boolean = False) As DialogResult
+        Using xProg As New fLoadFileProgress(xPaths, xIsSaved, True, xShowDelayMilliseconds, xShowApplicationName)
+            If Me.Visible Then Return xProg.ShowDialog(Me)
+
+            Return xProg.ShowDialog()
+        End Using
+    End Function
+
+    Friend Sub ResetCanceledLoad()
+        ReDim SelectedNotes(-1)
+        KMouseOver = -1
+
+        ClearUndo()
+        InitializeNewBMS()
+        ResetChartTextEncoding()
+
+        ReDim Notes(0)
+        ReDim mColumn(999)
+        ReDim hWAV(MaxDefinition)
+        ReDim hBMP(MaxDefinition)
+        ReDim hBPM(MaxDefinition)    'x10000
+        ReDim hSTOP(MaxDefinition)
+        ReDim hBMSCROLL(MaxDefinition)
+        SetUseBase62Definitions(NewBMSUseBase62Definitions)
+        THGenre.Text = ""
+        THTitle.Text = ""
+        THArtist.Text = ""
+        THPlayLevel.Text = ""
+
+        With Notes(0)
+            .ColumnIndex = niBPM
+            .VPosition = -1
+            '.LongNote = False
+            '.Selected = False
+            .Value = 1200000
+        End With
+        THBPM.Value = 120
+        SetChartMode(ChartMode.Key7, True)
+
+        RefreshDefinitionLists()
+
+        SetFileName("Untitled.bms")
+        SetIsSaved(True)
+        CalculateTotalPlayableNotes()
+        CalculateGreatestVPosition()
+        RefreshPanelAll()
+        POStatusRefresh()
+    End Sub
+
     Private Sub Form1_DragEnter(ByVal sender As Object, ByVal e As DragEventArgs) Handles Me.DragEnter
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             e.Effect = DragDropEffects.Copy
@@ -3105,8 +3158,7 @@ Public Class MainWindow
         Dim xOrigPath() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
         Dim xPath() As String = FilterFileBySupported(xOrigPath, SupportedFileExtension)
         If xPath.Length > 0 Then
-            Dim xProg As New fLoadFileProgress(xPath, IsSaved)
-            xProg.ShowDialog(Me)
+            ShowLoadFileProgress(xPath, IsSaved)
         End If
 
         RefreshPanelAll()
@@ -3243,18 +3295,26 @@ Public Class MainWindow
         POStatusRefresh()
     End Sub
 
-    Friend Sub ReadFile(ByVal xPath As String)
+    Friend Sub ReadFile(ByVal xPath As String, Optional ByVal xProgress As fLoadFileProgress = Nothing)
         Select Case LCase(Path.GetExtension(xPath))
             Case ".bms", ".bme", ".bml", ".pms", ".txt"
-                OpenBMS(ReadChartText(xPath, InputTextEncoding), xPath)
+                ReportLoadProgress(xProgress, "Reading file", 0, True)
+                CheckLoadCanceled(xProgress)
+                Dim xChartText As String = ReadChartText(xPath, InputTextEncoding)
+                ReportLoadProgress(xProgress, "Reading file", 3, True)
+                CheckLoadCanceled(xProgress)
+                OpenBMS(xChartText, xPath, xProgress)
                 ClearUndo()
                 NewRecent(xPath)
                 SetFileName(xPath)
                 SetIsSaved(True)
 
             Case ".nbmsc"
+                ReportLoadProgress(xProgress, "Reading file", 0, True)
+                CheckLoadCanceled(xProgress)
                 ResetChartTextEncoding()
                 OpenNBMSC(xPath)
+                ReportLoadProgress(xProgress, "Done", 100, True)
                 InitPath = ExcludeFileName(xPath)
                 NewRecent(xPath)
                 SetFileName("Imported_" & GetFileName(xPath))
@@ -3368,7 +3428,15 @@ Public Class MainWindow
 
         Dim xStr() As String = Environment.GetCommandLineArgs
         If xStr.Length = 2 Then
-            ReadFile(xStr(1))
+            Dim xLoadResult As DialogResult = ShowLoadFileProgress(New String() {xStr(1)}, True, StartupLoadProgressDelayMilliseconds, True)
+            If xLoadResult = Windows.Forms.DialogResult.Cancel Then
+                IsInitializing = False
+                Me.ResumeLayout()
+                Me.TopMost = False
+                Close()
+                Return
+            End If
+
             If LCase(Path.GetExtension(xStr(1))) = ".nbmsc" AndAlso GetFileName(xStr(1)).StartsWith("AutoSave_", True, Nothing) Then GoTo 1000
         End If
 
@@ -3808,11 +3876,7 @@ EndSearch:
 
         If xDOpen.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
         InitPath = ExcludeFileName(xDOpen.FileName)
-        OpenBMS(ReadChartText(xDOpen.FileName, InputTextEncoding), xDOpen.FileName)
-        ClearUndo()
-        SetFileName(xDOpen.FileName)
-        NewRecent(FileName)
-        SetIsSaved(True)
+        ShowLoadFileProgress(New String() {xDOpen.FileName}, True)
         'pIsSaved.Visible = Not IsSaved
     End Sub
 

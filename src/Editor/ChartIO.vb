@@ -5,6 +5,18 @@ Partial Public Class MainWindow
     Private Const NBMSCFileSignature As Integer = &H534D426E
     Private Const NBMSCFileSuffix As Byte = &H43
 
+    Private Sub ReportLoadProgress(ByVal xProgress As fLoadFileProgress, ByVal xStatus As String, ByVal xPercent As Integer, Optional ByVal xForce As Boolean = False)
+        If xProgress Is Nothing Then Return
+
+        xProgress.ReportProgress(xStatus, xPercent, xForce)
+    End Sub
+
+    Private Sub CheckLoadCanceled(ByVal xProgress As fLoadFileProgress)
+        If xProgress Is Nothing Then Return
+
+        xProgress.CheckCanceled()
+    End Sub
+
     Private Function PlayerIndexFromValue(ByVal value As Integer) As Integer
         Select Case value
             Case 1
@@ -37,13 +49,17 @@ Partial Public Class MainWindow
         Return CHPlayer.SelectedIndex
     End Function
 
-    Private Sub OpenBMS(ByVal xStrAll As String, Optional ByVal xPath As String = "")
+    Private Sub OpenBMS(ByVal xStrAll As String, Optional ByVal xPath As String = "", Optional ByVal xProgress As fLoadFileProgress = Nothing)
         KMouseOver = -1
+
+        ReportLoadProgress(xProgress, "Preparing chart", 5, True)
+        CheckLoadCanceled(xProgress)
 
         'Line feed validation: will remove some empty lines
         xStrAll = Replace(Replace(Replace(xStrAll, vbLf, vbCr), vbCr & vbCr, vbCr), vbCr, vbCrLf)
 
         Dim xStrLine() As String = Split(xStrAll, vbCrLf, , CompareMethod.Text)
+        Dim xLineCount As Integer = Math.Max(1, xStrLine.Length)
         Dim xI1 As Integer
         Dim sLine As String
         Dim xExpansion As String = ""
@@ -76,7 +92,13 @@ Partial Public Class MainWindow
         'endSw                  -1
         Dim xStack As Integer = 0
 
-        For Each sLine In xStrLine
+        For xLineIndex As Integer = 0 To xStrLine.Length - 1
+            If xLineIndex Mod 256 = 0 Then
+                ReportLoadProgress(xProgress, "Reading headers", 10 + CInt((xLineIndex / xLineCount) * 25))
+                CheckLoadCanceled(xProgress)
+            End If
+
+            sLine = xStrLine(xLineIndex)
             Dim sLineTrim As String = sLine.Trim
             If xStack > 0 Then GoTo Expansion
 
@@ -215,15 +237,25 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
             End If
         Next
 
+        ReportLoadProgress(xProgress, "Updating measures", 35, True)
+        CheckLoadCanceled(xProgress)
         UpdateMeasureBottom()
 
         xStack = 0
+        Dim xNotes As New List(Of Note)(Math.Max(xStrLine.Length, 1))
+        xNotes.Add(Notes(0))
         Dim xHasPlayableNotes As Boolean = False
         Dim xHas24KeyNotes As Boolean = False
         Dim xHas7KeyNotes As Boolean = False
         Dim xHas5KeyNotes As Boolean = False
 
-        For Each sLine In xStrLine
+        For xLineIndex As Integer = 0 To xStrLine.Length - 1
+            If xLineIndex Mod 256 = 0 Then
+                ReportLoadProgress(xProgress, "Reading notes", 35 + CInt((xLineIndex / xLineCount) * 50))
+                CheckLoadCanceled(xProgress)
+            End If
+
+            sLine = xStrLine(xLineIndex)
             Dim sLineTrim As String = sLine.Trim
             If xStack > 0 Then Continue For
 
@@ -238,14 +270,19 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
 
             If Channel = "01" Then mColumn(xMeasure) += 1 'If the identifier is 01 then add a B column in that measure
             For xI1 = 8 To Len(sLineTrim) - 1 Step 2   'For all Ks within that line ( - 1 can be ommitted )
+                If xI1 Mod 4096 = 0 Then
+                    ReportLoadProgress(xProgress, "Reading notes", 35 + CInt((xLineIndex / xLineCount) * 50))
+                    CheckLoadCanceled(xProgress)
+                End If
+
                 Dim xNoteValueText As String = Mid(sLineTrim, xI1, 2)
                 If xNoteValueText = "00" Then Continue For 'If the K is not 00
 
                 ChartModes.ObserveBmsChannel(Channel, xNoteValueText, xHasPlayableNotes, xHas24KeyNotes, xHas7KeyNotes, xHas5KeyNotes)
 
-                ReDim Preserve Notes(Notes.Length)
+                Dim xNote As New Note
 
-                With Notes(UBound(Notes))
+                With xNote
                     .ColumnIndex = BMSChannelToColumn(Channel) +
                                         IIf(Channel = "01", 1, 0) * (mColumn(xMeasure) - 1)
                     .LongNote = IsChannelLongNote(Channel)
@@ -261,9 +298,15 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                     If Channel = "SC" Then .Value = hBMSCROLL(DefinitionIndex(xNoteValueText))
                 End With
 
+                xNotes.Add(xNote)
+
             Next
         Next
 
+        Notes = xNotes.ToArray()
+
+        ReportLoadProgress(xProgress, "Applying chart settings", 86, True)
+        CheckLoadCanceled(xProgress)
         If NTInput Then ConvertBMSE2NT()
         SetChartMode(ChartModes.DetectFromBms(xPath, xHasPlayableNotes, xHas24KeyNotes, xHas7KeyNotes, xHas5KeyNotes), True)
 
@@ -273,12 +316,18 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
 
         TExpansion.Text = xExpansion
 
+        ReportLoadProgress(xProgress, "Sorting notes", 90, True)
+        CheckLoadCanceled(xProgress)
         SortByVPositionQuick(0, UBound(Notes))
         UpdatePairing()
+
+        ReportLoadProgress(xProgress, "Finalizing", 95, True)
+        CheckLoadCanceled(xProgress)
         CalculateTotalPlayableNotes()
         CalculateGreatestVPosition()
         RefreshPanelAll()
         POStatusRefresh()
+        ReportLoadProgress(xProgress, "Done", 100, True)
     End Sub
 
     ReadOnly BMSChannelList() As String = {"01", "03", "04", "06", "07", "08", "09",
