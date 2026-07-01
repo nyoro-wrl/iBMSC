@@ -1,3 +1,5 @@
+Option Strict On
+
 Namespace Editor
     Public NotInheritable Class ChartCalculations
         Public Const RecommendedTotalMin As Integer = 260

@@ -1,3 +1,5 @@
+Option Strict On
+
 Namespace Editor
     Public NotInheritable Class BmsDefinitionLabels
         Public Const ModeLegacy As Integer = 0

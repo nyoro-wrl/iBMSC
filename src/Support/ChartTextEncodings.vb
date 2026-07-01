@@ -1,3 +1,5 @@
+Option Strict On
+
 Imports System.Text
 
 Public Enum TextEncodingMode
