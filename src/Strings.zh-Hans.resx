@@ -866,8 +866,8 @@
   <data name="SubMenu.ShowHide.Menu" xml:space="preserve">
     <value>主菜单</value>
   </data>
-  <data name="SubMenu.ShowHide.OptionsPanel" xml:space="preserve">
-    <value>设置面板</value>
+  <data name="SubMenu.ShowHide.SidePanel" xml:space="preserve">
+    <value>侧边面板</value>
   </data>
   <data name="SubMenu.ShowHide.RemoveSplitView" xml:space="preserve">
     <value>删除分屏</value>
@@ -994,6 +994,9 @@
   </data>
   <data name="ToolBar.ShowFileName" xml:space="preserve">
     <value>Note上显示文件名</value>
+  </data>
+  <data name="ToolBar.SidePanel" xml:space="preserve">
+    <value>侧边面板</value>
   </data>
   <data name="ToolBar.Stat" xml:space="preserve">
     <value>统计</value>

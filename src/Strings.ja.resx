@@ -938,8 +938,8 @@ Release ページを開きますか？</value>
   <data name="SubMenu.ShowHide.Menu" xml:space="preserve">
     <value>メインメニュー</value>
   </data>
-  <data name="SubMenu.ShowHide.OptionsPanel" xml:space="preserve">
-    <value>オプションパネル</value>
+  <data name="SubMenu.ShowHide.SidePanel" xml:space="preserve">
+    <value>サイドパネル</value>
   </data>
   <data name="SubMenu.ShowHide.RemoveSplitView" xml:space="preserve">
     <value>画面分割を削除</value>
@@ -1075,6 +1075,9 @@ Release ページを開きますか？</value>
   </data>
   <data name="ToolBar.ShowFileName" xml:space="preserve">
     <value>ファイル名を表示</value>
+  </data>
+  <data name="ToolBar.SidePanel" xml:space="preserve">
+    <value>サイドパネル</value>
   </data>
   <data name="ToolBar.Stat" xml:space="preserve">
     <value>統計</value>

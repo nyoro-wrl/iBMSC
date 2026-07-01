@@ -2905,7 +2905,7 @@ Partial Class MainWindow
         Me.mnSOP.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnSOP.Name = "mnSOP"
         Me.mnSOP.Size = New System.Drawing.Size(172, 22)
-        Me.mnSOP.Text = "&Options Panel"
+        Me.mnSOP.Text = "&Side Panel"
         '
         'mnSStatus
         '

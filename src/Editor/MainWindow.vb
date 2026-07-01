@@ -350,6 +350,8 @@ Public Class MainWindow
     Private WithEvents TBRemoveSplitView As ToolStripButton
     Private WithEvents TBSyncSplitViewScroll As ToolStripButton
     Private ToolStripSeparatorSplitView As ToolStripSeparator
+    Private WithEvents TBSidePanel As ToolStripButton
+    Private ToolStripSeparatorSidePanel As ToolStripSeparator
     Private SplitViewResizeCursor As Cursor
     Private EditorContextMenu As ContextMenuStrip
     Private EditorContextPanelIndex As Integer = 0
@@ -863,6 +865,7 @@ Public Class MainWindow
         InitializeOptionsMenuItems()
         InitializeEncodingMenuItems()
         InitializeSplitViewControls()
+        InitializeSidePanelToolbar()
         ReorderConversionMenu()
         RefreshMenuShortcutDisplay()
         InitializeSplitPanes()
@@ -1304,6 +1307,7 @@ Public Class MainWindow
         SetText("ToolBar.PlayStop", TBStop.Text)
         SetText("ToolBar.Language", TBLanguage.Text)
         SetText("ToolBar.Theme", TBTheme.Text)
+        If TBSidePanel IsNot Nothing Then SetText("ToolBar.SidePanel", TBSidePanel.Text)
         SetToolStripText("ToolBar.Grid", TBMain.Items("TBGridDivideLabel"))
         SetToolStripText("ToolBar.GridSub", TBMain.Items("TBGridSubLabel"))
         SetToolStripText("ToolBar.GridHeight", TBMain.Items("TBGridHeightLabel"))
@@ -1325,7 +1329,7 @@ Public Class MainWindow
 
         SetText("SubMenu.ShowHide.Menu", mnSMenu.Text)
         SetText("SubMenu.ShowHide.ToolBar", mnSTB.Text)
-        SetText("SubMenu.ShowHide.OptionsPanel", mnSOP.Text)
+        SetText("SubMenu.ShowHide.SidePanel", mnSOP.Text)
         SetText("SubMenu.ShowHide.StatusBar", mnSStatus.Text)
         SetText("SubMenu.ShowHide.AddSplitView", mnSAddSplitView.Text)
         SetText("SubMenu.ShowHide.RemoveSplitView", mnSRemoveSplitView.Text)
@@ -2292,6 +2296,23 @@ Public Class MainWindow
         End If
 
         RefreshSplitViewControls()
+    End Sub
+
+    Private Sub InitializeSidePanelToolbar()
+        ToolStripSeparatorSidePanel = New ToolStripSeparator With {
+            .Name = "ToolStripSeparatorSidePanel"
+        }
+        TBSidePanel = New ToolStripButton With {
+            .CheckOnClick = True,
+            .Checked = mnSOP.Checked,
+            .DisplayStyle = ToolStripItemDisplayStyle.Image,
+            .Image = My.Resources.x16GeneralOptions,
+            .ImageTransparentColor = Color.Magenta,
+            .Name = "TBSidePanel",
+            .Text = "Side Panel"
+        }
+
+        TBMain.Items.AddRange(New ToolStripItem() {ToolStripSeparatorSidePanel, TBSidePanel})
     End Sub
 
     ''' <summary>
@@ -7017,12 +7038,16 @@ Jump2:
     Private Sub mnSOP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSOP.CheckedChanged
         POptionsScroll.Visible = mnSOP.Checked
         POptionsResizer.Visible = mnSOP.Checked
+        If TBSidePanel IsNot Nothing Then TBSidePanel.Checked = mnSOP.Checked
         KeepOptionsPanelDockedRight()
         ResizeSplitPanelsByRatio()
         If mnSOP.Checked Then
             ResetSelectedOptionsTabScroll()
             QueueResetSelectedOptionsTabScroll()
         End If
+    End Sub
+    Private Sub TBSidePanel_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBSidePanel.CheckedChanged
+        If mnSOP.Checked <> TBSidePanel.Checked Then mnSOP.Checked = TBSidePanel.Checked
     End Sub
     Private Sub mnSStatus_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSStatus.CheckedChanged
         pStatus.Visible = mnSStatus.Checked

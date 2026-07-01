@@ -923,8 +923,8 @@ Release 페이지를 여시겠습니까?</value>
   <data name="SubMenu.ShowHide.Menu" xml:space="preserve">
     <value>메인메뉴</value>
   </data>
-  <data name="SubMenu.ShowHide.OptionsPanel" xml:space="preserve">
-    <value>옵션 영역</value>
+  <data name="SubMenu.ShowHide.SidePanel" xml:space="preserve">
+    <value>사이드 패널</value>
   </data>
   <data name="SubMenu.ShowHide.RemoveSplitView" xml:space="preserve">
     <value>분할 화면 삭제</value>
@@ -1054,6 +1054,9 @@ Release 페이지를 여시겠습니까?</value>
   </data>
   <data name="ToolBar.ShowFileName" xml:space="preserve">
     <value>파일명 표시</value>
+  </data>
+  <data name="ToolBar.SidePanel" xml:space="preserve">
+    <value>사이드 패널</value>
   </data>
   <data name="ToolBar.Stat" xml:space="preserve">
     <value>통계</value>
