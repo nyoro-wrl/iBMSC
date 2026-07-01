@@ -323,7 +323,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <ItemGroup>
     <ThemeFiles Include="..\Theme\**\*.*" />
+    <MyResourceDependencyFiles Include="Resources\Images\**\*.*" />
   </ItemGroup>
+  <Target Name="TouchMyResourcesResx" BeforeTargets="CoreResGen" Inputs="@(MyResourceDependencyFiles)" Outputs="My Project\Resources.resx">
+    <Touch Files="My Project\Resources.resx" AlwaysCreate="true" />
+  </Target>
   <Target Name="EmbedReleaseAssemblies" AfterTargets="ResolveReferences" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <ItemGroup>
       <EmbeddedAssemblyFiles Include="@(ReferenceCopyLocalPaths)" Condition=" '%(ReferenceCopyLocalPaths.Extension)' == '.dll' ">

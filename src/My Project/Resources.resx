@@ -286,6 +286,9 @@
   <data name="x16ShowFileNameN" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\ButtonsSmall\x16ShowFileNameN.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="x16SidePanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\ButtonsSmall\x16SidePanel.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="x16Statistics" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\ButtonsSmall\x16Statistics.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

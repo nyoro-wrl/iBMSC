@@ -3632,7 +3632,7 @@ Partial Class MainWindow
         Me.TBSidePanel.Checked = True
         Me.TBSidePanel.CheckState = System.Windows.Forms.CheckState.Checked
         Me.TBSidePanel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TBSidePanel.Image = Global.nBMSC.My.Resources.Resources.x16GeneralOptions
+        Me.TBSidePanel.Image = Global.nBMSC.My.Resources.Resources.x16SidePanel
         Me.TBSidePanel.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TBSidePanel.Name = "TBSidePanel"
         Me.TBSidePanel.Size = New System.Drawing.Size(23, 22)
