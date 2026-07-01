@@ -71,10 +71,6 @@ Public Class diagFind
         TBDelete.Text = Strings.fFind.Delete_
         TBClose.Text = Strings.fFind.Close_
 
-        Me.Panel1.Controls.Add(Me.cb1)
-        Me.Panel1.Controls.Add(Me.cb2)
-        Me.Panel1.Controls.Add(Me.cb3)
-
         Dim xColumn = 1
         Dim xLow = 0
         For xI1 As Integer = 0 To 25
@@ -121,11 +117,8 @@ Public Class diagFind
         If xLow Mod 8 <> 0 Then xColumn += 1
         xLow = 0
 
-        Me.Panel1.Controls.Add(Me.cb4)
         Me.cb4.Location = New Point(0 * 55 + 3, xColumn * 25 + 2)
-        Me.Panel1.Controls.Add(Me.cb5)
         Me.cb5.Location = New Point(1 * 55 + 3, xColumn * 25 + 2)
-        Me.Panel1.Controls.Add(Me.cb6)
         Me.cb6.Location = New Point(2 * 55 + 3, xColumn * 25 + 2)
 
         xColumn += 1

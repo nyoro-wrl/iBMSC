@@ -98,40 +98,24 @@ Public Class OpVisual
         ReDim co(UBound(col))
 
         For xI1 As Integer = 0 To UBound(col)
-            Dim jw As New NumericUpDown
-            With jw
-                .BorderStyle = BorderStyle.FixedSingle
-                .Location = New Point(xI1 * 32, 12)
-                .Maximum = 999
-                .Size = New Size(33, 23)
-                .Value = col(xI1).Width
-            End With
+            Dim columnView As New ColumnOptionView
+            columnView.Location = New Point(xI1 * 32, 0)
+            columnView.ColumnWidthInput.Value = col(xI1).Width
+            columnView.ColumnTitleInput.Text = col(xI1).Title
 
-            Dim jt As New TextBox
-            With jt
-                .BorderStyle = BorderStyle.FixedSingle
-                .Location = New Point(xI1 * 32, 34)
-                .Size = New Size(33, 23)
-                .Text = col(xI1).Title
-            End With
-
-            Dim js As New Button
+            Dim jw As NumericUpDown = columnView.ColumnWidthInput
+            Dim jt As TextBox = columnView.ColumnTitleInput
+            Dim js As Button = columnView.SNoteButton
             With js
-                .FlatStyle = FlatStyle.Popup
                 .Font = monoFont
-                .Location = New Point(xI1 * 32, 63)
-                .Size = New Size(33, 66)
                 .BackColor = Color.FromArgb(col(xI1).cNote)
                 .ForeColor = col(xI1).cText
                 .Text = To4Hex(col(xI1).cNote)
                 .Name = "cNote"
             End With
-            Dim jst As New Button
+            Dim jst As Button = columnView.STextButton
             With jst
-                .FlatStyle = FlatStyle.Popup
                 .Font = monoFont
-                .Location = New Point(xI1 * 32, 128)
-                .Size = New Size(33, 66)
                 .BackColor = Color.FromArgb(col(xI1).cNote)
                 .ForeColor = col(xI1).cText
                 .Text = To4Hex(col(xI1).cText.ToArgb)
@@ -140,23 +124,17 @@ Public Class OpVisual
             js.Tag = jst
             jst.Tag = js
 
-            Dim jl As New Button
+            Dim jl As Button = columnView.LNoteButton
             With jl
-                .FlatStyle = FlatStyle.Popup
                 .Font = monoFont
-                .Location = New Point(xI1 * 32, 193)
-                .Size = New Size(33, 66)
                 .BackColor = Color.FromArgb(col(xI1).cLNote)
                 .ForeColor = col(xI1).cLText
                 .Text = To4Hex(col(xI1).cLNote)
                 .Name = "cNote"
             End With
-            Dim jlt As New Button
+            Dim jlt As Button = columnView.LTextButton
             With jlt
-                .FlatStyle = FlatStyle.Popup
                 .Font = monoFont
-                .Location = New Point(xI1 * 32, 258)
-                .Size = New Size(33, 66)
                 .BackColor = Color.FromArgb(col(xI1).cLNote)
                 .ForeColor = col(xI1).cLText
                 .Text = To4Hex(col(xI1).cLText.ToArgb)
@@ -165,12 +143,9 @@ Public Class OpVisual
             jl.Tag = jlt
             jlt.Tag = jl
 
-            Dim jb As New Button
+            Dim jb As Button = columnView.BGButton
             With jb
-                .FlatStyle = FlatStyle.Popup
                 .Font = monoFont
-                .Location = New Point(xI1 * 32, 323)
-                .Size = New Size(33, 66)
                 .BackColor = col(xI1).cBG
                 .ForeColor = IIf(CInt(col(xI1).cBG.GetBrightness * 255) + 255 - col(xI1).cBG.A >= 128, Color.Black, Color.White)
                 .Text = To4Hex(col(xI1).cBG.ToArgb)
@@ -178,13 +153,7 @@ Public Class OpVisual
                 .Tag = Nothing
             End With
 
-            Panel2.Controls.Add(jw)
-            Panel2.Controls.Add(jt)
-            Panel2.Controls.Add(js)
-            Panel2.Controls.Add(jst)
-            Panel2.Controls.Add(jl)
-            Panel2.Controls.Add(jlt)
-            Panel2.Controls.Add(jb)
+            Panel2.Controls.Add(columnView)
             co(xI1).Width = jw
             co(xI1).Title = jt
             co(xI1).SNote = js

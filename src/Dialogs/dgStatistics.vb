@@ -37,14 +37,8 @@ Public Class dgStatistics
 
         For row As Integer = 0 To 6
             For col As Integer = 0 To 5
-                Dim xLabel As New Label
-                xLabel.Dock = DockStyle.Fill
-                xLabel.TextAlign = ContentAlignment.MiddleCenter
-                xLabel.Margin = New Padding(0)
-                xLabel.Font = New Font(Me.Font, FontStyle.Bold)
-                If data(row, col) <> 0 Then xLabel.Text = data(row, col)
-                If row Mod 2 = 0 Then xLabel.BackColor = Color.FromArgb(&H10000000)
-                TableLayoutPanel1.Controls.Add(xLabel, col + 1, row + 1)
+                StatisticValueLabels(row, col).Font = New Font(Me.Font, FontStyle.Bold)
+                StatisticValueLabels(row, col).Text = If(data(row, col) <> 0, data(row, col).ToString(), "")
             Next
         Next
     End Sub

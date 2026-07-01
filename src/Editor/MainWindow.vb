@@ -343,6 +343,13 @@ Public Class MainWindow
     Private WithEvents TBGridWidth As ToolStripComboBox
     Private WithEvents TBDisableVertical As ToolStripButton
     Private WithEvents TBGridSnap As ToolStripButton
+    Private ToolStripSeparatorGridStart As ToolStripSeparator
+    Private ToolStripSeparatorGridScale As ToolStripSeparator
+    Private ToolStripSeparatorDisableVertical As ToolStripSeparator
+    Private TBGridDivideLabel As ToolStripLabel
+    Private TBGridSubLabel As ToolStripLabel
+    Private TBGridHeightLabel As ToolStripLabel
+    Private TBGridWidthLabel As ToolStripLabel
     Private UpdatingGridToolbar As Boolean = False
     Private WithEvents TBPlayer As ToolStripComboBox
     Private UpdatingPlayerSelector As Boolean = False
@@ -371,6 +378,7 @@ Public Class MainWindow
     Private EditorContextModify As ToolStripMenuItem
     Private EditorContextMirror As ToolStripMenuItem
     Private EditorContextCloseSplitView As ToolStripMenuItem
+    Private EditorContextPlaySeparator As ToolStripSeparator
     Private EditorContextEditSeparator As ToolStripSeparator
     Private EditorContextConvertSeparator As ToolStripSeparator
     Private EditorContextModifySeparator As ToolStripSeparator
@@ -378,6 +386,11 @@ Public Class MainWindow
     Private DefinitionContextMenu As ContextMenuStrip
     Private DefinitionContextDelete As ToolStripMenuItem
     Private DefinitionContextList As ListBox
+    Private MainEditorView As Panel
+    Private WithEvents MainEditorVScroll As EditorScrollBar
+    Private MainEditorHScrollStrip As Panel
+    Private WithEvents MainEditorHScroll As EditorScrollBar
+    Private MainEditorHScrollCorner As Panel
 
     Private Class EditorScrollBar
         Inherits Control
@@ -866,7 +879,6 @@ Public Class MainWindow
         InitializeEncodingMenuItems()
         InitializeSplitViewControls()
         InitializeSidePanelToolbar()
-        ReorderConversionMenu()
         RefreshMenuShortcutDisplay()
         InitializeSplitPanes()
         ApplyToolbarLayoutRules()
@@ -897,52 +909,8 @@ Public Class MainWindow
     End Sub
 
     Private Sub InitializeEditorContextMenu()
-        EditorContextMenu = New ContextMenuStrip(components)
         EditorContextMenu.ShowImageMargin = True
-        EditorContextPlayB = New ToolStripMenuItem()
-        EditorContextPlay = New ToolStripMenuItem()
-        EditorContextInsert = New ToolStripMenuItem()
-        EditorContextRemove = New ToolStripMenuItem()
-        EditorContextCut = New ToolStripMenuItem()
-        EditorContextCopy = New ToolStripMenuItem()
-        EditorContextPaste = New ToolStripMenuItem()
-        EditorContextDelete = New ToolStripMenuItem()
-        EditorContextHidden = New ToolStripMenuItem()
-        EditorContextVisible = New ToolStripMenuItem()
-        EditorContextHiddenVisible = New ToolStripMenuItem()
-        EditorContextLandmine = New ToolStripMenuItem()
-        EditorContextNormalLandmine = New ToolStripMenuItem()
-        EditorContextModify = New ToolStripMenuItem()
-        EditorContextMirror = New ToolStripMenuItem()
-        EditorContextCloseSplitView = New ToolStripMenuItem()
-        EditorContextEditSeparator = New ToolStripSeparator()
-        EditorContextConvertSeparator = New ToolStripSeparator()
-        EditorContextModifySeparator = New ToolStripSeparator()
-        EditorContextSplitViewSeparator = New ToolStripSeparator()
         EditorContextCloseSplitView.Text = "Close Splitter"
-
-        EditorContextMenu.Items.AddRange(New ToolStripItem() {
-            EditorContextPlayB,
-            EditorContextPlay,
-            New ToolStripSeparator(),
-            EditorContextInsert,
-            EditorContextRemove,
-            EditorContextEditSeparator,
-            EditorContextCut,
-            EditorContextCopy,
-            EditorContextPaste,
-            EditorContextDelete,
-            EditorContextConvertSeparator,
-            EditorContextHidden,
-            EditorContextLandmine,
-            EditorContextVisible,
-            EditorContextHiddenVisible,
-            EditorContextNormalLandmine,
-            EditorContextModifySeparator,
-            EditorContextModify,
-            EditorContextMirror,
-            EditorContextSplitViewSeparator,
-            EditorContextCloseSplitView})
 
         AddHandler EditorContextMenu.Opening, AddressOf EditorContextMenu_Opening
         AddHandler EditorContextPlayB.Click, AddressOf TBPlayB_Click
@@ -1450,24 +1418,6 @@ Public Class MainWindow
         Return text & xSuffix
     End Function
 
-    Private Sub ReorderConversionMenu()
-        cmnConversion.Items.Clear()
-        cmnConversion.Items.AddRange(New ToolStripItem() {
-            POBHidden,
-            POBLandmine,
-            POBVisible,
-            POBHiddenVisible,
-            POBNormalLandmine,
-            ToolStripSeparator11,
-            POBModify,
-            POBMirror,
-            ToolStripSeparator10,
-            POBLong,
-            POBShort,
-            POBLongShort
-        })
-    End Sub
-
     Private Function HasSelectedNotes() As Boolean
         For xI1 As Integer = 1 To UBound(Notes)
             If Notes(xI1).Selected Then Return True
@@ -1593,12 +1543,7 @@ Public Class MainWindow
     End Function
 
     Private Sub InitializeDefinitionContextMenu()
-        DefinitionContextMenu = New ContextMenuStrip(components)
-        DefinitionContextDelete = New ToolStripMenuItem With {
-            .Name = "DefinitionContextDelete",
-            .Text = RemoveMenuAccessKeys(mnDelete.Text)
-        }
-        DefinitionContextMenu.Items.Add(DefinitionContextDelete)
+        DefinitionContextDelete.Text = RemoveMenuAccessKeys(mnDelete.Text)
 
         LWAV.ContextMenuStrip = DefinitionContextMenu
         LBMP.ContextMenuStrip = DefinitionContextMenu
@@ -1670,26 +1615,13 @@ Public Class MainWindow
     End Sub
 
     Private Sub InitializeOptionsMenuItems()
-        mnSlashGrid = New ToolStripMenuItem With {
-            .Image = My.Resources.Shortcut,
-            .Name = "mnSlashGrid",
-            .ShortcutKeyDisplayString = "/",
-            .Text = "Slash key grid value"
-        }
-
-        Dim menuIndex As Integer = mnOptions.DropDownItems.IndexOf(ToolStripSeparator20)
-        If menuIndex >= 0 Then
-            mnOptions.DropDownItems.Insert(menuIndex, mnSlashGrid)
-        Else
-            mnOptions.DropDownItems.Add(mnSlashGrid)
-        End If
+        mnSlashGrid.Image = My.Resources.Shortcut
+        mnSlashGrid.ShortcutKeyDisplayString = "/"
     End Sub
 
     Private Sub InitializeEncodingMenuItems()
-        mnReloadEncoding = New ToolStripMenuItem With {
-            .Name = "mnReloadEncoding"
-        }
-
+        mnReloadEncoding.DropDownItems.Clear()
+        ReloadEncodingMenuItems.Clear()
         For Each xMode As TextEncodingMode In InputTextEncodingModes()
             Dim xItem As New ToolStripMenuItem With {
                 .Name = "mnReloadEncoding" & TextEncodingModeToString(xMode),
@@ -1699,13 +1631,6 @@ Public Class MainWindow
             ReloadEncodingMenuItems.Add(xMode, xItem)
             mnReloadEncoding.DropDownItems.Add(xItem)
         Next
-
-        Dim xIndex As Integer = mnFile.DropDownItems.IndexOf(mnOpen)
-        If xIndex >= 0 Then
-            mnFile.DropDownItems.Insert(xIndex + 1, mnReloadEncoding)
-        Else
-            mnFile.DropDownItems.Add(mnReloadEncoding)
-        End If
 
         SyncEncodingMenuText()
     End Sub
@@ -1838,44 +1763,12 @@ Public Class MainWindow
     End Sub
 
     Private Sub InitializeGridToolbar()
-        TBGridDivide = CreateGridCombo("TBGridDivide", 47, GridDivideValueTexts())
-        TBGridSub = CreateGridCombo("TBGridSub", 47, New String() {"1", "2", "3", "4", "6", "8", "12", "16"})
-        TBGridHeight = CreateGridCombo("TBGridHeight", 50, New String() {"x0.25", "x0.5", "x0.75", "x1.0", "x1.25", "x1.5", "x2.0", "x3.0", "x4.0", "x5.0"})
-        TBGridWidth = CreateGridCombo("TBGridWidth", 50, New String() {"x0.25", "x0.5", "x0.75", "x1.0", "x1.25", "x1.5", "x2.0", "x3.0", "x4.0", "x5.0"})
-        TBDisableVertical = New ToolStripButton With {
-            .CheckOnClick = True,
-            .DisplayStyle = ToolStripItemDisplayStyle.Image,
-            .Image = My.Resources.x16VerticalLock,
-            .ImageTransparentColor = Color.Magenta,
-            .Name = "TBDisableVertical",
-            .Text = CGDisableVertical.Text
-        }
-        TBGridSnap = New ToolStripButton With {
-            .CheckOnClick = True,
-            .DisplayStyle = ToolStripItemDisplayStyle.Image,
-            .Image = My.Resources.pgmbl,
-            .ImageTransparentColor = Color.Magenta,
-            .Name = "TBGridSnap",
-            .Text = CGSnap.Text
-        }
-
-        Dim gridItems As ToolStripItem() = {
-            New ToolStripSeparator With {.Name = "ToolStripSeparatorGridStart"},
-            New ToolStripLabel With {.Name = "TBGridDivideLabel", .Text = "Grid"},
-            TBGridDivide,
-            New ToolStripLabel With {.Name = "TBGridSubLabel", .Text = "Sub"},
-            TBGridSub,
-            New ToolStripSeparator With {.Name = "ToolStripSeparatorGridScale"},
-            New ToolStripLabel With {.Name = "TBGridHeightLabel", .Text = "Height"},
-            TBGridHeight,
-            New ToolStripLabel With {.Name = "TBGridWidthLabel", .Text = "Width"},
-            TBGridWidth,
-            New ToolStripSeparator With {.Name = "ToolStripSeparatorDisableVertical"},
-            TBDisableVertical,
-            TBGridSnap
-        }
-
-        TBMain.Items.AddRange(gridItems)
+        ConfigureGridCombo(TBGridDivide, 47, GridDivideValueTexts())
+        ConfigureGridCombo(TBGridSub, 47, New String() {"1", "2", "3", "4", "6", "8", "12", "16"})
+        ConfigureGridCombo(TBGridHeight, 50, New String() {"x0.25", "x0.5", "x0.75", "x1.0", "x1.25", "x1.5", "x2.0", "x3.0", "x4.0", "x5.0"})
+        ConfigureGridCombo(TBGridWidth, 50, New String() {"x0.25", "x0.5", "x0.75", "x1.0", "x1.25", "x1.5", "x2.0", "x3.0", "x4.0", "x5.0"})
+        TBDisableVertical.Text = CGDisableVertical.Text
+        TBGridSnap.Text = CGSnap.Text
         ApplyGridToolbarLabelFont()
 
         RefreshGridToolbar()
@@ -1893,16 +1786,14 @@ Public Class MainWindow
         Next
     End Sub
 
-    Private Function CreateGridCombo(ByVal name As String, ByVal width As Integer, ByVal values() As String) As ToolStripComboBox
-        Dim combo As New ToolStripComboBox With {
-            .AutoSize = False,
-            .DropDownStyle = ComboBoxStyle.DropDown,
-            .Name = name,
-            .Margin = New Padding(0, 0, 1, 0),
-            .Size = New Size(width, 25)
-        }
+    Private Sub ConfigureGridCombo(ByVal combo As ToolStripComboBox, ByVal width As Integer, ByVal values() As String)
+        combo.AutoSize = False
+        combo.DropDownStyle = ComboBoxStyle.DropDown
+        combo.Margin = New Padding(0, 0, 1, 0)
+        combo.Size = New Size(width, 25)
         combo.ComboBox.FlatStyle = FlatStyle.Standard
         combo.ComboBox.Tag = combo
+        combo.Items.Clear()
         For Each value As String In values
             combo.Items.Add(value)
         Next
@@ -1910,8 +1801,7 @@ Public Class MainWindow
         AddHandler combo.ComboBox.Leave, AddressOf TBGridCombo_Leave
         AddHandler combo.ComboBox.KeyDown, AddressOf TBGridCombo_KeyDown
         AddHandler combo.ComboBox.MouseWheel, AddressOf TBGridCombo_MouseWheel
-        Return combo
-    End Function
+    End Sub
 
     Private Sub RefreshGridToolbar()
         If TBGridDivide Is Nothing Then Return
@@ -2188,21 +2078,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub InitializePlayerSelector()
-        TBPlayer = New ToolStripComboBox With {
-            .AutoSize = False,
-            .DropDownStyle = ComboBoxStyle.DropDownList,
-            .Name = "TBPlayer",
-            .Margin = New Padding(0, 0, 1, 0),
-            .Size = New Size(PlayerSelectorWidth(), 25)
-        }
+        TBPlayer.AutoSize = False
+        TBPlayer.DropDownStyle = ComboBoxStyle.DropDownList
+        TBPlayer.Margin = New Padding(0, 0, 1, 0)
+        TBPlayer.Size = New Size(PlayerSelectorWidth(), 25)
         TBPlayer.ComboBox.FlatStyle = FlatStyle.Standard
-
-        Dim toolbarIndex As Integer = TBMain.Items.IndexOf(TBPlayB)
-        If toolbarIndex >= 0 Then
-            TBMain.Items.Insert(toolbarIndex, TBPlayer)
-        Else
-            TBMain.Items.Add(TBPlayer)
-        End If
 
         RefreshPlayerSelector()
     End Sub
@@ -2239,80 +2119,11 @@ Public Class MainWindow
     End Sub
 
     Private Sub InitializeSplitViewControls()
-        mnSyncSplitViewScroll = New ToolStripMenuItem With {
-            .CheckOnClick = True,
-            .Image = My.Resources.x16Lock,
-            .Name = "mnSyncSplitViewScroll",
-            .Text = "Sync Scroll between Splitters"
-        }
-        mnSAddSplitView = New ToolStripMenuItem With {
-            .Image = My.Resources.x16Add,
-            .Name = "mnSAddSplitView",
-            .Text = "Add Splitter"
-        }
-        mnSRemoveSplitView = New ToolStripMenuItem With {
-            .Image = My.Resources.x16Remove,
-            .Name = "mnSRemoveSplitView",
-            .Text = "Remove Splitter"
-        }
-
-        If mnSys.DropDownItems.Contains(mnSLSplitView) Then mnSys.DropDownItems.Remove(mnSLSplitView)
-        If mnSys.DropDownItems.Contains(mnSRSplitView) Then mnSys.DropDownItems.Remove(mnSRSplitView)
-
-        ToolStripSeparatorSplitView = New ToolStripSeparator With {
-            .Name = "ToolStripSeparatorSplitView"
-        }
-        TBAddSplitView = New ToolStripButton With {
-            .DisplayStyle = ToolStripItemDisplayStyle.Image,
-            .Image = My.Resources.x16Add,
-            .ImageTransparentColor = Color.Magenta,
-            .Name = "TBAddSplitView",
-            .Text = "Add Splitter"
-        }
-        TBRemoveSplitView = New ToolStripButton With {
-            .DisplayStyle = ToolStripItemDisplayStyle.Image,
-            .Image = My.Resources.x16Remove,
-            .ImageTransparentColor = Color.Magenta,
-            .Name = "TBRemoveSplitView",
-            .Text = "Remove Splitter"
-        }
-        TBSyncSplitViewScroll = New ToolStripButton With {
-            .CheckOnClick = True,
-            .DisplayStyle = ToolStripItemDisplayStyle.Image,
-            .Image = My.Resources.x16Lock,
-            .ImageTransparentColor = Color.Magenta,
-            .Name = "TBSyncSplitViewScroll",
-            .Text = "Sync Scroll between Splitters"
-        }
-
-        Dim toolbarIndex As Integer = TBMain.Items.IndexOf(ToolStripSeparator4)
-        Dim splitViewItems As ToolStripItem() = {ToolStripSeparatorSplitView, TBAddSplitView, TBRemoveSplitView, TBSyncSplitViewScroll}
-        If toolbarIndex >= 0 Then
-            For i As Integer = 0 To splitViewItems.Length - 1
-                TBMain.Items.Insert(toolbarIndex + i, splitViewItems(i))
-            Next
-        Else
-            TBMain.Items.AddRange(splitViewItems)
-        End If
-
         RefreshSplitViewControls()
     End Sub
 
     Private Sub InitializeSidePanelToolbar()
-        ToolStripSeparatorSidePanel = New ToolStripSeparator With {
-            .Name = "ToolStripSeparatorSidePanel"
-        }
-        TBSidePanel = New ToolStripButton With {
-            .CheckOnClick = True,
-            .Checked = mnSOP.Checked,
-            .DisplayStyle = ToolStripItemDisplayStyle.Image,
-            .Image = My.Resources.x16GeneralOptions,
-            .ImageTransparentColor = Color.Magenta,
-            .Name = "TBSidePanel",
-            .Text = "Side Panel"
-        }
-
-        TBMain.Items.AddRange(New ToolStripItem() {ToolStripSeparatorSidePanel, TBSidePanel})
+        TBSidePanel.Checked = mnSOP.Checked
     End Sub
 
     ''' <summary>
@@ -6839,112 +6650,23 @@ Jump2:
     End Function
 
     Private Function ShowUpdateAvailableDialog(ByVal xResult As UpdateCheckResult) As UpdatePromptAction
-        Using xForm As New Form()
-            xForm.Text = Strings.Messages.UpdateCheckTitle
-            xForm.FormBorderStyle = FormBorderStyle.FixedDialog
-            xForm.StartPosition = FormStartPosition.CenterParent
-            xForm.MinimizeBox = False
-            xForm.MaximizeBox = False
-            xForm.ShowInTaskbar = False
-            xForm.Font = Font
+        Dim xMessageText As String = String.Format(Strings.Messages.UpdateAvailable, FormatVersionText(My.Application.Info.Version), FormatLatestVersionText(xResult))
+        Dim xMessageLines As String() = xMessageText.Replace(vbCrLf, vbLf).Split(ControlChars.Lf)
+        Dim xMainInstruction As String = If(xMessageLines.Length > 0, xMessageLines(0), "")
+        Dim xDetails As String = ""
+        If xMessageLines.Length > 1 Then
+            Dim xContentLines(xMessageLines.Length - 2) As String
+            Array.Copy(xMessageLines, 1, xContentLines, 0, xContentLines.Length)
+            xDetails = String.Join(vbCrLf, xContentLines)
+        End If
 
-            Dim xContentPadding As New Padding(22, 14, 22, 18)
-            Dim xButtonPadding As New Padding(12, 8, 12, 8)
-            Dim xIconSize As Integer = 32
-            Dim xIconTextGap As Integer = 14
-            Dim xMainDetailsGap As Integer = 6
-
-            Dim xIcon As New PictureBox()
-            xIcon.Image = SystemIcons.Information.ToBitmap()
-            xIcon.Size = New Size(xIconSize, xIconSize)
-            xIcon.SizeMode = PictureBoxSizeMode.CenterImage
-
-            Dim xMessageText As String = String.Format(Strings.Messages.UpdateAvailable, FormatVersionText(My.Application.Info.Version), FormatLatestVersionText(xResult))
-            Dim xMessageLines As String() = xMessageText.Replace(vbCrLf, vbLf).Split(ControlChars.Lf)
-
-            Dim xMainInstruction As New Label()
-            xMainInstruction.AutoSize = True
-            xMainInstruction.ForeColor = SystemColors.HotTrack
-            xMainInstruction.Font = New Font(Font.FontFamily, Font.Size + 2.0!, FontStyle.Regular)
-            xMainInstruction.Text = If(xMessageLines.Length > 0, xMessageLines(0), "")
-
-            Dim xContentText As String = ""
-            If xMessageLines.Length > 1 Then
-                Dim xContentLines(xMessageLines.Length - 2) As String
-                Array.Copy(xMessageLines, 1, xContentLines, 0, xContentLines.Length)
-                xContentText = String.Join(vbCrLf, xContentLines)
-            End If
-
-            Dim xDetails As New Label()
-            xDetails.AutoSize = True
-            xDetails.Text = xContentText
-
-            Dim xOpen As New Button()
-            xOpen.Text = Strings.Messages.UpdateOpenRelease
-            xOpen.DialogResult = DialogResult.Yes
-            xOpen.Size = MeasureUpdateDialogButton(xOpen.Text, xForm.Font)
-            xOpen.Margin = New Padding(6, 0, 0, 0)
-
-            Dim xLater As New Button()
-            xLater.Text = Strings.Messages.UpdateLater
-            xLater.DialogResult = DialogResult.No
-            xLater.Size = MeasureUpdateDialogButton(xLater.Text, xForm.Font)
-            xLater.Margin = New Padding(6, 0, 0, 0)
-
-            Dim xSkip As New Button()
-            xSkip.Text = Strings.Messages.UpdateSkipVersion
-            xSkip.DialogResult = DialogResult.Ignore
-            xSkip.Size = MeasureUpdateDialogButton(xSkip.Text, xForm.Font)
-            xSkip.Margin = New Padding(6, 0, 0, 0)
-
-            Dim xMainInstructionSize As Size = xMainInstruction.PreferredSize
-            Dim xDetailsSize As Size = xDetails.PreferredSize
-            Dim xContentTextWidth As Integer = Math.Max(xMainInstructionSize.Width, xDetailsSize.Width)
-            Dim xContentTextHeight As Integer = xMainInstructionSize.Height + xMainDetailsGap + xDetailsSize.Height
-            Dim xContentWidth As Integer = xContentPadding.Left + xIconSize + xIconTextGap + xContentTextWidth + xContentPadding.Right
-            Dim xContentHeight As Integer = xContentPadding.Top + Math.Max(xIconSize, xContentTextHeight) + xContentPadding.Bottom
-
-            Dim xButtons As New FlowLayoutPanel()
-            xButtons.FlowDirection = FlowDirection.RightToLeft
-            xButtons.Padding = xButtonPadding
-            xButtons.WrapContents = False
-
-            Dim xButtonControls As Button() = {xOpen, xSkip, xLater}
-            Dim xButtonsWidth As Integer = xButtonPadding.Left + xButtonPadding.Right
-            Dim xButtonHeight As Integer = 0
-            For Each xButton As Button In xButtonControls
-                xButtonsWidth += xButton.Width + xButton.Margin.Left + xButton.Margin.Right
-                xButtonHeight = Math.Max(xButtonHeight, xButton.Height + xButton.Margin.Top + xButton.Margin.Bottom)
-            Next
-            Dim xButtonsHeight As Integer = xButtonPadding.Top + xButtonHeight + xButtonPadding.Bottom
-            Dim xClientWidth As Integer = Math.Max(xContentWidth, xButtonsWidth)
-
-            Dim xContent As New Panel()
-            xContent.BackColor = SystemColors.Window
-            xContent.Location = New Point(0, 0)
-            xContent.Size = New Size(xClientWidth, xContentHeight)
-
-            Dim xTextLeft As Integer = xContentPadding.Left + xIconSize + xIconTextGap
-            Dim xTextTop As Integer = xContentPadding.Top
-            xIcon.Location = New Point(xContentPadding.Left, xContentPadding.Top)
-            xMainInstruction.Location = New Point(xTextLeft, xTextTop)
-            xDetails.Location = New Point(xTextLeft, xTextTop + xMainInstructionSize.Height + xMainDetailsGap)
-            xContent.Controls.Add(xIcon)
-            xContent.Controls.Add(xMainInstruction)
-            xContent.Controls.Add(xDetails)
-
-            xButtons.Location = New Point(0, xContentHeight)
-            xButtons.Size = New Size(xClientWidth, xButtonsHeight)
-            xButtons.Controls.Add(xLater)
-            xButtons.Controls.Add(xSkip)
-            xButtons.Controls.Add(xOpen)
-
-            xForm.ClientSize = New Size(xClientWidth, xContentHeight + xButtonsHeight)
-            xForm.Controls.Add(xContent)
-            xForm.Controls.Add(xButtons)
-            xForm.AcceptButton = xOpen
-            xForm.CancelButton = xLater
-
+        Using xForm As New UpdateAvailableDialog(Strings.Messages.UpdateCheckTitle,
+                                                 xMainInstruction,
+                                                 xDetails,
+                                                 Strings.Messages.UpdateOpenRelease,
+                                                 Strings.Messages.UpdateSkipVersion,
+                                                 Strings.Messages.UpdateLater,
+                                                 Font)
             Select Case xForm.ShowDialog(Me)
                 Case DialogResult.Yes
                     Return UpdatePromptAction.OpenRelease
@@ -6954,11 +6676,6 @@ Jump2:
                     Return UpdatePromptAction.Later
             End Select
         End Using
-    End Function
-
-    Private Function MeasureUpdateDialogButton(ByVal xText As String, ByVal xFont As Font) As Size
-        Dim xTextSize As Size = TextRenderer.MeasureText(xText, xFont, New Size(Integer.MaxValue, Integer.MaxValue), TextFormatFlags.SingleLine)
-        Return New Size(xTextSize.Width + 24, Math.Max(27, xTextSize.Height + 9))
     End Function
 
     Private Function IsUpdateTagSkipped(ByVal xTag As String) As Boolean
@@ -7068,26 +6785,20 @@ Jump2:
     Private Sub InitializeSplitPanes()
         PMainIn.Tag = MainPanelIndex
         PMain.Tag = MainPanelIndex
-
-        Dim xMainVScroll As EditorScrollBar = CreateEditorScrollBar(Orientation.Vertical, "MainEditorVScroll", MainPanelIndex, MainPanelScroll.Minimum, MainPanelScroll.Maximum, MainPanelScroll.LargeChange, MainPanelScroll.SmallChange)
-        Dim xMainHScroll As EditorScrollBar = CreateEditorScrollBar(Orientation.Horizontal, "MainEditorHScroll", MainPanelIndex, HS.Minimum, HS.Maximum, HS.LargeChange, HS.SmallChange)
-        Dim xMainView As New Panel With {
-            .BackColor = PMain.BackColor,
-            .Dock = DockStyle.Fill,
-            .Name = "MainEditorView",
-            .Tag = MainPanelIndex
-        }
-        Dim xMainHScrollStrip As Panel = CreateHorizontalScrollStrip("MainEditorHScrollStrip", xMainHScroll, MainPanelIndex)
-
-        PMain.Controls.Remove(PMainIn)
-        PMain.Controls.Remove(MainPanelScroll)
-        PMain.Controls.Remove(HS)
+        MainEditorView.Tag = MainPanelIndex
+        MainEditorVScroll.Tag = MainPanelIndex
+        MainEditorHScroll.Tag = MainPanelIndex
+        MainEditorHScrollStrip.Tag = MainPanelIndex
+        MainEditorVScroll.Minimum = MainPanelScroll.Minimum
+        MainEditorVScroll.Maximum = MainPanelScroll.Maximum
+        MainEditorVScroll.LargeChange = MainPanelScroll.LargeChange
+        MainEditorVScroll.SmallChange = MainPanelScroll.SmallChange
+        MainEditorHScroll.Minimum = HS.Minimum
+        MainEditorHScroll.Maximum = HS.Maximum
+        MainEditorHScroll.LargeChange = HS.LargeChange
+        MainEditorHScroll.SmallChange = HS.SmallChange
         MainPanelScroll.Visible = False
         HS.Visible = False
-        xMainView.Controls.Add(PMainIn)
-        xMainView.Controls.Add(xMainVScroll)
-        PMain.Controls.Add(xMainView)
-        PMain.Controls.Add(xMainHScrollStrip)
 
         SpL.Visible = False
         SpR.Visible = False
@@ -7100,15 +6811,15 @@ Jump2:
         SplitPanes.Add(New SplitPane With {
             .Container = PMain,
             .Canvas = PMainIn,
-            .VScroll = xMainVScroll,
-            .HScroll = xMainHScroll,
+            .VScroll = MainEditorVScroll,
+            .HScroll = MainEditorHScroll,
             .Ratio = 0.0!
         })
-        AddHandler xMainVScroll.GotFocus, AddressOf VSGotFocus
-        AddHandler xMainVScroll.ValueChanged, AddressOf VSValueChanged
-        AddHandler xMainHScroll.GotFocus, AddressOf HSGotFocus
-        AddHandler xMainHScroll.ValueChanged, AddressOf HSValueChanged
-        VScrollMinimum = xMainVScroll.Minimum
+        AddHandler MainEditorVScroll.GotFocus, AddressOf VSGotFocus
+        AddHandler MainEditorVScroll.ValueChanged, AddressOf VSValueChanged
+        AddHandler MainEditorHScroll.GotFocus, AddressOf HSGotFocus
+        AddHandler MainEditorHScroll.ValueChanged, AddressOf HSValueChanged
+        VScrollMinimum = MainEditorVScroll.Minimum
         RebuildPanelArrays()
         UpdateHorizontalScrollMetrics()
         RefreshSplitViewControls()

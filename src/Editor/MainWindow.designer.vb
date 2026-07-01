@@ -187,11 +187,36 @@ Partial Class MainWindow
         Me.Menu1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.MInsert = New System.Windows.Forms.ToolStripMenuItem()
         Me.MRemove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.EditorContextPlayB = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextPlay = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextPlaySeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.EditorContextInsert = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextRemove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextEditSeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.EditorContextCut = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextCopy = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextPaste = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextDelete = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextConvertSeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.EditorContextHidden = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextLandmine = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextVisible = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextHiddenVisible = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextNormalLandmine = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextModifySeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.EditorContextModify = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextMirror = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditorContextSplitViewSeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.EditorContextCloseSplitView = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DefinitionContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.DefinitionContextDelete = New System.Windows.Forms.ToolStripMenuItem()
         Me.AutoSaveTimer = New System.Windows.Forms.Timer(Me.components)
         Me.mnMain = New System.Windows.Forms.MenuStrip()
         Me.mnFile = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnOpen = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnReloadEncoding = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnImportNBMSC = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnSave = New System.Windows.Forms.ToolStripMenuItem()
@@ -228,6 +253,9 @@ Partial Class MainWindow
         Me.mnSTB = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSOP = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSStatus = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnSAddSplitView = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnSRemoveSplitView = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnSyncSplitViewScroll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSLSplitView = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSRSplitView = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator21 = New System.Windows.Forms.ToolStripSeparator()
@@ -250,6 +278,7 @@ Partial Class MainWindow
         Me.mnShowFileName = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnChangePlaySide = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnWavIncrease = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnSlashGrid = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnGOptions = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnPOptions = New System.Windows.Forms.ToolStripMenuItem()
@@ -292,6 +321,9 @@ Partial Class MainWindow
         Me.TBExportNBMSC = New System.Windows.Forms.ToolStripMenuItem()
         Me.TBExportBMSON = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparatorSidePanel = New System.Windows.Forms.ToolStripSeparator()
+        Me.TBSidePanel = New System.Windows.Forms.ToolStripButton()
+        Me.TBPlayer = New System.Windows.Forms.ToolStripComboBox()
         Me.TBCut = New System.Windows.Forms.ToolStripButton()
         Me.TBCopy = New System.Windows.Forms.ToolStripButton()
         Me.TBPaste = New System.Windows.Forms.ToolStripButton()
@@ -299,6 +331,10 @@ Partial Class MainWindow
         Me.ToolStripSeparator24 = New System.Windows.Forms.ToolStripSeparator()
         Me.TBStatistics = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparatorSplitView = New System.Windows.Forms.ToolStripSeparator()
+        Me.TBAddSplitView = New System.Windows.Forms.ToolStripButton()
+        Me.TBRemoveSplitView = New System.Windows.Forms.ToolStripButton()
+        Me.TBSyncSplitViewScroll = New System.Windows.Forms.ToolStripButton()
         Me.TBErrorCheck = New System.Windows.Forms.ToolStripButton()
         Me.TBPreviewOnClick = New System.Windows.Forms.ToolStripButton()
         Me.TBShowFileName = New System.Windows.Forms.ToolStripButton()
@@ -317,6 +353,19 @@ Partial Class MainWindow
         Me.TBPlayB = New System.Windows.Forms.ToolStripButton()
         Me.TBPlay = New System.Windows.Forms.ToolStripButton()
         Me.TBStop = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparatorGridStart = New System.Windows.Forms.ToolStripSeparator()
+        Me.TBGridDivideLabel = New System.Windows.Forms.ToolStripLabel()
+        Me.TBGridDivide = New System.Windows.Forms.ToolStripComboBox()
+        Me.TBGridSubLabel = New System.Windows.Forms.ToolStripLabel()
+        Me.TBGridSub = New System.Windows.Forms.ToolStripComboBox()
+        Me.ToolStripSeparatorGridScale = New System.Windows.Forms.ToolStripSeparator()
+        Me.TBGridHeightLabel = New System.Windows.Forms.ToolStripLabel()
+        Me.TBGridHeight = New System.Windows.Forms.ToolStripComboBox()
+        Me.TBGridWidthLabel = New System.Windows.Forms.ToolStripLabel()
+        Me.TBGridWidth = New System.Windows.Forms.ToolStripComboBox()
+        Me.ToolStripSeparatorDisableVertical = New System.Windows.Forms.ToolStripSeparator()
+        Me.TBDisableVertical = New System.Windows.Forms.ToolStripButton()
+        Me.TBGridSnap = New System.Windows.Forms.ToolStripButton()
         Me.pStatus = New System.Windows.Forms.Panel()
         Me.FStatus2 = New System.Windows.Forms.StatusStrip()
         Me.FSSS = New System.Windows.Forms.ToolStripButton()
@@ -347,7 +396,12 @@ Partial Class MainWindow
         Me.TimerMiddle = New System.Windows.Forms.Timer(Me.components)
         Me.ToolStripContainer1 = New System.Windows.Forms.ToolStripContainer()
         Me.PMain = New System.Windows.Forms.Panel()
+        Me.MainEditorView = New System.Windows.Forms.Panel()
         Me.PMainIn = New System.Windows.Forms.Panel()
+        Me.MainEditorVScroll = New nBMSC.MainWindow.EditorScrollBar()
+        Me.MainEditorHScrollStrip = New System.Windows.Forms.Panel()
+        Me.MainEditorHScroll = New nBMSC.MainWindow.EditorScrollBar()
+        Me.MainEditorHScrollCorner = New System.Windows.Forms.Panel()
         Me.MainPanelScroll = New System.Windows.Forms.VScrollBar()
         Me.HS = New System.Windows.Forms.HScrollBar()
         Me.SpR = New System.Windows.Forms.Button()
@@ -2603,6 +2657,130 @@ Partial Class MainWindow
         Me.MRemove.Size = New System.Drawing.Size(165, 22)
         Me.MRemove.Text = "Remove Measure"
         '
+        'EditorContextMenu
+        '
+        Me.EditorContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditorContextPlayB, Me.EditorContextPlay, Me.EditorContextPlaySeparator, Me.EditorContextInsert, Me.EditorContextRemove, Me.EditorContextEditSeparator, Me.EditorContextCut, Me.EditorContextCopy, Me.EditorContextPaste, Me.EditorContextDelete, Me.EditorContextConvertSeparator, Me.EditorContextHidden, Me.EditorContextLandmine, Me.EditorContextVisible, Me.EditorContextHiddenVisible, Me.EditorContextNormalLandmine, Me.EditorContextModifySeparator, Me.EditorContextModify, Me.EditorContextMirror, Me.EditorContextSplitViewSeparator, Me.EditorContextCloseSplitView})
+        Me.EditorContextMenu.Name = "EditorContextMenu"
+        Me.EditorContextMenu.ShowImageMargin = True
+        Me.EditorContextMenu.Size = New System.Drawing.Size(221, 386)
+        '
+        'EditorContextPlayB
+        '
+        Me.EditorContextPlayB.Name = "EditorContextPlayB"
+        Me.EditorContextPlayB.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextPlay
+        '
+        Me.EditorContextPlay.Name = "EditorContextPlay"
+        Me.EditorContextPlay.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextPlaySeparator
+        '
+        Me.EditorContextPlaySeparator.Name = "EditorContextPlaySeparator"
+        Me.EditorContextPlaySeparator.Size = New System.Drawing.Size(217, 6)
+        '
+        'EditorContextInsert
+        '
+        Me.EditorContextInsert.Name = "EditorContextInsert"
+        Me.EditorContextInsert.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextRemove
+        '
+        Me.EditorContextRemove.Name = "EditorContextRemove"
+        Me.EditorContextRemove.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextEditSeparator
+        '
+        Me.EditorContextEditSeparator.Name = "EditorContextEditSeparator"
+        Me.EditorContextEditSeparator.Size = New System.Drawing.Size(217, 6)
+        '
+        'EditorContextCut
+        '
+        Me.EditorContextCut.Name = "EditorContextCut"
+        Me.EditorContextCut.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextCopy
+        '
+        Me.EditorContextCopy.Name = "EditorContextCopy"
+        Me.EditorContextCopy.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextPaste
+        '
+        Me.EditorContextPaste.Name = "EditorContextPaste"
+        Me.EditorContextPaste.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextDelete
+        '
+        Me.EditorContextDelete.Name = "EditorContextDelete"
+        Me.EditorContextDelete.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextConvertSeparator
+        '
+        Me.EditorContextConvertSeparator.Name = "EditorContextConvertSeparator"
+        Me.EditorContextConvertSeparator.Size = New System.Drawing.Size(217, 6)
+        '
+        'EditorContextHidden
+        '
+        Me.EditorContextHidden.Name = "EditorContextHidden"
+        Me.EditorContextHidden.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextLandmine
+        '
+        Me.EditorContextLandmine.Name = "EditorContextLandmine"
+        Me.EditorContextLandmine.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextVisible
+        '
+        Me.EditorContextVisible.Name = "EditorContextVisible"
+        Me.EditorContextVisible.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextHiddenVisible
+        '
+        Me.EditorContextHiddenVisible.Name = "EditorContextHiddenVisible"
+        Me.EditorContextHiddenVisible.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextNormalLandmine
+        '
+        Me.EditorContextNormalLandmine.Name = "EditorContextNormalLandmine"
+        Me.EditorContextNormalLandmine.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextModifySeparator
+        '
+        Me.EditorContextModifySeparator.Name = "EditorContextModifySeparator"
+        Me.EditorContextModifySeparator.Size = New System.Drawing.Size(217, 6)
+        '
+        'EditorContextModify
+        '
+        Me.EditorContextModify.Name = "EditorContextModify"
+        Me.EditorContextModify.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextMirror
+        '
+        Me.EditorContextMirror.Name = "EditorContextMirror"
+        Me.EditorContextMirror.Size = New System.Drawing.Size(220, 22)
+        '
+        'EditorContextSplitViewSeparator
+        '
+        Me.EditorContextSplitViewSeparator.Name = "EditorContextSplitViewSeparator"
+        Me.EditorContextSplitViewSeparator.Size = New System.Drawing.Size(217, 6)
+        '
+        'EditorContextCloseSplitView
+        '
+        Me.EditorContextCloseSplitView.Name = "EditorContextCloseSplitView"
+        Me.EditorContextCloseSplitView.Size = New System.Drawing.Size(220, 22)
+        Me.EditorContextCloseSplitView.Text = "Close Splitter"
+        '
+        'DefinitionContextMenu
+        '
+        Me.DefinitionContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DefinitionContextDelete})
+        Me.DefinitionContextMenu.Name = "DefinitionContextMenu"
+        Me.DefinitionContextMenu.Size = New System.Drawing.Size(105, 26)
+        '
+        'DefinitionContextDelete
+        '
+        Me.DefinitionContextDelete.Name = "DefinitionContextDelete"
+        Me.DefinitionContextDelete.Size = New System.Drawing.Size(104, 22)
+        '
         'AutoSaveTimer
         '
         Me.AutoSaveTimer.Enabled = True
@@ -2623,7 +2801,7 @@ Partial Class MainWindow
         '
         'mnFile
         '
-        Me.mnFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnNew, Me.mnOpen, Me.mnImportNBMSC, Me.ToolStripSeparator14, Me.mnSave, Me.mnSaveAs, Me.mnExportNBMSC, Me.mnExportBMSON, Me.ToolStripSeparator15, Me.mnOpenR0, Me.mnOpenR1, Me.mnOpenR2, Me.mnOpenR3, Me.mnOpenR4, Me.ToolStripSeparator16, Me.mnQuit})
+        Me.mnFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnNew, Me.mnOpen, Me.mnReloadEncoding, Me.mnImportNBMSC, Me.ToolStripSeparator14, Me.mnSave, Me.mnSaveAs, Me.mnExportNBMSC, Me.mnExportBMSON, Me.ToolStripSeparator15, Me.mnOpenR0, Me.mnOpenR1, Me.mnOpenR2, Me.mnOpenR3, Me.mnOpenR4, Me.ToolStripSeparator16, Me.mnQuit})
         Me.mnFile.Name = "mnFile"
         Me.mnFile.Size = New System.Drawing.Size(37, 19)
         Me.mnFile.Text = "&File"
@@ -2643,6 +2821,11 @@ Partial Class MainWindow
         Me.mnOpen.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
         Me.mnOpen.Size = New System.Drawing.Size(199, 22)
         Me.mnOpen.Text = "&Open"
+        '
+        'mnReloadEncoding
+        '
+        Me.mnReloadEncoding.Name = "mnReloadEncoding"
+        Me.mnReloadEncoding.Size = New System.Drawing.Size(199, 22)
         '
         'mnImportNBMSC
         '
@@ -2874,7 +3057,7 @@ Partial Class MainWindow
         '
         'mnSys
         '
-        Me.mnSys.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnSMenu, Me.mnSTB, Me.mnSOP, Me.mnSStatus, Me.mnSLSplitView, Me.mnSRSplitView, Me.ToolStripSeparator21, Me.CGShow, Me.CGShowS, Me.CGShowBG, Me.CGShowM, Me.CGShowMB, Me.CGShowV, Me.CGShowC, Me.ToolStripSeparator22, Me.CGBPM, Me.CGSTOP, Me.CGSCROLL, Me.CGBLP})
+        Me.mnSys.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnSMenu, Me.mnSTB, Me.mnSOP, Me.mnSStatus, Me.ToolStripSeparator21, Me.CGShow, Me.CGShowS, Me.CGShowBG, Me.CGShowM, Me.CGShowMB, Me.CGShowV, Me.CGShowC, Me.ToolStripSeparator22, Me.CGBPM, Me.CGSTOP, Me.CGSCROLL, Me.CGBLP})
         Me.mnSys.Name = "mnSys"
         Me.mnSys.Size = New System.Drawing.Size(44, 19)
         Me.mnSys.Text = "&View"
@@ -2915,6 +3098,28 @@ Partial Class MainWindow
         Me.mnSStatus.Name = "mnSStatus"
         Me.mnSStatus.Size = New System.Drawing.Size(172, 22)
         Me.mnSStatus.Text = "&Status Bar"
+        '
+        'mnSAddSplitView
+        '
+        Me.mnSAddSplitView.Image = Global.nBMSC.My.Resources.Resources.x16Add
+        Me.mnSAddSplitView.Name = "mnSAddSplitView"
+        Me.mnSAddSplitView.Size = New System.Drawing.Size(172, 22)
+        Me.mnSAddSplitView.Text = "Add Splitter"
+        '
+        'mnSRemoveSplitView
+        '
+        Me.mnSRemoveSplitView.Image = Global.nBMSC.My.Resources.Resources.x16Remove
+        Me.mnSRemoveSplitView.Name = "mnSRemoveSplitView"
+        Me.mnSRemoveSplitView.Size = New System.Drawing.Size(172, 22)
+        Me.mnSRemoveSplitView.Text = "Remove Splitter"
+        '
+        'mnSyncSplitViewScroll
+        '
+        Me.mnSyncSplitViewScroll.CheckOnClick = True
+        Me.mnSyncSplitViewScroll.Image = Global.nBMSC.My.Resources.Resources.x16Lock
+        Me.mnSyncSplitViewScroll.Name = "mnSyncSplitViewScroll"
+        Me.mnSyncSplitViewScroll.Size = New System.Drawing.Size(172, 22)
+        Me.mnSyncSplitViewScroll.Text = "Sync Scroll between Splitters"
         '
         'mnSLSplitView
         '
@@ -3040,7 +3245,7 @@ Partial Class MainWindow
         '
         'mnOptions
         '
-        Me.mnOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnNTInput, Me.mnErrorCheck, Me.mnPreviewOnClick, Me.mnShowFileName, Me.mnChangePlaySide, Me.mnWavIncrease, Me.ToolStripSeparator20, Me.mnGOptions, Me.mnPOptions, Me.mnLanguage, Me.mnTheme})
+        Me.mnOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnNTInput, Me.mnErrorCheck, Me.mnPreviewOnClick, Me.mnShowFileName, Me.mnChangePlaySide, Me.mnWavIncrease, Me.mnSlashGrid, Me.ToolStripSeparator20, Me.mnGOptions, Me.mnPOptions, Me.mnLanguage, Me.mnTheme})
         Me.mnOptions.Name = "mnOptions"
         Me.mnOptions.Size = New System.Drawing.Size(61, 19)
         Me.mnOptions.Text = "&Options"
@@ -3100,6 +3305,14 @@ Partial Class MainWindow
         Me.mnWavIncrease.Size = New System.Drawing.Size(229, 22)
         Me.mnWavIncrease.Text = "Autoincrease WAV when writing"
         '
+        'mnSlashGrid
+        '
+        Me.mnSlashGrid.Image = Global.nBMSC.My.Resources.Resources.Shortcut
+        Me.mnSlashGrid.Name = "mnSlashGrid"
+        Me.mnSlashGrid.ShortcutKeyDisplayString = "/"
+        Me.mnSlashGrid.Size = New System.Drawing.Size(229, 22)
+        Me.mnSlashGrid.Text = "Slash key grid value"
+        '
         'ToolStripSeparator20
         '
         Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
@@ -3128,7 +3341,7 @@ Partial Class MainWindow
         '
         'cmnConversion
         '
-        Me.cmnConversion.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.POBLong, Me.POBShort, Me.POBLongShort, Me.ToolStripSeparator10, Me.POBHidden, Me.POBLandmine, Me.POBVisible, Me.POBHiddenVisible, Me.POBNormalLandmine, Me.ToolStripSeparator11, Me.POBModify, Me.POBMirror})
+        Me.cmnConversion.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.POBHidden, Me.POBLandmine, Me.POBVisible, Me.POBHiddenVisible, Me.POBNormalLandmine, Me.ToolStripSeparator11, Me.POBModify, Me.POBMirror, Me.ToolStripSeparator10, Me.POBLong, Me.POBShort, Me.POBLongShort})
         Me.cmnConversion.Name = "cmnLanguage"
         Me.cmnConversion.OwnerItem = Me.POConvert
         Me.cmnConversion.Size = New System.Drawing.Size(253, 236)
@@ -3294,7 +3507,7 @@ Partial Class MainWindow
         Me.TBMain.AccessibleRole = System.Windows.Forms.AccessibleRole.ToolBar
         Me.TBMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.TBMain.Dock = System.Windows.Forms.DockStyle.None
-        Me.TBMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TBSave, Me.ToolStripSeparator1, Me.TBTimeSelect, Me.TBSelect, Me.TBWrite, Me.ToolStripSeparator3, Me.TBPlayB, Me.TBPlay, Me.TBStop})
+        Me.TBMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TBSave, Me.ToolStripSeparator1, Me.TBTimeSelect, Me.TBSelect, Me.TBWrite, Me.ToolStripSeparator3, Me.TBPlayer, Me.TBPlayB, Me.TBPlay, Me.TBStop, Me.ToolStripSeparator4, Me.TBGridDivideLabel, Me.TBGridDivide, Me.TBGridSubLabel, Me.TBGridSub, Me.ToolStripSeparatorGridScale, Me.TBGridHeightLabel, Me.TBGridHeight, Me.TBGridWidthLabel, Me.TBGridWidth, Me.ToolStripSeparatorDisableVertical, Me.TBDisableVertical, Me.TBGridSnap, Me.ToolStripSeparatorSplitView, Me.TBAddSplitView, Me.TBRemoveSplitView, Me.TBSyncSplitViewScroll, Me.ToolStripSeparatorSidePanel, Me.TBSidePanel})
         Me.TBMain.Location = New System.Drawing.Point(3, 23)
         Me.TBMain.Name = "TBMain"
         Me.TBMain.Size = New System.Drawing.Size(276, 25)
@@ -3408,6 +3621,31 @@ Partial Class MainWindow
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
         Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
+        'ToolStripSeparatorSidePanel
+        '
+        Me.ToolStripSeparatorSidePanel.Name = "ToolStripSeparatorSidePanel"
+        Me.ToolStripSeparatorSidePanel.Size = New System.Drawing.Size(6, 25)
+        '
+        'TBSidePanel
+        '
+        Me.TBSidePanel.CheckOnClick = True
+        Me.TBSidePanel.Checked = True
+        Me.TBSidePanel.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.TBSidePanel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.TBSidePanel.Image = Global.nBMSC.My.Resources.Resources.x16GeneralOptions
+        Me.TBSidePanel.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.TBSidePanel.Name = "TBSidePanel"
+        Me.TBSidePanel.Size = New System.Drawing.Size(23, 22)
+        Me.TBSidePanel.Text = "Side Panel"
+        '
+        'TBPlayer
+        '
+        Me.TBPlayer.AutoSize = False
+        Me.TBPlayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.TBPlayer.Margin = New System.Windows.Forms.Padding(0, 0, 1, 0)
+        Me.TBPlayer.Name = "TBPlayer"
+        Me.TBPlayer.Size = New System.Drawing.Size(80, 25)
+        '
         'TBCut
         '
         Me.TBCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -3463,6 +3701,39 @@ Partial Class MainWindow
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
         Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripSeparatorSplitView
+        '
+        Me.ToolStripSeparatorSplitView.Name = "ToolStripSeparatorSplitView"
+        Me.ToolStripSeparatorSplitView.Size = New System.Drawing.Size(6, 25)
+        '
+        'TBAddSplitView
+        '
+        Me.TBAddSplitView.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.TBAddSplitView.Image = Global.nBMSC.My.Resources.Resources.x16Add
+        Me.TBAddSplitView.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.TBAddSplitView.Name = "TBAddSplitView"
+        Me.TBAddSplitView.Size = New System.Drawing.Size(23, 22)
+        Me.TBAddSplitView.Text = "Add Splitter"
+        '
+        'TBRemoveSplitView
+        '
+        Me.TBRemoveSplitView.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.TBRemoveSplitView.Image = Global.nBMSC.My.Resources.Resources.x16Remove
+        Me.TBRemoveSplitView.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.TBRemoveSplitView.Name = "TBRemoveSplitView"
+        Me.TBRemoveSplitView.Size = New System.Drawing.Size(23, 22)
+        Me.TBRemoveSplitView.Text = "Remove Splitter"
+        '
+        'TBSyncSplitViewScroll
+        '
+        Me.TBSyncSplitViewScroll.CheckOnClick = True
+        Me.TBSyncSplitViewScroll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.TBSyncSplitViewScroll.Image = Global.nBMSC.My.Resources.Resources.x16Lock
+        Me.TBSyncSplitViewScroll.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.TBSyncSplitViewScroll.Name = "TBSyncSplitViewScroll"
+        Me.TBSyncSplitViewScroll.Size = New System.Drawing.Size(23, 22)
+        Me.TBSyncSplitViewScroll.Text = "Sync Scroll between Splitters"
         '
         'TBErrorCheck
         '
@@ -3624,6 +3895,100 @@ Partial Class MainWindow
         Me.TBStop.Name = "TBStop"
         Me.TBStop.Size = New System.Drawing.Size(23, 22)
         Me.TBStop.Text = "Stop (F7)"
+        '
+        'ToolStripSeparatorGridStart
+        '
+        Me.ToolStripSeparatorGridStart.Name = "ToolStripSeparatorGridStart"
+        Me.ToolStripSeparatorGridStart.Size = New System.Drawing.Size(6, 25)
+        '
+        'TBGridDivideLabel
+        '
+        Me.TBGridDivideLabel.Name = "TBGridDivideLabel"
+        Me.TBGridDivideLabel.Size = New System.Drawing.Size(29, 22)
+        Me.TBGridDivideLabel.Text = "Grid"
+        '
+        'TBGridDivide
+        '
+        Me.TBGridDivide.AutoSize = False
+        Me.TBGridDivide.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.TBGridDivide.Margin = New System.Windows.Forms.Padding(0, 0, 1, 0)
+        Me.TBGridDivide.Name = "TBGridDivide"
+        Me.TBGridDivide.Size = New System.Drawing.Size(47, 25)
+        '
+        'TBGridSubLabel
+        '
+        Me.TBGridSubLabel.Name = "TBGridSubLabel"
+        Me.TBGridSubLabel.Size = New System.Drawing.Size(26, 22)
+        Me.TBGridSubLabel.Text = "Sub"
+        '
+        'TBGridSub
+        '
+        Me.TBGridSub.AutoSize = False
+        Me.TBGridSub.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.TBGridSub.Items.AddRange(New Object() {"1", "2", "3", "4", "6", "8", "12", "16"})
+        Me.TBGridSub.Margin = New System.Windows.Forms.Padding(0, 0, 1, 0)
+        Me.TBGridSub.Name = "TBGridSub"
+        Me.TBGridSub.Size = New System.Drawing.Size(47, 25)
+        '
+        'ToolStripSeparatorGridScale
+        '
+        Me.ToolStripSeparatorGridScale.Name = "ToolStripSeparatorGridScale"
+        Me.ToolStripSeparatorGridScale.Size = New System.Drawing.Size(6, 25)
+        '
+        'TBGridHeightLabel
+        '
+        Me.TBGridHeightLabel.Name = "TBGridHeightLabel"
+        Me.TBGridHeightLabel.Size = New System.Drawing.Size(43, 22)
+        Me.TBGridHeightLabel.Text = "Height"
+        '
+        'TBGridHeight
+        '
+        Me.TBGridHeight.AutoSize = False
+        Me.TBGridHeight.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.TBGridHeight.Items.AddRange(New Object() {"x0.25", "x0.5", "x0.75", "x1.0", "x1.25", "x1.5", "x2.0", "x3.0", "x4.0", "x5.0"})
+        Me.TBGridHeight.Margin = New System.Windows.Forms.Padding(0, 0, 1, 0)
+        Me.TBGridHeight.Name = "TBGridHeight"
+        Me.TBGridHeight.Size = New System.Drawing.Size(50, 25)
+        '
+        'TBGridWidthLabel
+        '
+        Me.TBGridWidthLabel.Name = "TBGridWidthLabel"
+        Me.TBGridWidthLabel.Size = New System.Drawing.Size(39, 22)
+        Me.TBGridWidthLabel.Text = "Width"
+        '
+        'TBGridWidth
+        '
+        Me.TBGridWidth.AutoSize = False
+        Me.TBGridWidth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown
+        Me.TBGridWidth.Items.AddRange(New Object() {"x0.25", "x0.5", "x0.75", "x1.0", "x1.25", "x1.5", "x2.0", "x3.0", "x4.0", "x5.0"})
+        Me.TBGridWidth.Margin = New System.Windows.Forms.Padding(0, 0, 1, 0)
+        Me.TBGridWidth.Name = "TBGridWidth"
+        Me.TBGridWidth.Size = New System.Drawing.Size(50, 25)
+        '
+        'ToolStripSeparatorDisableVertical
+        '
+        Me.ToolStripSeparatorDisableVertical.Name = "ToolStripSeparatorDisableVertical"
+        Me.ToolStripSeparatorDisableVertical.Size = New System.Drawing.Size(6, 25)
+        '
+        'TBDisableVertical
+        '
+        Me.TBDisableVertical.CheckOnClick = True
+        Me.TBDisableVertical.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.TBDisableVertical.Image = Global.nBMSC.My.Resources.Resources.x16VerticalLock
+        Me.TBDisableVertical.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.TBDisableVertical.Name = "TBDisableVertical"
+        Me.TBDisableVertical.Size = New System.Drawing.Size(23, 22)
+        Me.TBDisableVertical.Text = "Disable Vertical Move"
+        '
+        'TBGridSnap
+        '
+        Me.TBGridSnap.CheckOnClick = True
+        Me.TBGridSnap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.TBGridSnap.Image = Global.nBMSC.My.Resources.Resources.pgmbl
+        Me.TBGridSnap.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.TBGridSnap.Name = "TBGridSnap"
+        Me.TBGridSnap.Size = New System.Drawing.Size(23, 22)
+        Me.TBGridSnap.Text = "Grid Snap"
         '
         'pStatus
         '
@@ -3905,9 +4270,8 @@ Partial Class MainWindow
         'PMain
         '
         Me.PMain.BackColor = System.Drawing.Color.Black
-        Me.PMain.Controls.Add(Me.PMainIn)
-        Me.PMain.Controls.Add(Me.MainPanelScroll)
-        Me.PMain.Controls.Add(Me.HS)
+        Me.PMain.Controls.Add(Me.MainEditorView)
+        Me.PMain.Controls.Add(Me.MainEditorHScrollStrip)
         Me.PMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PMain.Font = New System.Drawing.Font("Verdana", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PMain.ForeColor = System.Drawing.Color.White
@@ -3917,6 +4281,18 @@ Partial Class MainWindow
         Me.PMain.TabIndex = 58
         Me.PMain.Tag = "1"
         '
+        'MainEditorView
+        '
+        Me.MainEditorView.BackColor = System.Drawing.Color.Black
+        Me.MainEditorView.Controls.Add(Me.PMainIn)
+        Me.MainEditorView.Controls.Add(Me.MainEditorVScroll)
+        Me.MainEditorView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.MainEditorView.Location = New System.Drawing.Point(0, 0)
+        Me.MainEditorView.Name = "MainEditorView"
+        Me.MainEditorView.Size = New System.Drawing.Size(841, 652)
+        Me.MainEditorView.TabIndex = 4
+        Me.MainEditorView.Tag = "0"
+        '
         'PMainIn
         '
         Me.PMainIn.BackColor = System.Drawing.Color.Black
@@ -3925,10 +4301,60 @@ Partial Class MainWindow
         Me.PMainIn.ForeColor = System.Drawing.Color.White
         Me.PMainIn.Location = New System.Drawing.Point(0, 0)
         Me.PMainIn.Name = "PMainIn"
-        Me.PMainIn.Size = New System.Drawing.Size(824, 643)
+        Me.PMainIn.Size = New System.Drawing.Size(833, 652)
         Me.PMainIn.TabIndex = 0
         Me.PMainIn.TabStop = True
         Me.PMainIn.Tag = "1"
+        '
+        'MainEditorVScroll
+        '
+        Me.MainEditorVScroll.AccessibleRole = System.Windows.Forms.AccessibleRole.ScrollBar
+        Me.MainEditorVScroll.Dock = System.Windows.Forms.DockStyle.Right
+        Me.MainEditorVScroll.LargeChange = 592
+        Me.MainEditorVScroll.Location = New System.Drawing.Point(833, 0)
+        Me.MainEditorVScroll.Maximum = 591
+        Me.MainEditorVScroll.Minimum = -10000
+        Me.MainEditorVScroll.Name = "MainEditorVScroll"
+        Me.MainEditorVScroll.Orientation = System.Windows.Forms.Orientation.Vertical
+        Me.MainEditorVScroll.Size = New System.Drawing.Size(8, 652)
+        Me.MainEditorVScroll.SmallChange = 12
+        Me.MainEditorVScroll.TabIndex = 2
+        Me.MainEditorVScroll.Tag = "0"
+        '
+        'MainEditorHScrollStrip
+        '
+        Me.MainEditorHScrollStrip.BackColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.MainEditorHScrollStrip.Controls.Add(Me.MainEditorHScroll)
+        Me.MainEditorHScrollStrip.Controls.Add(Me.MainEditorHScrollCorner)
+        Me.MainEditorHScrollStrip.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.MainEditorHScrollStrip.Location = New System.Drawing.Point(0, 652)
+        Me.MainEditorHScrollStrip.Name = "MainEditorHScrollStrip"
+        Me.MainEditorHScrollStrip.Size = New System.Drawing.Size(841, 8)
+        Me.MainEditorHScrollStrip.TabIndex = 5
+        Me.MainEditorHScrollStrip.Tag = "0"
+        '
+        'MainEditorHScroll
+        '
+        Me.MainEditorHScroll.AccessibleRole = System.Windows.Forms.AccessibleRole.ScrollBar
+        Me.MainEditorHScroll.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.MainEditorHScroll.LargeChange = 777
+        Me.MainEditorHScroll.Location = New System.Drawing.Point(0, 0)
+        Me.MainEditorHScroll.Maximum = 1233
+        Me.MainEditorHScroll.Name = "MainEditorHScroll"
+        Me.MainEditorHScroll.Orientation = System.Windows.Forms.Orientation.Horizontal
+        Me.MainEditorHScroll.Size = New System.Drawing.Size(833, 8)
+        Me.MainEditorHScroll.TabIndex = 3
+        Me.MainEditorHScroll.Tag = "0"
+        '
+        'MainEditorHScrollCorner
+        '
+        Me.MainEditorHScrollCorner.BackColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.MainEditorHScrollCorner.Dock = System.Windows.Forms.DockStyle.Right
+        Me.MainEditorHScrollCorner.Location = New System.Drawing.Point(833, 0)
+        Me.MainEditorHScrollCorner.Name = "MainEditorHScrollCorner"
+        Me.MainEditorHScrollCorner.Size = New System.Drawing.Size(8, 8)
+        Me.MainEditorHScrollCorner.TabIndex = 4
+        Me.MainEditorHScrollCorner.TabStop = False
         '
         'MainPanelScroll
         '

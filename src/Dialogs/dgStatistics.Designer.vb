@@ -39,6 +39,7 @@ Partial Class dgStatistics
         Me.Label13 = New System.Windows.Forms.Label
         Me.Label14 = New System.Windows.Forms.Label
         Me.Label15 = New System.Windows.Forms.Label
+        Me.StatisticValueLabels = New System.Windows.Forms.Label(6, 5) {}
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -84,6 +85,18 @@ Partial Class dgStatistics
         Me.TableLayoutPanel1.Controls.Add(Me.Label13, 2, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Label14, 3, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Label15, 4, 0)
+        For row As Integer = 0 To 6
+            For col As Integer = 0 To 5
+                Dim valueLabel As System.Windows.Forms.Label = New System.Windows.Forms.Label
+                valueLabel.Dock = System.Windows.Forms.DockStyle.Fill
+                valueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+                valueLabel.Margin = New System.Windows.Forms.Padding(0)
+                valueLabel.Font = New System.Drawing.Font(Me.Font, System.Drawing.FontStyle.Bold)
+                If row Mod 2 = 0 Then valueLabel.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+                Me.StatisticValueLabels(row, col) = valueLabel
+                Me.TableLayoutPanel1.Controls.Add(valueLabel, col + 1, row + 1)
+            Next
+        Next
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(64, 12)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 7
@@ -304,5 +317,6 @@ Partial Class dgStatistics
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Private StatisticValueLabels(,) As System.Windows.Forms.Label
 
 End Class

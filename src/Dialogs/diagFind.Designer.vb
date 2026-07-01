@@ -245,6 +245,12 @@ Partial Class diagFind
         'Panel1
         '
         Me.Panel1.AutoScroll = True
+        Me.Panel1.Controls.Add(Me.cb6)
+        Me.Panel1.Controls.Add(Me.cb5)
+        Me.Panel1.Controls.Add(Me.cb4)
+        Me.Panel1.Controls.Add(Me.cb3)
+        Me.Panel1.Controls.Add(Me.cb2)
+        Me.Panel1.Controls.Add(Me.cb1)
         Me.Panel1.Location = New System.Drawing.Point(26, 186)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(302, 259)
