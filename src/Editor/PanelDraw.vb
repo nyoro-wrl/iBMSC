@@ -4,10 +4,50 @@ Partial Public Class MainWindow
 
     Private Sub RefreshPanelAll()
         If IsInitializing Then Exit Sub
+        UpdateScrollBarHighlights()
         For i As Integer = 0 To spMain.Length - 1
             RefreshPanel(i, spMain(i).DisplayRectangle)
         Next
     End Sub
+
+    Private Sub UpdateScrollBarHighlights()
+        If SplitPanes Is Nothing OrElse SplitPanes.Count = 0 Then Return
+
+        Dim xRanges As List(Of ScrollHighlightRange) = BuildCurrentRandomLayerMeasureHighlightRanges()
+        Dim xTrackActive As Boolean = xRanges.Count > 0
+        For Each xPane As SplitPane In SplitPanes
+            If xPane Is Nothing OrElse xPane.VScroll Is Nothing Then Continue For
+            xPane.VScroll.SetHighlightRanges(xRanges, xTrackActive)
+        Next
+    End Sub
+
+    Private Function BuildCurrentRandomLayerMeasureHighlightRanges() As List(Of ScrollHighlightRange)
+        Dim xRanges As New List(Of ScrollHighlightRange)()
+        If Notes Is Nothing OrElse Notes.Length <= 1 Then Return xRanges
+
+        Dim xHasNote(999) As Boolean
+        For i As Integer = 1 To UBound(Notes)
+            If Notes(i).VPosition < 0 Then Continue For
+            If Not IsNoteRandomLayerHighlightTarget(Notes(i)) Then Continue For
+
+            Dim xMeasure As Integer = MeasureAtDisplacement(Notes(i).VPosition)
+            If xMeasure < 0 OrElse xMeasure > UBound(xHasNote) Then Continue For
+            xHasNote(xMeasure) = True
+        Next
+
+        For xMeasure As Integer = 0 To UBound(xHasNote)
+            If Not xHasNote(xMeasure) Then Continue For
+
+            Dim xStartVPosition As Double = MeasureBottom(xMeasure)
+            Dim xEndVPosition As Double = If(xMeasure < UBound(MeasureBottom),
+                                             MeasureBottom(xMeasure + 1),
+                                             MeasureBottom(xMeasure) + MeasureLength(xMeasure))
+            xRanges.Add(New ScrollHighlightRange(-CInt(Math.Ceiling(xEndVPosition)),
+                                                 -CInt(Math.Floor(xStartVPosition))))
+        Next
+
+        Return xRanges
+    End Function
 
     Dim bufferlist As Dictionary(Of Integer, BufferedGraphics) = New Dictionary(Of Integer, BufferedGraphics)
     Dim rectList As Dictionary(Of Integer, Rectangle) = New Dictionary(Of Integer, Rectangle)
@@ -97,8 +137,22 @@ Partial Public Class MainWindow
         'Drag/Drop
         DrawDragAndDrop(xIndex, e1)
 
+        DrawRandomScrollBorder(xIndex, e1, xTWidth, xTHeight)
+
         e1.Render(spMain(xIndex).CreateGraphics)
         'e1.Dispose()
+    End Sub
+
+    Private Sub DrawRandomScrollBorder(ByVal xIndex As Integer, ByVal e1 As BufferedGraphics, ByVal xTWidth As Integer, ByVal xTHeight As Integer)
+        If xTWidth <= 0 OrElse xTHeight <= 0 Then Return
+        If Not IsValidPanelIndex(xIndex) Then Return
+
+        Dim xScroll As EditorScrollBar = SplitPanes(xIndex).VScroll
+        If xScroll Is Nothing OrElse Not xScroll.IsHighlightTrackActive Then Return
+
+        Using xPen As New Pen(RandomLayerScrollBorderColor)
+            e1.Graphics.DrawLine(xPen, xTWidth - 1, 0, xTWidth - 1, xTHeight - 1)
+        End Using
     End Sub
 
     Private Sub DrawTempNote(e1 As BufferedGraphics, xTHeight As Integer, xHS As Integer, xVS As Integer)
@@ -348,15 +402,22 @@ Partial Public Class MainWindow
         Dim xUpperBorder As Single = Math.Abs(xVS) + xTHeight / gxHeight
         Dim xLowerBorder As Single = Math.Abs(xVS) - vo.kHeight / gxHeight
 
-        For xI1 = 0 To UBound(Notes)
-            If Notes(xI1).VPosition > xUpperBorder Then Exit For
-            If Not IsNoteVisibleByRandom(Notes(xI1)) Then Continue For
-            If Not IsNoteVisible(xI1, xTHeight, xVS) Then Continue For
-            If NTInput Then
-                DrawNoteNT(Notes(xI1), e1, xHS, xVS, xTHeight)
-            Else
-                DrawNote(Notes(xI1), e1, xHS, xVS, xTHeight)
-            End If
+        For xPass As Integer = 0 To 1
+            For xI1 = 0 To UBound(Notes)
+                If Notes(xI1).VPosition > xUpperBorder Then Exit For
+                If Not IsNoteVisibleByRandom(Notes(xI1)) Then Continue For
+                If Not IsNoteVisible(xI1, xTHeight, xVS) Then Continue For
+
+                Dim xDrawOnTop As Boolean = IsNoteRandomAllCurrentLayer(Notes(xI1))
+                If xPass = 0 AndAlso xDrawOnTop Then Continue For
+                If xPass = 1 AndAlso Not xDrawOnTop Then Continue For
+
+                If NTInput Then
+                    DrawNoteNT(Notes(xI1), e1, xHS, xVS, xTHeight)
+                Else
+                    DrawNote(Notes(xI1), e1, xHS, xVS, xTHeight)
+                End If
+            Next
         Next
     End Sub
 
@@ -381,12 +442,21 @@ Partial Public Class MainWindow
         Return GetNoteRectangle(Notes(noteIndex), xTHeight, xHS, xVS)
     End Function
 
+    Private Sub FillRandomLayerHighlight(ByVal sNote As Note, ByVal e As BufferedGraphics, ByVal rect As Rectangle)
+        If Not IsNoteRandomLayerHighlightTarget(sNote) Then Return
+        If rect.Width <= 0 OrElse rect.Height <= 0 Then Return
+
+        Using brush As New SolidBrush(RandomLayerHighlightFillColor)
+            e.Graphics.FillRectangle(brush, rect)
+        End Using
+    End Sub
+
     Private Sub DrawRandomLayerHint(ByVal sNote As Note, ByVal e As BufferedGraphics, ByVal xHS As Long, ByVal xVS As Long, ByVal xHeight As Integer)
-        If IsNoteCurrentRandomLayer(sNote) Then Return
+        If Not IsNoteRandomLayerHighlightTarget(sNote) AndAlso Not IsNoteRandomAllOtherLayer(sNote) Then Return
 
         Dim rect As Rectangle = GetNoteRectangle(sNote, xHeight, CInt(xHS), CInt(xVS))
-        Using pen As New Pen(Color.White)
-            pen.DashStyle = Drawing2D.DashStyle.Dash
+        Dim xColor As Color = If(IsNoteRandomLayerHighlightTarget(sNote), RandomLayerHighlightColor, RandomLayerOtherHintColor)
+        Using pen As New Pen(xColor)
             e.Graphics.DrawRectangle(pen, rect.X + 1, rect.Y + 1, Math.Max(1, rect.Width - 3), Math.Max(1, rect.Height - 3))
         End Using
     End Sub
@@ -616,17 +686,21 @@ Partial Public Class MainWindow
         xPen = New Pen(bright)
         xBrush = New Drawing2D.LinearGradientBrush(p1, p2, bright, dark)
 
+        Dim xFillRect As New Rectangle(HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex), xHS) + 2,
+                                       NoteRowToPanelHeight(sNote.VPosition, xVS, xHeight) - vo.kHeight + 1,
+                                       GetColumnWidth(sNote.ColumnIndex) * gxWidth - 3,
+                                       vo.kHeight - 1)
+
         ' Fill
-        e.Graphics.FillRectangle(xBrush, HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex), xHS) + 2,
-                                 NoteRowToPanelHeight(sNote.VPosition, xVS, xHeight) - vo.kHeight + 1,
-                                 GetColumnWidth(sNote.ColumnIndex) * gxWidth - 3,
-                                 vo.kHeight - 1)
+        e.Graphics.FillRectangle(xBrush, xFillRect)
         ' Outline
         e.Graphics.DrawRectangle(xPen,
                                  HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex), xHS) + 1,
                                  NoteRowToPanelHeight(sNote.VPosition, xVS, xHeight) - vo.kHeight,
                                  GetColumnWidth(sNote.ColumnIndex) * gxWidth - 2,
                                  vo.kHeight)
+
+        FillRandomLayerHighlight(sNote, e, xFillRect)
 
         ' Label
         e.Graphics.DrawString(IIf(IsColumnNumeric(sNote.ColumnIndex), sNote.Value / 10000, xLabel),
@@ -734,17 +808,20 @@ Partial Public Class MainWindow
         xPen1 = New Pen(bright)
         xBrush = New Drawing2D.LinearGradientBrush(p1, p2, bright, dark)
 
+        Dim xFillRect As New Rectangle(HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex), xHS) + 1,
+                                       NoteRowToPanelHeight(sNote.VPosition + sNote.Length, xVS, xHeight) - vo.kHeight + 1,
+                                       GetColumnWidth(sNote.ColumnIndex) * gxWidth - 1,
+                                       CInt(sNote.Length * gxHeight) + vo.kHeight - 1)
+
         ' Note gradient
-        e.Graphics.FillRectangle(xBrush,
-                                     HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex), xHS) + 1,
-                                     NoteRowToPanelHeight(sNote.VPosition + sNote.Length, xVS, xHeight) - vo.kHeight + 1,
-                                     GetColumnWidth(sNote.ColumnIndex) * gxWidth - 1,
-                                     CInt(sNote.Length * gxHeight) + vo.kHeight - 1)
+        e.Graphics.FillRectangle(xBrush, xFillRect)
 
         ' Outline
         e.Graphics.DrawRectangle(xPen1, HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex), xHS) + 1,
                                      NoteRowToPanelHeight(sNote.VPosition + sNote.Length, xVS, xHeight) - vo.kHeight,
                                             GetColumnWidth(sNote.ColumnIndex) * gxWidth - 3, CInt(sNote.Length * gxHeight) + vo.kHeight)
+
+        FillRandomLayerHighlight(sNote, e, xFillRect)
 
         ' Note B36
         e.Graphics.DrawString(IIf(IsColumnNumeric(sNote.ColumnIndex), sNote.Value / 10000, xLabel),

@@ -329,6 +329,10 @@ Public Class MainWindow
     Private Const MainPanelIndex As Integer = 0
     Private Const EditorScrollBarThickness As Integer = 8
     Private Const SplitPanelSettingSeparator As Char = ";"c
+    Private Shared ReadOnly RandomLayerHighlightColor As Color = Color.FromArgb(255, 255, 186, 64)
+    Private Shared ReadOnly RandomLayerHighlightFillColor As Color = Color.FromArgb(96, RandomLayerHighlightColor)
+    Private Shared ReadOnly RandomLayerOtherHintColor As Color = Color.FromArgb(255, 64, 210, 255)
+    Private Shared ReadOnly RandomLayerScrollBorderColor As Color = Color.FromArgb(240, 240, 240)
     Dim SyncSplitViewScroll As Boolean = False
     Dim UpdatingSplitViewControls As Boolean = False
     Dim SyncingPanelScroll As Boolean = False
@@ -406,6 +410,16 @@ Public Class MainWindow
     Private WithEvents MainEditorHScroll As EditorScrollBar
     Private MainEditorHScrollCorner As Panel
 
+    Private Structure ScrollHighlightRange
+        Public StartValue As Integer
+        Public EndValue As Integer
+
+        Public Sub New(ByVal xStartValue As Integer, ByVal xEndValue As Integer)
+            StartValue = xStartValue
+            EndValue = xEndValue
+        End Sub
+    End Structure
+
     Private Class EditorScrollBar
         Inherits Control
 
@@ -418,8 +432,14 @@ Public Class MainWindow
         Private _dragging As Boolean = False
         Private _dragOffset As Integer = 0
         Private _hotThumb As Boolean = False
+        Private HighlightTrackActive As Boolean = False
+        Private HighlightRanges As New List(Of ScrollHighlightRange)()
         Private Shared ReadOnly TrackColor As Color = Color.FromArgb(240, 240, 240)
+        Private Shared ReadOnly RandomLayerTrackColor As Color = Color.FromArgb(40, 40, 40)
         Private Shared ReadOnly ThumbColor As Color = Color.FromArgb(133, 133, 133)
+        Private Shared ReadOnly RandomLayerThumbColor As Color = Color.FromArgb(188, 188, 188)
+        Private Shared ReadOnly HighlightColor As Color = Color.FromArgb(255, MainWindow.RandomLayerHighlightColor)
+        Private Shared ReadOnly HighlightFrontColor As Color = Color.FromArgb(48, MainWindow.RandomLayerHighlightColor)
 
         Public Event ValueChanged As EventHandler
 
@@ -429,6 +449,12 @@ Public Class MainWindow
             AccessibleRole = AccessibleRole.ScrollBar
             BackColor = TrackColor
         End Sub
+
+        Public ReadOnly Property IsHighlightTrackActive As Boolean
+            Get
+                Return HighlightTrackActive
+            End Get
+        End Property
 
         Public Property Orientation As Orientation
             Get
@@ -495,6 +521,30 @@ Public Class MainWindow
             Invalidate()
         End Sub
 
+        Public Sub SetHighlightRanges(ByVal ranges As List(Of ScrollHighlightRange), ByVal trackActive As Boolean)
+            Dim xTrackChanged As Boolean = HighlightTrackActive <> trackActive
+            HighlightTrackActive = trackActive
+            BackColor = CurrentTrackColor()
+
+            If ranges Is Nothing OrElse ranges.Count = 0 Then
+                If HighlightRanges.Count = 0 AndAlso Not xTrackChanged Then Return
+                HighlightRanges.Clear()
+                Invalidate()
+                Return
+            End If
+
+            HighlightRanges = New List(Of ScrollHighlightRange)(ranges)
+            Invalidate()
+        End Sub
+
+        Private Function CurrentTrackColor() As Color
+            Return If(HighlightTrackActive, RandomLayerTrackColor, TrackColor)
+        End Function
+
+        Private Function CurrentThumbColor() As Color
+            Return If(HighlightTrackActive, RandomLayerThumbColor, ThumbColor)
+        End Function
+
         Public Property Value As Integer
             Get
                 Return _value
@@ -556,19 +606,65 @@ Public Class MainWindow
             Return New Rectangle(xThumbPosition, 1, xThumbLength, Math.Max(1, Height - 2))
         End Function
 
+        Private Function ValueToTrackPosition(ByVal value As Integer) As Integer
+            Dim xTrackLength As Integer = TrackLength()
+            If xTrackLength <= 1 Then Return 0
+
+            Dim xMaxValue As Integer = MaxValue()
+            Dim xContentRange As Integer = xMaxValue - _minimum + _largeChange
+            If xContentRange <= 0 Then Return 0
+
+            value += _largeChange
+            value = Math.Max(_minimum, Math.Min(xMaxValue + _largeChange, value))
+            Return CInt(Math.Round((value - _minimum) / CDbl(xContentRange) * (xTrackLength - 1)))
+        End Function
+
+        Private Function BuildHighlightRegion() As Region
+            If _orientation <> Orientation.Vertical Then Return Nothing
+            If HighlightRanges.Count = 0 Then Return Nothing
+
+            Dim xRegion As New Region()
+            xRegion.MakeEmpty()
+
+            For Each xRange As ScrollHighlightRange In HighlightRanges
+                Dim y1 As Integer = ValueToTrackPosition(xRange.StartValue)
+                Dim y2 As Integer = ValueToTrackPosition(xRange.EndValue)
+                Dim y As Integer = Math.Min(y1, y2)
+                Dim xHeight As Integer = Math.Max(4, Math.Abs(y2 - y1) + 1)
+                If y >= Height OrElse y + xHeight <= 0 Then Continue For
+                xRegion.Union(New Rectangle(0, y, Math.Max(1, Width), xHeight))
+            Next
+
+            Return xRegion
+        End Function
+
+        Private Sub DrawHighlights(ByVal g As Graphics, ByVal xColor As Color)
+            Using xRegion As Region = BuildHighlightRegion()
+                If xRegion Is Nothing Then Return
+
+                Using xBrush As New SolidBrush(xColor)
+                    g.FillRegion(xBrush, xRegion)
+                End Using
+            End Using
+        End Sub
+
         Protected Overrides Sub OnPaint(e As PaintEventArgs)
             MyBase.OnPaint(e)
 
-            Using xTrack As New SolidBrush(TrackColor)
+            Using xTrack As New SolidBrush(CurrentTrackColor())
                 e.Graphics.FillRectangle(xTrack, ClientRectangle)
             End Using
 
-            Dim xThumb As Rectangle = ThumbRect()
-            If xThumb.IsEmpty Then Return
+            DrawHighlights(e.Graphics, HighlightColor)
 
-            Using xBrush As New SolidBrush(ThumbColor)
-                e.Graphics.FillRectangle(xBrush, xThumb)
-            End Using
+            Dim xThumb As Rectangle = ThumbRect()
+            If Not xThumb.IsEmpty Then
+                Using xBrush As New SolidBrush(CurrentThumbColor())
+                    e.Graphics.FillRectangle(xBrush, xThumb)
+                End Using
+            End If
+
+            DrawHighlights(e.Graphics, HighlightFrontColor)
         End Sub
 
         Protected Overrides Sub OnMouseDown(e As MouseEventArgs)
@@ -752,14 +848,14 @@ Public Class MainWindow
         End Sub
     End Class
 
-    Private Class RandomNumericUpDown
+    Private Class WheelStepNumericUpDown
         Inherits NumericUpDown
 
         Protected Overrides Sub OnMouseWheel(ByVal e As MouseEventArgs)
             If e.Delta > 0 Then
-                Value = Math.Min(Maximum, Value + 1D)
+                Value = Math.Min(Maximum, Value + Increment)
             ElseIf e.Delta < 0 Then
-                Value = Math.Max(Minimum, Value - 1D)
+                Value = Math.Max(Minimum, Value - Increment)
             End If
 
             Dim xHandled As HandledMouseEventArgs = TryCast(e, HandledMouseEventArgs)
@@ -901,7 +997,7 @@ Public Class MainWindow
     Private TRandomExtra As TextBox = Nothing
     Private RandomExtraIndex As Integer = -1
     Private RandomExtraValue As Integer = 0
-    Private HeaderWheelBlockers As New List(Of MouseWheelBlocker)
+    Private OptionWheelBlockers As New List(Of MouseWheelBlocker)
     Private FastListScrollers As New List(Of ImmediateListBoxScroller)
 
     '----Find Delete Replace Options
@@ -921,7 +1017,7 @@ Public Class MainWindow
         InitializeEditorContextMenu()
         InitializeDefinitionContextMenu()
         InitializeFastListScrollers()
-        InitializeHeaderWheelBlockers()
+        InitializeOptionWheelBlockers()
         InitializeModeSelector()
         InitializePlayerSelector()
         InitializeGridToolbar()
@@ -937,20 +1033,24 @@ Public Class MainWindow
         Audio.Initialize()
     End Sub
 
-    Private Sub InitializeHeaderWheelBlockers()
-        HeaderWheelBlockers.Clear()
-        AddHeaderWheelBlockers(POHeaderPart1)
-        AddHeaderWheelBlockers(POHeaderPart2)
+    Private Sub InitializeOptionWheelBlockers()
+        OptionWheelBlockers.Clear()
+        AddOptionWheelBlockers(POHeaderPart1)
+        AddOptionWheelBlockers(POHeaderPart2)
     End Sub
 
-    Private Sub AddHeaderWheelBlockers(ByVal xParent As Control)
+    Private Sub AddOptionWheelBlockers(ByVal xParent As Control)
         For Each xControl As Control In xParent.Controls
             If TypeOf xControl Is ComboBox OrElse TypeOf xControl Is NumericUpDown Then
-                HeaderWheelBlockers.Add(New MouseWheelBlocker(xControl))
+                AddOptionWheelBlocker(xControl)
             End If
 
-            If xControl.Controls.Count > 0 Then AddHeaderWheelBlockers(xControl)
+            If xControl.Controls.Count > 0 Then AddOptionWheelBlockers(xControl)
         Next
+    End Sub
+
+    Private Sub AddOptionWheelBlocker(ByVal xControl As Control)
+        OptionWheelBlockers.Add(New MouseWheelBlocker(xControl))
     End Sub
 
     Private Sub InitializeFastListScrollers()
@@ -1548,12 +1648,12 @@ Public Class MainWindow
         spMain(EditorContextPanelIndex).Focus()
     End Sub
 
-    Private Sub ReleaseHeaderWheelBlockers()
-        For Each xBlocker As MouseWheelBlocker In HeaderWheelBlockers
+    Private Sub ReleaseOptionWheelBlockers()
+        For Each xBlocker As MouseWheelBlocker In OptionWheelBlockers
             xBlocker.Release()
         Next
 
-        HeaderWheelBlockers.Clear()
+        OptionWheelBlockers.Clear()
     End Sub
 
     Private Sub ReleaseFastListScrollers()
@@ -1892,11 +1992,12 @@ Public Class MainWindow
         editGrid.RowStyles.Add(New RowStyle())
         editGrid.RowStyles.Add(New RowStyle())
         editGrid.Controls.Add(New Label With {.Text = "#RANDOM", .AutoSize = True, .Anchor = AnchorStyles.Left}, 0, 0)
-        NRandomDefinition = New RandomNumericUpDown With {.Minimum = 1, .Maximum = 9999, .Dock = DockStyle.Fill}
+        NRandomDefinition = New NumericUpDown With {.Minimum = 1, .Maximum = 9999, .Dock = DockStyle.Fill}
+        AddOptionWheelBlocker(NRandomDefinition)
         AddHandler NRandomDefinition.ValueChanged, AddressOf NRandomDefinition_ValueChanged
         editGrid.Controls.Add(NRandomDefinition, 1, 0)
         editGrid.Controls.Add(New Label With {.Text = "#IF", .AutoSize = True, .Anchor = AnchorStyles.Left}, 0, 1)
-        NRandomValue = New RandomNumericUpDown With {.Minimum = 1, .Maximum = 9999, .Dock = DockStyle.Fill}
+        NRandomValue = New WheelStepNumericUpDown With {.Minimum = 1, .Maximum = 9999, .Increment = 1D, .Dock = DockStyle.Fill}
         AddHandler NRandomValue.ValueChanged, AddressOf NRandomValue_ValueChanged
         editGrid.Controls.Add(NRandomValue, 1, 1)
         editGrid.Controls.Add(New Label With {.Text = "View", .AutoSize = True, .Anchor = AnchorStyles.Left}, 0, 2)
@@ -1942,25 +2043,37 @@ Public Class MainWindow
         Return False
     End Function
 
-    Private Sub RefreshRandomPanel()
+    Private Sub RefreshRandomPanel(Optional ByVal preserveListTop As Boolean = True)
         If CRandomCommonVisible Is Nothing Then Return
+
+        Dim xListTopIndex As Integer = -1
+        If preserveListTop AndAlso LRandomBlocks IsNot Nothing Then
+            xListTopIndex = LRandomBlocks.TopIndex
+        End If
 
         UpdatingRandomControls = True
 
         CRandomCommonVisible.Checked = RandomCommonVisible
 
-        LRandomBlocks.Items.Clear()
-        For i As Integer = 0 To RandomBlocks.Count - 1
-            Dim block As BmsRandomBlock = RandomBlocks(i)
-            block.Normalize()
-            LRandomBlocks.Items.Add((i + 1).ToString() & ": #RANDOM " & block.DefinitionValue.ToString() & " / #IF " & block.CurrentValue.ToString() & " / " & block.ViewMode.ToString())
-        Next
+        LRandomBlocks.BeginUpdate()
+        Try
+            LRandomBlocks.Items.Clear()
+            For i As Integer = 0 To RandomBlocks.Count - 1
+                Dim block As BmsRandomBlock = RandomBlocks(i)
+                block.Normalize()
+                LRandomBlocks.Items.Add((i + 1).ToString() & ": #RANDOM " & block.DefinitionValue.ToString() & " / #IF " & block.CurrentValue.ToString() & " / " & block.ViewMode.ToString())
+            Next
 
-        If IsValidRandomIndex(SelectedRandomIndex) Then
-            LRandomBlocks.SelectedIndex = SelectedRandomIndex
-        Else
-            LRandomBlocks.SelectedIndex = -1
-        End If
+            If IsValidRandomIndex(SelectedRandomIndex) Then
+                LRandomBlocks.SelectedIndex = SelectedRandomIndex
+            Else
+                LRandomBlocks.SelectedIndex = -1
+            End If
+        Finally
+            LRandomBlocks.EndUpdate()
+        End Try
+
+        If xListTopIndex >= 0 Then SetListTopIndex(LRandomBlocks, xListTopIndex)
 
         Dim hasBlock As Boolean = IsValidRandomIndex(SelectedRandomIndex)
         BRandomDelete.Enabled = hasBlock
@@ -2012,7 +2125,7 @@ Public Class MainWindow
         RandomBlocks.Add(New BmsRandomBlock(2))
         SelectedRandomIndex = RandomBlocks.Count - 1
         SetIsSaved(False)
-        RefreshRandomPanel()
+        RefreshRandomPanel(False)
         RefreshPanelAll()
     End Sub
 
@@ -3190,6 +3303,29 @@ Public Class MainWindow
         Return note.RandomIndex < 0
     End Function
 
+    Private Function IsNoteRandomLayerHighlightTarget(ByVal note As Note) As Boolean
+        If note.VPosition < 0 Then Return False
+        Return IsValidRandomIndex(SelectedRandomIndex) AndAlso IsNoteCurrentRandomLayer(note)
+    End Function
+
+    Private Function IsNoteRandomAllCurrentLayer(ByVal note As Note) As Boolean
+        If note.VPosition < 0 Then Return False
+        If note.RandomIndex < 0 OrElse Not IsValidRandomIndex(note.RandomIndex) Then Return False
+
+        Dim block As BmsRandomBlock = RandomBlocks(note.RandomIndex)
+        block.Normalize()
+        Return block.ViewMode = BmsRandomViewMode.AllBranches AndAlso note.RandomValue = block.CurrentValue
+    End Function
+
+    Private Function IsNoteRandomAllOtherLayer(ByVal note As Note) As Boolean
+        If note.VPosition < 0 Then Return False
+        If note.RandomIndex < 0 OrElse Not IsValidRandomIndex(note.RandomIndex) Then Return False
+
+        Dim block As BmsRandomBlock = RandomBlocks(note.RandomIndex)
+        block.Normalize()
+        Return block.ViewMode = BmsRandomViewMode.AllBranches AndAlso note.RandomValue <> block.CurrentValue
+    End Function
+
     Private Function CurrentRandomLayerText() As String
         If IsValidRandomIndex(SelectedRandomIndex) Then
             Dim block As BmsRandomBlock = RandomBlocks(SelectedRandomIndex)
@@ -3761,7 +3897,7 @@ Public Class MainWindow
     End Function
 
     Private Sub Unload() Handles MyBase.Disposed
-        ReleaseHeaderWheelBlockers()
+        ReleaseOptionWheelBlockers()
         ReleaseFastListScrollers()
         Audio.Finalize()
     End Sub
@@ -7512,6 +7648,9 @@ Jump2:
         MainEditorVScroll.Tag = MainPanelIndex
         MainEditorHScroll.Tag = MainPanelIndex
         MainEditorHScrollStrip.Tag = MainPanelIndex
+        MainEditorVScroll.Orientation = Orientation.Vertical
+        MainEditorHScroll.Orientation = Orientation.Horizontal
+        MainEditorHScrollCorner.Width = EditorScrollBarThickness
         MainEditorVScroll.Minimum = MainPanelScroll.Minimum
         MainEditorVScroll.Maximum = MainPanelScroll.Maximum
         MainEditorVScroll.LargeChange = MainPanelScroll.LargeChange
