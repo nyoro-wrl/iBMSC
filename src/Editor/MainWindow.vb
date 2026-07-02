@@ -330,7 +330,6 @@ Public Class MainWindow
     Private Const EditorScrollBarThickness As Integer = 8
     Private Const SplitPanelSettingSeparator As Char = ";"c
     Private Shared ReadOnly RandomLayerHighlightColor As Color = Color.FromArgb(255, 255, 186, 64)
-    Private Shared ReadOnly RandomLayerHighlightFillColor As Color = Color.FromArgb(96, RandomLayerHighlightColor)
     Private Shared ReadOnly RandomLayerOtherHintColor As Color = Color.FromArgb(255, 64, 210, 255)
     Private Shared ReadOnly RandomLayerScrollBorderColor As Color = Color.FromArgb(240, 240, 240)
     Dim SyncSplitViewScroll As Boolean = False

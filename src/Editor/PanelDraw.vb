@@ -173,6 +173,7 @@ Partial Public Class MainWindow
         Dim xPen As Pen
         Dim xBrush As Drawing2D.LinearGradientBrush
         Dim xBrush2 As SolidBrush
+        Dim xTempNote As Note = WithCurrentRandomOwner(New Note(SelectedColumn, TempVPosition, 0))
         Dim point1 As New Point(HorizontalPositiontoDisplay(nLeft(SelectedColumn), xHS),
                                 NoteRowToPanelHeight(TempVPosition, xVS, xTHeight) - vo.kHeight - 10)
         Dim point2 As New Point(HorizontalPositiontoDisplay(nLeft(SelectedColumn) + GetColumnWidth(SelectedColumn), xHS),
@@ -200,6 +201,7 @@ Partial Public Class MainWindow
             dark = Color.Red
         End If
 
+        ApplyRandomLayerNoteColor(xTempNote, bright, dark)
         xBrush = New Drawing2D.LinearGradientBrush(point1, point2, bright, dark)
 
         e1.Graphics.FillRectangle(xBrush, HorizontalPositiontoDisplay(nLeft(SelectedColumn), xHS) + 2,
@@ -211,6 +213,8 @@ Partial Public Class MainWindow
                                   NoteRowToPanelHeight(TempVPosition, xVS, xTHeight) - vo.kHeight,
                                   GetColumnWidth(SelectedColumn) * gxWidth - 2,
                                   vo.kHeight)
+
+        DrawRandomLayerHint(xTempNote, e1, xHS, xVS, xTHeight)
 
         e1.Graphics.DrawString(xText, vo.kFont, xBrush2,
                         HorizontalPositiontoDisplay(nLeft(SelectedColumn), xHS) + vo.kLabelHShiftL - 2,
@@ -275,6 +279,39 @@ Partial Public Class MainWindow
                 CInt(floor + visible.G * scale),
                 CInt(floor + visible.B * scale))
     End Function
+
+    Private Function ClampColorChannel(ByVal value As Double) As Integer
+        Return CInt(Math.Max(0, Math.Min(255, Math.Round(value))))
+    End Function
+
+    Private Function ApplyRandomLayerContrast(ByVal color As Color, ByVal factor As Double) As Color
+        If color.A = 0 Then Return color
+
+        Return Color.FromArgb(color.A,
+                              ClampColorChannel(128 + (color.R - 128) * factor),
+                              ClampColorChannel(128 + (color.G - 128) * factor),
+                              ClampColorChannel(128 + (color.B - 128) * factor))
+    End Function
+
+    Private Function GetRandomLayerNoteColor(ByVal color As Color) As Color
+        If color.A = 0 Then Return color
+
+        Dim contrasted As Color = ApplyRandomLayerContrast(color, 2.0R)
+        Dim xMax As Integer = Math.Max(contrasted.R, Math.Max(contrasted.G, contrasted.B))
+        Dim xMin As Integer = Math.Min(contrasted.R, Math.Min(contrasted.G, contrasted.B))
+        If xMax - xMin < 22 Then Return ApplyRandomLayerContrast(color, 2.1R)
+
+        Dim xSaturation As Integer = CInt(Math.Min(1000, Math.Max(contrasted.GetSaturation(), 0.65F) * 1.35F * 1000))
+        Dim xLightness As Integer = CInt(Math.Min(1000, Math.Max(0, contrasted.GetBrightness() * 1000)))
+        Return HSL2RGB(CInt(contrasted.GetHue()), xSaturation, xLightness, contrasted.A)
+    End Function
+
+    Private Sub ApplyRandomLayerNoteColor(ByVal sNote As Note, ByRef bright As Color, ByRef dark As Color)
+        If Not IsNoteRandomLayerHighlightTarget(sNote) Then Return
+
+        bright = GetRandomLayerNoteColor(bright)
+        dark = GetRandomLayerNoteColor(dark)
+    End Sub
 
     Private Sub DrawBackgroundColor(e1 As BufferedGraphics, xTHeight As Integer, xTWidth As Integer, xHS As Integer, xI1 As Integer)
         If gShowBG Then
@@ -442,20 +479,28 @@ Partial Public Class MainWindow
         Return GetNoteRectangle(Notes(noteIndex), xTHeight, xHS, xVS)
     End Function
 
-    Private Sub FillRandomLayerHighlight(ByVal sNote As Note, ByVal e As BufferedGraphics, ByVal rect As Rectangle)
-        If Not IsNoteRandomLayerHighlightTarget(sNote) Then Return
-        If rect.Width <= 0 OrElse rect.Height <= 0 Then Return
-
-        Using brush As New SolidBrush(RandomLayerHighlightFillColor)
-            e.Graphics.FillRectangle(brush, rect)
-        End Using
-    End Sub
-
     Private Sub DrawRandomLayerHint(ByVal sNote As Note, ByVal e As BufferedGraphics, ByVal xHS As Long, ByVal xVS As Long, ByVal xHeight As Integer)
         If Not IsNoteRandomLayerHighlightTarget(sNote) AndAlso Not IsNoteRandomAllOtherLayer(sNote) Then Return
 
         Dim rect As Rectangle = GetNoteRectangle(sNote, xHeight, CInt(xHS), CInt(xVS))
-        Dim xColor As Color = If(IsNoteRandomLayerHighlightTarget(sNote), RandomLayerHighlightColor, RandomLayerOtherHintColor)
+        Dim xIsCurrentRandomLayer As Boolean = IsNoteRandomLayerHighlightTarget(sNote)
+        Dim xColor As Color = If(xIsCurrentRandomLayer, RandomLayerHighlightColor, RandomLayerOtherHintColor)
+        If xIsCurrentRandomLayer Then
+            Dim xLeft As Integer = rect.X + 1
+            Dim xTop As Integer = rect.Y + 1
+            Dim xRight As Integer = rect.X + Math.Max(1, rect.Width - 2)
+            Dim xBottom As Integer = rect.Y + Math.Max(1, rect.Height - 2)
+            Using xPen2 As New Pen(xColor, 2.0F)
+                e.Graphics.DrawLine(xPen2, xLeft, xTop, xRight, xTop)
+                e.Graphics.DrawLine(xPen2, xLeft, xTop, xLeft, xBottom)
+                e.Graphics.DrawLine(xPen2, xRight, xTop, xRight, xBottom)
+            End Using
+            Using xPen1 As New Pen(xColor)
+                e.Graphics.DrawLine(xPen1, xLeft, xBottom, xRight - 1, xBottom)
+            End Using
+            Return
+        End If
+
         Using pen As New Pen(xColor)
             e.Graphics.DrawRectangle(pen, rect.X + 1, rect.Y + 1, Math.Max(1, rect.Width - 3), Math.Max(1, rect.Height - 3))
         End Using
@@ -683,6 +728,7 @@ Partial Public Class MainWindow
             xBrush2 = New SolidBrush(GetColumn(sNote.ColumnIndex).cLText)
         End If
 
+        ApplyRandomLayerNoteColor(sNote, bright, dark)
         xPen = New Pen(bright)
         xBrush = New Drawing2D.LinearGradientBrush(p1, p2, bright, dark)
 
@@ -700,7 +746,7 @@ Partial Public Class MainWindow
                                  GetColumnWidth(sNote.ColumnIndex) * gxWidth - 2,
                                  vo.kHeight)
 
-        FillRandomLayerHighlight(sNote, e, xFillRect)
+        DrawRandomLayerHint(sNote, e, xHS, xVS, xHeight)
 
         ' Label
         e.Graphics.DrawString(IIf(IsColumnNumeric(sNote.ColumnIndex), sNote.Value / 10000, xLabel),
@@ -725,7 +771,6 @@ Partial Public Class MainWindow
                                                             24, 24)
 
         If sNote.Selected Then e.Graphics.DrawRectangle(vo.kSelected, HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex), xHS), NoteRowToPanelHeight(sNote.VPosition, xVS, xHeight) - vo.kHeight - 1, GetColumnWidth(sNote.ColumnIndex) * gxWidth, vo.kHeight + 2)
-        DrawRandomLayerHint(sNote, e, xHS, xVS, xHeight)
 
     End Sub
 
@@ -805,6 +850,7 @@ Partial Public Class MainWindow
             xBrush2 = New SolidBrush(GetColumn(sNote.ColumnIndex).cLText)
         End If
 
+        ApplyRandomLayerNoteColor(sNote, bright, dark)
         xPen1 = New Pen(bright)
         xBrush = New Drawing2D.LinearGradientBrush(p1, p2, bright, dark)
 
@@ -821,7 +867,7 @@ Partial Public Class MainWindow
                                      NoteRowToPanelHeight(sNote.VPosition + sNote.Length, xVS, xHeight) - vo.kHeight,
                                             GetColumnWidth(sNote.ColumnIndex) * gxWidth - 3, CInt(sNote.Length * gxHeight) + vo.kHeight)
 
-        FillRandomLayerHighlight(sNote, e, xFillRect)
+        DrawRandomLayerHint(sNote, e, xHS, xVS, xHeight)
 
         ' Note B36
         e.Graphics.DrawString(IIf(IsColumnNumeric(sNote.ColumnIndex), sNote.Value / 10000, xLabel),
@@ -853,7 +899,6 @@ Partial Public Class MainWindow
                                  CInt(NoteRowToPanelHeight(sNote.VPosition, xVS, xHeight) - vo.kHeight / 2 - 12),
                                  24, 24)
         End If
-        DrawRandomLayerHint(sNote, e, xHS, xVS, xHeight)
 
         'e.Graphics.DrawString(sNote.TimeOffset.ToString("0.##"), New Font("Verdana", 9), Brushes.Cyan, _
         '                      New Point(HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex + 1), xHS), VerticalPositiontoDisplay(sNote.VPosition, xVS, xHeight) - vo.kHeight - 2))
