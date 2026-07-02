@@ -13,8 +13,7 @@ Partial Public Class MainWindow
     Private Sub UpdateScrollBarHighlights()
         Dim xRanges As List(Of ScrollHighlightRange) = BuildCurrentRandomLayerHighlightRanges()
         Dim xTrackActive As Boolean = xRanges.Count > 0
-        RefreshRandomViewModeEnabled(xTrackActive)
-        RefreshRandomListTexts()
+        RefreshRandomLayerUiIfNeeded(xTrackActive)
 
         If SplitPanes Is Nothing OrElse SplitPanes.Count = 0 Then Return
 

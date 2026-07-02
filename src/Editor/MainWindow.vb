@@ -54,6 +54,7 @@ Public Class MainWindow
     Private RandomCommonVisible As Boolean = True
     Private SelectedRandomIndex As Integer = -1
     Private UpdatingRandomControls As Boolean = False
+    Private RandomLayerUiSignature As String = Nothing
     Dim mColumn(999) As Integer  '0 = no column, 1 = 1 column, etc.
     Dim GreatestVPosition As Double    '+ 2000 = -VS.Minimum
 
@@ -2135,12 +2136,61 @@ Public Class MainWindow
         Return BmsRandomViewMode.Hidden
     End Function
 
-    Private Sub SetRandomViewModeItems(ByVal includeAll As Boolean)
+    Private Sub SetRandomViewModeItems(ByVal includeHidden As Boolean, ByVal includeAll As Boolean)
         CRandomViewMode.Items.Clear()
         CRandomViewMode.Items.Add("Visible")
-        CRandomViewMode.Items.Add("Hidden")
+        If includeHidden Then CRandomViewMode.Items.Add("Hidden")
         If includeAll Then CRandomViewMode.Items.Add("Visible All")
     End Sub
+
+    Private Sub RefreshRandomLayerUiIfNeeded(ByVal hasHighlightTarget As Boolean)
+        Dim xSignature As String = BuildRandomLayerUiSignature(hasHighlightTarget)
+        If RandomLayerUiSignature = xSignature Then Return
+
+        RandomLayerUiSignature = xSignature
+        RefreshRandomViewModeEnabled(hasHighlightTarget)
+        RefreshRandomListTexts()
+    End Sub
+
+    Private Function BuildRandomLayerUiSignature(ByVal hasHighlightTarget As Boolean) As String
+        Dim xHasCommonNote As Boolean = False
+        Dim xHasRandomNote() As Boolean = New Boolean() {}
+        If RandomBlocks.Count > 0 Then ReDim xHasRandomNote(RandomBlocks.Count - 1)
+
+        If Notes IsNot Nothing AndAlso Notes.Length > 1 Then
+            For i As Integer = 1 To UBound(Notes)
+                If Notes(i).VPosition < 0 Then Continue For
+
+                Dim xRandomIndex As Integer = Notes(i).RandomIndex
+                If xRandomIndex < 0 Then
+                    xHasCommonNote = True
+                ElseIf IsValidRandomIndex(xRandomIndex) Then
+                    Dim block As BmsRandomBlock = RandomBlocks(xRandomIndex)
+                    block.Normalize()
+                    If Notes(i).RandomValue = block.CurrentValue Then xHasRandomNote(xRandomIndex) = True
+                End If
+            Next
+        End If
+
+        Dim xBuilder As New System.Text.StringBuilder()
+        xBuilder.Append(If(hasHighlightTarget, "1", "0")).
+                 Append("|").Append(SelectedRandomIndex).
+                 Append("|").Append(If(RandomCommonVisible, "1", "0")).
+                 Append("|").Append(If(xHasCommonNote, "1", "0")).
+                 Append("|").Append(RandomBlocks.Count)
+
+        For i As Integer = 0 To RandomBlocks.Count - 1
+            Dim block As BmsRandomBlock = RandomBlocks(i)
+            block.Normalize()
+            xBuilder.Append("|").
+                     Append(block.DefinitionValue).
+                     Append(",").Append(block.CurrentValue).
+                     Append(",").Append(CInt(block.ViewMode)).
+                     Append(",").Append(If(xHasRandomNote(i), "1", "0"))
+        Next
+
+        Return xBuilder.ToString()
+    End Function
 
     Private Sub RefreshRandomPanel(Optional ByVal preserveListTop As Boolean = True)
         If LRandomBlocks Is Nothing Then Return
@@ -2191,32 +2241,36 @@ Public Class MainWindow
             NRandomValue.Maximum = Math.Max(9999D, CDec(block.DefinitionValue))
             NRandomValue.Value = block.CurrentValue
             NRandomValue.Text = block.CurrentValue.ToString()
-            SetRandomViewModeItems(True)
+            SetRandomViewModeItems(True, True)
             CRandomViewMode.SelectedIndex = RandomViewModeToComboIndex(block.ViewMode)
             RandomExtraIndex = SelectedRandomIndex
             RandomExtraValue = block.CurrentValue
             TRandomExtra.Text = block.GetExtraText(block.CurrentValue)
         Else
+            Dim xCanHideCommon As Boolean = RandomBlocks.Count > 0
+            If Not xCanHideCommon Then RandomCommonVisible = True
+
             NRandomDefinition.Maximum = Math.Max(9999D, 2D)
             NRandomDefinition.Value = 2
             NRandomDefinition.Text = ""
             NRandomValue.Maximum = 1
             NRandomValue.Value = 1
             NRandomValue.Text = ""
-            SetRandomViewModeItems(False)
-            CRandomViewMode.SelectedIndex = If(RandomCommonVisible, 0, 1)
+            SetRandomViewModeItems(xCanHideCommon, False)
+            CRandomViewMode.SelectedIndex = If(RandomCommonVisible OrElse Not xCanHideCommon, 0, 1)
             RandomExtraIndex = -1
             RandomExtraValue = 0
             TRandomExtra.Text = ""
         End If
 
         UpdatingRandomControls = False
+        RandomLayerUiSignature = BuildRandomLayerUiSignature(HasRandomLayerHighlightTarget())
     End Sub
 
     Private Function RandomCommonListText() As String
-        If HasCommonLayerNote() Then Return "Common / " & If(RandomCommonVisible, "Visible", "Hidden")
+        If RandomBlocks.Count > 0 AndAlso HasCommonLayerNote() Then Return "Base / " & If(RandomCommonVisible, "Visible", "Hidden")
 
-        Return "Common"
+        Return "Base"
     End Function
 
     Private Function RandomBlockListText(ByVal randomIndex As Integer, ByVal block As BmsRandomBlock) As String
@@ -2230,6 +2284,23 @@ Public Class MainWindow
         If LRandomBlocks Is Nothing Then Return
         If LRandomBlocks.Items.Count <> RandomBlocks.Count + 1 Then Return
 
+        Dim xTexts As New List(Of String)()
+        xTexts.Add(RandomCommonListText())
+        For i As Integer = 0 To RandomBlocks.Count - 1
+            Dim block As BmsRandomBlock = RandomBlocks(i)
+            block.Normalize()
+            xTexts.Add(RandomBlockListText(i, block))
+        Next
+
+        Dim xChanged As Boolean = False
+        For i As Integer = 0 To xTexts.Count - 1
+            If Not Object.Equals(LRandomBlocks.Items(i), xTexts(i)) Then
+                xChanged = True
+                Exit For
+            End If
+        Next
+        If Not xChanged Then Return
+
         Dim xListTopIndex As Integer = -1
         If preserveListTop Then xListTopIndex = LRandomBlocks.TopIndex
 
@@ -2237,11 +2308,8 @@ Public Class MainWindow
         UpdatingRandomControls = True
         LRandomBlocks.BeginUpdate()
         Try
-            LRandomBlocks.Items(0) = RandomCommonListText()
-            For i As Integer = 0 To RandomBlocks.Count - 1
-                Dim block As BmsRandomBlock = RandomBlocks(i)
-                block.Normalize()
-                LRandomBlocks.Items(i + 1) = RandomBlockListText(i, block)
+            For i As Integer = 0 To xTexts.Count - 1
+                LRandomBlocks.Items(i) = xTexts(i)
             Next
         Finally
             LRandomBlocks.EndUpdate()
@@ -2398,7 +2466,11 @@ Public Class MainWindow
         If IsValidRandomIndex(SelectedRandomIndex) Then
             RandomBlocks(SelectedRandomIndex).ViewMode = ComboIndexToRandomViewMode(CRandomViewMode.SelectedIndex)
         Else
-            RandomCommonVisible = (CRandomViewMode.SelectedIndex = 0)
+            Dim xCommonVisible As Boolean = True
+            If RandomBlocks.Count > 0 Then xCommonVisible = (CRandomViewMode.SelectedIndex = 0)
+            If RandomCommonVisible = xCommonVisible Then Return
+
+            RandomCommonVisible = xCommonVisible
         End If
         SetIsSaved(False)
         RefreshRandomPanel()
@@ -3521,6 +3593,7 @@ Public Class MainWindow
             StoreRandomExtraText()
             SelectedRandomIndex = -1
             RefreshRandomPanel()
+            EnsureSelectedListItemVisible(LRandomBlocks)
             Return
         End If
 
@@ -3534,6 +3607,7 @@ Public Class MainWindow
         SelectedRandomIndex = note.RandomIndex
         block.CurrentValue = xValue
         RefreshRandomPanel()
+        EnsureSelectedListItemVisible(LRandomBlocks)
     End Sub
 
     Private Function HasRandomLayerHighlightTarget() As Boolean
@@ -3573,7 +3647,13 @@ Public Class MainWindow
         If CRandomViewMode Is Nothing Then Return
 
         Dim hasBlock As Boolean = IsValidRandomIndex(SelectedRandomIndex)
-        CRandomViewMode.Enabled = Not hasBlock OrElse hasHighlightTarget
+        Dim xEnabled As Boolean
+        If hasBlock Then
+            xEnabled = hasHighlightTarget
+        Else
+            xEnabled = RandomBlocks.Count > 0
+        End If
+        If CRandomViewMode.Enabled <> xEnabled Then CRandomViewMode.Enabled = xEnabled
     End Sub
 
     Private Function IsNoteRandomLayerOtherHintTarget(ByVal note As Note) As Boolean
@@ -3591,7 +3671,7 @@ Public Class MainWindow
             Return "RANDOM " & (SelectedRandomIndex + 1).ToString() & " / IF " & block.CurrentValue.ToString()
         End If
 
-        Return "Common"
+        Return "Base"
     End Function
 
     Private Function EnabledColumnIndexToColumnArrayIndex(ByVal cEnabled As Integer) As Integer
