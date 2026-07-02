@@ -4639,6 +4639,11 @@ Public Class MainWindow
         Me.WindowState = tempResize
 
         Me.Visible = True
+        ' Settings can be loaded while layout is suspended, so clamp again after startup bounds are applied.
+        If mnSOP.Checked Then
+            ResizeSplitPanelsByRatio()
+            BeginInvoke(New MethodInvoker(AddressOf ResizeSplitPanelsByRatio))
+        End If
         UpdateHorizontalScrollMetrics()
         RefreshPanelAll()
         PMainIn.Focus()
