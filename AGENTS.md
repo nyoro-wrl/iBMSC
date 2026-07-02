@@ -7,3 +7,9 @@
   - `src/nBMSC.vbproj` の `ApplicationVersion`
 - Release 本文は CI/CD で Release が作成された後、`gh release edit <version> --notes-file <file>` で設定する
 - Release 本文が指定されていない場合は確認する
+
+# WinForms UI
+
+- UI配置変更は原則として既存の `*.Designer.vb` / `.resx` の構造を優先する
+- Visual Studio Designerでの編集が必要な場合は、コード側へ後付け実装せず確認する
+- 実行時生成が既存パターンの画面に限り、コード側でのUI生成を許可する
