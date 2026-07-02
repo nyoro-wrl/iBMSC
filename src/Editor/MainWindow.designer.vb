@@ -325,6 +325,7 @@ Partial Class MainWindow
         Me.mnPlay = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnStop = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnOpenWebsite = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnOpenAppFolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator25 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnUpdate = New System.Windows.Forms.ToolStripMenuItem()
@@ -3808,10 +3809,16 @@ Partial Class MainWindow
         '
         'mnHelp
         '
-        Me.mnHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnOpenAppFolder, Me.ToolStripSeparator25, Me.mnUpdate, Me.mnUpdateStartup})
+        Me.mnHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnOpenWebsite, Me.mnOpenAppFolder, Me.ToolStripSeparator25, Me.mnUpdate, Me.mnUpdateStartup})
         Me.mnHelp.Name = "mnHelp"
         Me.mnHelp.Size = New System.Drawing.Size(44, 19)
         Me.mnHelp.Text = "Help"
+        '
+        'mnOpenWebsite
+        '
+        Me.mnOpenWebsite.Name = "mnOpenWebsite"
+        Me.mnOpenWebsite.Size = New System.Drawing.Size(209, 22)
+        Me.mnOpenWebsite.Text = "Open Website"
         '
         'mnOpenAppFolder
         '
@@ -5070,6 +5077,7 @@ Partial Class MainWindow
     Friend WithEvents mnPlay As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnStop As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnHelp As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnOpenWebsite As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnOpenAppFolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator25 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents mnUpdate As System.Windows.Forms.ToolStripMenuItem

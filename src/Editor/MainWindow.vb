@@ -7,6 +7,7 @@ Imports nBMSC.Editor
 
 Public Class MainWindow
 
+    Private Const WebsiteUrl As String = "https://github.com/nyoro-wrl/nBMSC"
 
     'Public Structure MARGINS
     '    Public Left As Integer
@@ -1434,6 +1435,7 @@ Public Class MainWindow
         SetText("Menu.Preview.PlayHere", mnPlay.Text)
         SetText("Menu.Preview.PlayStop", mnStop.Text)
         SetText("Menu.Help.Title", mnHelp.Text)
+        SetText("Menu.Help.OpenWebsite", mnOpenWebsite.Text)
         SetText("Menu.Help.OpenAppFolder", mnOpenAppFolder.Text)
         SetText("Menu.Help.CheckUpdates", mnUpdate.Text)
         SetText("Menu.Help.CheckUpdatesOnStartup", mnUpdateStartup.Text)
@@ -8084,6 +8086,10 @@ Jump2:
         End Try
     End Sub
 
+    Private Sub mnOpenWebsite_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnOpenWebsite.Click
+        OpenUrl(WebsiteUrl)
+    End Sub
+
     Private Sub StartStartupUpdateCheck()
         System.Threading.Tasks.Task.Run(Sub()
                                             Dim xResult As UpdateCheckResult = UpdateChecker.Check(My.Application.Info.Version)
@@ -8114,7 +8120,7 @@ Jump2:
             If xIsManual AndAlso MsgBox(String.Format(Strings.Messages.UpdateVersionUnsupported, xCurrentVersion, xLatestVersion),
                                         MsgBoxStyle.Question Or MsgBoxStyle.YesNo,
                                         Strings.Messages.UpdateCheckTitle) = MsgBoxResult.Yes Then
-                OpenUpdatePage(xResult.ReleaseUrl)
+                OpenUrl(xResult.ReleaseUrl)
             End If
             Return
         End If
@@ -8122,7 +8128,7 @@ Jump2:
         If xResult.HasUpdate Then
             Select Case ShowUpdateAvailableDialog(xResult)
                 Case UpdatePromptAction.OpenRelease
-                    OpenUpdatePage(xResult.ReleaseUrl)
+                    OpenUrl(xResult.ReleaseUrl)
                 Case UpdatePromptAction.SkipVersion
                     SkipUpdateVersion(xResult.LatestTag)
             End Select
@@ -8188,8 +8194,10 @@ Jump2:
         End Try
     End Sub
 
-    Private Sub OpenUpdatePage(ByVal xUrl As String)
-        If String.IsNullOrWhiteSpace(xUrl) Then Return
+    Private Sub OpenUrl(ByVal xUrl As String)
+        If String.IsNullOrWhiteSpace(xUrl) Then
+            Return
+        End If
 
         Try
             Process.Start(xUrl)

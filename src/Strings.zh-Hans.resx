@@ -327,6 +327,9 @@
   <data name="Menu.Help.OpenAppFolder" xml:space="preserve">
     <value>打开应用程序文件夹</value>
   </data>
+  <data name="Menu.Help.OpenWebsite" xml:space="preserve">
+    <value>打开网站</value>
+  </data>
   <data name="Menu.Help.Title" xml:space="preserve">
     <value>帮助</value>
   </data>
