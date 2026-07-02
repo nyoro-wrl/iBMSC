@@ -3,7 +3,8 @@ Imports System.Text.Json
 
 Partial Public Class MainWindow
     Private Const NBMSCFileSignature As Integer = &H534D426E
-    Private Const NBMSCFileSuffix As Byte = &H43
+    Private Const NBMSCFileSuffixLegacy As Byte = &H43
+    Private Const NBMSCFileSuffix As Byte = &H44
 
     Private Sub ReportLoadProgress(ByVal xProgress As fLoadFileProgress, ByVal xStatus As String, ByVal xPercent As Integer, Optional ByVal xForce As Boolean = False)
         If xProgress Is Nothing Then Return
@@ -59,6 +60,8 @@ Partial Public Class MainWindow
         xStrAll = Replace(Replace(Replace(xStrAll, vbLf, vbCr), vbCr & vbCr, vbCr), vbCr, vbCrLf)
 
         Dim xStrLine() As String = Split(xStrAll, vbCrLf, , CompareMethod.Text)
+        Dim xParsedRandom As BmsRandomParseResult = BmsRandomParser.Parse(xStrLine)
+        Dim xTopLines() As String = xParsedRandom.TopLevelLines.ToArray()
         Dim xLineCount As Integer = Math.Max(1, xStrLine.Length)
         Dim xI1 As Integer
         Dim sLine As String
@@ -72,6 +75,7 @@ Partial Public Class MainWindow
         ReDim hBMSCROLL(MaxDefinition)
         Me.InitializeNewBMS()
         Me.InitializeOpenBMS()
+        ResetRandomState()
         SetUseBase62Definitions(ContainsBase62Definitions(xStrLine))
 
         With Notes(0)
@@ -80,6 +84,8 @@ Partial Public Class MainWindow
             '.LongNote = False
             '.Selected = False
             .Value = 1200000
+            .RandomIndex = -1
+            .RandomValue = 0
         End With
 
         'random, setRandom      0
@@ -92,13 +98,13 @@ Partial Public Class MainWindow
         'endSw                  -1
         Dim xStack As Integer = 0
 
-        For xLineIndex As Integer = 0 To xStrLine.Length - 1
+        For xLineIndex As Integer = 0 To xTopLines.Length - 1
             If xLineIndex Mod 256 = 0 Then
                 ReportLoadProgress(xProgress, "Reading headers", 10 + CInt((xLineIndex / xLineCount) * 25))
                 CheckLoadCanceled(xProgress)
             End If
 
-            sLine = xStrLine(xLineIndex)
+            sLine = xTopLines(xLineIndex)
             Dim sLineTrim As String = sLine.Trim
             If xStack > 0 Then GoTo Expansion
 
@@ -249,13 +255,13 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         Dim xHas7KeyNotes As Boolean = False
         Dim xHas5KeyNotes As Boolean = False
 
-        For xLineIndex As Integer = 0 To xStrLine.Length - 1
+        For xLineIndex As Integer = 0 To xTopLines.Length - 1
             If xLineIndex Mod 256 = 0 Then
                 ReportLoadProgress(xProgress, "Reading notes", 35 + CInt((xLineIndex / xLineCount) * 50))
                 CheckLoadCanceled(xProgress)
             End If
 
-            sLine = xStrLine(xLineIndex)
+            sLine = xTopLines(xLineIndex)
             Dim sLineTrim As String = sLine.Trim
             If xStack > 0 Then Continue For
 
@@ -291,6 +297,8 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                     .Selected = False
                     .VPosition = MeasureBottom(xMeasure) + MeasureLength(xMeasure) * (xI1 / 2 - 4) / ((Len(sLineTrim) - 7) / 2)
                     .Value = DefinitionIndex(xNoteValueText) * 10000
+                    .RandomIndex = -1
+                    .RandomValue = 0
 
                     If Channel = "03" Then .Value = Convert.ToInt32(xNoteValueText, 16) * 10000
                     If Channel = "08" Then .Value = hBPM(DefinitionIndex(xNoteValueText))
@@ -302,6 +310,8 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
 
             Next
         Next
+
+        ReadRandomBlocks(xParsedRandom, xNotes, xExpansion, xHasPlayableNotes, xHas24KeyNotes, xHas7KeyNotes, xHas5KeyNotes)
 
         Notes = xNotes.ToArray()
 
@@ -315,6 +325,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         THMissBMP.Text = hBMP(0)
 
         TExpansion.Text = xExpansion
+        RefreshRandomPanel()
 
         ReportLoadProgress(xProgress, "Sorting notes", 90, True)
         CheckLoadCanceled(xProgress)
@@ -328,6 +339,269 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         RefreshPanelAll()
         POStatusRefresh()
         ReportLoadProgress(xProgress, "Done", 100, True)
+    End Sub
+
+    Private Class RandomTimingDefinition
+        Public Kind As String
+        Public Index As Integer
+        Public Value As Long
+        Public Line As String
+        Public Used As Boolean
+    End Class
+
+    Private Sub ResetRandomState()
+        RandomBlocks.Clear()
+        RandomCommonVisible = True
+        SelectedRandomIndex = -1
+    End Sub
+
+    Private Function JoinBmsLines(ByVal lines As IEnumerable(Of String)) As String
+        Dim xLines As New List(Of String)(lines)
+        If xLines.Count = 0 Then Return ""
+
+        Return String.Join(vbCrLf, xLines.ToArray()) & vbCrLf
+    End Function
+
+    Private Sub AppendExpansionText(ByRef expansion As String, ByVal text As String)
+        If text = "" Then Return
+        expansion &= text
+        If Not expansion.EndsWith(vbCrLf, StringComparison.Ordinal) Then expansion &= vbCrLf
+    End Sub
+
+    Private Function IsBmsDataLine(ByVal trimmedLine As String) As Boolean
+        Return trimmedLine.StartsWith("#", StringComparison.CurrentCultureIgnoreCase) AndAlso Mid(trimmedLine, 7, 1) = ":"
+    End Function
+
+    Private Function IsSupportedBmsDataLine(ByVal trimmedLine As String) As Boolean
+        If Not IsBmsDataLine(trimmedLine) Then Return False
+
+        Return BMSChannelToColumn(Mid(trimmedLine, 5, 2)) <> 0
+    End Function
+
+    Private Function IsMeasureLengthLine(ByVal trimmedLine As String) As Boolean
+        Return trimmedLine.StartsWith("#", StringComparison.CurrentCultureIgnoreCase) AndAlso Mid(trimmedLine, 5, 3) = "02:"
+    End Function
+
+    Private Function BranchRequiresTextOnly(ByVal lines As List(Of String)) As Boolean
+        For Each line As String In lines
+            Dim trimmed As String = line.Trim()
+            If trimmed = "" Then Continue For
+
+            If BmsRandomParser.IsCommand(trimmed, "RANDOM") OrElse
+               BmsRandomParser.IsCommand(trimmed, "IF") OrElse
+               BmsRandomParser.IsCommand(trimmed, "ENDIF") OrElse
+               BmsRandomParser.IsCommand(trimmed, "ENDRANDOM") OrElse
+               BmsRandomParser.IsCommand(trimmed, "ELSEIF") OrElse
+               BmsRandomParser.IsCommand(trimmed, "ELSE") OrElse
+               BmsRandomParser.IsCommand(trimmed, "SETRANDOM") OrElse
+               BmsRandomParser.IsCommand(trimmed, "SWITCH") OrElse
+               BmsRandomParser.IsCommand(trimmed, "SETSWITCH") OrElse
+               BmsRandomParser.IsCommand(trimmed, "CASE") OrElse
+               BmsRandomParser.IsCommand(trimmed, "DEF") OrElse
+               BmsRandomParser.IsCommand(trimmed, "SKIP") OrElse
+               BmsRandomParser.IsCommand(trimmed, "ENDSW") Then Return True
+
+            If IsMeasureLengthLine(trimmed) Then Return True
+            If trimmed.StartsWith("#WAV", StringComparison.CurrentCultureIgnoreCase) Then Return True
+            If trimmed.StartsWith("#BMP", StringComparison.CurrentCultureIgnoreCase) Then Return True
+        Next
+
+        Return False
+    End Function
+
+    Private Function TryReadTimingDefinition(ByVal line As String,
+                                             ByRef kind As String,
+                                             ByRef index As Integer,
+                                             ByRef value As Long) As Boolean
+        Dim trimmed As String = line.Trim()
+        kind = ""
+        index = 0
+        value = 0
+
+        If trimmed.StartsWith("#BPM", StringComparison.CurrentCultureIgnoreCase) AndAlso Not Mid(trimmed, Len("#BPM") + 1, 1).Trim() = "" Then
+            kind = "BPM"
+            index = DefinitionIndex(Mid(trimmed, Len("#BPM") + 1, 2))
+            value = CLng(Val(Mid(trimmed, Len("#BPM") + 4)) * 10000)
+            Return True
+        End If
+
+        If trimmed.StartsWith("#STOP", StringComparison.CurrentCultureIgnoreCase) Then
+            kind = "STOP"
+            index = DefinitionIndex(Mid(trimmed, Len("#STOP") + 1, 2))
+            value = CLng(Val(Mid(trimmed, Len("#STOP") + 4)) * 10000)
+            Return True
+        End If
+
+        If trimmed.StartsWith("#SCROLL", StringComparison.CurrentCultureIgnoreCase) Then
+            kind = "SCROLL"
+            index = DefinitionIndex(Mid(trimmed, Len("#SCROLL") + 1, 2))
+            value = CLng(Val(Mid(trimmed, Len("#SCROLL") + 4)) * 10000)
+            Return True
+        End If
+
+        Return False
+    End Function
+
+    Private Sub MarkTimingDefinitionUsed(ByVal definitions As List(Of RandomTimingDefinition), ByVal kind As String, ByVal index As Integer)
+        If definitions Is Nothing Then Return
+
+        For Each definition As RandomTimingDefinition In definitions
+            If definition.Kind = kind AndAlso definition.Index = index Then definition.Used = True
+        Next
+    End Sub
+
+    Private Function ResolveTimingValue(ByVal kind As String,
+                                        ByVal labelText As String,
+                                        ByVal localValues As Dictionary(Of Integer, Long),
+                                        ByVal globalValues() As Long,
+                                        ByVal definitions As List(Of RandomTimingDefinition)) As Long
+        Dim index As Integer = DefinitionIndex(labelText)
+
+        If localValues IsNot Nothing AndAlso localValues.ContainsKey(index) Then
+            MarkTimingDefinitionUsed(definitions, kind, index)
+            Return localValues(index)
+        End If
+
+        If index >= 0 AndAlso index <= UBound(globalValues) Then Return globalValues(index)
+
+        Return 0
+    End Function
+
+    Private Sub ReadRandomBlocks(ByVal parsed As BmsRandomParseResult,
+                                 ByVal xNotes As List(Of Note),
+                                 ByRef xExpansion As String,
+                                 ByRef xHasPlayableNotes As Boolean,
+                                 ByRef xHas24KeyNotes As Boolean,
+                                 ByRef xHas7KeyNotes As Boolean,
+                                 ByRef xHas5KeyNotes As Boolean)
+        For Each parsedBlock As BmsRandomParsedBlock In parsed.Blocks
+            If parsedBlock.IsRawText Then
+                AppendExpansionText(xExpansion, JoinBmsLines(parsedBlock.RawLines))
+                Continue For
+            End If
+
+            Dim block As New BmsRandomBlock(parsedBlock.DefinitionValue)
+            RandomBlocks.Add(block)
+            Dim randomIndex As Integer = RandomBlocks.Count - 1
+
+            For Each branch As BmsRandomParsedBranch In parsedBlock.Branches
+                block.DefinitionValue = Math.Max(block.DefinitionValue, branch.Value)
+
+                If BranchRequiresTextOnly(branch.Lines) Then
+                    block.SetExtraText(branch.Value, JoinBmsLines(branch.Lines))
+                Else
+                    ReadRandomBranch(block, branch, randomIndex, xNotes, xHasPlayableNotes, xHas24KeyNotes, xHas7KeyNotes, xHas5KeyNotes)
+                End If
+            Next
+
+            block.Normalize()
+        Next
+    End Sub
+
+    Private Sub ReadRandomBranch(ByVal block As BmsRandomBlock,
+                                 ByVal branch As BmsRandomParsedBranch,
+                                 ByVal randomIndex As Integer,
+                                 ByVal xNotes As List(Of Note),
+                                 ByRef xHasPlayableNotes As Boolean,
+                                 ByRef xHas24KeyNotes As Boolean,
+                                 ByRef xHas7KeyNotes As Boolean,
+                                 ByRef xHas5KeyNotes As Boolean)
+        Dim localBPM As New Dictionary(Of Integer, Long)()
+        Dim localSTOP As New Dictionary(Of Integer, Long)()
+        Dim localSCROLL As New Dictionary(Of Integer, Long)()
+        Dim timingDefinitions As New List(Of RandomTimingDefinition)()
+        Dim noteLines As New List(Of String)()
+        Dim extraLines As New List(Of String)()
+
+        For Each line As String In branch.Lines
+            Dim trimmed As String = line.Trim()
+            Dim kind As String = ""
+            Dim index As Integer = 0
+            Dim value As Long = 0
+
+            If TryReadTimingDefinition(line, kind, index, value) Then
+                timingDefinitions.Add(New RandomTimingDefinition With {.Kind = kind, .Index = index, .Value = value, .Line = line})
+                If kind = "BPM" Then localBPM(index) = value
+                If kind = "STOP" Then localSTOP(index) = value
+                If kind = "SCROLL" Then localSCROLL(index) = value
+            ElseIf IsSupportedBmsDataLine(trimmed) Then
+                noteLines.Add(line)
+            ElseIf IsBmsDataLine(trimmed) Then
+                extraLines.Add(line)
+            ElseIf trimmed.StartsWith("#", StringComparison.CurrentCultureIgnoreCase) Then
+                extraLines.Add(line)
+            End If
+        Next
+
+        ReadNoteLines(noteLines,
+                      randomIndex,
+                      branch.Value,
+                      localBPM,
+                      localSTOP,
+                      localSCROLL,
+                      timingDefinitions,
+                      xNotes,
+                      xHasPlayableNotes,
+                      xHas24KeyNotes,
+                      xHas7KeyNotes,
+                      xHas5KeyNotes)
+
+        For Each definition As RandomTimingDefinition In timingDefinitions
+            If Not definition.Used Then extraLines.Add(definition.Line)
+        Next
+
+        block.SetExtraText(branch.Value, JoinBmsLines(extraLines))
+    End Sub
+
+    Private Sub ReadNoteLines(ByVal lines As List(Of String),
+                              ByVal randomIndex As Integer,
+                              ByVal randomValue As Integer,
+                              ByVal localBPM As Dictionary(Of Integer, Long),
+                              ByVal localSTOP As Dictionary(Of Integer, Long),
+                              ByVal localSCROLL As Dictionary(Of Integer, Long),
+                              ByVal timingDefinitions As List(Of RandomTimingDefinition),
+                              ByVal xNotes As List(Of Note),
+                              ByRef xHasPlayableNotes As Boolean,
+                              ByRef xHas24KeyNotes As Boolean,
+                              ByRef xHas7KeyNotes As Boolean,
+                              ByRef xHas5KeyNotes As Boolean)
+        For Each line As String In lines
+            Dim sLineTrim As String = line.Trim()
+            If Not IsBmsDataLine(sLineTrim) Then Continue For
+
+            Dim xMeasure As Integer = Val(Mid(sLineTrim, 2, 3))
+            Dim channel As String = Mid(sLineTrim, 5, 2)
+            If BMSChannelToColumn(channel) = 0 Then Continue For
+
+            If channel = "01" Then mColumn(xMeasure) += 1
+            For xI1 As Integer = 8 To Len(sLineTrim) - 1 Step 2
+                Dim xNoteValueText As String = Mid(sLineTrim, xI1, 2)
+                If xNoteValueText = "00" Then Continue For
+
+                ChartModes.ObserveBmsChannel(channel, xNoteValueText, xHasPlayableNotes, xHas24KeyNotes, xHas7KeyNotes, xHas5KeyNotes)
+
+                Dim xNote As New Note
+                With xNote
+                    .ColumnIndex = BMSChannelToColumn(channel) +
+                                        IIf(channel = "01", 1, 0) * (mColumn(xMeasure) - 1)
+                    .LongNote = IsChannelLongNote(channel)
+                    .Hidden = IsChannelHidden(channel)
+                    .Landmine = IsChannelLandmine(channel)
+                    .Selected = False
+                    .VPosition = MeasureBottom(xMeasure) + MeasureLength(xMeasure) * (xI1 / 2 - 4) / ((Len(sLineTrim) - 7) / 2)
+                    .Value = DefinitionIndex(xNoteValueText) * 10000
+                    .RandomIndex = randomIndex
+                    .RandomValue = If(randomIndex < 0, 0, randomValue)
+
+                    If channel = "03" Then .Value = Convert.ToInt32(xNoteValueText, 16) * 10000
+                    If channel = "08" Then .Value = ResolveTimingValue("BPM", xNoteValueText, localBPM, hBPM, timingDefinitions)
+                    If channel = "09" Then .Value = ResolveTimingValue("STOP", xNoteValueText, localSTOP, hSTOP, timingDefinitions)
+                    If channel = "SC" Then .Value = ResolveTimingValue("SCROLL", xNoteValueText, localSCROLL, hBMSCROLL, timingDefinitions)
+                End With
+
+                xNotes.Add(xNote)
+            Next
+        Next
     End Sub
 
     ReadOnly BMSChannelList() As String = {"01", "03", "04", "06", "07", "08", "09",
@@ -346,13 +620,14 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
 
 
     Private Function SaveBMS() As String
+        StoreRandomExtraText()
         CalculateGreatestVPosition()
         SortByVPositionInsertion()
         UpdatePairing()
-        Dim MeasureIndex As Integer
         Dim hasOverlapping As Boolean = False
-        'Dim xStrAll As String = ""   'for all 
-        Dim xStrMeasure(MeasureAtDisplacement(GreatestVPosition) + 1) As String
+        Dim maxBPMDefinitions As Integer = 0
+        Dim maxSTOPDefinitions As Integer = 0
+        Dim maxSCROLLDefinitions As Integer = 0
 
         ' We regenerate these when traversing the bms event list.
         ReDim hBPM(0)
@@ -366,64 +641,29 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
             ConvertNT2BMSE()
         End If
 
-        Dim tempNote As Note     'Temp K
+        Dim xStrCommon As String = GenerateBmsDataForNotes(NotesForRandomLayer(-1, 0), True, hasOverlapping)
+        maxBPMDefinitions = Math.Max(maxBPMDefinitions, UBound(hBPM))
+        maxSTOPDefinitions = Math.Max(maxSTOPDefinitions, UBound(hSTOP))
+        maxSCROLLDefinitions = Math.Max(maxSCROLLDefinitions, UBound(hBMSCROLL))
 
-        Dim xprevNotes(-1) As Note  'Notes too close to the next measure
+        Dim commonBPM() As Long = CType(hBPM.Clone(), Long())
+        Dim commonSTOP() As Long = CType(hSTOP.Clone(), Long())
+        Dim commonSCROLL() As Long = CType(hBMSCROLL.Clone(), Long())
 
-        For MeasureIndex = 0 To MeasureAtDisplacement(GreatestVPosition) + 1  'For xI1 in each measure
-            xStrMeasure(MeasureIndex) = vbCrLf
-
-            Dim consistentDecimalStr = WriteDecimalWithDot(MeasureLength(MeasureIndex) / 192.0R)
-
-            ' Handle fractional measure
-            If MeasureLength(MeasureIndex) <> 192.0R Then xStrMeasure(MeasureIndex) &= "#" & Add3Zeros(MeasureIndex) & "02:" & consistentDecimalStr & vbCrLf
-
-            ' Get note count in current measure
-            Dim LowerLimit As Integer = Nothing
-            Dim UpperLimit As Integer = Nothing
-            GetMeasureLimits(MeasureIndex, LowerLimit, UpperLimit)
-
-            If UpperLimit - LowerLimit = 0 Then Continue For 'If there is no K in the current measure then end this loop
-
-            ' Get notes from this measure
-            Dim xUPrevText As Integer = UBound(xprevNotes)
-            Dim NotesInMeasure(UpperLimit - LowerLimit + xUPrevText) As Note
-
-            ' Copy notes from previous array
-            For i = 0 To xUPrevText
-                NotesInMeasure(i) = xprevNotes(i)
-            Next
-
-            ' Copy notes in current measure
-            For i = LowerLimit To UpperLimit - 1
-                NotesInMeasure(i - LowerLimit + xprevNotes.Length) = Notes(i)
-            Next
-
-            ' Find greatest column.
-            ' Since background tracks have the highest column values
-            ' this - niB will yield the number of B columns.
-            Dim GreatestColumn = 0
-            For Each tempNote In NotesInMeasure
-                GreatestColumn = Math.Max(tempNote.ColumnIndex, GreatestColumn)
-            Next
-
-            ReDim xprevNotes(-1)
-            xStrMeasure(MeasureIndex) &= GenerateBackgroundTracks(MeasureIndex, hasOverlapping, NotesInMeasure, GreatestColumn, xprevNotes)
-            xStrMeasure(MeasureIndex) &= GenerateKeyTracks(MeasureIndex, hasOverlapping, NotesInMeasure, xprevNotes)
-        Next
+        Dim xStrRandom As String = GenerateRandomBlocksForSave(hasOverlapping, maxBPMDefinitions, maxSTOPDefinitions, maxSCROLLDefinitions)
 
         ' Warn about 255 limit if neccesary.
         If hasOverlapping Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
                                                           Strings.Messages.NoteOverlapError & vbCrLf &
                                                 Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
-        If UBound(hBPM) > DefinitionDisplayMax() Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
-                                                          Strings.Messages.BPMOverflowError & UBound(hBPM) & " > " & DefinitionDisplayMax() & vbCrLf &
+        If maxBPMDefinitions > DefinitionDisplayMax() Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
+                                                          Strings.Messages.BPMOverflowError & maxBPMDefinitions & " > " & DefinitionDisplayMax() & vbCrLf &
                                                 Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
-        If UBound(hSTOP) > DefinitionDisplayMax() Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
-                                                           Strings.Messages.STOPOverflowError & UBound(hSTOP) & " > " & DefinitionDisplayMax() & vbCrLf &
+        If maxSTOPDefinitions > DefinitionDisplayMax() Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
+                                                           Strings.Messages.STOPOverflowError & maxSTOPDefinitions & " > " & DefinitionDisplayMax() & vbCrLf &
                                                   Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
-        If UBound(hBMSCROLL) > MaxDefinition Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
-                                           Strings.Messages.SCROLLOverflowError & UBound(hBMSCROLL) & " > " & MaxDefinition & vbCrLf &
+        If maxSCROLLDefinitions > MaxDefinition Then MsgBox(Strings.Messages.SaveWarning & vbCrLf &
+                                           Strings.Messages.SCROLLOverflowError & maxSCROLLDefinitions & " > " & MaxDefinition & vbCrLf &
                                          Strings.Messages.SavedFileWillContainErrors, MsgBoxStyle.Exclamation)
 
         ' Add expansion text
@@ -431,12 +671,16 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         If TExpansion.Text = "" Then xStrExp = ""
 
         ' Output main data field.
-        Dim xStrMain As String = "*---------------------- MAIN DATA FIELD" & vbCrLf & vbCrLf & Join(xStrMeasure, "") & vbCrLf
+        Dim xStrMain As String = "*---------------------- MAIN DATA FIELD" & vbCrLf & vbCrLf & xStrCommon & xStrRandom & vbCrLf
 
         If xNTInput Then
             Notes = xKBackUp
             NTInput = True
         End If
+
+        hBPM = commonBPM
+        hSTOP = commonSTOP
+        hBMSCROLL = commonSCROLL
 
         ' Generate headers now, since we have the unique BPM/STOP/etc declarations.
         Dim xStrHeader As String = GenerateHeaderMeta()
@@ -504,12 +748,204 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         Return xStrHeader
     End Function
 
+    Private Function GenerateTimingIndexedData(Optional ByVal bpmStartIndex As Integer = 1,
+                                               Optional ByVal stopStartIndex As Integer = 1,
+                                               Optional ByVal scrollStartIndex As Integer = 1) As String
+        Dim xStrHeader As String = ""
+
+        For i = Math.Max(1, bpmStartIndex) To UBound(hBPM)
+            If hBPM(i) = Long.MinValue Then Continue For
+            xStrHeader &= "#BPM" &
+            DefinitionLabel(i) &
+            " " & WriteDecimalWithDot(hBPM(i) / 10000) & vbCrLf
+        Next
+        For i = Math.Max(1, stopStartIndex) To UBound(hSTOP)
+            If hSTOP(i) = Long.MinValue Then Continue For
+            xStrHeader &= "#STOP" &
+                DefinitionLabel(i) &
+                " " & WriteDecimalWithDot(hSTOP(i) / 10000) & vbCrLf
+        Next
+        For i = Math.Max(1, scrollStartIndex) To UBound(hBMSCROLL)
+            If hBMSCROLL(i) = Long.MinValue Then Continue For
+            xStrHeader &= "#SCROLL" &
+                DefinitionLabel(i) & " " & WriteDecimalWithDot(hBMSCROLL(i) / 10000) & vbCrLf
+        Next
+
+        Return xStrHeader
+    End Function
+
+    Private Sub EnsureTimingDefinitionSlot(ByRef values() As Long, ByVal index As Integer)
+        If index <= UBound(values) Then Return
+
+        Dim oldUpper As Integer = UBound(values)
+        ReDim Preserve values(index)
+        For i As Integer = Math.Max(1, oldUpper + 1) To index
+            values(i) = Long.MinValue
+        Next
+    End Sub
+
+    Private Sub ReserveTimingDefinitionsFromExtra(ByVal extraText As String,
+                                                  ByRef bpmReservedMax As Integer,
+                                                  ByRef stopReservedMax As Integer,
+                                                  ByRef scrollReservedMax As Integer)
+        bpmReservedMax = 0
+        stopReservedMax = 0
+        scrollReservedMax = 0
+        If extraText = "" Then Return
+
+        Dim xLines() As String = Split(Replace(extraText, vbLf, vbCr), vbCr)
+        For Each line As String In xLines
+            Dim kind As String = ""
+            Dim index As Integer = 0
+            Dim value As Long = 0
+            If Not TryReadTimingDefinition(line, kind, index, value) Then Continue For
+
+            If kind = "BPM" Then
+                EnsureTimingDefinitionSlot(hBPM, index)
+                hBPM(index) = value
+                bpmReservedMax = Math.Max(bpmReservedMax, index)
+            ElseIf kind = "STOP" Then
+                EnsureTimingDefinitionSlot(hSTOP, index)
+                hSTOP(index) = value
+                stopReservedMax = Math.Max(stopReservedMax, index)
+            ElseIf kind = "SCROLL" Then
+                EnsureTimingDefinitionSlot(hBMSCROLL, index)
+                hBMSCROLL(index) = value
+                scrollReservedMax = Math.Max(scrollReservedMax, index)
+            End If
+        Next
+    End Sub
+
+    Private Function NotesForRandomLayer(ByVal randomIndex As Integer, ByVal randomValue As Integer) As Note()
+        Dim xNotes As New List(Of Note)()
+        xNotes.Add(Notes(0))
+
+        For i As Integer = 1 To UBound(Notes)
+            If IsSameRandomOwner(Notes(i), randomIndex, randomValue) Then xNotes.Add(Notes(i))
+        Next
+
+        Return xNotes.ToArray()
+    End Function
+
+    Private Function NotesForRandomExport() As Note()
+        Dim xNotes As New List(Of Note)()
+        xNotes.Add(Notes(0))
+
+        For i As Integer = 1 To UBound(Notes)
+            If Notes(i).RandomIndex < 0 Then
+                xNotes.Add(Notes(i))
+            ElseIf IsValidRandomIndex(Notes(i).RandomIndex) Then
+                Dim block As BmsRandomBlock = RandomBlocks(Notes(i).RandomIndex)
+                block.Normalize()
+                If Notes(i).RandomValue = block.CurrentValue Then xNotes.Add(Notes(i))
+            End If
+        Next
+
+        Return xNotes.ToArray()
+    End Function
+
+    Private Function GenerateRandomBlocksForSave(ByRef hasOverlapping As Boolean,
+                                                 ByRef maxBPMDefinitions As Integer,
+                                                 ByRef maxSTOPDefinitions As Integer,
+                                                 ByRef maxSCROLLDefinitions As Integer) As String
+        Dim ret As String = ""
+
+        For randomIndex As Integer = 0 To RandomBlocks.Count - 1
+            Dim block As BmsRandomBlock = RandomBlocks(randomIndex)
+            block.Normalize()
+
+            ret &= vbCrLf & "#RANDOM " & block.DefinitionValue.ToString() & vbCrLf
+
+            For value As Integer = 1 To block.DefinitionValue
+                ReDim hBPM(0)
+                ReDim hSTOP(0)
+                ReDim hBMSCROLL(0)
+
+                Dim extraText As String = block.GetExtraText(value)
+                Dim reservedBPM As Integer = 0
+                Dim reservedSTOP As Integer = 0
+                Dim reservedSCROLL As Integer = 0
+                ReserveTimingDefinitionsFromExtra(extraText, reservedBPM, reservedSTOP, reservedSCROLL)
+
+                Dim branchData As String = GenerateBmsDataForNotes(NotesForRandomLayer(randomIndex, value), False, hasOverlapping)
+                Dim branchTimingDefinitions As String = GenerateTimingIndexedData(reservedBPM + 1, reservedSTOP + 1, reservedSCROLL + 1)
+                maxBPMDefinitions = Math.Max(maxBPMDefinitions, UBound(hBPM))
+                maxSTOPDefinitions = Math.Max(maxSTOPDefinitions, UBound(hSTOP))
+                maxSCROLLDefinitions = Math.Max(maxSCROLLDefinitions, UBound(hBMSCROLL))
+
+                ret &= "#IF " & value.ToString() & vbCrLf
+                ret &= extraText
+                If extraText <> "" AndAlso Not ret.EndsWith(vbCrLf, StringComparison.Ordinal) Then ret &= vbCrLf
+                ret &= branchTimingDefinitions
+                ret &= branchData
+                ret &= "#ENDIF" & vbCrLf
+            Next
+
+            ret &= "#ENDRANDOM" & vbCrLf
+        Next
+
+        Return ret
+    End Function
+
+    Private Function GenerateBmsDataForNotes(ByVal sourceNotes() As Note,
+                                             ByVal includeMeasureLength As Boolean,
+                                             ByRef hasOverlapping As Boolean) As String
+        Dim greatestSourceVPosition As Double = 0.0R
+        For i As Integer = 1 To UBound(sourceNotes)
+            greatestSourceVPosition = Math.Max(greatestSourceVPosition, sourceNotes(i).VPosition)
+        Next
+
+        Dim xStrMeasure(MeasureAtDisplacement(greatestSourceVPosition) + 1) As String
+        Dim xprevNotes(-1) As Note
+
+        For measureIndex As Integer = 0 To UBound(xStrMeasure)
+            xStrMeasure(measureIndex) = vbCrLf
+
+            If includeMeasureLength AndAlso MeasureLength(measureIndex) <> 192.0R Then
+                Dim consistentDecimalStr = WriteDecimalWithDot(MeasureLength(measureIndex) / 192.0R)
+                xStrMeasure(measureIndex) &= "#" & Add3Zeros(measureIndex) & "02:" & consistentDecimalStr & vbCrLf
+            End If
+
+            Dim lowerLimit As Integer = Nothing
+            Dim upperLimit As Integer = Nothing
+            GetMeasureLimits(sourceNotes, measureIndex, lowerLimit, upperLimit)
+
+            If upperLimit - lowerLimit = 0 Then Continue For
+
+            Dim xUPrevText As Integer = UBound(xprevNotes)
+            Dim NotesInMeasure(upperLimit - lowerLimit + xUPrevText) As Note
+
+            For i = 0 To xUPrevText
+                NotesInMeasure(i) = xprevNotes(i)
+            Next
+
+            For i = lowerLimit To upperLimit - 1
+                NotesInMeasure(i - lowerLimit + xprevNotes.Length) = sourceNotes(i)
+            Next
+
+            Dim greatestColumn = 0
+            For Each tempNote As Note In NotesInMeasure
+                greatestColumn = Math.Max(tempNote.ColumnIndex, greatestColumn)
+            Next
+
+            ReDim xprevNotes(-1)
+            xStrMeasure(measureIndex) &= GenerateBackgroundTracks(measureIndex, hasOverlapping, NotesInMeasure, greatestColumn, xprevNotes)
+            xStrMeasure(measureIndex) &= GenerateKeyTracks(measureIndex, hasOverlapping, NotesInMeasure, xprevNotes)
+        Next
+
+        Return Join(xStrMeasure, "")
+    End Function
+
     Private Sub GetMeasureLimits(MeasureIndex As Integer, ByRef LowerLimit As Integer, ByRef UpperLimit As Integer)
-        Dim NoteCount = UBound(Notes)
+        GetMeasureLimits(Notes, MeasureIndex, LowerLimit, UpperLimit)
+    End Sub
+
+    Private Sub GetMeasureLimits(SourceNotes() As Note, MeasureIndex As Integer, ByRef LowerLimit As Integer, ByRef UpperLimit As Integer)
+        Dim NoteCount = UBound(SourceNotes)
         LowerLimit = 0
 
         For i = 1 To NoteCount  'Collect Ks in the same measure
-            If MeasureAtDisplacement(Notes(i).VPosition) >= MeasureIndex Then
+            If MeasureAtDisplacement(SourceNotes(i).VPosition) >= MeasureIndex Then
                 LowerLimit = i
                 Exit For
             End If 'Lower limit found
@@ -518,7 +954,7 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         UpperLimit = 0
 
         For i = LowerLimit To NoteCount
-            If MeasureAtDisplacement(Notes(i).VPosition) > MeasureIndex Then
+            If MeasureAtDisplacement(SourceNotes(i).VPosition) > MeasureIndex Then
                 UpperLimit = i
                 Exit For 'Upper limit found
             End If
@@ -695,7 +1131,9 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
         Dim br As New BinaryReader(New FileStream(Path, FileMode.Open, FileAccess.Read), System.Text.Encoding.Unicode)
 
         If br.ReadInt32 <> NBMSCFileSignature Then GoTo EndOfSub
-        If br.ReadByte <> NBMSCFileSuffix Then GoTo EndOfSub
+        Dim xSuffix As Byte = br.ReadByte
+        If xSuffix <> NBMSCFileSuffixLegacy AndAlso xSuffix <> NBMSCFileSuffix Then GoTo EndOfSub
+        Dim xReadRandomFields As Boolean = xSuffix = NBMSCFileSuffix
         Dim xMajor As Integer = br.ReadByte
         Dim xMinor As Integer = br.ReadByte
         Dim xBuild As Integer = br.ReadByte
@@ -715,6 +1153,8 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
             '.LongNote = False
             '.Selected = False
             .Value = 1200000
+            .RandomIndex = -1
+            .RandomValue = 0
         End With
 
         Do Until br.BaseStream.Position >= br.BaseStream.Length
@@ -856,12 +1296,15 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                 Case &H6E707845     'Expansion Code
                     TExpansion.Text = br.ReadString
 
+                Case &H646E6152     'Random
+                    ReadNBMSCRandomBlock(br)
+
                 Case &H65746F4E     'Note
                     Dim xNoteUbound As Integer = br.ReadInt32
                     ReDim Preserve Notes(xNoteUbound)
                     For i As Integer = 1 To UBound(Notes)
                         Notes(i) = New Note
-                        Notes(i).FromBinReader(br)
+                        Notes(i).FromBinReader(br, xReadRandomFields)
                     Next
 
                 Case &H6F646E55     'Undo / Redo Commands
@@ -902,11 +1345,13 @@ EndOfSub:
         UpdateMeasureBottom()
         CalculateTotalPlayableNotes()
         CalculateGreatestVPosition()
+        RefreshRandomPanel()
         RefreshPanelAll()
         POStatusRefresh()
     End Sub
 
     Private Sub SaveNBMSC(ByVal Path As String)
+        StoreRandomExtraText()
         CalculateGreatestVPosition()
         SortByVPositionInsertion()
         UpdatePairing()
@@ -1051,6 +1496,10 @@ EndOfSub:
             bw.Write(&H6E707845)
             bw.Write(TExpansion.Text)
 
+            'Random
+            bw.Write(&H646E6152)
+            WriteNBMSCRandomBlock(bw)
+
             'Note
             'bw.Write("Note".ToCharArray)
             bw.Write(&H65746F4E)
@@ -1095,10 +1544,57 @@ EndOfSub:
 
     End Sub
 
+    Private Sub ReadNBMSCRandomBlock(ByVal br As BinaryReader)
+        ResetRandomState()
+        RandomCommonVisible = br.ReadBoolean()
+        SelectedRandomIndex = br.ReadInt32()
+
+        Dim blockCount As Integer = br.ReadInt32()
+        For i As Integer = 0 To blockCount - 1
+            Dim block As New BmsRandomBlock()
+            block.DefinitionValue = br.ReadInt32()
+            block.CurrentValue = br.ReadInt32()
+            block.ViewMode = CType(br.ReadInt32(), BmsRandomViewMode)
+
+            Dim extraCount As Integer = br.ReadInt32()
+            For j As Integer = 0 To extraCount - 1
+                Dim value As Integer = br.ReadInt32()
+                block.SetExtraText(value, br.ReadString())
+            Next
+
+            block.Normalize()
+            RandomBlocks.Add(block)
+        Next
+
+        If Not IsValidRandomIndex(SelectedRandomIndex) Then SelectedRandomIndex = -1
+    End Sub
+
+    Private Sub WriteNBMSCRandomBlock(ByVal bw As BinaryWriter)
+        bw.Write(RandomCommonVisible)
+        bw.Write(SelectedRandomIndex)
+        bw.Write(RandomBlocks.Count)
+
+        For Each block As BmsRandomBlock In RandomBlocks
+            block.Normalize()
+            bw.Write(block.DefinitionValue)
+            bw.Write(block.CurrentValue)
+            bw.Write(CInt(block.ViewMode))
+
+            bw.Write(block.ExtraTextByValue.Count)
+            For Each pair As KeyValuePair(Of Integer, String) In block.ExtraTextByValue
+                bw.Write(pair.Key)
+                bw.Write(If(pair.Value, ""))
+            Next
+        Next
+    End Sub
+
     Private Sub SaveBMSON(ByVal Path As String)
+        StoreRandomExtraText()
         CalculateGreatestVPosition()
         SortByVPositionInsertion()
         UpdatePairing()
+        Dim xNotesBackup() As Note = Notes
+        If RandomBlocks.Count > 0 Then Notes = NotesForRandomExport()
         Dim i = 0
         Try
             Dim format = New Bmson
@@ -1347,6 +1843,8 @@ EndOfSub:
             bw.Close()
         Catch ex As Exception
             MsgBox(ex.Message)
+        Finally
+            Notes = xNotesBackup
         End Try
     End Sub
 

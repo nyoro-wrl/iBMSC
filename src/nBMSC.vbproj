@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="Core\Audio.vb" />
     <Compile Include="Core\BMS.vb" />
+    <Compile Include="Core\BmsRandom.vb" />
     <Compile Include="Core\BmsDefinitionLabels.vb" />
     <Compile Include="Core\BMSONFormat.vb" />
     <Compile Include="Core\ChartPaths.vb" />

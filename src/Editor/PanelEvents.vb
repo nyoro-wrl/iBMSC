@@ -477,6 +477,7 @@ Partial Public Class MainWindow
 
     Private Sub SelectAllWithHoveredNoteLabel()
         For xI1 = 0 To UBound(Notes)
+            If Not IsNoteVisibleByRandom(Notes(xI1)) Then Continue For
             Notes(xI1).Selected = IIf(IsLabelMatch(Notes(xI1), KMouseOver), True, Notes(xI1).Selected)
         Next
     End Sub
@@ -733,6 +734,7 @@ Partial Public Class MainWindow
 
     Private Function GetRightClickedNote(ByVal e As MouseEventArgs, ByVal xHS As Long, ByVal xVS As Long, ByVal xHeight As Integer) As Integer
         For xI1 As Integer = UBound(Notes) To 1 Step -1
+            If Not IsNoteVisibleByRandom(Notes(xI1)) Then Continue For
             If MouseInNote(e, xHS, xVS, xHeight, Notes(xI1)) Then Return xI1
         Next
 
@@ -781,6 +783,7 @@ Partial Public Class MainWindow
     Private Function GetClickedNote(e As MouseEventArgs, xHS As Long, xVS As Long, xHeight As Integer) As Integer
         Dim NoteIndex As Integer = -1
         For xI1 = UBound(Notes) To 0 Step -1
+            If Not IsNoteVisibleByRandom(Notes(xI1)) Then Continue For
             'If mouse is clicking on a K
             If MouseInNote(e, xHS, xVS, xHeight, Notes(xI1)) Then
                 ' found it!
@@ -834,9 +837,11 @@ Partial Public Class MainWindow
             If xVPosition < 0 Or xVPosition >= GetMaxVPosition() Then Exit Sub
 
             Dim xColumn = GetColumnAtEvent(e, xHS)
+            Dim xSampleNote As New Note(xColumn, xVPosition, 0)
+            ApplyCurrentRandomOwner(xSampleNote)
 
             For xI2 As Integer = UBound(Notes) To 1 Step -1
-                If Notes(xI2).VPosition = xVPosition And Notes(xI2).ColumnIndex = xColumn Then NoteIndex = xI2 : Exit For
+                If IsSameNoteSlot(Notes(xI2), xSampleNote) Then NoteIndex = xI2 : Exit For
             Next
 
             Dim Hidden As Boolean = ModifierHiddenActive()
@@ -881,12 +886,13 @@ Partial Public Class MainWindow
                     Dim xRedo As UndoRedo.LinkedURCmd = New UndoRedo.Void
                     Dim xBaseRedo As UndoRedo.LinkedURCmd = xRedo
 
+                    Dim n = New Note(xColumn, xVPosition, value, 0, Hidden)
+                    ApplyCurrentRandomOwner(n)
                     For xI1 = 1 To UBound(Notes)
-                        If Notes(xI1).VPosition = xVPosition AndAlso Notes(xI1).ColumnIndex = xColumn Then _
+                        If IsSameNoteSlot(Notes(xI1), n) Then _
                             RedoRemoveNote(Notes(xI1), xUndo, xRedo)
                     Next
 
-                    Dim n = New Note(xColumn, xVPosition, value, 0, Hidden)
                     RedoAddNote(n, xUndo, xRedo)
 
                     AddNote(n)
@@ -914,6 +920,7 @@ Partial Public Class MainWindow
                     .Landmine = Landmine
                     .TempMouseDown = True
                 End With
+                ApplyCurrentRandomOwner(Notes(UBound(Notes)))
 
                 ReDim SelectedNotes(0)
                 SelectedNotes(0) = Notes(UBound(Notes))
@@ -1028,11 +1035,11 @@ Partial Public Class MainWindow
                 Dim xVUpper As Double = IIf(vSelLength < 0, vSelStart, vSelStart + vSelLength)
                 If NTInput Then
                     For xI2 As Integer = 1 To UBound(Notes)
-                        Notes(xI2).Selected = Not Notes(xI2).VPosition >= xVUpper And Not Notes(xI2).VPosition + Notes(xI2).Length < xVLower And nEnabled(Notes(xI2).ColumnIndex)
+                        Notes(xI2).Selected = IsNoteVisibleByRandom(Notes(xI2)) AndAlso Not Notes(xI2).VPosition >= xVUpper And Not Notes(xI2).VPosition + Notes(xI2).Length < xVLower And nEnabled(Notes(xI2).ColumnIndex)
                     Next
                 Else
                     For xI2 As Integer = 1 To UBound(Notes)
-                        Notes(xI2).Selected = Notes(xI2).VPosition >= xVLower And Notes(xI2).VPosition < xVUpper And nEnabled(Notes(xI2).ColumnIndex)
+                        Notes(xI2).Selected = IsNoteVisibleByRandom(Notes(xI2)) AndAlso Notes(xI2).VPosition >= xVLower And Notes(xI2).VPosition < xVUpper And nEnabled(Notes(xI2).ColumnIndex)
                     Next
                 End If
             Else
@@ -1060,7 +1067,7 @@ Partial Public Class MainWindow
 
             ElseIf ModifierMultiselectActive() Then
                 For xI1 = 0 To UBound(Notes)
-                    If IsNoteVisible(xI1, xTHeight, xVS) Then
+                    If IsNoteVisibleByRandom(Notes(xI1)) AndAlso IsNoteVisible(xI1, xTHeight, xVS) Then
                         If IsLabelMatch(Notes(xI1), NoteIndex) Then
                             Notes(xI1).Selected = Not Notes(xI1).Selected
                         End If
@@ -1233,6 +1240,7 @@ Partial Public Class MainWindow
                 Dim noteIndex As Integer
                 Dim foundNoteIndex As Integer = -1
                 For noteIndex = UBound(Notes) To 0 Step -1
+                    If Not IsNoteVisibleByRandom(Notes(noteIndex)) Then Continue For
                     If MouseInNote(e, xHS, xVS, xHeight, Notes(noteIndex)) Then
                         foundNoteIndex = noteIndex
 
@@ -1422,6 +1430,7 @@ Partial Public Class MainWindow
         Dim xITemp As Integer = -1
         If Notes IsNot Nothing Then
             For xI1 = UBound(Notes) To 0 Step -1 ' az: MouseInNote implied, but I'm not sure yet
+                If Not IsNoteVisibleByRandom(Notes(xI1)) Then Continue For
                 If MouseInNote(e, xHS, xvs, xHeight, Notes(xI1)) Then
                     xITemp = xI1
                     Exit For
@@ -1505,11 +1514,11 @@ Partial Public Class MainWindow
             Dim xVUpper As Double = IIf(vSelLength < 0, vSelStart, vSelStart + vSelLength)
             If NTInput Then
                 For xI2 As Integer = 1 To UBound(Notes)
-                    Notes(xI2).Selected = Notes(xI2).VPosition < xVUpper And Notes(xI2).VPosition + Notes(xI2).Length >= xVLower And nEnabled(Notes(xI2).ColumnIndex)
+                    Notes(xI2).Selected = IsNoteVisibleByRandom(Notes(xI2)) AndAlso Notes(xI2).VPosition < xVUpper And Notes(xI2).VPosition + Notes(xI2).Length >= xVLower And nEnabled(Notes(xI2).ColumnIndex)
                 Next
             Else
                 For xI2 As Integer = 1 To UBound(Notes)
-                    Notes(xI2).Selected = Notes(xI2).VPosition >= xVLower And Notes(xI2).VPosition < xVUpper And nEnabled(Notes(xI2).ColumnIndex)
+                    Notes(xI2).Selected = IsNoteVisibleByRandom(Notes(xI2)) AndAlso Notes(xI2).VPosition >= xVLower And Notes(xI2).VPosition < xVUpper And nEnabled(Notes(xI2).ColumnIndex)
                 Next
             End If
         Else
@@ -1948,12 +1957,13 @@ Partial Public Class MainWindow
                         Dim value As Long = Val(valstr) * 10000
 
                         If (xColumn = niSCROLL And valstr = "0") Or value <> 0 Then
+                            Dim n = New Note(xColumn, xVPosition, value, LongNote, HiddenNote)
+                            ApplyCurrentRandomOwner(n)
                             For xI1 = 1 To UBound(Notes)
-                                If Notes(xI1).VPosition = xVPosition AndAlso Notes(xI1).ColumnIndex = xColumn Then _
+                                If IsSameNoteSlot(Notes(xI1), n) Then _
                             RedoRemoveNote(Notes(xI1), xUndo, xRedo)
                             Next
 
-                            Dim n = New Note(xColumn, xVPosition, value, LongNote, HiddenNote)
                             RedoAddNote(n, xUndo, xRedo)
                             AddNote(n)
 
@@ -1968,13 +1978,13 @@ Partial Public Class MainWindow
                             xValue = (LBMP.SelectedIndex + 1) * 10000
                         End If
 
-                        For xI1 = 1 To UBound(Notes)
-                            If Notes(xI1).VPosition = xVPosition AndAlso Notes(xI1).ColumnIndex = xColumn Then _
-                            RedoRemoveNote(Notes(xI1), xUndo, xRedo)
-                        Next
-
                         Dim n = New Note(xColumn, xVPosition, xValue,
                                          LongNote, HiddenNote, True, Landmine)
+                        ApplyCurrentRandomOwner(n)
+                        For xI1 = 1 To UBound(Notes)
+                            If IsSameNoteSlot(Notes(xI1), n) Then _
+                            RedoRemoveNote(Notes(xI1), xUndo, xRedo)
+                        Next
 
                         RedoAddNote(n, xUndo, xRedo)
                         AddNote(n)

@@ -3,18 +3,24 @@ Option Strict On
 Imports System
 Imports System.IO
 Imports System.Text
+Imports System.Threading
 Imports nBMSC
 Imports nBMSC.Editor
 
 Module TestRunner
     Private Passed As Integer
     Private Failed As Integer
+    Private Const TestTimeoutMilliseconds As Integer = 10000
 
+    <STAThread()>
     Public Function Main() As Integer
         Run("definition label conversion", AddressOf DefinitionLabelConversion)
         Run("channel label conversion", AddressOf ChannelLabelConversion)
         Run("label validation", AddressOf LabelValidation)
         Run("BMS definition labels", AddressOf BmsDefinitionLabels)
+        Run("BMS random parser", AddressOf BmsRandomParserParsing)
+        Run("BMS random parser omitted end", AddressOf BmsRandomParserOmittedEnd)
+        Run("BMS random parser unsupported raw", AddressOf BmsRandomParserUnsupportedRaw)
         Run("chart calculations", AddressOf ChartCalculations)
         Run("chart paths", AddressOf ChartPaths)
         Run("chart mode detection", AddressOf ChartModeDetection)
@@ -36,15 +42,37 @@ Module TestRunner
     End Function
 
     Private Sub Run(ByVal name As String, ByVal test As Action)
-        Try
-            test()
-            Passed += 1
-            Console.WriteLine("[PASS] " & name)
-        Catch ex As Exception
+        Dim caught As Exception = Nothing
+        Dim worker As New Thread(Sub()
+                                     Try
+                                         test()
+                                     Catch ex As Exception
+                                         caught = ex
+                                     End Try
+                                 End Sub)
+        worker.IsBackground = True
+        worker.SetApartmentState(ApartmentState.STA)
+        worker.Start()
+
+        If Not worker.Join(TestTimeoutMilliseconds) Then
             Failed += 1
             Console.WriteLine("[FAIL] " & name)
-            Console.WriteLine(ex.Message)
-        End Try
+            Console.WriteLine("Timed out after " & TestTimeoutMilliseconds.ToString() & " ms")
+            Try
+                worker.Abort()
+            Catch ex As Exception
+            End Try
+            Return
+        End If
+
+        If caught Is Nothing Then
+            Passed += 1
+            Console.WriteLine("[PASS] " & name)
+        Else
+            Failed += 1
+            Console.WriteLine("[FAIL] " & name)
+            Console.WriteLine(caught.Message)
+        End If
     End Sub
 
     Private Sub DefinitionLabelConversion()
@@ -95,6 +123,64 @@ Module TestRunner
         AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#00108:000a"}), "lowercase BPM note label requires base62")
         AssertTrue(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#00109:000a"}), "lowercase STOP note label requires base62")
         AssertFalse(nBMSC.Editor.BmsDefinitionLabels.ContainsBase62Definitions(New String() {"#00103:000a"}), "BPM hex channel should not force base62")
+    End Sub
+
+    Private Sub BmsRandomParserParsing()
+        Dim result As BmsRandomParseResult = BmsRandomParser.Parse(New String() {
+            "#TITLE Test",
+            "#RANDOM 3",
+            "#IF 1",
+            "#00111:01",
+            "#ENDIF",
+            "#IF 2",
+            "#00112:01",
+            "#ENDIF",
+            "#ENDRANDOM",
+            "#ARTIST Tester"
+        })
+
+        AssertEqual(2, result.TopLevelLines.Count, "top level line count")
+        AssertEqual(1, result.Blocks.Count, "random block count")
+        AssertEqual(3, result.Blocks(0).DefinitionValue, "random definition value")
+        AssertFalse(result.Blocks(0).IsRawText, "simple random should be structured")
+        AssertEqual(2, result.Blocks(0).Branches.Count, "branch count")
+        AssertEqual(1, result.Blocks(0).Branches(0).Value, "first branch value")
+        AssertEqual("#00111:01", result.Blocks(0).Branches(0).Lines(0), "first branch data")
+    End Sub
+
+    Private Sub BmsRandomParserOmittedEnd()
+        Dim result As BmsRandomParseResult = BmsRandomParser.Parse(New String() {
+            "#RANDOM 2",
+            "#IF 1",
+            "#00111:01",
+            "#ENDIF",
+            "#IF 2",
+            "#00112:01",
+            "#ENDIF",
+            "#00113:01"
+        })
+
+        AssertEqual(1, result.Blocks.Count, "omitted random block count")
+        AssertFalse(result.Blocks(0).IsRawText, "omitted random should be structured")
+        AssertEqual(2, result.Blocks(0).Branches.Count, "omitted branch count")
+        AssertEqual(1, result.TopLevelLines.Count, "line after omitted random should be top level")
+        AssertEqual("#00113:01", result.TopLevelLines(0), "top level line after omitted random")
+    End Sub
+
+    Private Sub BmsRandomParserUnsupportedRaw()
+        Dim result As BmsRandomParseResult = BmsRandomParser.Parse(New String() {
+            "#RANDOM 2",
+            "#IF 1",
+            "#00111:01",
+            "#ENDIF",
+            "#00113:01",
+            "#ENDRANDOM"
+        })
+
+        AssertEqual(1, result.Blocks.Count, "raw random block count")
+        AssertTrue(result.Blocks(0).IsRawText, "orphan line in explicit random should be raw text")
+        AssertEqual(0, result.Blocks(0).Branches.Count, "raw random should not expose structured branches")
+        AssertContains(JoinLines(result.Blocks(0).RawLines), "#00113:01", "raw random should keep orphan data line")
     End Sub
 
     Private Sub ChartCalculations()
@@ -223,7 +309,7 @@ Module TestRunner
     End Sub
 
     Private Sub UndoRedoSerialization()
-        Dim note As New Note(3, 192.0R, 120000, 48.0R, True, False, True)
+        Dim note As New Note(3, 192.0R, 120000, 48.0R, True, False, True, 2, 3)
         Dim move As New UndoRedo.MoveNote(note, 6, 384.0R)
         Dim roundTripMove As UndoRedo.MoveNote = DirectCast(UndoRedo.fromBytes(move.toBytes()), UndoRedo.MoveNote)
 
@@ -237,15 +323,20 @@ Module TestRunner
         AssertApprox(note.Length, roundTripMove.note.Length, "note length")
         AssertEqual(note.Hidden, roundTripMove.note.Hidden, "note hidden flag")
         AssertEqual(note.Landmine, roundTripMove.note.Landmine, "note landmine flag")
+        AssertEqual(note.RandomIndex, roundTripMove.note.RandomIndex, "note random index")
+        AssertEqual(note.RandomValue, roundTripMove.note.RandomValue, "note random value")
 
         Dim updatedNote As Note = note
         updatedNote.Value = 130000
+        updatedNote.RandomValue = 4
         Dim noteChange As New UndoRedo.ChangeNote(note, updatedNote)
         Dim roundTripNoteChange As UndoRedo.ChangeNote = DirectCast(UndoRedo.fromBytes(noteChange.toBytes()), UndoRedo.ChangeNote)
 
         AssertEqual(UndoRedo.opChangeNote, roundTripNoteChange.ofType(), "note change command type")
         AssertEqual(note.Value, roundTripNoteChange.note.Value, "note change old value")
         AssertEqual(updatedNote.Value, roundTripNoteChange.NNote.Value, "note change new value")
+        AssertEqual(note.RandomValue, roundTripNoteChange.note.RandomValue, "note change old random value")
+        AssertEqual(updatedNote.RandomValue, roundTripNoteChange.NNote.RandomValue, "note change new random value")
 
         Dim longNote As New UndoRedo.LongNoteModify(note, 128.0R, 96.0R)
         Dim roundTripLongNote As UndoRedo.LongNoteModify = DirectCast(UndoRedo.fromBytes(longNote.toBytes()), UndoRedo.LongNoteModify)
@@ -279,6 +370,15 @@ Module TestRunner
         AssertFalse(roundTripChange.IsWav, "definition command target")
         AssertEqual(62, roundTripChange.Index, "definition command index")
         AssertEqual("kick.wav", roundTripChange.Value, "definition command value")
+
+        Dim legacyBytes As Byte() = LegacyMoveNoteBytes(New Note(4, 96.0R, 250000, 0, False, False, False), 8, 192.0R)
+        Dim legacyMove As UndoRedo.MoveNote = DirectCast(UndoRedo.fromBytes(legacyBytes), UndoRedo.MoveNote)
+
+        AssertEqual(UndoRedo.opMoveNote, legacyMove.ofType(), "legacy move command type")
+        AssertEqual(-1, legacyMove.note.RandomIndex, "legacy note should default to common random index")
+        AssertEqual(0, legacyMove.note.RandomValue, "legacy note should default to common random value")
+        AssertEqual(8, legacyMove.NColumnIndex, "legacy move target column")
+        AssertApprox(192.0R, legacyMove.NVPosition, "legacy move target position")
     End Sub
 
     Private Sub AssertTrue(ByVal condition As Boolean, ByVal message As String)
@@ -290,6 +390,12 @@ Module TestRunner
     Private Sub AssertFalse(ByVal condition As Boolean, ByVal message As String)
         If condition Then
             Throw New InvalidOperationException(message)
+        End If
+    End Sub
+
+    Private Sub AssertContains(ByVal text As String, ByVal value As String, ByVal message As String)
+        If text Is Nothing OrElse Not text.Contains(value) Then
+            Throw New InvalidOperationException(message & ": expected to contain <" & value & ">")
         End If
     End Sub
 
@@ -311,4 +417,30 @@ Module TestRunner
         Array.Copy(second, 0, result, first.Length, second.Length)
         Return result
     End Function
+
+    Private Function JoinLines(ByVal lines As IEnumerable(Of String)) As String
+        Return String.Join(vbCrLf, New List(Of String)(lines).ToArray())
+    End Function
+
+    Private Function LegacyMoveNoteBytes(ByVal note As Note, ByVal columnIndex As Integer, ByVal vPosition As Double) As Byte()
+        Dim ms As New MemoryStream()
+        Dim bw As New BinaryWriter(ms)
+
+        bw.Write(UndoRedo.opMoveNote)
+        WriteLegacyNote(bw, note)
+        bw.Write(columnIndex)
+        bw.Write(vPosition)
+
+        Return ms.ToArray()
+    End Function
+
+    Private Sub WriteLegacyNote(ByVal bw As BinaryWriter, ByVal note As Note)
+        bw.Write(note.VPosition)
+        bw.Write(note.ColumnIndex)
+        bw.Write(note.Value)
+        bw.Write(note.LongNote)
+        bw.Write(note.Length)
+        bw.Write(note.Hidden)
+        bw.Write(note.Landmine)
+    End Sub
 End Module

@@ -102,6 +102,7 @@ Public Class UndoRedo
 
     Public MustInherit Class LinkedURNoteCmd : Inherits LinkedURCmd
         Public note As Note
+        Protected LastReadRandomFields As Boolean = True
 
         Public Sub New()
 
@@ -116,9 +117,31 @@ Public Class UndoRedo
         End Sub
 
         Public Sub FromBinaryReader(ByRef br As BinaryReader)
-            br.ReadByte()
-            note.FromBinReader(br)
+            Dim commandType As Byte = br.ReadByte()
+            LastReadRandomFields = ShouldReadRandomFields(commandType, br)
+            note.FromBinReader(br, LastReadRandomFields)
         End Sub
+
+        Private Shared Function ShouldReadRandomFields(ByVal commandType As Byte, ByVal br As BinaryReader) As Boolean
+            Dim remaining As Long = br.BaseStream.Length - br.BaseStream.Position
+
+            Select Case commandType
+                Case opAddNote, opRemoveNote
+                    Return remaining >= Note.BinarySize
+                Case opChangeNote
+                    Return remaining >= Note.BinarySize * 2
+                Case opMoveNote
+                    Return remaining >= Note.BinarySize + 12
+                Case opLongNoteModify
+                    Return remaining >= Note.BinarySize + 16
+                Case opHiddenNoteModify, opLandmineNoteModify
+                    Return remaining >= Note.BinarySize + 1
+                Case opRelabelNote
+                    Return remaining >= Note.BinarySize + 8
+            End Select
+
+            Return remaining >= Note.BinarySize
+        End Function
 
         Public Sub WriteBinWriter(ByRef bw As BinaryWriter)
             bw.Write(ofType())
@@ -190,7 +213,7 @@ Public Class UndoRedo
         Public Sub New(ByVal b() As Byte)
             Dim br = New BinaryReader(New MemoryStream(b))
             FromBinaryReader(br)
-            NNote.FromBinReader(br)
+            NNote.FromBinReader(br, LastReadRandomFields)
         End Sub
 
         Public Sub New(note1 As Note, note2 As Note)

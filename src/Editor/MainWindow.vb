@@ -50,6 +50,10 @@ Public Class MainWindow
 
 
     Dim Notes() As Note = {New Note(niBPM, -1, 1200000, 0, False)}
+    Private RandomBlocks As New List(Of BmsRandomBlock)()
+    Private RandomCommonVisible As Boolean = True
+    Private SelectedRandomIndex As Integer = -1
+    Private UpdatingRandomControls As Boolean = False
     Dim mColumn(999) As Integer  '0 = no column, 1 = 1 column, etc.
     Dim GreatestVPosition As Double    '+ 2000 = -VS.Minimum
 
@@ -748,6 +752,21 @@ Public Class MainWindow
         End Sub
     End Class
 
+    Private Class RandomNumericUpDown
+        Inherits NumericUpDown
+
+        Protected Overrides Sub OnMouseWheel(ByVal e As MouseEventArgs)
+            If e.Delta > 0 Then
+                Value = Math.Min(Maximum, Value + 1D)
+            ElseIf e.Delta < 0 Then
+                Value = Math.Max(Minimum, Value - 1D)
+            End If
+
+            Dim xHandled As HandledMouseEventArgs = TryCast(e, HandledMouseEventArgs)
+            If xHandled IsNot Nothing Then xHandled.Handled = True
+        End Sub
+    End Class
+
     Private Class ImmediateListBoxScroller
         Inherits NativeWindow
 
@@ -869,6 +888,19 @@ Public Class MainWindow
     Private SplitViewDrag As SplitViewDragInfo = Nothing
     Private OptionsTabsInitialized As Boolean = False
     Private POTabSelected As Panel = Nothing
+    Private PORandom As Panel = Nothing
+    Private PORandomTabButton As Button = Nothing
+    Private CRandomCommonVisible As CheckBox = Nothing
+    Private LRandomBlocks As ListBox = Nothing
+    Private BRandomAdd As Button = Nothing
+    Private BRandomDelete As Button = Nothing
+    Private BRandomEditCommon As Button = Nothing
+    Private NRandomDefinition As NumericUpDown = Nothing
+    Private NRandomValue As NumericUpDown = Nothing
+    Private CRandomViewMode As ComboBox = Nothing
+    Private TRandomExtra As TextBox = Nothing
+    Private RandomExtraIndex As Integer = -1
+    Private RandomExtraValue As Integer = 0
     Private HeaderWheelBlockers As New List(Of MouseWheelBlocker)
     Private FastListScrollers As New List(Of ImmediateListBoxScroller)
 
@@ -893,6 +925,7 @@ Public Class MainWindow
         InitializeModeSelector()
         InitializePlayerSelector()
         InitializeGridToolbar()
+        InitializeRandomPanel()
         InitializeOptionsTabs()
         InitializeOptionsMenuItems()
         InitializeEncodingMenuItems()
@@ -1681,11 +1714,11 @@ Public Class MainWindow
     End Sub
 
     Private Function GetOptionsTabPanels() As Panel()
-        Return New Panel() {POHeader, POWAV, POBMP, POBeat, POWaveForm}
+        Return New Panel() {POHeader, POWAV, POBMP, POBeat, POWaveForm, PORandom}
     End Function
 
     Private Function GetOptionsTabButtons() As Button()
-        Return New Button() {POHeaderTabButton, POWAVTabButton, POBMPTabButton, POBeatTabButton, POWaveFormTabButton}
+        Return New Button() {POHeaderTabButton, POWAVTabButton, POBMPTabButton, POBeatTabButton, POWaveFormTabButton, PORandomTabButton}
     End Function
 
     Private Sub OptionsTabButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles POHeaderTabButton.Click, POWAVTabButton.Click, POBMPTabButton.Click, POBeatTabButton.Click, POWaveFormTabButton.Click
@@ -1697,6 +1730,7 @@ Public Class MainWindow
         If Object.ReferenceEquals(xButton, POBMPTabButton) Then SelectOptionsTab(POBMP, xButton)
         If Object.ReferenceEquals(xButton, POBeatTabButton) Then SelectOptionsTab(POBeat, xButton)
         If Object.ReferenceEquals(xButton, POWaveFormTabButton) Then SelectOptionsTab(POWaveForm, xButton)
+        If Object.ReferenceEquals(xButton, PORandomTabButton) Then SelectOptionsTab(PORandom, xButton)
     End Sub
 
     Private Sub SelectOptionsTab(ByVal xSelectedPanel As Panel, ByVal xSelectedButton As Button)
@@ -1755,6 +1789,7 @@ Public Class MainWindow
         If Object.ReferenceEquals(POTabSelected, POBMP) Then Return Object.ReferenceEquals(xButton, POBMPTabButton)
         If Object.ReferenceEquals(POTabSelected, POBeat) Then Return Object.ReferenceEquals(xButton, POBeatTabButton)
         If Object.ReferenceEquals(POTabSelected, POWaveForm) Then Return Object.ReferenceEquals(xButton, POWaveFormTabButton)
+        If Object.ReferenceEquals(POTabSelected, PORandom) Then Return Object.ReferenceEquals(xButton, PORandomTabButton)
 
         Return False
     End Function
@@ -1779,8 +1814,287 @@ Public Class MainWindow
     End Sub
 
     Private Sub ApplyOptionsTabButtonStyle(ByVal xButton As Button, ByVal xSelected As Boolean)
+        If xButton Is Nothing Then Return
         xButton.BackColor = If(xSelected, Color.FromArgb(218, 235, 249), Color.FromArgb(248, 248, 248))
         xButton.FlatAppearance.BorderColor = If(xSelected, Color.FromArgb(49, 119, 178), Color.FromArgb(205, 205, 205))
+    End Sub
+
+    Private Sub InitializeRandomPanel()
+        PORandomTabButton = New Button With {
+            .BackColor = Color.FromArgb(248, 248, 248),
+            .Dock = DockStyle.Fill,
+            .FlatStyle = FlatStyle.Flat,
+            .Font = New Font("Segoe UI", 8.0!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)),
+            .Margin = New Padding(0, 0, 2, 1),
+            .Name = "PORandomTabButton",
+            .TabStop = False,
+            .Text = "RANDOM",
+            .UseCompatibleTextRendering = False,
+            .UseVisualStyleBackColor = False
+        }
+        PORandomTabButton.FlatAppearance.BorderColor = Color.FromArgb(205, 205, 205)
+        PORandomTabButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(218, 235, 249)
+        PORandomTabButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 245, 252)
+        AddHandler PORandomTabButton.Click, AddressOf OptionsTabButton_Click
+        POTabButtons.Controls.Add(PORandomTabButton, 2, 1)
+
+        PORandom = New Panel With {
+            .AutoSize = False,
+            .Dock = DockStyle.Fill,
+            .Name = "PORandom",
+            .Padding = New Padding(0, 0, 0, 10),
+            .Visible = False
+        }
+
+        Dim layout As New TableLayoutPanel With {
+            .ColumnCount = 1,
+            .Dock = DockStyle.Fill,
+            .Name = "PORandomInner",
+            .RowCount = 7
+        }
+        layout.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
+        layout.RowStyles.Add(New RowStyle())
+        layout.RowStyles.Add(New RowStyle())
+        layout.RowStyles.Add(New RowStyle(SizeType.Absolute, 130.0!))
+        layout.RowStyles.Add(New RowStyle())
+        layout.RowStyles.Add(New RowStyle())
+        layout.RowStyles.Add(New RowStyle())
+        layout.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
+
+        CRandomCommonVisible = New CheckBox With {.AutoSize = True, .Checked = True, .Text = "Show common layer", .Dock = DockStyle.Fill}
+        AddHandler CRandomCommonVisible.CheckedChanged, AddressOf CRandomCommonVisible_CheckedChanged
+        layout.Controls.Add(CRandomCommonVisible, 0, 0)
+
+        Dim buttonRow As New TableLayoutPanel With {.ColumnCount = 3, .Dock = DockStyle.Fill, .AutoSize = True}
+        buttonRow.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3333!))
+        buttonRow.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3333!))
+        buttonRow.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3334!))
+        BRandomEditCommon = New Button With {.Text = "Common", .Dock = DockStyle.Fill, .AutoSize = True}
+        BRandomAdd = New Button With {.Text = "Add", .Dock = DockStyle.Fill, .AutoSize = True}
+        BRandomDelete = New Button With {.Text = "Delete", .Dock = DockStyle.Fill, .AutoSize = True}
+        AddHandler BRandomEditCommon.Click, AddressOf BRandomEditCommon_Click
+        AddHandler BRandomAdd.Click, AddressOf BRandomAdd_Click
+        AddHandler BRandomDelete.Click, AddressOf BRandomDelete_Click
+        buttonRow.Controls.Add(BRandomEditCommon, 0, 0)
+        buttonRow.Controls.Add(BRandomAdd, 1, 0)
+        buttonRow.Controls.Add(BRandomDelete, 2, 0)
+        layout.Controls.Add(buttonRow, 0, 1)
+
+        LRandomBlocks = New ListBox With {.Dock = DockStyle.Fill, .IntegralHeight = False}
+        AddHandler LRandomBlocks.SelectedIndexChanged, AddressOf LRandomBlocks_SelectedIndexChanged
+        layout.Controls.Add(LRandomBlocks, 0, 2)
+        FastListScrollers.Add(New ImmediateListBoxScroller(LRandomBlocks))
+
+        Dim editGrid As New TableLayoutPanel With {.ColumnCount = 2, .Dock = DockStyle.Fill, .AutoSize = True}
+        editGrid.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 42.0!))
+        editGrid.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 58.0!))
+        editGrid.RowStyles.Add(New RowStyle())
+        editGrid.RowStyles.Add(New RowStyle())
+        editGrid.RowStyles.Add(New RowStyle())
+        editGrid.Controls.Add(New Label With {.Text = "#RANDOM", .AutoSize = True, .Anchor = AnchorStyles.Left}, 0, 0)
+        NRandomDefinition = New RandomNumericUpDown With {.Minimum = 1, .Maximum = 9999, .Dock = DockStyle.Fill}
+        AddHandler NRandomDefinition.ValueChanged, AddressOf NRandomDefinition_ValueChanged
+        editGrid.Controls.Add(NRandomDefinition, 1, 0)
+        editGrid.Controls.Add(New Label With {.Text = "#IF", .AutoSize = True, .Anchor = AnchorStyles.Left}, 0, 1)
+        NRandomValue = New RandomNumericUpDown With {.Minimum = 1, .Maximum = 9999, .Dock = DockStyle.Fill}
+        AddHandler NRandomValue.ValueChanged, AddressOf NRandomValue_ValueChanged
+        editGrid.Controls.Add(NRandomValue, 1, 1)
+        editGrid.Controls.Add(New Label With {.Text = "View", .AutoSize = True, .Anchor = AnchorStyles.Left}, 0, 2)
+        CRandomViewMode = New ComboBox With {.Dock = DockStyle.Fill, .DropDownStyle = ComboBoxStyle.DropDownList}
+        CRandomViewMode.Items.AddRange(New Object() {"All", "Current", "Hidden"})
+        AddHandler CRandomViewMode.SelectedIndexChanged, AddressOf CRandomViewMode_SelectedIndexChanged
+        editGrid.Controls.Add(CRandomViewMode, 1, 2)
+        layout.Controls.Add(editGrid, 0, 3)
+
+        layout.Controls.Add(New Label With {.Text = "Branch expansion", .AutoSize = True, .Dock = DockStyle.Fill}, 0, 4)
+        TRandomExtra = New TextBox With {
+            .BorderStyle = BorderStyle.FixedSingle,
+            .Dock = DockStyle.Fill,
+            .Font = New Font("Consolas", 9.0!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)),
+            .HideSelection = False,
+            .Multiline = True,
+            .ScrollBars = ScrollBars.Vertical,
+            .WordWrap = False
+        }
+        AddHandler TRandomExtra.TextChanged, AddressOf TRandomExtra_TextChanged
+        layout.Controls.Add(TRandomExtra, 0, 6)
+
+        PORandom.Controls.Add(layout)
+        POTabContent.Controls.Add(PORandom)
+        RefreshRandomPanel()
+    End Sub
+
+    Private Sub StoreRandomExtraText()
+        If UpdatingRandomControls Then Return
+        If Not IsValidRandomIndex(RandomExtraIndex) Then Return
+        RandomBlocks(RandomExtraIndex).SetExtraText(RandomExtraValue, TRandomExtra.Text)
+    End Sub
+
+    Private Function RandomBranchHasDataAbove(ByVal randomIndex As Integer, ByVal maxValue As Integer) As Boolean
+        For i As Integer = 1 To UBound(Notes)
+            If Notes(i).RandomIndex = randomIndex AndAlso Notes(i).RandomValue > maxValue Then Return True
+        Next
+
+        For Each pair As KeyValuePair(Of Integer, String) In RandomBlocks(randomIndex).ExtraTextByValue
+            If pair.Key > maxValue AndAlso pair.Value <> "" Then Return True
+        Next
+
+        Return False
+    End Function
+
+    Private Sub RefreshRandomPanel()
+        If CRandomCommonVisible Is Nothing Then Return
+
+        UpdatingRandomControls = True
+
+        CRandomCommonVisible.Checked = RandomCommonVisible
+
+        LRandomBlocks.Items.Clear()
+        For i As Integer = 0 To RandomBlocks.Count - 1
+            Dim block As BmsRandomBlock = RandomBlocks(i)
+            block.Normalize()
+            LRandomBlocks.Items.Add((i + 1).ToString() & ": #RANDOM " & block.DefinitionValue.ToString() & " / #IF " & block.CurrentValue.ToString() & " / " & block.ViewMode.ToString())
+        Next
+
+        If IsValidRandomIndex(SelectedRandomIndex) Then
+            LRandomBlocks.SelectedIndex = SelectedRandomIndex
+        Else
+            LRandomBlocks.SelectedIndex = -1
+        End If
+
+        Dim hasBlock As Boolean = IsValidRandomIndex(SelectedRandomIndex)
+        BRandomDelete.Enabled = hasBlock
+        NRandomDefinition.Enabled = hasBlock
+        NRandomValue.Enabled = hasBlock
+        CRandomViewMode.Enabled = hasBlock
+        TRandomExtra.Enabled = hasBlock
+
+        If hasBlock Then
+            Dim block As BmsRandomBlock = RandomBlocks(SelectedRandomIndex)
+            block.Normalize()
+            NRandomDefinition.Maximum = Math.Max(9999D, CDec(block.DefinitionValue))
+            NRandomDefinition.Value = block.DefinitionValue
+            NRandomValue.Maximum = Math.Max(9999D, CDec(block.DefinitionValue))
+            NRandomValue.Value = block.CurrentValue
+            CRandomViewMode.SelectedIndex = CInt(block.ViewMode)
+            RandomExtraIndex = SelectedRandomIndex
+            RandomExtraValue = block.CurrentValue
+            TRandomExtra.Text = block.GetExtraText(block.CurrentValue)
+        Else
+            NRandomDefinition.Value = 1
+            NRandomValue.Maximum = 1
+            NRandomValue.Value = 1
+            CRandomViewMode.SelectedIndex = -1
+            RandomExtraIndex = -1
+            RandomExtraValue = 0
+            TRandomExtra.Text = ""
+        End If
+
+        UpdatingRandomControls = False
+    End Sub
+
+    Private Sub CRandomCommonVisible_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+        If UpdatingRandomControls Then Return
+        RandomCommonVisible = CRandomCommonVisible.Checked
+        SetIsSaved(False)
+        RefreshPanelAll()
+    End Sub
+
+    Private Sub BRandomEditCommon_Click(ByVal sender As Object, ByVal e As EventArgs)
+        StoreRandomExtraText()
+        SelectedRandomIndex = -1
+        RefreshRandomPanel()
+        RefreshPanelAll()
+    End Sub
+
+    Private Sub BRandomAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
+        StoreRandomExtraText()
+        RandomBlocks.Add(New BmsRandomBlock(2))
+        SelectedRandomIndex = RandomBlocks.Count - 1
+        SetIsSaved(False)
+        RefreshRandomPanel()
+        RefreshPanelAll()
+    End Sub
+
+    Private Sub BRandomDelete_Click(ByVal sender As Object, ByVal e As EventArgs)
+        If Not IsValidRandomIndex(SelectedRandomIndex) Then Return
+        If MsgBox("Delete selected RANDOM block?", MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Text) <> MsgBoxResult.Yes Then Return
+
+        Dim deleteIndex As Integer = SelectedRandomIndex
+        Dim i As Integer = 1
+        Do While i <= UBound(Notes)
+            If Notes(i).RandomIndex = deleteIndex Then
+                RemoveNote(i, False)
+            Else
+                If Notes(i).RandomIndex > deleteIndex Then Notes(i).RandomIndex -= 1
+                i += 1
+            End If
+        Loop
+
+        RandomBlocks.RemoveAt(deleteIndex)
+        SelectedRandomIndex = Math.Min(deleteIndex, RandomBlocks.Count - 1)
+        If SelectedRandomIndex < 0 Then SelectedRandomIndex = -1
+        SetIsSaved(False)
+        SortByVPositionInsertion()
+        UpdatePairing()
+        CalculateTotalPlayableNotes()
+        RefreshRandomPanel()
+        RefreshPanelAll()
+    End Sub
+
+    Private Sub LRandomBlocks_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+        If UpdatingRandomControls Then Return
+        StoreRandomExtraText()
+        SelectedRandomIndex = LRandomBlocks.SelectedIndex
+        RefreshRandomPanel()
+        RefreshPanelAll()
+    End Sub
+
+    Private Sub NRandomDefinition_ValueChanged(ByVal sender As Object, ByVal e As EventArgs)
+        If UpdatingRandomControls OrElse Not IsValidRandomIndex(SelectedRandomIndex) Then Return
+        StoreRandomExtraText()
+
+        Dim block As BmsRandomBlock = RandomBlocks(SelectedRandomIndex)
+        Dim newValue As Integer = CInt(NRandomDefinition.Value)
+        If newValue < block.DefinitionValue AndAlso RandomBranchHasDataAbove(SelectedRandomIndex, newValue) Then
+            MsgBox("Cannot reduce #RANDOM because higher #IF branches contain data.", MsgBoxStyle.Exclamation, Text)
+            RefreshRandomPanel()
+            Return
+        End If
+
+        block.DefinitionValue = newValue
+        block.Normalize()
+        SetIsSaved(False)
+        RefreshRandomPanel()
+        RefreshPanelAll()
+    End Sub
+
+    Private Sub NRandomValue_ValueChanged(ByVal sender As Object, ByVal e As EventArgs)
+        If UpdatingRandomControls OrElse Not IsValidRandomIndex(SelectedRandomIndex) Then Return
+        StoreRandomExtraText()
+
+        Dim block As BmsRandomBlock = RandomBlocks(SelectedRandomIndex)
+        block.CurrentValue = CInt(NRandomValue.Value)
+        block.Normalize()
+        SetIsSaved(False)
+        RefreshRandomPanel()
+        RefreshPanelAll()
+    End Sub
+
+    Private Sub CRandomViewMode_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+        If UpdatingRandomControls OrElse Not IsValidRandomIndex(SelectedRandomIndex) Then Return
+        If CRandomViewMode.SelectedIndex < 0 Then Return
+
+        RandomBlocks(SelectedRandomIndex).ViewMode = CType(CRandomViewMode.SelectedIndex, BmsRandomViewMode)
+        SetIsSaved(False)
+        RefreshRandomPanel()
+        RefreshPanelAll()
+    End Sub
+
+    Private Sub TRandomExtra_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+        If UpdatingRandomControls Then Return
+        StoreRandomExtraText()
+        SetIsSaved(False)
     End Sub
 
     Private Sub InitializeGridToolbar()
@@ -2538,8 +2852,7 @@ Public Class MainWindow
 
         If OverWrite Then
             Do While xI1 <= UBound(Notes)
-                If Notes(xI1).VPosition = note.VPosition And
-                    Notes(xI1).ColumnIndex = note.ColumnIndex Then
+                If IsSameNoteSlot(Notes(xI1), note) Then
                     RemoveNote(xI1)
                 Else
                     xI1 += 1
@@ -2621,6 +2934,7 @@ Public Class MainWindow
                         .Landmine = CBool(Val(xStrSub(5)))
                         .Selected = xSelected
                     End With
+                    ApplyCurrentRandomOwner(Notes(UBound(Notes)))
                     NormalizeNoteType(Notes(UBound(Notes)))
                 End If
             Next
@@ -2665,6 +2979,7 @@ Public Class MainWindow
                         .Landmine = CBool(Val(xStrSub(5)))
                         .Selected = xSelected
                     End With
+                    ApplyCurrentRandomOwner(Notes(UBound(Notes)))
                     NormalizeNoteType(Notes(UBound(Notes)))
                 End If
             Next
@@ -2718,6 +3033,7 @@ Public Class MainWindow
                         .Hidden = attribute = "1"
                         .Selected = xSelected And nEnabled(.ColumnIndex)
                     End With
+                    ApplyCurrentRandomOwner(Notes(UBound(Notes)))
                 End If
             Next
 
@@ -2805,6 +3121,84 @@ Public Class MainWindow
         If SortAndUpdatePairing Then SortByVPositionInsertion() : UpdatePairing()
         CalculateTotalPlayableNotes()
     End Sub
+
+    Private Function IsValidRandomIndex(ByVal randomIndex As Integer) As Boolean
+        Return randomIndex >= 0 AndAlso randomIndex < RandomBlocks.Count
+    End Function
+
+    Private Sub SetCommonRandomOwner(ByRef note As Note)
+        note.RandomIndex = -1
+        note.RandomValue = 0
+    End Sub
+
+    Private Sub ApplyCurrentRandomOwner(ByRef note As Note)
+        If IsValidRandomIndex(SelectedRandomIndex) Then
+            RandomBlocks(SelectedRandomIndex).Normalize()
+            note.RandomIndex = SelectedRandomIndex
+            note.RandomValue = RandomBlocks(SelectedRandomIndex).CurrentValue
+        Else
+            SetCommonRandomOwner(note)
+        End If
+    End Sub
+
+    Private Function WithCurrentRandomOwner(ByVal note As Note) As Note
+        ApplyCurrentRandomOwner(note)
+        Return note
+    End Function
+
+    Private Function IsSameRandomOwner(ByVal note As Note, ByVal randomIndex As Integer, ByVal randomValue As Integer) As Boolean
+        If randomIndex < 0 Then Return note.RandomIndex < 0
+
+        Return note.RandomIndex = randomIndex AndAlso note.RandomValue = randomValue
+    End Function
+
+    Private Function IsSameNoteSlot(ByVal note As Note, ByVal sample As Note) As Boolean
+        Return note.VPosition = sample.VPosition AndAlso
+               note.ColumnIndex = sample.ColumnIndex AndAlso
+               IsSameRandomOwner(note, sample.RandomIndex, sample.RandomValue)
+    End Function
+
+    Private Function IsNoteVisibleByRandom(ByVal note As Note) As Boolean
+        If note.VPosition < 0 Then Return True
+        If note.RandomIndex < 0 Then Return RandomCommonVisible
+        If Not IsValidRandomIndex(note.RandomIndex) Then Return False
+
+        Dim block As BmsRandomBlock = RandomBlocks(note.RandomIndex)
+        block.Normalize()
+
+        Select Case block.ViewMode
+            Case BmsRandomViewMode.AllBranches
+                Return True
+            Case BmsRandomViewMode.CurrentValue
+                Return note.RandomValue = block.CurrentValue
+            Case BmsRandomViewMode.Hidden
+                Return False
+        End Select
+
+        Return False
+    End Function
+
+    Private Function IsNoteCurrentRandomLayer(ByVal note As Note) As Boolean
+        If note.VPosition < 0 Then Return True
+
+        If IsValidRandomIndex(SelectedRandomIndex) Then
+            Dim block As BmsRandomBlock = RandomBlocks(SelectedRandomIndex)
+            block.Normalize()
+            Return note.RandomIndex = SelectedRandomIndex AndAlso note.RandomValue = block.CurrentValue
+        End If
+
+        Return note.RandomIndex < 0
+    End Function
+
+    Private Function CurrentRandomLayerText() As String
+        If IsValidRandomIndex(SelectedRandomIndex) Then
+            Dim block As BmsRandomBlock = RandomBlocks(SelectedRandomIndex)
+            block.Normalize()
+            Return "RANDOM " & (SelectedRandomIndex + 1).ToString() & " / IF " & block.CurrentValue.ToString()
+        End If
+
+        Return "Common"
+    End Function
 
     Private Function EnabledColumnIndexToColumnArrayIndex(ByVal cEnabled As Integer) As Integer
         Dim enabledIndex As Integer = 0
@@ -3067,6 +3461,8 @@ Public Class MainWindow
         THLandMine.Text = ""
         THMissBMP.Text = ""
         TExpansion.Text = ""
+        ResetRandomState()
+        RefreshRandomPanel()
 
         THPreview.Text = ""
         CHLnmode.SelectedIndex = 0
@@ -3122,6 +3518,8 @@ Public Class MainWindow
             '.LongNote = False
             '.Selected = False
             .Value = 1200000
+            .RandomIndex = -1
+            .RandomValue = 0
         End With
         THBPM.Value = 120
         SetChartMode(ChartMode.Key7, True)
@@ -3498,17 +3896,18 @@ Public Class MainWindow
                 If Notes(i).Length <> 0 Then
                     For j = i + 1 To UBound(Notes)
                         If Notes(j).VPosition > Notes(i).VPosition + Notes(i).Length Then Exit For
-                        If Notes(j).ColumnIndex = Notes(i).ColumnIndex Then Notes(j).HasError = True
+                        If Notes(j).ColumnIndex = Notes(i).ColumnIndex AndAlso IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Notes(j).HasError = True
                     Next
                 Else
                     For j = i + 1 To UBound(Notes)
                         If Notes(j).VPosition > Notes(i).VPosition Then Exit For
-                        If Notes(j).ColumnIndex = Notes(i).ColumnIndex Then Notes(j).HasError = True
+                        If Notes(j).ColumnIndex = Notes(i).ColumnIndex AndAlso IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Notes(j).HasError = True
                     Next
 
                     If Notes(i).Value \ 10000 = LnObj AndAlso Not IsColumnNumeric(Notes(i).ColumnIndex) Then
                         For j = i - 1 To 1 Step -1
                             If Notes(j).ColumnIndex <> Notes(i).ColumnIndex Then Continue For
+                            If Not IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Continue For
                             If Notes(j).Hidden Then Continue For
 
                             If Notes(j).Length <> 0 OrElse Notes(j).Value \ 10000 = LnObj Then
@@ -3542,6 +3941,7 @@ Public Class MainWindow
                         '          If nothing above then error.
                         For j = i - 1 To 1 Step -1
                             If Notes(j).ColumnIndex <> Notes(i).ColumnIndex Then Continue For
+                            If Not IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Continue For
                             If Notes(j).VPosition = Notes(i).VPosition Then
                                 Notes(i).HasError = True
                                 GoTo EndSearch
@@ -3555,6 +3955,7 @@ Public Class MainWindow
 
                         For j = i + 1 To UBound(Notes)
                             If Notes(j).ColumnIndex <> Notes(i).ColumnIndex Then Continue For
+                            If Not IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Continue For
                             Notes(i).LNPair = j
                             Notes(j).LNPair = i
                             If Not Notes(j).LongNote AndAlso Notes(j).Value \ 10000 <> LnObj Then
@@ -3576,6 +3977,7 @@ EndSearch:
                         '       If nothing below, then error.
                         For j = i - 1 To 1 Step -1
                             If Notes(i).ColumnIndex <> Notes(j).ColumnIndex Then Continue For
+                            If Not IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Continue For
                             If Notes(j).LNPair <> 0 And Notes(j).LNPair <> i Then
                                 Notes(j).HasError = True
                             End If
@@ -3598,6 +4000,7 @@ EndSearch:
                         For j = i - 1 To 1 Step -1
                             If Notes(j).VPosition < Notes(i).VPosition Then Exit For
                             If Notes(j).ColumnIndex <> Notes(i).ColumnIndex Then Continue For
+                            If Not IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Continue For
                             Notes(i).HasError = True
                             Exit For
                         Next
@@ -3610,6 +4013,7 @@ EndSearch:
                         For j = i - 1 To 1 Step -1
                             If Notes(j).VPosition < Notes(i).VPosition Then Exit For
                             If Notes(j).ColumnIndex <> Notes(i).ColumnIndex Then Continue For
+                            If Not IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Continue For
                             Notes(i).HasError = True
                             Exit For
                         Next
@@ -3809,6 +4213,8 @@ EndSearch:
             '.LongNote = False
             '.Selected = False
             .Value = 1200000
+            .RandomIndex = -1
+            .RandomValue = 0
         End With
         THBPM.Value = 120
         SetChartMode(ChartMode.Key7, True)
@@ -3851,6 +4257,8 @@ EndSearch:
             '.LongNote = False
             '.Selected = False
             .Value = 1200000
+            .RandomIndex = -1
+            .RandomValue = 0
         End With
         THBPM.Value = 120
 
@@ -5712,6 +6120,7 @@ StartCount:     If Not NTInput Then
 
             For j = i + 1 To xUbound
                 If Notes(j).ColumnIndex <> Notes(i).ColumnIndex Then Continue For
+                If Not IsSameRandomOwner(Notes(j), Notes(i).RandomIndex, Notes(i).RandomValue) Then Continue For
 
                 If Notes(j).LongNote Then
                     Notes(i).Length = Notes(j).VPosition - Notes(i).VPosition
@@ -5761,6 +6170,8 @@ StartCount:     If Not NTInput Then
                 .VPosition = Notes(xI1).VPosition
                 .Selected = Notes(xI1).Selected
                 .Hidden = Notes(xI1).Hidden
+                .RandomIndex = Notes(xI1).RandomIndex
+                .RandomValue = Notes(xI1).RandomValue
             End With
 
             If Notes(xI1).Length > 0 Then
@@ -5773,6 +6184,8 @@ StartCount:     If Not NTInput Then
                     .VPosition = Notes(xI1).VPosition + Notes(xI1).Length
                     .Selected = Notes(xI1).Selected
                     .Hidden = Notes(xI1).Hidden
+                    .RandomIndex = Notes(xI1).RandomIndex
+                    .RandomValue = Notes(xI1).RandomValue
                 End With
             End If
         Next
@@ -6298,6 +6711,8 @@ Jump2:
     End Sub
 
     Private Function fdrCheck(ByVal xNote As Note) As Boolean
+        If Not IsNoteVisibleByRandom(xNote) Then Return False
+
         Return xNote.VPosition >= MeasureBottom(fdriMesL) And xNote.VPosition < MeasureBottom(fdriMesU) + MeasureLength(fdriMesU) AndAlso
                IIf(IsColumnNumeric(xNote.ColumnIndex),
                    xNote.Value >= fdriValL And xNote.Value <= fdriValU,
@@ -6828,7 +7243,7 @@ Jump2:
     Private Sub mnSelectAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnSelectAll.Click
         If Not IsAnyMainPanelFocused() Then Exit Sub
         For xI1 As Integer = 1 To UBound(Notes)
-            Notes(xI1).Selected = nEnabled(Notes(xI1).ColumnIndex)
+            Notes(xI1).Selected = IsNoteVisibleByRandom(Notes(xI1)) AndAlso nEnabled(Notes(xI1).ColumnIndex)
         Next
         If TBTimeSelect.Checked Then
             CalculateGreatestVPosition()

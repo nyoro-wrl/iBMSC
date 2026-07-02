@@ -350,6 +350,7 @@ Partial Public Class MainWindow
 
         For xI1 = 0 To UBound(Notes)
             If Notes(xI1).VPosition > xUpperBorder Then Exit For
+            If Not IsNoteVisibleByRandom(Notes(xI1)) Then Continue For
             If Not IsNoteVisible(xI1, xTHeight, xVS) Then Continue For
             If NTInput Then
                 DrawNoteNT(Notes(xI1), e1, xHS, xVS, xTHeight)
@@ -380,6 +381,16 @@ Partial Public Class MainWindow
         Return GetNoteRectangle(Notes(noteIndex), xTHeight, xHS, xVS)
     End Function
 
+    Private Sub DrawRandomLayerHint(ByVal sNote As Note, ByVal e As BufferedGraphics, ByVal xHS As Long, ByVal xVS As Long, ByVal xHeight As Integer)
+        If IsNoteCurrentRandomLayer(sNote) Then Return
+
+        Dim rect As Rectangle = GetNoteRectangle(sNote, xHeight, CInt(xHS), CInt(xVS))
+        Using pen As New Pen(Color.White)
+            pen.DashStyle = Drawing2D.DashStyle.Dash
+            e.Graphics.DrawRectangle(pen, rect.X + 1, rect.Y + 1, Math.Max(1, rect.Width - 3), Math.Max(1, rect.Height - 3))
+        End Using
+    End Sub
+
 
     Private Sub DrawMouseOver(e1 As BufferedGraphics, xTHeight As Integer, xHS As Integer, xVS As Integer)
         If NTInput Then
@@ -394,7 +405,7 @@ Partial Public Class MainWindow
 
         If ModifierMultiselectActive() Then
             For Each note In Notes
-                If IsNoteVisible(note, xTHeight, xVS) AndAlso IsLabelMatch(note, KMouseOver) Then
+                If IsNoteVisibleByRandom(note) AndAlso IsNoteVisible(note, xTHeight, xVS) AndAlso IsLabelMatch(note, KMouseOver) Then
                     Dim nrect = GetNoteRectangle(note, xTHeight, xHS, xVS)
                     e1.Graphics.DrawRectangle(pen, nrect.X, nrect.Y, nrect.Width - 1, nrect.Height - 1)
                 End If
@@ -640,6 +651,7 @@ Partial Public Class MainWindow
                                                             24, 24)
 
         If sNote.Selected Then e.Graphics.DrawRectangle(vo.kSelected, HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex), xHS), NoteRowToPanelHeight(sNote.VPosition, xVS, xHeight) - vo.kHeight - 1, GetColumnWidth(sNote.ColumnIndex) * gxWidth, vo.kHeight + 2)
+        DrawRandomLayerHint(sNote, e, xHS, xVS, xHeight)
 
     End Sub
 
@@ -764,6 +776,7 @@ Partial Public Class MainWindow
                                  CInt(NoteRowToPanelHeight(sNote.VPosition, xVS, xHeight) - vo.kHeight / 2 - 12),
                                  24, 24)
         End If
+        DrawRandomLayerHint(sNote, e, xHS, xVS, xHeight)
 
         'e.Graphics.DrawString(sNote.TimeOffset.ToString("0.##"), New Font("Verdana", 9), Brushes.Cyan, _
         '                      New Point(HorizontalPositiontoDisplay(nLeft(sNote.ColumnIndex + 1), xHS), VerticalPositiontoDisplay(sNote.VPosition, xVS, xHeight) - vo.kHeight - 2))

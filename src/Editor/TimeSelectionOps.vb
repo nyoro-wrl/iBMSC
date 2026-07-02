@@ -100,8 +100,8 @@ Partial Public Class MainWindow
             Next
 
             'Add BPMs
-            AddNote(New Note(niBPM, xVLower, xValueL * xRatio), False, True, False)
-            AddNote(New Note(niBPM, xVUpper + (xRatio - 1) * (xVUpper - xVLower), xValueU), False, True, False)
+            AddNote(WithCurrentRandomOwner(New Note(niBPM, xVLower, xValueL * xRatio)), False, True, False)
+            AddNote(WithCurrentRandomOwner(New Note(niBPM, xVUpper + (xRatio - 1) * (xVUpper - xVLower), xValueU)), False, True, False)
 
         Else
             Dim xAddBPML As Boolean = True
@@ -141,8 +141,8 @@ Partial Public Class MainWindow
             Next
 
             'Add BPMs
-            If xAddBPML Then AddNote(New Note(niBPM, xVLower, xValueL * xRatio), False, True, False)
-            If xAddBPMU Then AddNote(New Note(niBPM, (xVUpper - xVLower) * xRatio + xVLower, xValueU), False, True, False)
+            If xAddBPML Then AddNote(WithCurrentRandomOwner(New Note(niBPM, xVLower, xValueL * xRatio)), False, True, False)
+            If xAddBPMU Then AddNote(WithCurrentRandomOwner(New Note(niBPM, (xVUpper - xVLower) * xRatio + xVLower, xValueU)), False, True, False)
         End If
 
         'Check BPM Overflow
@@ -270,11 +270,11 @@ EndofSub:
             'Add BPMs
             ' az: cond. removed; 
             ' IIf(xVHalf <> xVLower AndAlso xValueL * xRatio1 <= 655359999, xValueL * xRatio1, 655359999)
-            AddNote(New Note(niBPM, xVLower, xValueL * xRatio1), False, True, False)
+            AddNote(WithCurrentRandomOwner(New Note(niBPM, xVLower, xValueL * xRatio1)), False, True, False)
             ' az: cond removed;
             ' IIf(xVHalf <> xVUpper AndAlso xValueM * xRatio2 <= 655359999, xValueM * xRatio2, 655359999)
-            AddNote(New Note(niBPM, xVHalf + dVPosition, xValueM * xRatio2), False, True, False)
-            AddNote(New Note(niBPM, xVUpper, xValueU), False, True, False)
+            AddNote(WithCurrentRandomOwner(New Note(niBPM, xVHalf + dVPosition, xValueM * xRatio2)), False, True, False)
+            AddNote(WithCurrentRandomOwner(New Note(niBPM, xVUpper, xValueU)), False, True, False)
 
         Else
             Dim xAddBPML As Boolean = True
@@ -362,10 +362,10 @@ EndofSub:
 
             'Add BPMs
             ' IIf(xVHalf <> xVLower AndAlso xValueL * xRatio1 <= 655359999, xValueL * xRatio1, 655359999)
-            If xAddBPML Then AddNote(New Note(niBPM, xVLower, xValueL * xRatio1), False, True, False)
+            If xAddBPML Then AddNote(WithCurrentRandomOwner(New Note(niBPM, xVLower, xValueL * xRatio1)), False, True, False)
             ' IIf(xVHalf <> xVUpper AndAlso xValueM * xRatio2 <= 655359999, xValueM * xRatio2, 655359999)
-            If xAddBPMM Then AddNote(New Note(niBPM, xVHalf + dVPosition, xValueM * xRatio2), False, True, False)
-            If xAddBPMU Then AddNote(New Note(niBPM, xVUpper, xValueU), False, True, False)
+            If xAddBPMM Then AddNote(WithCurrentRandomOwner(New Note(niBPM, xVHalf + dVPosition, xValueM * xRatio2)), False, True, False)
+            If xAddBPMU Then AddNote(WithCurrentRandomOwner(New Note(niBPM, xVUpper, xValueU)), False, True, False)
         End If
 
         'Check BPM Overflow
@@ -582,11 +582,13 @@ EndOfAdjustment:
             .VPosition = xVHalf
             .Value = xResult
         End With
+        ApplyCurrentRandomOwner(Notes(UBound(Notes) - 1))
         With Notes(UBound(Notes))
             .ColumnIndex = niBPM
             .VPosition = xVUpper
             .Value = xVal(xU)
         End With
+        ApplyCurrentRandomOwner(Notes(UBound(Notes)))
         If xVLower <> xVHalf Then
             ReDim Preserve Notes(UBound(Notes) + 1)
             With Notes(UBound(Notes))
@@ -594,6 +596,7 @@ EndOfAdjustment:
                 .VPosition = xVLower
                 .Value = xValue
             End With
+            ApplyCurrentRandomOwner(Notes(UBound(Notes)))
         End If
 
         'Save redo
@@ -657,6 +660,7 @@ EndOfAdjustment:
             .VPosition = xVLower
             .Value = vSelLength * 10000
         End With
+        ApplyCurrentRandomOwner(Notes(UBound(Notes)))
 
         Me.RedoAddNoteAll(False, xUndo, xRedo)
 
