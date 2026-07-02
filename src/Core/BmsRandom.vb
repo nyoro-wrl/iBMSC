@@ -67,6 +67,27 @@ Namespace Editor
 
             xOverrides(measureIndex) = length
         End Sub
+
+        Public Sub SetMeasureLengthOverrides(ByVal value As Integer, ByVal measureLengths As Dictionary(Of Integer, Double))
+            If measureLengths Is Nothing OrElse measureLengths.Count = 0 Then
+                MeasureLengthByValue.Remove(value)
+                Return
+            End If
+
+            Dim xOverrides As New Dictionary(Of Integer, Double)()
+            For Each pair As KeyValuePair(Of Integer, Double) In measureLengths
+                If pair.Key < 0 OrElse pair.Key > 999 Then Continue For
+                If pair.Value <= 0.0R Then Continue For
+                xOverrides(pair.Key) = pair.Value
+            Next
+
+            If xOverrides.Count = 0 Then
+                MeasureLengthByValue.Remove(value)
+                Return
+            End If
+
+            MeasureLengthByValue(value) = xOverrides
+        End Sub
     End Class
 
     Public Class BmsRandomParsedBranch

@@ -426,8 +426,6 @@ AddExpansion:       xExpansion &= sLine & vbCrLf
                BmsRandomParser.IsCommand(trimmed, "SKIP") OrElse
                BmsRandomParser.IsCommand(trimmed, "ENDSW") Then Return True
 
-            If trimmed.StartsWith("#WAV", StringComparison.CurrentCultureIgnoreCase) Then Return True
-            If trimmed.StartsWith("#BMP", StringComparison.CurrentCultureIgnoreCase) Then Return True
         Next
 
         Return False

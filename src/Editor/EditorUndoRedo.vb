@@ -6,6 +6,7 @@ Partial Public Class MainWindow
             Notes(xI2).Selected = False
         Next
         LBeat.SelectedIndices.Clear()
+        Dim xMeasureLengthChanged As Boolean = False
 
         Do While sCmd IsNot Nothing
             Dim xType As Byte = sCmd.ofType
@@ -112,15 +113,13 @@ Partial Public Class MainWindow
 
                 Case UndoRedo.opChangeMeasureLength
                     Dim xCmd As UndoRedo.ChangeMeasureLength = sCmd
-                    Dim xxD As Long = GetDenominator(xCmd.Value / 192)
                     'Dim xDenom As Integer = 192 / GCD(xCmd.Value, 192.0R)
                     'If xDenom < 4 Then xDenom = 4
                     For Each xM As Integer In xCmd.Indices
-                        MeasureLength(xM) = xCmd.Value
-                        LBeat.Items(xM) = Add3Zeros(xM) & ": " & (xCmd.Value / 192) & IIf(xxD > 10000, "", " ( " & CLng(xCmd.Value / 192 * xxD) & " / " & xxD & " ) ")
+                        SetBaseMeasureLength(xM, xCmd.Value)
                         LBeat.SelectedIndices.Add(xM)
                     Next
-                    UpdateMeasureBottom()
+                    xMeasureLengthChanged = True
 
                 Case UndoRedo.opChangeTimeSelection
                     Dim xCmd As UndoRedo.ChangeTimeSelection = sCmd
@@ -181,6 +180,7 @@ Partial Public Class MainWindow
         THBPM.Value = Notes(0).Value / 10000
         If IsSaved Then SetIsSaved(False)
 
+        If xMeasureLengthChanged Then ApplySelectedRandomMeasureMap()
         SortByVPositionInsertion()
         UpdatePairing()
         CalculateTotalPlayableNotes()
@@ -749,12 +749,12 @@ Partial Public Class MainWindow
         Dim xmLen(-1) As Double
         Dim xUndo(-1) As UndoRedo.ChangeMeasureLength
         For Each xI1 As Integer In xIndices
-            Dim xI As Integer = Array.IndexOf(xmLen, MeasureLength(xI1))
+            Dim xI As Integer = Array.IndexOf(xmLen, BaseMeasureLength(xI1))
             If xI = -1 Then
                 ReDim Preserve xmLen(UBound(xmLen) + 1)
                 ReDim Preserve xUndo(UBound(xUndo) + 1)
-                xmLen(UBound(xmLen)) = MeasureLength(xI1)
-                xUndo(UBound(xUndo)) = New UndoRedo.ChangeMeasureLength(MeasureLength(xI1), New Integer() {xI1})
+                xmLen(UBound(xmLen)) = BaseMeasureLength(xI1)
+                xUndo(UBound(xUndo)) = New UndoRedo.ChangeMeasureLength(BaseMeasureLength(xI1), New Integer() {xI1})
             Else
                 With xUndo(xI)
                     ReDim Preserve .Indices(UBound(.Indices) + 1)

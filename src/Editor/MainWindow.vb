@@ -2087,8 +2087,105 @@ Public Class MainWindow
     Private Sub StoreRandomExtraText()
         If UpdatingRandomControls Then Return
         If Not IsValidRandomIndex(RandomExtraIndex) Then Return
-        RandomBlocks(RandomExtraIndex).SetExtraText(RandomExtraValue, TRandomExtra.Text)
+
+        Dim block As BmsRandomBlock = RandomBlocks(RandomExtraIndex)
+        Dim xApplyActiveMeasureMap As Boolean = SelectedRandomIndex = RandomExtraIndex AndAlso
+                                              block.CurrentValue = RandomExtraValue
+        Dim xOldMeasureLengths() As Double = If(xApplyActiveMeasureMap, ActiveTargetMeasureLength(), Nothing)
+        Dim xMeasureLengths As New Dictionary(Of Integer, Double)()
+        Dim xExtraLines As New List(Of String)()
+
+        For Each line As String In SplitRandomBranchExpansionLines(TRandomExtra.Text)
+            Dim xMeasureIndex As Integer = 0
+            Dim xMeasureLength As Double = 0.0R
+            If TryReadMeasureLengthLine(line, xMeasureIndex, xMeasureLength) Then
+                xMeasureLengths(xMeasureIndex) = xMeasureLength
+            Else
+                xExtraLines.Add(line)
+            End If
+        Next
+
+        block.SetMeasureLengthOverrides(RandomExtraValue, xMeasureLengths)
+        block.SetExtraText(RandomExtraValue, JoinBmsLines(xExtraLines))
+
+        If xApplyActiveMeasureMap AndAlso Not MeasureLengthArraysEqual(xOldMeasureLengths, ActiveTargetMeasureLength()) Then
+            ApplySelectedRandomMeasureMap()
+            RefreshPanelAll()
+        End If
     End Sub
+
+    Private Function SplitRandomBranchExpansionLines(ByVal text As String) As List(Of String)
+        Dim xLines As New List(Of String)()
+        If String.IsNullOrEmpty(text) Then Return xLines
+
+        Dim xRawLines() As String = text.Replace(vbCrLf, vbLf).Replace(vbCr, vbLf).Split(ControlChars.Lf)
+        For i As Integer = 0 To xRawLines.Length - 1
+            If i = xRawLines.Length - 1 AndAlso xRawLines(i) = "" Then Continue For
+            xLines.Add(xRawLines(i))
+        Next
+
+        Return xLines
+    End Function
+
+    Private Function RandomBranchExpansionText(ByVal block As BmsRandomBlock, ByVal value As Integer) As String
+        Dim xText As String = GenerateRandomBranchMeasureLengthData(block, value)
+        AppendExpansionText(xText, block.GetExtraText(value))
+        Return xText
+    End Function
+
+    Private Function TryReadRandomBranchDefinition(ByVal line As String,
+                                                   ByVal commandName As String,
+                                                   ByRef index As Integer,
+                                                   ByRef value As String) As Boolean
+        Dim trimmed As String = line.Trim()
+        Dim xPrefix As String = "#" & commandName
+        If Not trimmed.StartsWith(xPrefix, StringComparison.CurrentCultureIgnoreCase) Then Return False
+        If trimmed.Length < xPrefix.Length + 2 Then Return False
+
+        Dim xLabel As String = trimmed.Substring(xPrefix.Length, 2)
+        If Not IsDefinitionLabel(xLabel) Then Return False
+
+        Dim xValue As String = trimmed.Substring(xPrefix.Length + 2).Trim()
+        If xValue.StartsWith(":", StringComparison.Ordinal) OrElse xValue = "" Then Return False
+
+        index = DefinitionIndex(xLabel)
+        value = xValue
+        Return True
+    End Function
+
+    Private Function RandomBranchDefinition(ByVal extraText As String, ByVal commandName As String, ByVal definitionIndex As Integer) As String
+        If extraText = "" Then Return ""
+
+        Dim xResult As String = ""
+        For Each line As String In SplitRandomBranchExpansionLines(extraText)
+            Dim xIndex As Integer = 0
+            Dim xValue As String = ""
+            If Not TryReadRandomBranchDefinition(line, commandName, xIndex, xValue) Then Continue For
+            If xIndex = definitionIndex Then xResult = xValue
+        Next
+
+        Return xResult
+    End Function
+
+    Private Function ResolvePreviewWavPath(ByVal note As Note) As String
+        Dim xWavIndex As Integer = note.Value \ 10000
+        If note.Landmine Then
+            xWavIndex = 0
+        Else
+            If xWavIndex <= 0 Then xWavIndex = 1
+            If xWavIndex > MaxDefinition Then xWavIndex = MaxDefinition
+        End If
+
+        Dim xWav As String = ""
+        If IsValidRandomIndex(note.RandomIndex) Then
+            xWav = RandomBranchDefinition(RandomBlocks(note.RandomIndex).GetExtraText(note.RandomValue), "WAV", xWavIndex)
+        End If
+
+        If xWav = "" AndAlso xWavIndex >= 0 AndAlso xWavIndex <= UBound(hWAV) Then xWav = hWAV(xWavIndex)
+        If xWav = "" Then Return ""
+
+        Return GetBMSFilePath(xWav)
+    End Function
 
     Private Function RandomListIndexToRandomIndex(ByVal listIndex As Integer) As Integer
         If listIndex <= 0 Then Return -1
@@ -2251,7 +2348,7 @@ Public Class MainWindow
             CRandomViewMode.SelectedIndex = RandomViewModeToComboIndex(block.ViewMode)
             RandomExtraIndex = SelectedRandomIndex
             RandomExtraValue = block.CurrentValue
-            TRandomExtra.Text = block.GetExtraText(block.CurrentValue)
+            TRandomExtra.Text = RandomBranchExpansionText(block, block.CurrentValue)
         Else
             Dim xCanHideCommon As Boolean = RandomBlocks.Count > 0
             If Not xCanHideCommon Then RandomCommonVisible = True
@@ -2452,8 +2549,10 @@ Public Class MainWindow
         block.DefinitionValue = newValue
         block.Normalize()
         ApplySelectedRandomMeasureMap()
+        DeselectHiddenRandomNotes()
         AddUndo(xUndo, xRedo)
         SetIsSaved(False)
+        CalculateTotalPlayableNotes()
         RefreshRandomPanel()
         RefreshPanelAll()
     End Sub
@@ -2466,7 +2565,9 @@ Public Class MainWindow
         block.CurrentValue = CInt(NRandomValue.Value)
         block.Normalize()
         ApplySelectedRandomMeasureMap()
+        DeselectHiddenRandomNotes()
         SetIsSaved(False)
+        CalculateTotalPlayableNotes()
         RefreshRandomPanel()
         RefreshPanelAll()
     End Sub
@@ -2484,6 +2585,7 @@ Public Class MainWindow
 
             RandomCommonVisible = xCommonVisible
         End If
+        DeselectHiddenRandomNotes()
         SetIsSaved(False)
         RefreshRandomPanel()
         RefreshPanelAll()
@@ -3240,6 +3342,7 @@ Public Class MainWindow
 
     Private Sub CopyCurrentMeasureLengthToBase()
         BaseMeasureLength = CopyMeasureLengthArray(MeasureLength)
+        RefreshBeatListFromBaseMeasureLength()
     End Sub
 
     Private Sub ApplyMeasureLengthArray(ByVal lengths() As Double)
@@ -3248,18 +3351,29 @@ Public Class MainWindow
         Next
 
         UpdateMeasureBottom()
-        RefreshBeatListFromMeasureLength()
+        RefreshBeatListFromBaseMeasureLength()
     End Sub
 
-    Private Sub RefreshBeatListFromMeasureLength()
+    Private Function BeatListText(ByVal measureIndex As Integer, ByVal measureLength As Double) As String
+        Dim xRatio As Double = If(measureLength > 0.0R, measureLength, 192.0R) / 192.0R
+        Dim xDenominator As Long = GetDenominator(xRatio)
+        Return Add3Zeros(measureIndex) & ": " & xRatio & IIf(xDenominator > 10000, "", " ( " & CLng(xRatio * xDenominator) & " / " & xDenominator & " ) ")
+    End Function
+
+    Private Sub SetBaseMeasureLength(ByVal measureIndex As Integer, ByVal measureLength As Double)
+        If measureIndex < 0 OrElse measureIndex > 999 Then Return
+
+        BaseMeasureLength(measureIndex) = If(measureLength > 0.0R, measureLength, 192.0R)
+        If LBeat IsNot Nothing AndAlso measureIndex < LBeat.Items.Count Then LBeat.Items(measureIndex) = BeatListText(measureIndex, BaseMeasureLength(measureIndex))
+    End Sub
+
+    Private Sub RefreshBeatListFromBaseMeasureLength()
         If LBeat Is Nothing Then Return
 
         LBeat.BeginUpdate()
         Try
             For i As Integer = 0 To Math.Min(999, LBeat.Items.Count - 1)
-                Dim xRatio As Double = MeasureLength(i) / 192.0R
-                Dim xDenominator As Long = GetDenominator(xRatio)
-                LBeat.Items(i) = Add3Zeros(i) & ": " & xRatio & IIf(xDenominator > 10000, "", " ( " & CLng(xRatio * xDenominator) & " / " & xDenominator & " ) ")
+                LBeat.Items(i) = BeatListText(i, BaseMeasureLength(i))
             Next
         Finally
             LBeat.EndUpdate()
@@ -3381,6 +3495,22 @@ Public Class MainWindow
         ApplyMeasureLengthArray(targetLengths)
         ActiveMeasureRandomIndex = targetRandomIndex
         ActiveMeasureRandomValue = targetRandomValue
+        SortByVPositionInsertion()
+        UpdatePairing()
+        CalculateGreatestVPosition()
+    End Sub
+
+    Private Sub ApplyBaseMeasureMapForBeatEdit()
+        Dim targetLengths() As Double = CopyMeasureLengthArray(BaseMeasureLength)
+        Dim sourceLengths() As Double = CopyMeasureLengthArray(MeasureLength)
+        If Not MeasureLengthArraysEqual(sourceLengths, targetLengths) Then
+            Notes = ConvertNotesToMeasureMap(Notes, sourceLengths, targetLengths)
+            ConvertUndoRedoHistoryMeasureMap(sourceLengths, targetLengths)
+        End If
+
+        ApplyMeasureLengthArray(targetLengths)
+        ActiveMeasureRandomIndex = -1
+        ActiveMeasureRandomValue = 0
         SortByVPositionInsertion()
         UpdatePairing()
         CalculateGreatestVPosition()
@@ -3765,6 +3895,16 @@ Public Class MainWindow
                IsSameRandomOwner(note, sample.RandomIndex, sample.RandomValue)
     End Function
 
+    Private Function IsNoteInCurrentRandomResult(ByVal note As Note) As Boolean
+        If note.VPosition < 0 Then Return True
+        If note.RandomIndex < 0 Then Return True
+        If Not IsValidRandomIndex(note.RandomIndex) Then Return False
+
+        Dim block As BmsRandomBlock = RandomBlocks(note.RandomIndex)
+        block.Normalize()
+        Return note.RandomValue = block.CurrentValue
+    End Function
+
     Private Function IsNoteVisibleByRandom(ByVal note As Note) As Boolean
         If note.VPosition < 0 Then Return True
         If note.RandomIndex < 0 Then Return RandomCommonVisible
@@ -3784,6 +3924,21 @@ Public Class MainWindow
 
         Return False
     End Function
+
+    Private Sub DeselectHiddenRandomNotes()
+        If Notes Is Nothing OrElse Notes.Length <= 1 Then Return
+
+        Dim changed As Boolean = False
+        For i As Integer = 1 To UBound(Notes)
+            If Not Notes(i).Selected Then Continue For
+            If IsNoteVisibleByRandom(Notes(i)) Then Continue For
+
+            Notes(i).Selected = False
+            changed = True
+        Next
+
+        If changed Then ReDim SelectedNotes(-1)
+    End Sub
 
     Private Function IsNoteCurrentRandomLayer(ByVal note As Note) As Boolean
         If note.VPosition < 0 Then Return True
@@ -3829,6 +3984,8 @@ Public Class MainWindow
         SelectedRandomIndex = note.RandomIndex
         block.CurrentValue = xValue
         ApplySelectedRandomMeasureMap()
+        DeselectHiddenRandomNotes()
+        CalculateTotalPlayableNotes()
         RefreshRandomPanel()
         EnsureSelectedListItemVisible(LRandomBlocks)
     End Sub
@@ -3880,7 +4037,7 @@ Public Class MainWindow
     End Sub
 
     Private Sub RefreshBeatEditControlsEnabled()
-        Dim xEnabled As Boolean = Not IsValidRandomIndex(SelectedRandomIndex)
+        Dim xEnabled As Boolean = True
         If nBeatN IsNot Nothing Then nBeatN.Enabled = xEnabled
         If nBeatD IsNot Nothing Then nBeatD.Enabled = xEnabled
         If tBeatValue IsNot Nothing Then tBeatValue.Enabled = xEnabled
@@ -6001,12 +6158,14 @@ StartCount:     If Not NTInput Then
 
         If Not NTInput Then
             For xI1 = 1 To UBound(Notes)
+                If Not IsNoteInCurrentRandomResult(Notes(xI1)) Then Continue For
                 If Notes(xI1).ColumnIndex >= niA1 AndAlso Notes(xI1).ColumnIndex <= niAQ Then xIAll += 1
                 If (Notes(xI1).ColumnIndex >= niD1 AndAlso Notes(xI1).ColumnIndex <= niDQ) AndAlso column(Notes(xI1).ColumnIndex).isVisible Then xIAll += 1
             Next
 
         Else
             For xI1 = 1 To UBound(Notes)
+                If Not IsNoteInCurrentRandomResult(Notes(xI1)) Then Continue For
                 If Notes(xI1).ColumnIndex >= niA1 And Notes(xI1).ColumnIndex <= niAQ Then
                     xIAll += 1
                     If Notes(xI1).Length <> 0 Then xIAll += 1
@@ -6077,7 +6236,8 @@ StartCount:     If Not NTInput Then
     End Function
 
     Private Function IsRecommendedTotalNote(ByVal note As Note) As Boolean
-        Return ((note.ColumnIndex >= niA1 AndAlso note.ColumnIndex <= niAQ) OrElse
+        Return IsNoteInCurrentRandomResult(note) AndAlso
+               ((note.ColumnIndex >= niA1 AndAlso note.ColumnIndex <= niAQ) OrElse
                 (note.ColumnIndex >= niD1 AndAlso note.ColumnIndex <= niDQ)) AndAlso
                Not note.Hidden AndAlso Not note.Landmine AndAlso column(note.ColumnIndex).isVisible
     End Function
@@ -8859,7 +9019,8 @@ Jump2:
 
 
     Private Sub ApplyBeat(ByVal xRatio As Double, ByVal xDisplay As String)
-        If IsValidRandomIndex(SelectedRandomIndex) Then Return
+        Dim xReturnToSelectedLayer As Boolean = IsValidRandomIndex(SelectedRandomIndex)
+        If xReturnToSelectedLayer Then ApplyBaseMeasureMapForBeatEdit()
 
         SortByVPositionInsertion()
 
@@ -9014,7 +9175,6 @@ case2:              Dim xI0 As Integer
             End Select
 
             MeasureLength(xI1) = xRatio * 192.0R
-            LBeat.Items(xI1) = Add3Zeros(xI1) & ": " & xDisplay
         Next
         UpdateMeasureBottom()
         CopyCurrentMeasureLengthToBase()
@@ -9027,6 +9187,7 @@ case2:              Dim xI0 As Integer
         Next
 
         AddUndo(xUndo, xBaseRedo.Next)
+        If xReturnToSelectedLayer Then ApplySelectedRandomMeasureMap()
         SortByVPositionInsertion()
         UpdatePairing()
         CalculateTotalPlayableNotes()

@@ -794,16 +794,8 @@ Partial Public Class MainWindow
         If ClickStopPreview Then PreviewNote("", True)
         'My.Computer.Audio.Stop()
         If NoteIndex > 0 And PreviewOnClick AndAlso IsColumnSound(Notes(NoteIndex).ColumnIndex) Then
-            Dim xI2 As Integer = Notes(NoteIndex).Value \ 10000
-            If Notes(NoteIndex).Landmine Then
-                xI2 = 0
-            Else
-                If xI2 <= 0 Then xI2 = 1
-                If xI2 > MaxDefinition Then xI2 = MaxDefinition
-            End If
-
-            If Not hWAV(xI2) = "" Then ' AndAlso Path.GetExtension(hWAV(xI2)).ToLower = ".wav" Then
-                Dim xFileLocation As String = GetBMSFilePath(hWAV(xI2))
+            Dim xFileLocation As String = ResolvePreviewWavPath(Notes(NoteIndex))
+            If xFileLocation <> "" Then
                 If Not ClickStopPreview Then PreviewNote("", True)
                 PreviewNote(xFileLocation, False)
             End If
